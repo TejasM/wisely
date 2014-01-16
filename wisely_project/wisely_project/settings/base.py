@@ -1,6 +1,5 @@
 """Common settings and globals."""
 
-
 from os.path import abspath, basename, dirname, join, normpath
 from sys import path
 
@@ -190,6 +189,7 @@ DJANGO_APPS = (
     # Admin panel and documentation:
     'django.contrib.admin',
     # 'django.contrib.admindocs',
+    'social_auth',
 )
 
 THIRD_PARTY_APPS = (
@@ -199,6 +199,7 @@ THIRD_PARTY_APPS = (
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
+    'users',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -238,6 +239,23 @@ LOGGING = {
 }
 ########## END LOGGING CONFIGURATION
 
+
+########## SOCIAL AUTH CONFIGURATION
+FACEBOOK_APP_ID = '405339162934237'
+FACEBOOK_API_SECRET = '34f4d0473f43f1be09ff1833f63187bc'
+
+FACEBOOK_EXTENDED_PERMISSIONS = ['email']
+
+GITHUB_APP_ID = '06f5134f1cc26effbef9'
+GITHUB_API_SECRET = '281c5607b51d8ccd574fac2f5cb9692766ca6dd3'
+
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.facebook.FacebookBackend',
+)
+
+LOGIN_URL = '/'
+LOGIN_REDIRECT_URL = '/users/index/'
+LOGIN_ERROR_URL = '/'
 
 ########## WSGI CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
