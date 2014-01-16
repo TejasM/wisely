@@ -1,21 +1,9 @@
-.extra-margin-top {
-    margin-top: 10px;
+html {
+    font-size: 100%;
+    min-height: 100%;
+    width: 100%;
 }
 
-.extra-margin-bottom {
-    margin-bottom: 10px;
-}
-
-hr {
-    margin-left: 30px;
-    margin-right: 30px;
-    border: 1px solid;
-}
-
-.wrapper-lg {
-    padding-top: 0;
-}
-
-.m-t-lg {
-    padding: 10px;
+body .row:first-child {
+    margin-top: 50px !important;
 }

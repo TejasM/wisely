@@ -1,0 +1,35 @@
+.nav-bar-container {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    position: fixed;
+    top: 0;
+    padding-top: 10px;
+    height: 40px;
+}
+
+
+.nav-bar {
+    font-size: 1.5rem;
+    padding: 10px 20px;
+    font-weight: bold;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: inline;
+    height: 50px;
+}
+
+
+.logo {
+    max-width: 200px;
+    display: inline;
+    color: #0E0E0E;
+    padding: 10px;
+}
+
+.right-login {
+    float: right;
+    color: #0E0E0E;
+    font-size: 1rem;
+    font-weight: normal;
+    padding-right: 10px;
+}
