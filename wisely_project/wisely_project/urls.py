@@ -4,6 +4,8 @@ from django.views.generic import TemplateView
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+import settings
+from settings import production
 
 admin.autodiscover()
 
@@ -21,3 +23,9 @@ urlpatterns = patterns('',
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'', include('social_auth.urls')),
 )
+
+if not production.DEBUG:
+    urlpatterns += patterns('',
+                            (r'^static/(?P<path>.*)$', 'django.views.static.serve',
+                             {'document_root': production.STATIC_ROOT}),
+    )
