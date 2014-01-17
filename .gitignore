@@ -19,7 +19,6 @@ build
 
 *.pot
 *.pyc
-wisely_project/manage.py
 
 ;;directories to ignore
 .idea/
