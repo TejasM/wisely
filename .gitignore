@@ -22,4 +22,4 @@ build
  
 ;;directories to ignore
 .idea/
-wisely_project/manage.py
+manage.py
