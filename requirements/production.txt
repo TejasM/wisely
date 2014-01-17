@@ -5,3 +5,4 @@
 gunicorn==0.17.4
 dj_database_url==0.2.1
 psycopg2==2.4.6
+dj-static==0.0.5
