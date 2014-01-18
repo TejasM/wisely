@@ -65,4 +65,6 @@ DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
     'SHOW_TEMPLATE_CONTEXT': True,
 }
+
+SESSION_SERIALIZER='django.contrib.sessions.serializers.PickleSerializer'
 ########## END TOOLBAR CONFIGURATION
