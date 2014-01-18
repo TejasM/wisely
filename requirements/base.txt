@@ -6,3 +6,4 @@ logutils==0.3.3
 South==0.8.1
 django-social-auth==0.7.28
 scrapy==0.20.2
+django-celery==3.1.1
