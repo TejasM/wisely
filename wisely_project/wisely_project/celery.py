@@ -9,7 +9,7 @@ from django.conf import settings
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'wisely_project.settings.production')
 
-app = Celery('wisely_project', broker='amqp://tejas:next36@localhost:5672//')
+app = Celery('wisely_project', broker='amqp://tejas:next36@localhost:5672//wisely_vhost', backend='amqp://wisely_vhost')
 
 # Using a string here means the worker will not have to
 # pickle the object when using Windows.
