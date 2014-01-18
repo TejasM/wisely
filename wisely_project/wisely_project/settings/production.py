@@ -79,9 +79,9 @@ DATABASES = {
     }
 }
 
-PRODCUTION_APPS = {
+PRODCUTION_APPS = (
         'djcelery',
-}
+)
 
 INSTALLED_APPS += PRODCUTION_APPS
 
