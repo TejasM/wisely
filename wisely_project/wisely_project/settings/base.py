@@ -261,3 +261,6 @@ LOGIN_ERROR_URL = '/'
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
 WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 ########## END WSGI CONFIGURATION
+
+SESSION_SERIALIZER='django.contrib.sessions.serializers.PickleSerializer'
+
