@@ -13,8 +13,11 @@ from celery.utils.log import get_task_logger
 
 class CourseraScraper:
     def __init__(self, EMAIL, PASSWORD, logger):
-        from selenium import webdriver
-        self.driver = webdriver.Firefox()
+        try:
+            from selenium import webdriver
+            self.driver = webdriver.Firefox()
+        except Exception as e:
+            logger.info(str(e))
         self.email = EMAIL
         self.password = PASSWORD
         self.courses = []
