@@ -20,19 +20,25 @@ class CourseraScraper:
         self.courses = []
 
     def login(self):
-        self.driver.get('https://www.coursera.org/account/signin')
-        email_field = self.driver.find_element_by_id("signin-email")
-        password_field = self.driver.find_element_by_id("signin-password")
-        email_field.send_keys(self.email)
-        password_field.send_keys(self.password)
-        password_field.submit()
+        try:
+            self.driver.get('https://www.coursera.org/account/signin')
+            email_field = self.driver.find_element_by_id("signin-email")
+            password_field = self.driver.find_element_by_id("signin-password")
+            email_field.send_keys(self.email)
+            password_field.send_keys(self.password)
+            password_field.submit()
+        except:
+            pass
 
     def get_courses(self):
-        soup = BeautifulSoup(self.driver.page_source)
-        users_courses = soup.select(
-            '.coursera-dashboard-course-listing-box .coursera-dashboard-course-listing-box-name')
-        return map(lambda x: x.contents[0].contents[0], users_courses), map(lambda x: x.contents[0].attrs['href'],
-                                                                            users_courses)
+        try:
+            soup = BeautifulSoup(self.driver.page_source)
+            users_courses = soup.select(
+                '.coursera-dashboard-course-listing-box .coursera-dashboard-course-listing-box-name')
+            return map(lambda x: x.contents[0].contents[0], users_courses), map(lambda x: x.contents[0].attrs['href'],
+                                                                                users_courses)
+        except:
+            return [], []
 
     def get_assignments(self, link):
         self.driver.get(link)
@@ -45,7 +51,7 @@ class CourseraScraper:
 def get_courses(user):
     logger = get_task_logger(__name__)
     logger.info('started')
-    scraper = CourseraScraper(user.userprofile.coursera_username, user.userprofile.coursera_password)
+    scraper = CourseraScraper(str(user.userprofile.coursera_username), str(user.userprofile.coursera_password))
     scraper.driver.implicitly_wait(10)
     scraper.login()
     time.sleep(3)
