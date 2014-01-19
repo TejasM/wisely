@@ -263,3 +263,4 @@ WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 ########## END WSGI CONFIGURATION
 
 SESSION_SERIALIZER='django.contrib.sessions.serializers.PickleSerializer'
+PREPEND_WWW = False

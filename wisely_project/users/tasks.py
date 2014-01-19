@@ -3,18 +3,17 @@ import logging
 
 from celery import shared_task
 
-from selenium import webdriver
 from bs4 import BeautifulSoup
 import time
 import sys
 from wisely_project.celery import app
 from users.models import Course
 from celery.utils.log import get_task_logger
-from pyvirtualdisplay import Display
 
 
 class CourseraScraper:
     def __init__(self, EMAIL, PASSWORD, logger):
+        from selenium import webdriver
         self.driver = webdriver.Firefox()
         self.email = EMAIL
         self.password = PASSWORD
@@ -50,6 +49,7 @@ class CourseraScraper:
 
 @app.task
 def get_courses(user):
+    from pyvirtualdisplay import Display
     display = Display(visible=0, size=(1024, 768))
     display.start()
 
