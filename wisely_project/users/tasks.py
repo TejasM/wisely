@@ -10,6 +10,7 @@ import sys
 from wisely_project.celery import app
 from users.models import Course
 from celery.utils.log import get_task_logger
+from pyvirtualdisplay import Display
 
 
 class CourseraScraper:
@@ -49,6 +50,9 @@ class CourseraScraper:
 
 @app.task
 def get_courses(user):
+    display = Display(visible=0, size=(1024, 768))
+    display.start()
+
     logger = get_task_logger(__name__)
     logger.info('started')
     scraper = CourseraScraper(str(user.userprofile.coursera_username), str(user.userprofile.coursera_password), logger)
