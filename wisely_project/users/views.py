@@ -44,8 +44,6 @@ def index(request):
         return render(request, 'users/index.html', {'form': True})
     else:
         request.user.last_login = timezone.now()
-
+        return render(request, 'users/index.html', {'wait': True})
         #schedule('users.tasks.get_courses', args=(request.user.id,))
         #get_courses(request.user.id)
-        pass
-    return render(request, 'users/index.html')

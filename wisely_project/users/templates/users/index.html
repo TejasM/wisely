@@ -94,11 +94,22 @@
             </form>
         </div>
     </div>
+    <div id="coursera-wait" class="light-box">
+        <div class="row text-center">
+            Getting your courses, give us a few minutes!
+        </div>
+    </div>
 {% endblock %}
 {% block additionalScripts %}
-    {% if form %}
-        <script>
+
+    <script>
+        {% if form %}
             $('#coursera').lightbox_me({centered: true});
-        </script>
-    {% endif %}
+        {% endif %}
+        {% if wait %}
+            $('#coursera-wait').lightbox_me({centered: true});
+            setTimeout("location.reload(true);", 30000);
+        {% endif %}
+    </script>
+
 {% endblock %}
