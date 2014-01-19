@@ -1,4 +1,5 @@
 # Create your views here.
+from async.api import schedule
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -34,10 +35,10 @@ def index(request):
         request.user.userprofile.coursera_username = request.POST['username']
         request.user.userprofile.coursera_password = request.POST['password']
         request.user.userprofile.save()
-        get_courses.delay(request.user)
+        schedule('tasks.get_courses', args=(request.user,))
     if request.user.userprofile.coursera_username == "":
         return render(request, 'users/index.html', {'form': True})
     else:
-        get_courses.delay(request.user)
+        schedule('tasks.get_courses', args=(request.user,))
         pass
     return render(request, 'users/index.html')

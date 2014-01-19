@@ -81,6 +81,7 @@ DATABASES = {
 
 PRODCUTION_APPS = (
         'djcelery',
+        'async',
 )
 
 INSTALLED_APPS += PRODCUTION_APPS
