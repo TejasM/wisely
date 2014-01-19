@@ -35,10 +35,10 @@ def index(request):
         request.user.userprofile.coursera_username = request.POST['username']
         request.user.userprofile.coursera_password = request.POST['password']
         request.user.userprofile.save()
-        schedule('tasks.get_courses', args=(request.user,))
+        schedule('tasks.get_courses', args=(request.user.get(),))
     if request.user.userprofile.coursera_username == "":
         return render(request, 'users/index.html', {'form': True})
     else:
-        schedule('tasks.get_courses', args=(request.user,))
+        schedule('tasks.get_courses', args=(request.user.get(),))
         pass
     return render(request, 'users/index.html')
