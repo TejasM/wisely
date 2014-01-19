@@ -34,9 +34,9 @@ def index(request):
         request.user.userprofile.coursera_username = request.POST['username']
         request.user.userprofile.coursera_password = request.POST['password']
         request.user.userprofile.save()
-        get_courses(request.user)
+        get_courses.delay(request.user)
     if request.user.userprofile.coursera_username == "":
         return render(request, 'users/index.html', {'form': True})
     else:
-        get_courses(request.user)
+        get_courses.delay(request.user)
     return render(request, 'users/index.html')

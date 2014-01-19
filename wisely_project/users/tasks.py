@@ -72,3 +72,4 @@ def get_courses(user):
             user.userprofile.courses.create(title=course)
     user.userprofile.save()
     scraper.driver.close()
+    display.stop()
