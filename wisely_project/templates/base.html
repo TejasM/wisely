@@ -137,26 +137,26 @@
                 </div>
             </form>
         </div>
-        <hr/>
+    </div>
+    <div id="sign-up" class="light-box">
         <div class="row text-center">
             <div>
                 <a class="btn-auth btn-facebook large" href="{% url 'socialauth_begin' 'facebook' %}">
-                    Login In with <b>Facebook</b>
+                    Sign Up with <b>Facebook</b>
                 </a>
             </div>
             <div class="extra-top-small-margin">
                 <a class="btn-auth btn-twitter large" href="#">
-                    Login In with <b>Twitter</b>
+                    Sign Up with <b>Twitter</b>
                 </a>
             </div>
             <div class="extra-top-small-margin">
                 <a class="btn-auth btn-google large" href="#">
-                    Login In with <b>Google</b>
+                    Sign Up with <b>Google</b>
                 </a>
             </div>
         </div>
-    </div>
-    <div id="sign-up" class="light-box">
+        <hr/>
         <div class="row text-center">
             <form action="{% url 'user:sign-up' %}" method="post">
                 {% csrf_token %}
