@@ -6,7 +6,20 @@
     <div class="row">
         <div class="row">
             <div class="large-4 columns">
-                <img src="http://placehold.it/400x300&text=[ img 1 ]"/>
+
+                <dl class="tabs vertical" data-tab>
+                    {% for course in user.userprofile.courses %}
+                        <dd {% if forloop.counter == 1 %}class="active"{% endif %}><a href="#panel1a">{{ course }}</a>
+                        </dd>
+                    {% endfor %}
+                </dl>
+                <div class="tabs-content vertical">
+                    {% for course in user.userprofile.courses %}
+                        <div class="content {% if forloop.counter == 1 %}active{% endif %}" id="panel1a">
+                            <p>{{ course }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
             <div class="large-8 columns">
                 <h4>This is a content section.</h4>
