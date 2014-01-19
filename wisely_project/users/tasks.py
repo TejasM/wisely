@@ -15,9 +15,9 @@ class CourseraScraper:
     def __init__(self, EMAIL, PASSWORD, logger):
         try:
             from selenium import webdriver
-            from pyvirtualdisplay import Display
-            self.display = Display(visible=0, size=(1024, 768))
-            self.display.start()
+            from xvfbwrapper import Xvfb
+            self.vdisplay = Xvfb()
+            self.vdisplay.start()
             self.driver = webdriver.Firefox()
         except Exception as e:
             logger.info(str(e))
@@ -74,4 +74,4 @@ def get_courses(user):
             user.userprofile.courses.create(title=course)
     user.userprofile.save()
     scraper.driver.close()
-    scraper.display.stop()
+    scraper.vdisplay.stop()

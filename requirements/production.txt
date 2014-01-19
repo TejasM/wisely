@@ -9,3 +9,4 @@ dj-static==0.0.5
 django-debug-toolbar==1.0.1
 celery==3.1.8
 pyvirtualdisplay==0.1.2
+xvfbwrapper==0.2.4
