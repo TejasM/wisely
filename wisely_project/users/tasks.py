@@ -9,6 +9,7 @@ import sys
 from wisely_project.celery import app
 from users.models import Course
 from celery.utils.log import get_task_logger
+from django.contrib.auth.models import User
 
 
 class CourseraScraper:
@@ -54,7 +55,8 @@ class CourseraScraper:
 
 
 @app.task
-def get_courses(user):
+def get_courses(user_id):
+    user = User.objects.get(pk=user_id)
     logger = get_task_logger(__name__)
     logger.info('started')
     scraper = CourseraScraper(str(user.userprofile.coursera_username), str(user.userprofile.coursera_password), logger)
