@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
+from django.utils import timezone
 from tasks import get_courses
 from models import UserProfile
 
@@ -34,13 +35,17 @@ def index(request):
     if request.method == "POST":
         request.user.userprofile.coursera_username = request.POST['username']
         request.user.userprofile.coursera_password = request.POST['password']
+        request.user.last_login = timezone.now()
+        request.user.save()
         request.user.userprofile.save()
-        #schedule('tasks.get_courses', args=(request.user.id,))
-        get_courses(request.user.id)
+        #schedule('users.tasks.get_courses', args=(request.user.id,))
+        #get_courses(request.user.id)
     if request.user.userprofile.coursera_username == "":
         return render(request, 'users/index.html', {'form': True})
     else:
-        #schedule('tasks.get_courses', args=(request.user.id,))
-        get_courses(request.user.id)
+        request.user.last_login = timezone.now()
+
+        #schedule('users.tasks.get_courses', args=(request.user.id,))
+        #get_courses(request.user.id)
         pass
     return render(request, 'users/index.html')

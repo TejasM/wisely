@@ -3,6 +3,9 @@ from django.db import models
 
 
 # Create your models here.
+from django.utils import timezone
+
+
 class Course(models.Model):
     title = models.CharField(max_length=400)
 
@@ -15,3 +18,4 @@ class UserProfile(models.Model):
     courses = models.ManyToManyField(Course)
     coursera_username = models.CharField(max_length=100, default="")
     coursera_password = models.CharField(max_length=100, default="")
+    last_updated = models.DateTimeField(default=timezone.now())
