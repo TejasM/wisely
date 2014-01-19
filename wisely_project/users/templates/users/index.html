@@ -1,10 +1,5 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% block headers_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/nav-bar.css' %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/foundation.css' %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" cache="false"/>
-{% endblock %}
 {% block content %}
     {% include 'nav-bar.html' %}
     <!-- First Band (Slider) -->
@@ -75,4 +70,27 @@
             </div>
         </footer>
     </div>
+    <div id="coursera" class="light-box">
+        <div class="row text-center">
+            <form action="{% url 'user:index' %}" method="post">
+                {% csrf_token %}
+                <div>
+                    <input type="text" name="username" placeholder="Coursera Username">
+                </div>
+                <div class="extra-margin-top">
+                    <input type="password" name="password" placeholder="Coursera Password">
+                </div>
+                <div class="centered extra-margin-top">
+                    <button type="submit">Add Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block additionalScripts %}
+    {% if form %}
+        <script>
+            $('#coursera').lightbox_me({centered: true});
+        </script>
+    {% endif %}
 {% endblock %}

@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
+from tasks import get_courses
+from models import UserProfile
 
 
 def login(request):
@@ -24,4 +26,17 @@ def signup(request):
 
 @login_required
 def index(request):
+    try:
+        UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist:
+        UserProfile.objects.create(user=request.user)
+    if request.method == "POST":
+        request.user.userprofile.coursera_username = request.POST['username']
+        request.user.userprofile.coursera_password = request.POST['password']
+        request.user.userprofile.save()
+        get_courses.delay(request.user)
+    if request.user.userprofile.coursera_username == "":
+        return render(request, 'users/index.html', {'form': True})
+    else:
+        get_courses.delay(request.user)
     return render(request, 'users/index.html')

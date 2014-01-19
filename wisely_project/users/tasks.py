@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 import time
 import sys
 from wisely_project.celery import app
+from users.models import Course
 
 
 class CourseraScraper:
@@ -40,11 +41,16 @@ class CourseraScraper:
 
 @app.task
 def get_courses(user):
-    scraper = CourseraScraper(user.user_profile.get.coursera_username, user.user_profile.get.coursera_password)
+    scraper = CourseraScraper(user.userprofile.coursera_username, user.userprofile.coursera_password)
     scraper.driver.implicitly_wait(10)
     scraper.login()
     time.sleep(3)
     courses, course_links = scraper.get_courses()
-    for link in course_links:
-        scraper.get_assignments(link)
+    for course in courses:
+        try:
+            Course.objects.get(title=course)
+        except Course.DoesNotExist:
+            course = Course.objects.create(title=course)
+            user.userprofile.courses.add(course)
+            user.userprofile.save()
     scraper.driver.close()
