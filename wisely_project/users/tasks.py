@@ -13,8 +13,11 @@ from celery.utils.log import get_task_logger
 
 
 class CourseraScraper:
-    def __init__(self, EMAIL, PASSWORD):
-        self.driver = webdriver.Firefox()
+    def __init__(self, EMAIL, PASSWORD, logger):
+        try:
+            self.driver = webdriver.Firefox()
+        except Exception as e:
+            logger.info(str(e))
         self.email = EMAIL
         self.password = PASSWORD
         self.courses = []
@@ -51,10 +54,14 @@ class CourseraScraper:
 def get_courses(user):
     logger = get_task_logger(__name__)
     logger.info('started')
-    scraper = CourseraScraper(str(user.userprofile.coursera_username), str(user.userprofile.coursera_password))
+    scraper = CourseraScraper(str(user.userprofile.coursera_username), str(user.userprofile.coursera_password), logger)
+    logger.info('step1')
     scraper.driver.implicitly_wait(10)
+    logger.info('step2')
     scraper.login()
+    logger.info('step3')
     time.sleep(3)
+    logger.info('step4')
     courses, course_links = scraper.get_courses()
     logger.info('got courses')
     for course in courses:
