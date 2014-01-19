@@ -44,13 +44,13 @@ class CourseraScraper:
 @app.task
 def get_courses(user):
     logger = get_task_logger(__name__)
-    logger.log('started')
+    logger.info('started')
     scraper = CourseraScraper(user.userprofile.coursera_username, user.userprofile.coursera_password)
     scraper.driver.implicitly_wait(10)
     scraper.login()
     time.sleep(3)
     courses, course_links = scraper.get_courses()
-    logger.log('got courses')
+    logger.info('got courses')
     for course in courses:
         try:
             Course.objects.get(title=course)
