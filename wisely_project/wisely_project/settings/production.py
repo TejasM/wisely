@@ -106,3 +106,4 @@ STATICFILES_DIRS = (
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 SECRET_KEY = '#*_8js#osn#k*5s+&(ebb3vs)@!7&yjcs0h&r71s8^f1*)5s=d'
 ########## END SECRET CONFIGURATION
+PREPEND_WWW = True
