@@ -1,27 +1,18 @@
 from __future__ import absolute_import
-import logging
-
-from celery import shared_task
 
 from bs4 import BeautifulSoup
 import time
-import sys
-from wisely_project.celery import app
 from users.models import Course
-from celery.utils.log import get_task_logger
 from django.contrib.auth.models import User
 
 
 class CourseraScraper:
-    def __init__(self, EMAIL, PASSWORD, logger):
-        try:
-            from selenium import webdriver
-            from pyvirtualdisplay import Display
-            self.display = Display(visible=0, size=(1024, 768))
-            self.display.start()
-            self.driver = webdriver.Firefox()
-        except Exception as e:
-            logger.info(str(e))
+    def __init__(self, EMAIL, PASSWORD):
+        from selenium import webdriver
+        from pyvirtualdisplay import Display
+        self.display = Display(visible=0, size=(1024, 768))
+        self.display.start()
+        self.driver = webdriver.Firefox()
         self.email = EMAIL
         self.password = PASSWORD
         self.courses = []
@@ -54,21 +45,13 @@ class CourseraScraper:
         print link
 
 
-@app.task
 def get_courses(user_id):
     user = User.objects.get(pk=user_id)
-    logger = get_task_logger(__name__)
-    logger.info('started')
-    scraper = CourseraScraper(str(user.userprofile.coursera_username), str(user.userprofile.coursera_password), logger)
-    logger.info('step1')
+    scraper = CourseraScraper(str(user.userprofile.coursera_username), str(user.userprofile.coursera_password))
     scraper.driver.implicitly_wait(10)
-    logger.info('step2')
     scraper.login()
-    logger.info('step3')
     time.sleep(3)
-    logger.info('step4')
     courses, course_links = scraper.get_courses()
-    logger.info('got courses')
     for course in courses:
         try:
             Course.objects.get(title=course)
