@@ -7,68 +7,123 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Wisely - Learn Together</title>
     {% block headers_css %}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/auth-buttons.css' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/foundation.min.css' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}"/>
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        <link href="{% static 'css/auth-buttons.css' %}" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="{% static 'css/style-home.css' %}" cache="false"/>
-        <link rel="stylesheet" type="text/css" href="{% static 'css/nav-bar.css' %}"/>
     {% endblock %}
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+    <script src="{% static 'js/vendor/modernizr.js' %}"></script>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+    <script src="{% static 'js/vendor/jquery.js' %}"></script>
+    <script src="{% static 'js/vendor/fastclick.js' %}"></script>
     <meta property="og:title" content="Wisely - Learn Together">
     <meta property="og:description"
           content="Wisely connects you with a knowledgeable community of tutors and peers online to motivate each other and learn together. For coursera and edx courses.">
 </head>
 <body>
 {% block content %}
-    <div class="top-cover">
-        <div class="nav-bar-container">
-            <div class="nav-bar">
-                <div class="logo">Wisely</div>
-                <div id="login" class="right-login">
-                    <button class="button-small">Login</button>
-                </div>
-            </div>
-        </div>
-        <div class="title"><h1>Learn Together</h1><br>
+    <!-- Navigation -->
 
-            <div class="subtitle"><h2>Frustrated with an online course on <strong><a
-                    href="https://coursera.org">Coursera</a></strong> or <strong><a
-                    href="https://edx.org">edX</a></strong>?
-                <br>
-                Wisely is a platform connecting you with knowledgeable peers and tutors in your online courses. Get
-                motivated
-                and be engaged in your learning.</h2><br><br>
+    <nav class="top-bar" data-topbar>
+        <div class="top-bar-inner">
+            <ul class="title-area">
+                <!-- Title Area -->
+                <li class="name">
+                    <h1>
+                        <a href="#">
+                            Wisely
+                        </a>
+                    </h1>
+                </li>
+            </ul>
 
-                <div id="dis" class="subtitle">
-                    <button id="sign">Get Started</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="lower-cover">
-        <div class="inner">
-            <div class="third"><img class="first" src="{% static 'images/world.png' %}" width="120" height="120">Connect
-                <div class="content">Engage with peers or tutors through videoconferencing and interactive whiteboard
-                </div>
-            </div>
-            <div class="third"><img class="second" src="{% static 'images/bulb.png' %}" width="85" height="123">Collaborate
-                <div class="content">Review lectures, discuss concepts, and collaborate on assignments</div>
-            </div>
-            <div class="third"><img class="secondary" src="{% static 'images/study.png' %}" width="149" height="120">Contribute
-                <div class="content">Give back to the community by becoming a tutor for courses you completed</div>
+            <div class="right">
+                <a href="#" data-dropdown="drop" class="login-button dropdown">Log In &nbsp; <i
+                        class="fa fa-caret-down"></i></a><br>
+                <ul id="drop" data-dropdown-content class="f-dropdown">
+                    <li><a href="{% url 'socialauth_begin' 'facebook' %}">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a id="login" href="#">Email</a></li>
+                </ul>
             </div>
         </div>
-    </div>
-    <div class="bottom-cover">
-        <h1>We are launching soon!</h1>
-    </div>
-    <div id="login-up" class="light-box">
-        <div class="border-header">
-            Login
-        </div>
+    </nav>
+
+    <!-- End Top Bar -->
+
+    <!-- Header -->
+    <section id="background-image">
         <div class="row">
+            <div class="large-6 large-offset-7 small-12 columns">
+                <div class="title"><h1>Learn Together</h1><br>
+
+                    <div class="subtitle"><h2>Frustrated with an online course on <strong><a
+                            href="https://coursera.org">Coursera</a></strong> or <strong><a
+                            href="https://edx.org">edX</a></strong>?
+                        <br>
+                        Wisely is a platform connecting you with knowledgeable peers and tutors in your online courses.
+                        Get
+                        motivated
+                        and be engaged in your learning.</h2><br><br>
+
+                        <div id="dis" class="subtitle">
+                            <button id="sign">Get Started</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="middle-cover">
+        <div class="row margin-extra-bottom">
+            <div class="row extra-top-xlarge-margin text-center collapse margin-extra-bottom">
+                <div class="large-12 columns text-center small-centered extra-top-margin margin-extra-bottom">
+                    <div class="large-4 columns">
+                        <img class="image-main" src="{% static 'images/world.png' %}" width="120" height="120"/>
+
+                        <h3>Connect</h3>
+
+                        <div class="content"><h4>Engage with peers or tutors through videoconferencing and interactive
+                            whiteboard</h4>
+                        </div>
+                    </div>
+                    <div class="large-4 columns">
+                        <img class="image-main" src="{% static 'images/bulb.png' %}" width="85" height="123"/>
+
+                        <h3>Collaborate</h3>
+
+                        <div class="content"><h4>Review lectures, discuss concepts, and collaborate on assignments</h4>
+                        </div>
+                    </div>
+                    <div class="large-4 columns">
+                        <img class="image-main" src="{% static 'images/study.png' %}" width="139" height="112"/>
+
+                        <h3>Contribute</h3>
+
+                        <div class="content"><h4>Give back to the community by becoming a tutor for courses you
+                            completed</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <section id="section-foot">
+        <footer class="row">
+            <div class="small-12 small-centered text-center columns about-us margin-extra-bottom">
+                <h3>We are constantly looking for ways to improve and would to hear from you.</h3>
+                <button class="extra-top-large-margin">Contact Us</button>
+            </div>
+        </footer>
+    </section>
+
+    <div id="login-up" class="light-box">
+        <div class="row text-center">
             <form action="{% url 'user:sign-up' %}" method="post">
                 {% csrf_token %}
                 <div>
@@ -83,21 +138,18 @@
             </form>
         </div>
         <hr/>
-        <div class="centered larger-font">
-            OR
-        </div>
-        <div class="row centered">
+        <div class="row text-center">
             <div>
                 <a class="btn-auth btn-facebook large" href="{% url 'socialauth_begin' 'facebook' %}">
                     Login In with <b>Facebook</b>
                 </a>
             </div>
-            <div class="extra-margin-top">
+            <div class="extra-top-small-margin">
                 <a class="btn-auth btn-twitter large" href="#">
                     Login In with <b>Twitter</b>
                 </a>
             </div>
-            <div class="extra-margin-top">
+            <div class="extra-top-small-margin">
                 <a class="btn-auth btn-google large" href="#">
                     Login In with <b>Google</b>
                 </a>
@@ -105,31 +157,7 @@
         </div>
     </div>
     <div id="sign-up" class="light-box">
-        <div class="border-header">
-            Sign Up
-        </div>
-        <div class="row centered">
-            <div>
-                <a class="btn-auth btn-facebook large" href="{% url 'socialauth_begin' 'facebook' %}">
-                    Sign Up with <b>Facebook</b>
-                </a>
-            </div>
-            <div class="extra-margin-top">
-                <a class="btn-auth btn-twitter large" href="#">
-                    Sign Up with <b>Twitter</b>
-                </a>
-            </div>
-            <div class="extra-margin-top">
-                <a class="btn-auth btn-google large" href="#">
-                    Sign Up with <b>Google</b>
-                </a>
-            </div>
-        </div>
-        <hr/>
-        <div class="centered larger-font">
-            OR
-        </div>
-        <div class="row">
+        <div class="row text-center">
             <form action="{% url 'user:sign-up' %}" method="post">
                 {% csrf_token %}
                 <div>
@@ -152,9 +180,13 @@
     </div>
 {% endblock %}
 </body>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="{% static 'js/foundation.min.js' %}"></script>
 <script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
 <script>
     $(function () {
+        $(document).foundation();
         $('#sign').click(function () {
             $('#sign-up').lightbox_me({centered: true});
         });
@@ -178,6 +210,5 @@
 
     ga('create', 'UA-41719357-2', 'projectwisely.com');
     ga('send', 'pageview');
-
 </script>
 </html>
