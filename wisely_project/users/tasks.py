@@ -55,6 +55,7 @@ def get_courses(user_id):
     for course in courses:
         try:
             Course.objects.get(title=course)
+            user.userprofile.courses.add(course)
         except Course.DoesNotExist:
             user.userprofile.courses.create(title=course)
     user.userprofile.save()
