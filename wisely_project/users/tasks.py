@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+import logging
 
 from celery import shared_task
 
@@ -8,6 +9,7 @@ import time
 import sys
 from wisely_project.celery import app
 from users.models import Course
+from celery.utils.log import get_task_logger
 
 
 class CourseraScraper:
@@ -41,16 +43,18 @@ class CourseraScraper:
 
 @app.task
 def get_courses(user):
+    logger = get_task_logger(__name__)
+    logger.log('started')
     scraper = CourseraScraper(user.userprofile.coursera_username, user.userprofile.coursera_password)
     scraper.driver.implicitly_wait(10)
     scraper.login()
     time.sleep(3)
     courses, course_links = scraper.get_courses()
+    logger.log('got courses')
     for course in courses:
         try:
             Course.objects.get(title=course)
         except Course.DoesNotExist:
-            course = Course.objects.create(title=course)
-            user.userprofile.courses.add(course)
-            user.userprofile.save()
+            user.userprofile.courses.create(title=course)
+    user.userprofile.save()
     scraper.driver.close()
