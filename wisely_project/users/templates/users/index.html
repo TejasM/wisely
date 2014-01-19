@@ -37,27 +37,31 @@
             </div>
         </footer>
     </div>
-    <div id="coursera" class="light-box">
-        <div class="row text-center">
-            <form action="{% url 'user:index' %}" method="post">
-                {% csrf_token %}
-                <div>
-                    <input type="text" name="username" placeholder="Coursera Username">
-                </div>
-                <div class="extra-margin-top">
-                    <input type="password" name="password" placeholder="Coursera Password">
-                </div>
-                <div class="centered extra-margin-top">
-                    <button type="submit">Add Account</button>
-                </div>
-            </form>
+    {% if form %}
+        <div id="coursera" class="light-box">
+            <div class="row text-center">
+                <form action="{% url 'user:index' %}" method="post">
+                    {% csrf_token %}
+                    <div>
+                        <input type="text" name="username" placeholder="Coursera Username">
+                    </div>
+                    <div class="extra-margin-top">
+                        <input type="password" name="password" placeholder="Coursera Password">
+                    </div>
+                    <div class="centered extra-margin-top">
+                        <button type="submit">Add Account</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-    <div id="coursera-wait" class="light-box">
-        <div class="row text-center">
-            Getting your courses, give us a few minutes!
+    {% endif %}
+    {% if wait %}
+        <div id="coursera-wait" class="light-box">
+            <div class="row text-center">
+                Getting your courses, give us a few minutes!
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}
 {% block additionalScripts %}
 

@@ -38,12 +38,13 @@ def index(request):
         request.user.last_login = timezone.now()
         request.user.save()
         request.user.userprofile.save()
+        return render(request, 'users/index.html', {'wait': True})
         #schedule('users.tasks.get_courses', args=(request.user.id,))
         #get_courses(request.user.id)
     if request.user.userprofile.coursera_username == "":
         return render(request, 'users/index.html', {'form': True})
     else:
         request.user.last_login = timezone.now()
-        return render(request, 'users/index.html', {'wait': True})
+        return render(request, 'users/index.html')
         #schedule('users.tasks.get_courses', args=(request.user.id,))
         #get_courses(request.user.id)
