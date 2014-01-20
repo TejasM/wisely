@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from tasks import get_courses
 from models import UserProfile
+from pledges.models import Pledge
 
 
 def login(request):
@@ -29,9 +30,9 @@ def signup(request):
 @login_required
 def index(request):
     try:
-        UserProfile.objects.get(user=request.user)
+        profile = UserProfile.objects.get(user=request.user)
     except UserProfile.DoesNotExist:
-        UserProfile.objects.create(user=request.user)
+        profile = UserProfile.objects.create(user=request.user)
     if request.method == "POST":
         request.user.userprofile.coursera_username = request.POST['username']
         request.user.userprofile.coursera_password = request.POST['password']
@@ -44,7 +45,8 @@ def index(request):
     if request.user.userprofile.coursera_username == "":
         return render(request, 'users/index.html', {'form': True})
     else:
+        pledges = Pledge.objects.filter(user=profile)
         request.user.last_login = timezone.now()
-        return render(request, 'users/index.html')
+        return render(request, 'users/index.html', {'pledges': pledges})
         #schedule('users.tasks.get_courses', args=(request.user.id,))
         #get_courses(request.user.id)

@@ -7,7 +7,8 @@
         <div class="row extra-top-margin">
             <div class="large-9 columns">
                 <dl class="tabs vertical" data-tab>
-                    <div class="title-courses left"><h3>Courses</h3></div><span class="right fa fa-plus-square-o fa-2x"></span>
+                    <div class="title-courses left"><h3>Courses</h3></div>
+                    <span class="right fa fa-plus-square-o fa-2x"></span>
                     {% for course in user.userprofile.courses.all %}
                         <dd {% if forloop.counter == 1 %}class="active"{% endif %}><a
                                 href="#panel{{ forloop.counter }}a">{{ course }}</a>
@@ -26,14 +27,20 @@
             <div class="large-3 columns text-center">
                 <h3>Your Pledges</h3>
                 {% if pledges %}
-                    {% for pledge in pledges %}
-                    {% endfor %}
+                    <a href="{% url 'pledges:index' %}">
+                        <button class="other-button">View Pledges</button>
+                    </a>
                 {% else %}
                     <h5>You don't have any pledges!</h5>
                     {% if user.userprofile.courses.all %}
                         <h5>Make one now</h5>
-                        <a href="{% url 'pledges:create' %}"><button>Create Pledge</button></a>
+                        <a href="{% url 'pledges:create' %}">
+                            <button class="other-button">Create Pledge</button>
+                        </a>
                     {% endif %}
+                {% endif %}
+                {% if user.userprofile.courses.all %}
+                    <button class="other-button extra-top-margin">Create Pledge</button>
                 {% endif %}
             </div>
 

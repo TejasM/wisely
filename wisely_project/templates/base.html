@@ -6,13 +6,12 @@
           content="Wisely connects you with a knowledgeable community of tutors and peers online to motivate each other and learn together. For coursera and edx courses."/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Wisely - Learn Together</title>
-    {% block headers_css %}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/foundation.min.css' %}"/>
-        <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}"/>
-        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-        <link href="{% static 'css/auth-buttons.css' %}" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/style-home.css' %}" cache="false"/>
-    {% endblock %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/foundation.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}"/>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="{% static 'css/auth-buttons.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style-home.css' %}" cache="false"/>
     <script src="{% static 'js/vendor/modernizr.js' %}"></script>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <script src="{% static 'js/vendor/jquery.js' %}"></script>
@@ -20,6 +19,8 @@
     <meta property="og:title" content="Wisely - Learn Together">
     <meta property="og:description"
           content="Wisely connects you with a knowledgeable community of tutors and peers online to motivate each other and learn together. For coursera and edx courses.">
+    {% block headers_css %}
+    {% endblock %}
 </head>
 <body>
 {% block content %}

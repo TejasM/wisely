@@ -1,4 +1,47 @@
-detail
-{#<ul>#}
-{#    <li>{{ pledge }}</li>#}
-{#</ul>#}
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block headers_css %}
+    <link href='http://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
+{% endblock %}
+{% block content %}
+    {% include 'nav-bar.html' %}
+    <div class="row main-interface">
+        <div class="row">
+            <div class="large-12 columns">
+                <div class="row">
+                    <div class="large-12 text-center">
+                        <h1>Your Pledge</h1>
+
+                        <h2>Looking Good!</h2>
+                    </div>
+                </div>
+                <div class="row extra-top-margin">
+                    <div class="large-4 text-center centered">
+                        <div class="row collapse">
+                            <div class="large-12 columns extra-top-margin">
+                                <span class="course-title"><h3>{{ pledge.course }}</h3></span>
+                            </div>
+                            <div class="small-3 large-4 columns extra-top-margin">
+                                <span class="dollar prefix">$</span>
+                            </div>
+                            <div class="small-9 large-8 columns extra-top-margin">
+                                <span class="left dollar-detail">{{ pledge.money|floatformat:2 }}</span>
+                            </div>
+                            <div class="large-12 columns extra-top-margin">
+                                <a href="{% url 'pledges:edit' pledge.id %}"><button class="other-button" type="submit">Edit</button></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block additionalScripts %}
+    <script src="{% static 'js/jquery.number.js' %}"></script>
+    <script>
+        $(function () {
+            $('input.dollar').number(true, 2)
+        });
+    </script>
+{% endblock %}
