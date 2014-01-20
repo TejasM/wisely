@@ -4,17 +4,17 @@
     {% include 'nav-bar.html' %}
     <!-- First Band (Slider) -->
     <div class="row">
-        <div class="row">
+        <div class="row extra-top-margin">
             <div class="large-12 columns">
                 <dl class="tabs vertical" data-tab>
-                    Courses
+                    <div class="text-center"><h3>Courses</h3></div>
                     {% for course in user.userprofile.courses.all %}
                         <dd {% if forloop.counter == 1 %}class="active"{% endif %}><a
                                 href="#panel{{ forloop.counter }}a">{{ course }}</a>
                         </dd>
                     {% endfor %}
                 </dl>
-                <div class="tabs-content vertical">
+                <div class="tabs-content vertical no-background">
                     {% for course in user.userprofile.courses.all %}
                         <div class="content {% if forloop.counter == 1 %}active{% endif %}"
                              id="panel{{ forloop.counter }}a">
