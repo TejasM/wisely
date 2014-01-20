@@ -39,7 +39,7 @@
                         </a>
                     {% endif %}
                 {% endif %}
-                {% if user.userprofile.courses.all %}
+                {% if pledges and user.userprofile.courses.all %}
                     <button class="other-button extra-top-margin">Create Pledge</button>
                 {% endif %}
             </div>
