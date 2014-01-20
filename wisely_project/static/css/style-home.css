@@ -354,3 +354,7 @@ div.content p:first-child {
 div.content > div {
     padding-right: 0 !important;
 }
+
+h2.course-page-header {
+    color: #383838;
+}
