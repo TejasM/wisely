@@ -1,12 +1,14 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from users.models import Course
+import stripe
 
 __author__ = 'Cheng'
 
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from models import Pledge
+import wisely_project.settings.base as settings
 
 
 @login_required
@@ -30,22 +32,19 @@ def results(request, poll_id):
 @login_required
 def create(request):
     if request.method == "POST":
-        pledge = Pledge.objects.create(user=request.user.userprofile, course=Course.objects.get(pk=int(request.POST['course'])),
-                                       money=int(float(request.POST['money'])), active=True)
+        token = request.POST.get('stripeToken', '')
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        try:
+            stripe.Charge.create(
+                amount=int(float(request.POST['money'])) * 100, # amount in cents, again
+                currency="cad",
+                card=token,
+                description=request.user.username,
+            )
+            pledge = Pledge.objects.create(user=request.user.userprofile,
+                                           course=Course.objects.get(pk=int(request.POST['course'])),
+                                           money=int(float(request.POST['money'])), active=True)
+        except stripe.CardError, _:
+            return redirect(reverse('pledges:create'))
         return redirect(reverse('pledges:detail', args=(pledge.id,)))
     return render(request, 'pledges/create.html')
-
-
-@login_required
-def edit(request, pledge_id):
-    try:
-        pledge = Pledge.objects.get(pk=pledge_id)
-    except Pledge.DoesNotExist:
-        return redirect(reverse('user:index'))
-    if request.method == "POST":
-        pledge = Pledge.objects.get(pk=pledge_id)
-        pledge.course = Course.objects.get(pk=int(request.POST['course']))
-        pledge.money = int(float(request.POST['money']))
-        pledge.save()
-        return redirect(reverse('pledges:detail', args=(pledge.id,)))
-    return render(request, 'pledges/edit.html', {'pledge': pledge})

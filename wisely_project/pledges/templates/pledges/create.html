@@ -17,11 +17,11 @@
                 </div>
                 <div class="row extra-top-margin">
                     <div class="large-4 text-center centered">
-                        <form method="post" action="">
+                        <form method="post" action="" id="pay-form">
                             {% csrf_token %}
                             <div class="row collapse">
                                 <div class="large-12 columns extra-top-margin">
-                                    <select class="course" name="course">
+                                    <select class="course" name="course" id="course-select">
                                         {% for course in user.userprofile.courses.all %}
                                             <option value="{{ course.id }}">{{ course }}</option>
                                         {% endfor %}
@@ -31,13 +31,38 @@
                                     <span class="dollar prefix">$</span>
                                 </div>
                                 <div class="small-9 large-8 columns  extra-top-margin">
-                                    <input type="text" placeholder="Amount" name="money" class="dollar">
+                                    <input type="text" placeholder="Amount" name="money" id="money" class="dollar">
                                 </div>
                                 <div class="large-12 columns extra-top-margin">
-                                    <button class="other-button" type="submit">Create</button>
+                                    <button class="other-button" type="submit" id="create">Create</button>
                                 </div>
                             </div>
                         </form>
+                        <script src="https://checkout.stripe.com/checkout.js"></script>
+                        <script>
+                            var string = "#create";
+                            var string2 = "#pay-form";
+                            $(string).click(function () {
+                                var token = function (res) {
+                                    var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                    $(string2).append($input).submit();
+                                };
+                                var money = parseInt($('#money').val()) * 100;
+                                if (!isNaN(money)) {
+                                    StripeCheckout.open({
+                                        key: 'pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb',
+                                        address: false,
+                                        amount: money,
+                                        currency: 'cad',
+                                        name: "Pledge",
+                                        description: "For " + $('#course-select').find('option:selected ').text(),
+                                        panelLabel: 'Pledge ',
+                                        token: token
+                                    });
+                                }
+                                return false;
+                            });
+                        </script>
                     </div>
                 </div>
             </div>

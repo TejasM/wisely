@@ -195,6 +195,7 @@ DJANGO_APPS = (
 THIRD_PARTY_APPS = (
     # Database migration helpers:
     'south',
+    "payments",
 )
 
 # Apps specific for this project go here.
@@ -254,6 +255,11 @@ AUTHENTICATION_BACKENDS = (
     'social_auth.backends.facebook.FacebookBackend',
 )
 
+STRIPE_PUBLIC_KEY = "pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb"
+STRIPE_SECRET_KEY = "sk_test_auCbY9IpyQ0hMHMcfvgjumxU"
+
+PAYMENTS_PLANS = {}
+
 LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = '/users/index/'
 LOGIN_ERROR_URL = '/'
@@ -263,5 +269,5 @@ LOGIN_ERROR_URL = '/'
 WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 ########## END WSGI CONFIGURATION
 
-SESSION_SERIALIZER='django.contrib.sessions.serializers.PickleSerializer'
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 PREPEND_WWW = False

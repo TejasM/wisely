@@ -40,7 +40,9 @@
                     {% endif %}
                 {% endif %}
                 {% if pledges and user.userprofile.courses.all %}
-                    <button class="other-button extra-top-margin">Create Pledge</button>
+                    <a href="{% url 'pledges:create' %}">
+                        <button class="other-button extra-top-margin">Create Pledge</button>
+                    </a>
                 {% endif %}
             </div>
 
