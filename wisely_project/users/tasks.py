@@ -44,6 +44,13 @@ class CourseraScraper:
         link = soup.find('a', {'data-ab-user-convert': 'navclick_Quizzes'})
         print link
 
+    def update_announcements(self, course, course_link):
+        self.driver.get(course_link)
+        soup = BeautifulSoup(self.driver.page_source)
+        announcements = soup.select('.course-page-sidebar + div')
+        course.announcements = announcements
+        course.save()
+
 
 def get_courses(user_id):
     user = User.objects.get(pk=user_id)
@@ -52,12 +59,14 @@ def get_courses(user_id):
     scraper.login()
     time.sleep(3)
     courses, course_links = scraper.get_courses()
-    for course in courses:
+    for i, course in enumerate(courses):
         try:
             get_course = Course.objects.get(title=course)
             user.userprofile.courses.add(get_course)
         except Course.DoesNotExist:
-            user.userprofile.courses.create(title=course)
+            get_course = Course.objects.create(title=course)
+            user.userprofile.courses.add(get_course)
+        scraper.update_announcements(get_course, course_links[i])
     user.userprofile.save()
     scraper.driver.close()
     scraper.display.stop()

@@ -19,3 +19,4 @@ class UserProfile(models.Model):
     coursera_username = models.CharField(max_length=100, default="")
     coursera_password = models.CharField(max_length=100, default="")
     last_updated = models.DateTimeField(default=timezone.now())
+    announcements = models.CharField(max_length=1000000, default="")
