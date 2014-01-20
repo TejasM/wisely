@@ -5,9 +5,9 @@
     <!-- First Band (Slider) -->
     <div class="row">
         <div class="row extra-top-margin">
-            <div class="large-12 columns">
+            <div class="large-9 columns">
                 <dl class="tabs vertical" data-tab>
-                    <div class="text-center"><h3>Courses</h3></div>
+                    <div class="title-courses left"><h3>Courses</h3></div><span class="right fa fa-plus-square-o fa-2x"></span>
                     {% for course in user.userprofile.courses.all %}
                         <dd {% if forloop.counter == 1 %}class="active"{% endif %}><a
                                 href="#panel{{ forloop.counter }}a">{{ course }}</a>
@@ -22,6 +22,19 @@
                         </div>
                     {% endfor %}
                 </div>
+            </div>
+            <div class="large-3 columns text-center">
+                <h3>Your Pledges</h3>
+                {% if pledges %}
+                    {% for pledge in pledges %}
+                    {% endfor %}
+                {% else %}
+                    <h5>You don't have any pledges!</h5>
+                    {% if user.userprofile.courses.all %}
+                        <h5>Make one now</h5>
+                        <a href="{% url 'pledges:create' %}"><button>Create Pledge</button></a>
+                    {% endif %}
+                {% endif %}
             </div>
 
         </div>

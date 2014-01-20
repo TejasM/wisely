@@ -18,3 +18,7 @@ def detail(request, pledge_id):
 
 def results(request, poll_id):
     return HttpResponse("You're looking at the results of pledge %s." % poll_id)
+
+
+def create(request):
+    return None

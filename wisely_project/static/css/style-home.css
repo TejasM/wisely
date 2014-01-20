@@ -254,3 +254,21 @@ h2 {
 .bottom-border {
     border-bottom: 1px solid #d9d9d9;
 }
+
+@media only screen and (min-width: 40.063em) {
+    .tabs.vertical {
+        width: 35%;
+    }
+    .tabs-content.vertical {
+         width: 65%;
+    }
+}
+
+.title-courses + span + dd  {
+    margin-top: 50px;
+}
+
+.title-courses + span  {
+    padding-right: 20px;
+    margin-top: 5px;
+}
