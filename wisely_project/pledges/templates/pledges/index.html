@@ -1,0 +1,9 @@
+{% if all_pledges_list %}
+    <ul>
+        {% for pledge in all_pledges_list %}
+            <li><a href="/pledges/{{ pledge.id }}/">{{ pledge }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No pledges are available.</p>
+{% endif %}

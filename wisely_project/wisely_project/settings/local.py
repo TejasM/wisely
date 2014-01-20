@@ -1,8 +1,5 @@
 """Development settings and globals."""
 
-
-from os.path import join, normpath
-
 from base import *
 
 
@@ -50,6 +47,8 @@ CACHES = {
 # See: https://github.com/django-debug-toolbar/django-debug-toolbar#installation
 INSTALLED_APPS += (
     'debug_toolbar',
+    'pledges',
+    'south'
 )
 
 # See: https://github.com/django-debug-toolbar/django-debug-toolbar#installation
