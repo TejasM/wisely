@@ -47,6 +47,7 @@ def index(request):
     else:
         pledges = Pledge.objects.filter(user=profile)
         request.user.last_login = timezone.now()
+        request.user.save()
         return render(request, 'users/index.html', {'pledges': pledges})
         #schedule('users.tasks.get_courses', args=(request.user.id,))
         #get_courses(request.user.id)
