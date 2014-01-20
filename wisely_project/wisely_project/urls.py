@@ -3,6 +3,8 @@ from django.views.generic import TemplateView
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+from settings import production
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -18,5 +20,12 @@ urlpatterns = patterns('',
                        # Uncomment the next line to enable the admin:
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^users/', include('users.urls', namespace="users")),
+                       url(r'', include('social_auth.urls')),
                        url(r'^pledges/', include('pledges.urls', namespace="pledges")),
 )
+
+if not production.DEBUG:
+    urlpatterns += patterns('',
+                            (r'^static/(?P<path>.*)$', 'django.views.static.serve',
+                             {'document_root': production.STATIC_ROOT}),
+    )
