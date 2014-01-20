@@ -351,6 +351,6 @@ div.content p:first-child {
     display: none;
 }
 
-div.content div:first-child {
+div.content > div {
     padding-right: 0 !important;
 }
