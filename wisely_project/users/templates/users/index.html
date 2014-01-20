@@ -59,7 +59,7 @@
     {% if form %}
         <div id="coursera" class="light-box">
             <div class="row text-center">
-                <form action="{% url 'user:index' %}" method="post">
+                <form action="{% url 'users:index' %}" method="post">
                     {% csrf_token %}
                     <div>
                         <input type="text" name="username" placeholder="Coursera Username">
