@@ -125,7 +125,7 @@
 
     <div id="login-up" class="light-box">
         <div class="row text-center">
-            <form action="{% url 'user:sign-up' %}" method="post">
+            <form action="{% url 'users:login' %}" method="post">
                 {% csrf_token %}
                 <div>
                     <input type="email" name="email" placeholder="Email">
@@ -159,7 +159,7 @@
         </div>
         <hr/>
         <div class="row text-center">
-            <form action="{% url 'user:sign-up' %}" method="post">
+            <form action="{% url 'users:sign-up' %}" method="post">
                 {% csrf_token %}
                 <div>
                     <input type="text" name="first_name" placeholder="First Name">
