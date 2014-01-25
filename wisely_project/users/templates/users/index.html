@@ -5,48 +5,87 @@
     <!-- First Band (Slider) -->
     <div class="row">
         <div class="row extra-top-margin">
-            <div class="large-9 columns">
-                <dl class="tabs vertical" data-tab>
-                    <div class="title-courses left"><h3>Courses</h3></div>
-                    <span class="right fa fa-plus-square-o fa-2x" id="update-coursera"></span>
-                    {% for course in user.userprofile.courses.all %}
-                        <dd {% if forloop.counter == 1 %}class="active"{% endif %}><a
-                                href="#panel{{ forloop.counter }}a">{{ course }}</a>
-                        </dd>
-                    {% endfor %}
-                </dl>
-                <div class="tabs-content vertical no-background">
-                    {% for course in user.userprofile.courses.all %}
-                        <div class="content {% if forloop.counter == 1 %}active{% endif %}"
-                             id="panel{{ forloop.counter }}a">
-                            <p>{{ course.announcements|safe }}</p>
+            {% if form %}
+                <div class="row main-interface">
+                    <div class="row">
+                        <div class="large-1 columns text-center">
+                            <div class="cursive page-number">1</div>
                         </div>
-                    {% endfor %}
+                        <div class="large-1 columns right-align text-center">
+                            <span class="question-mark">?</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-12 columns text-center">
+                            <h1>To Get Started</h1>
+
+                            <h2>Add Your Coursera Account</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-6 columns large-offset-3 extra-top-margin">
+                            <div id="coursera">
+                                <div class="row text-center">
+                                    <form action="{% url 'users:index' %}" method="post">
+                                        {% csrf_token %}
+                                        <div>
+                                            <input type="text" name="username" placeholder="Coursera Username">
+                                        </div>
+                                        <div class="extra-margin-top">
+                                            <input type="password" name="password" placeholder="Coursera Password">
+                                        </div>
+                                        <div class="centered extra-margin-top">
+                                            <button type="submit" class="other-button">Add Account</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="large-3 columns text-center">
-                <h3>Your Pledges</h3>
-                {% if pledges %}
-                    <a href="{% url 'pledges:index' %}">
-                        <button class="other-button">View Pledges</button>
-                    </a>
-                {% else %}
-                    <h5>You don't have any pledges!</h5>
-                    {% if user.userprofile.courses.all %}
-                        <h5>Make one now</h5>
+            {% else %}
+                <div class="large-9 columns">
+                    <dl class="tabs vertical" data-tab>
+                        <div class="title-courses left"><h3>Courses</h3></div>
+                        <span class="right fa fa-plus-square-o fa-2x" id="update-coursera"></span>
+                        {% for course in user.userprofile.courses.all %}
+                            <dd {% if forloop.counter == 1 %}class="active"{% endif %}><a
+                                    href="#panel{{ forloop.counter }}a">{{ course }}</a>
+                            </dd>
+                        {% endfor %}
+                    </dl>
+                    <div class="tabs-content vertical no-background">
+                        {% for course in user.userprofile.courses.all %}
+                            <div class="content {% if forloop.counter == 1 %}active{% endif %}"
+                                 id="panel{{ forloop.counter }}a">
+                                <p>{{ course.announcements|safe }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="large-3 columns text-center">
+                    <h3>Your Pledges</h3>
+                    {% if pledges %}
+                        <a href="{% url 'pledges:index' %}">
+                            <button class="other-button">View Pledges</button>
+                        </a>
+                    {% else %}
+                        <h5>You don't have any pledges!</h5>
+                        {% if user.userprofile.courses.all %}
+                            <h5>Make one now</h5>
+                            <a href="{% url 'pledges:create' %}">
+                                <button class="other-button">Create Pledge</button>
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                    {% if pledges and user.userprofile.courses.all %}
                         <a href="{% url 'pledges:create' %}">
-                            <button class="other-button">Create Pledge</button>
+                            <button class="other-button extra-top-margin">Create Pledge</button>
                         </a>
                     {% endif %}
-                {% endif %}
-                {% if pledges and user.userprofile.courses.all %}
-                    <a href="{% url 'pledges:create' %}">
-                        <button class="other-button extra-top-margin">Create Pledge</button>
-                    </a>
-                {% endif %}
-            </div>
-
-        </div>
+                </div>
+                </div>
+            {% endif %}
         <footer class="row">
             <div class="large-12 columns">
                 <hr/>
@@ -74,24 +113,6 @@
             </form>
         </div>
     </div>
-    {% if form %}
-        <div id="coursera" class="light-box">
-            <div class="row text-center">
-                <form action="{% url 'users:index' %}" method="post">
-                    {% csrf_token %}
-                    <div>
-                        <input type="text" name="username" placeholder="Coursera Username">
-                    </div>
-                    <div class="extra-margin-top">
-                        <input type="password" name="password" placeholder="Coursera Password">
-                    </div>
-                    <div class="centered extra-margin-top">
-                        <button type="submit">Add Account</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    {% endif %}
     {% if wait %}
         <div id="coursera-wait" class="light-box">
             <div class="row text-center">
@@ -103,9 +124,6 @@
 {% block additionalScripts %}
 
     <script>
-        {% if form %}
-            $('#coursera').lightbox_me({centered: true});
-        {% endif %}
         {% if wait %}
             $('#coursera-wait').lightbox_me({centered: true});
             setTimeout("location.reload(true);", 30000);

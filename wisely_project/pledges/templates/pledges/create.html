@@ -7,67 +7,136 @@
     {% include 'nav-bar.html' %}
     <div class="row main-interface">
         <div class="row">
-            <div class="large-12 columns">
+            {% if form %}
                 <div class="row">
-                    <div class="large-12 text-center">
-                        <h1>Create Pledge</h1>
-
-                        <h2>Motivate your Learning!</h2>
+                    <div class="large-12 columns">
+                        <div class="large-1 columns text-center">
+                            <div class="cursive page-number">2</div>
+                        </div>
+                        <div class="large-1 columns right-align text-center">
+                            <span class="question-mark">?</span>
+                        </div>
                     </div>
                 </div>
-                <div class="row extra-top-margin">
-                    <div class="large-4 text-center centered">
-                        <form method="post" action="" id="pay-form">
-                            {% csrf_token %}
-                            <div class="row collapse">
-                                <div class="large-12 columns extra-top-margin">
-                                    <select class="course" name="course" id="course-select">
-                                        {% for course in user.userprofile.courses.all %}
-                                            <option value="{{ course.id }}">{{ course }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="small-3 large-4 columns extra-top-margin">
-                                    <span class="dollar prefix">$</span>
-                                </div>
-                                <div class="small-9 large-8 columns  extra-top-margin">
-                                    <input type="text" placeholder="Amount" name="money" id="money" class="dollar">
-                                </div>
-                                <div class="large-12 columns extra-top-margin">
-                                    <button class="other-button" type="submit" id="create">Create</button>
-                                </div>
-                            </div>
-                        </form>
-                        <script src="https://checkout.stripe.com/checkout.js"></script>
-                        <script>
-                            var string = "#create";
-                            var string2 = "#pay-form";
-                            $(string).click(function () {
-                                var token = function (res) {
-                                    var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                    $(string2).append($input).submit();
-                                };
-                                var money = parseInt($('#money').val()) * 100;
-                                if (!isNaN(money)) {
-                                    StripeCheckout.open({
-                                        key: 'pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb',
-                                        address: false,
-                                        amount: money,
-                                        currency: 'cad',
-                                        name: "Pledge",
-                                        description: "For " + $('#course-select').find('option:selected ').text(),
-                                        panelLabel: 'Pledge ',
-                                        token: token
-                                    });
-                                }
-                                return false;
-                            });
-                        </script>
+                <div class="row">
+                    <div class="large-12 columns text-center">
+                        <h1>Keep yourself motivated</h1>
+
+                        <h2>Create a Pledge</h2>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="large-6 columns large-offset-3 extra-top-margin">
+                        <div id="coursera">
+                            <div class="row text-center">
+                                <form method="post" action="" id="pay-form">
+                                    {% csrf_token %}
+                                    <div class="row collapse">
+                                        <input type="hidden" name="onboarding" value="onboaring"/>
+
+                                        <div class="large-12 columns extra-top-margin">
+                                            <select class="course" name="course" id="course-select">
+                                                {% for course in user.userprofile.courses.all %}
+                                                    <option value="{{ course.id }}">{{ course }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="small-3 large-4 columns extra-top-margin">
+                                            <span class="dollar prefix">$</span>
+                                        </div>
+                                        <div class="small-9 large-8 columns  extra-top-margin">
+                                            <input type="text" placeholder="Amount" name="money" id="money"
+                                                   class="dollar">
+                                        </div>
+                                        <div class="large-12 columns extra-top-margin">
+                                            <button class="other-button" type="submit" id="create">Create</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="large-12 columns">
+                    <div class="row">
+                        <div class="large-12 text-center">
+                            <h1>Create Pledge</h1>
+
+                            <h2>Motivate your Learning!</h2>
+                        </div>
+                    </div>
+                    <div class="row extra-top-margin">
+                        <div class="large-4 text-center centered">
+                            <form method="post" action="" id="pay-form">
+                                {% csrf_token %}
+                                <div class="row collapse">
+                                    <div class="large-12 columns extra-top-margin">
+                                        <select class="course" name="course" id="course-select">
+                                            {% for course in user.userprofile.courses.all %}
+                                                <option value="{{ course.id }}">{{ course }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="small-3 large-4 columns extra-top-margin">
+                                        <span class="dollar prefix">$</span>
+                                    </div>
+                                    <div class="small-9 large-8 columns  extra-top-margin">
+                                        <input type="text" placeholder="Amount" name="money" id="money" class="dollar">
+                                    </div>
+                                    <div class="large-12 columns extra-top-margin">
+                                        <button class="other-button" type="submit" id="create">Create</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <script src="https://checkout.stripe.com/checkout.js"></script>
+                            <script>
+                                var string = "#create";
+                                var string2 = "#pay-form";
+                                $(string).click(function () {
+                                    var token = function (res) {
+                                        var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                        $(string2).append($input).submit();
+                                    };
+                                    var money = parseInt($('#money').val()) * 100;
+                                    if (!isNaN(money)) {
+                                        StripeCheckout.open({
+                                            key: 'pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb',
+                                            address: false,
+                                            amount: money,
+                                            currency: 'cad',
+                                            name: "Pledge",
+                                            description: "For " + $('#course-select').find('option:selected ').text(),
+                                            panelLabel: 'Pledge ',
+                                            token: token
+                                        });
+                                    }
+                                    return false;
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <footer class="row">
+        <div class="large-12 columns">
+            <hr/>
+            <div class="row">
+                <div class="large-6 columns">
+                    <p>© Copyright Wisely</p>
                 </div>
             </div>
         </div>
-    </div>
+    </footer>
+    {% if form %}
+        <div id="coursera-wait" class="light-box">
+            <div class="row text-center">
+                Getting your courses, give us a few minutes!
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'js/jquery.number.js' %}"></script>
@@ -75,5 +144,17 @@
         $(function () {
             $('input.dollar').number(true, 2)
         });
+        {% if form %}
+            $('#coursera-wait').lightbox_me({centered: true, closeEsc: false, closeClick: false});
+            var intervalUpdated = null;
+            function checkIfUpdated() {
+                $.get("{% url 'users:check_update' %}", function (res) {
+                    if (res['updated'] == true) {
+                        clearInterval(intervalUpdated);
+                    }
+                });
+            }
+            intervalUpdated = setInterval(checkIfUpdated, 200);
+        {% endif %}
     </script>
 {% endblock %}

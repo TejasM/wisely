@@ -246,6 +246,9 @@ LOGGING = {
 FACEBOOK_APP_ID = '405339162934237'
 FACEBOOK_API_SECRET = '34f4d0473f43f1be09ff1833f63187bc'
 
+TWITTER_CONSUMER_KEY = 'Ujjstl4sd1lRurWgbpWxg'
+TWITTER_CONSUMER_SECRET = 'WxQmKgthTMZLcVI57dcfMkdM8lhtBMZ6akYvvR3UYQ'
+
 FACEBOOK_EXTENDED_PERMISSIONS = ['email']
 
 GITHUB_APP_ID = '06f5134f1cc26effbef9'
@@ -253,6 +256,7 @@ GITHUB_API_SECRET = '281c5607b51d8ccd574fac2f5cb9692766ca6dd3'
 
 AUTHENTICATION_BACKENDS = (
     'social_auth.backends.facebook.FacebookBackend',
+    'social_auth.backends.twitter.TwitterBackend',
 )
 
 STRIPE_PUBLIC_KEY = "pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb"

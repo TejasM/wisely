@@ -229,7 +229,7 @@ h2 {
     background: #33A801;
 }
 
-.btn-auth {
+.light-box .btn-auth {
     width: 80% !important;
 }
 
@@ -357,4 +357,18 @@ div.content > div {
 
 h2.course-page-header {
     color: #383838;
+}
+
+.page-number {
+    border-radius: 50%;
+    background: #d8d8d8;
+    padding: 12px 12px 10px;
+    font-size: 2.2rem;
+}
+
+.question-mark {
+    border-radius: 50%;
+    border: #383838 1px solid;
+    padding: 9px 15px;
+    font-size: 1.1rem;
 }
