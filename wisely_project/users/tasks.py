@@ -51,16 +51,15 @@ class CourseraScraper:
             soup = BeautifulSoup(self.driver.page_source)
             quiz_list = soup.select('div.course-item-list .course-item-list-header')
             quiz_details = soup.select('ul.course-item-list-section-list')
-            edt = pytz.timezone('America/New_York')
             for i, quiz_coursera in enumerate(quiz_list):
                 Quiz.objects.create(heading=quiz_coursera.select('h3')[0].find(text=True, recursive=False), deadline=
-                edt.localize(dateutil.parser.parse(str(
+                dateutil.parser.parse(str(
                     quiz_details[i].select('.course-quiz-item-softdeadline .course-assignment-deadline')[0].contents[
-                        0].replace('\n', '')))),
-                                    hard_deadline=edt.localize(str(
+                        0].replace('\n', ''))),
+                                    hard_deadline=str(
                                         dateutil.parser.parse(quiz_details[i].select(
                                             '.course-quiz-item-harddeadline .course-assignment-deadline')[0].contents[
-                                            0].replace('\n', '')))),
+                                            0].replace('\n', ''))),
                                     course=course)
             course.save()
 
@@ -101,6 +100,7 @@ def get_courses(user_id, scraper):
                 get_course = Course.objects.get(title=course)
                 get_course.course_link = course_links[i]
                 get_course.save()
+                scraper.get_quiz_link(get_course, course_links[i])
                 user.userprofile.courses.add(get_course)
             except Course.DoesNotExist:
                 get_course = Course.objects.create(title=course, course_link=course_links[i])
