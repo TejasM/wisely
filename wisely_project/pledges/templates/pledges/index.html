@@ -26,7 +26,7 @@
                                             <div class="large-6 columns">
                                                 <h3 class="cursive">$ {{ pledge.money|floatformat:2 }}</h3></div>
                                             <div class="large-6 columns">
-                                                <a href="{% url 'pledges:detail' pledge.id %}">
+                                                <a href="{% url 'pledges:share' pledge.id %}">
                                                     <button class="other-button text-right">View</button>
                                                 </a>
                                             </div>
