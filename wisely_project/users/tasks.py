@@ -6,6 +6,7 @@ import pytz
 from users.models import Course, Quiz, Progress
 from django.contrib.auth.models import User
 import dateutil.parser
+from django.utils import timezone
 
 
 class CourseraScraper:
@@ -77,8 +78,6 @@ class CourseraScraper:
                         progress = Progress.objects.get(quiz=quiz, user=user.userprofile)
                     except Progress.DoesNotExist:
                         progress = Progress.objects.create(quiz=quiz, user=user.userprofile)
-                    print quiz_details[i].select(
-                        '.course-quiz-item-score td span')[0].contents[0]
                     progress.score = quiz_details[i].select(
                         '.course-quiz-item-score td span')[0].contents[0]
                     progress.save()
@@ -86,6 +85,8 @@ class CourseraScraper:
                     print "Not found"
                 except:
                     print "Error", quiz_details[i]
+        user.userprofile.last_updated = timezone.now()
+        user.userprofile.save()
 
 
 def get_courses(user_id, scraper):
@@ -107,4 +108,3 @@ def get_courses(user_id, scraper):
                 scraper.get_quiz_link(get_course, course_links[i])
                 user.userprofile.courses.add(get_course)
             scraper.get_course_progress(user, get_course)
-        user.userprofile.save()

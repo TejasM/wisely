@@ -62,8 +62,6 @@ def index(request):
         return render(request, 'users/index.html', {'form': True})
     else:
         pledges = Pledge.objects.filter(user=profile)
-        request.user.last_login = timezone.now()
-        request.user.save()
         progresses = Progress.objects.filter(user=request.user.userprofile)
         return render(request, 'users/index.html', {'pledges': pledges, 'progresses': progresses})
 
