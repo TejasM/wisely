@@ -84,6 +84,7 @@ def create(request):
                 return redirect(reverse('pledges:create'))
             return redirect(reverse('pledges:detail', args=(pledge.id,)))
     if request.session.get('onboarding', '') != '':
-        return render(request, 'pledges/create.html', {'form': True})
+        return render(request, 'pledges/create.html',
+                      {'form': True, 'wait': request.user.last_login > request.user.userprofile.last_updated})
     else:
         return render(request, 'pledges/create.html')

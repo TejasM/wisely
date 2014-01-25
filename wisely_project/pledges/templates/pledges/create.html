@@ -130,7 +130,7 @@
             </div>
         </div>
     </footer>
-    {% if form %}
+    {% if wait %}
         <div id="coursera-wait" class="light-box">
             <div class="row text-center">
                 Getting your courses, give us a few minutes!
@@ -144,13 +144,15 @@
         $(function () {
             $('input.dollar').number(true, 2)
         });
-        {% if form %}
+        {% if wait %}
             $('#coursera-wait').lightbox_me({centered: true, closeEsc: false, closeClick: false});
             var intervalUpdated = null;
             function checkIfUpdated() {
                 $.get("{% url 'users:check_update' %}", function (res) {
                     if (res['updated'] == true) {
                         clearInterval(intervalUpdated);
+                        $('#coursera-wait').trigger('close');
+                        location.reload();
                     }
                 });
             }
