@@ -55,10 +55,15 @@
                         {% endfor %}
                     </dl>
                     <div class="tabs-content vertical no-background">
+                        <h3>Current Progress</h3>
                         {% for course in user.userprofile.courses.all %}
                             <div class="content {% if forloop.counter == 1 %}active{% endif %}"
                                  id="panel{{ forloop.counter }}a">
-                                <p>{{ course.announcements|safe }}</p>
+                                {% for progress in progresses %}
+                                    {% if progress.quiz.course == course %}
+                                        <p>{{ progress|safe }}</p>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         {% endfor %}
                     </div>

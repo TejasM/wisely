@@ -9,13 +9,15 @@ from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from tasks import get_courses
-from models import UserProfile
+from models import UserProfile, Progress
 from pledges.models import Pledge
 
 
 def login_user(request):
     if request.method == "POST":
         login(request, authenticate(username=request.POST["email"], password=request.POST['password']))
+        request.user.last_login = timezone.now()
+        request.user.save()
         return redirect(reverse('users:index'))
     return render(request, 'base.html')
 
@@ -32,7 +34,10 @@ def signup(request):
                                    last_name=request.POST["last_name"])
         user.set_password(request.POST["password"])
         user.save()
-        return redirect(reverse('user:login'))
+        login(request, authenticate(username=request.POST["email"], password=request.POST['password']))
+        request.user.last_login = timezone.now()
+        request.user.save()
+        return redirect(reverse('users:index'))
     return render(request, 'base.html')
 
 
@@ -59,9 +64,8 @@ def index(request):
         return render(request, 'users/index.html', {'form': True})
     else:
         pledges = Pledge.objects.filter(user=profile)
-        request.user.last_login = timezone.now()
-        request.user.save()
-        return render(request, 'users/index.html', {'pledges': pledges})
+        progresses = Progress.objects.filter(user=request.user.userprofile)
+        return render(request, 'users/index.html', {'pledges': pledges, 'progresses': progresses})
         #schedule('users.tasks.get_courses', args=(request.user.id,))
         #get_courses(request.user.id)
 
