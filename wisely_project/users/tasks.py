@@ -83,8 +83,8 @@ class CourseraScraper:
                     progress.save()
                 except Quiz.DoesNotExist:
                     print "Not found"
-                except:
-                    print "Error", quiz_details[i]
+                except Exception as e:
+                    print "Error", e
         user.userprofile.last_updated = timezone.now()
         user.userprofile.save()
 
