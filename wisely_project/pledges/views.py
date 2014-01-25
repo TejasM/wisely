@@ -42,7 +42,7 @@ def detail(request, pledge_id):
         return redirect(reverse('pledges:share', args=(pledge.id,)))
     if request.session.get('onboarding', '') != '':
         return render(request, 'pledges/detail.html', {'pledge': pledge, 'form': True})
-    return render(request, 'pledges/detail.html', {'pledge': pledge})
+    return redirect(reverse('pledges:share', args=(pledge.id,)))
 
 
 @login_required
@@ -82,7 +82,7 @@ def create(request):
                                                money=int(float(request.POST['money'])), active=True)
             except stripe.CardError, _:
                 return redirect(reverse('pledges:create'))
-            return redirect(reverse('pledges:detail', args=(pledge.id,)))
+            return redirect(reverse('pledges:share', args=(pledge.id,)))
     if request.session.get('onboarding', '') != '':
         return render(request, 'pledges/create.html',
                       {'form': True, 'wait': request.user.last_login > request.user.userprofile.last_updated})
