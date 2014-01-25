@@ -1,4 +1,5 @@
 import sys, os
+
 sys.path.append('/root/wisely/wisely_project/')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'wisely_project.settings.production'
 from django.conf import settings
@@ -15,9 +16,12 @@ scraper = CourseraScraper()
 
 while True:
     for user in UserProfile.objects.filter(last_updated__lt=F('user__last_login')):
-        get_courses(user.user_id, scraper)
-        user.last_updated = timezone.now()
-        user.save()
+        try:
+            get_courses(user.user_id, scraper)
+            user.last_updated = timezone.now()
+            user.save()
+        except:
+            pass
 
 scraper.driver.close()
 scraper.display.stop()

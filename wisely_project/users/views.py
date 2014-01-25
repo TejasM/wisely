@@ -58,16 +58,14 @@ def index(request):
             return render(request, 'users/index.html', {'wait': True})
         else:
             return redirect(reverse('pledges:create'))
-            #schedule('users.tasks.get_courses', args=(request.user.id,))
-            #get_courses(request.user.id)
     if request.user.userprofile.coursera_username == "":
         return render(request, 'users/index.html', {'form': True})
     else:
         pledges = Pledge.objects.filter(user=profile)
+        request.user.last_login = timezone.now()
+        request.user.save()
         progresses = Progress.objects.filter(user=request.user.userprofile)
         return render(request, 'users/index.html', {'pledges': pledges, 'progresses': progresses})
-        #schedule('users.tasks.get_courses', args=(request.user.id,))
-        #get_courses(request.user.id)
 
 
 def check_updated(request):
