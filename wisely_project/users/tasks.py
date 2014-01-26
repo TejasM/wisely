@@ -98,13 +98,16 @@ def get_courses(user_id, scraper):
         courses, course_links = scraper.get_courses()
         for i, course in enumerate(courses):
             try:
-                get_course = Course.objects.get(title=course)
-                get_course.course_link = course_links[i]
-                get_course.save()
-                scraper.get_quiz_link(get_course, course_links[i])
-                user.userprofile.courses.add(get_course)
-            except Course.DoesNotExist:
-                get_course = Course.objects.create(title=course, course_link=course_links[i])
-                scraper.get_quiz_link(get_course, course_links[i])
-                user.userprofile.courses.add(get_course)
-            scraper.get_course_progress(user, get_course)
+                try:
+                    get_course = Course.objects.get(title=course)
+                    get_course.course_link = course_links[i]
+                    get_course.save()
+                    scraper.get_quiz_link(get_course, course_links[i])
+                    user.userprofile.courses.add(get_course)
+                except Course.DoesNotExist:
+                    get_course = Course.objects.create(title=course, course_link=course_links[i])
+                    scraper.get_quiz_link(get_course, course_links[i])
+                    user.userprofile.courses.add(get_course)
+                scraper.get_course_progress(user, get_course)
+            except Exception as e:
+                print e
