@@ -54,6 +54,15 @@ def share(request, pledge_id):
     return render(request, 'pledges/share.html', {'pledge': pledge})
 
 
+def follow(request, pledge_id):
+    pledge = get_object_or_404(Pledge, pk=pledge_id)
+    if request.method == "POST":
+        email = request.POST.get('email', '')
+        
+        return render(request, 'pledges/follow.html', {'pledge': pledge, 'form': True})
+    return render(request, 'pledges/follow.html', {'pledge': pledge})
+
+
 @login_required
 def results(request, poll_id):
     return HttpResponse("You're looking at the results of pledge %s." % poll_id)
