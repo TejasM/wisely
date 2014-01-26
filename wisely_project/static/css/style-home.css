@@ -88,7 +88,7 @@ input, button, select, textarea, optgroup, option {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.f-dropdown li {
+.f-dropdown li a {
     padding-bottom: 10px;
 }
 
