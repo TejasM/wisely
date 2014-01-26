@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+    {% include 'nav-bar.html' %}
+    <div class="row main-interface learn-more">
+        <div class="row extra-top-margin">
+            <div class="large-6 large-push-1 columns">
+                <h2>What is Wisely?</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="large-10 large-push-2 columns">
+                <h3>Wisely incentivizes you to meet your personal learning goals on Coursera. Stay on track and get
+                    rewarded for your hard work.</h3>
+            </div>
+        </div>
+        <div class="row collapse extra-top-margin">
+            <div class="large-10 large-centered push-1 columns">
+                <div class="large-4 text-left columns">
+                    <div class="fa fa-5x fa-keyboard-o"></div>
+                    <p>Connect with your Coursera account - we will get all of your active courses for you.</p>
+                </div>
+                <div class="large-4 text-left columns">
+                    <div class="fa fa-5x fa-certificate"></div>
+                    <p>Make a pledge for each course. Ask yourself, how much will it take for you to stay on track?
+                        Don’t worry, we won’t share your bank information with anyone.</p>
+                </div>
+                <div class="large-4 text-left columns">
+                    <div class="fa fa-5x fa-pencil-square-o"></div>
+                    <p>Get on it! Time for you to put in the work. Be sure to complete all assignments & quizzes by
+                        the course deadlines for it to count. Keep track of your progress with our progress tracker and
+                        let us know if an assignment or quiz was not verified.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row collapse extra-top-margin">
+            <div class="large-10 large-centered push-1 columns">
+                <div class="large-4 text-left columns">
+                    <div class="fa fa-5x fa-group"></div>
+                    <p>Follow your classmates. See how you stack up against your friends and online classmates by
+                        following their profile. Invite others to follow you on Wisely to keep you motivated.
+                    </p>
+                </div>
+                <div class="large-4 text-left columns">
+                    <div class="fa fa-5x fa-pencil-square-o"></div>
+                    <p>Once the course ends, we collect all of the pledges of students who did not reach their goal, and
+                        split it amongst all those who completed their goal.
+                    </p>
+                </div>
+                <div class="large-4 text-left columns">
+                    <div class="fa fa-5x fa-money"></div>
+                    <p>Collecting your rewards - Once your reward account is $10 (above your pledge amount), you can
+                        cash out through paypal. Enjoy your hard-earned cash!
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row extra-top-margin text-center">
+            {% if 'onboarding' in request.session %}
+                <a href="{% url 'pledges:create' %}">
+                    <button class="other-button">Back to Creating Pledge</button>
+                </a>
+            {% else %}
+                <a href="{% url 'users:index' %}">
+                    <button class="other-button">Back</button>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

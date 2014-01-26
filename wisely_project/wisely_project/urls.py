@@ -9,7 +9,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
                        url(r'^$', TemplateView.as_view(template_name='base.html')),
-
+                       url(r'^learn-more$', TemplateView.as_view(template_name='learn-more.html')),
+                       url(r'^faq$', TemplateView.as_view(template_name='faq.html')),
                        # Examples:
                        # url(r'^$', 'wisely_project.views.home', name='home'),
                        # url(r'^wisely_project/', include('wisely_project.foo.urls')),

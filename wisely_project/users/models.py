@@ -1,4 +1,5 @@
 import datetime
+import json
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -52,3 +53,6 @@ class Progress(models.Model):
                 return "<strong>" + self.quiz.heading + "</strong>: Past Due Date"
             return "<strong>" + self.quiz.heading + "</strong> Due Date: " + convertDatetimeToString(self.quiz.deadline)
         return "<strong>" + self.quiz.heading + "</strong>: " + self.score
+
+    def get_date(self):
+        return json.dumps({'date': self.quiz.deadline.date(), 'title': self.quiz.heading})

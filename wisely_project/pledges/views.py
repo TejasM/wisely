@@ -49,7 +49,7 @@ def detail(request, pledge_id):
 def share(request, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
     if request.session.get('onboarding', '') != '':
-        request.session['onboarding'] = ''
+        request.session.pop('onboarding')
         return render(request, 'pledges/share.html', {'pledge': pledge, 'form': True})
     return render(request, 'pledges/share.html', {'pledge': pledge})
 

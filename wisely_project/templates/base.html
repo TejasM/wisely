@@ -26,51 +26,21 @@
 {% block content %}
     <!-- Navigation -->
 
-    <nav class="top-bar" data-topbar>
-        <div class="top-bar-inner">
-            <ul class="title-area">
-                <!-- Title Area -->
-                <li class="name">
-                    <h1>
-                        <a href="/">
-                            Wisely
-                        </a>
-                    </h1>
-                </li>
-            </ul>
-
-
-            <div class="right">
-                <a href="#" data-dropdown="drop" class="login-button dropdown">Log In &nbsp; <i
-                        class="fa fa-caret-down"></i></a><br>
-                <ul id="drop" data-dropdown-content class="f-dropdown">
-                    <li><a href="{% url 'socialauth_begin' 'facebook' %}">Facebook</a></li>
-                    <li><a href="{% url 'socialauth_begin' 'twitter' %}">Twitter</a></li>
-                    <li><a id="login" href="#">Email</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
+    {% include 'nav-bar.html' %}
     <!-- End Top Bar -->
 
     <!-- Header -->
     <section id="background-image">
         <div class="row">
-            <div class="large-6 large-offset-7 small-12 columns">
-                <div class="title"><h1>Learn Together</h1><br>
+            <div class="large-10 large-offset-4 small-12 columns">
+                <div class="title"><h1>Commit to your learning</h1><br>
 
-                    <div class="subtitle"><h2>Frustrated with an online course on <strong><a
-                            href="https://coursera.org">Coursera</a></strong> or <strong><a
-                            href="https://edx.org">edX</a></strong>?
-                        <br>
-                        Wisely is a platform connecting you with knowledgeable peers and tutors in your online courses.
-                        Get
-                        motivated
-                        and be engaged in your learning.</h2><br><br>
+                    <div class="subtitle"><h2>
+                        Wisely incentivizes you to meet your personal learning goals on Coursera. Stay on track and get
+                        rewarded for your hard work.</h2><br><br>
 
                         <div id="dis" class="subtitle">
-                            <button id="sign">Get Started</button>
+                            <button id="sign" class="other-button">Get Started</button>
                         </div>
                     </div>
                 </div>
@@ -79,36 +49,40 @@
     </section>
 
     <div class="middle-cover">
-        <div class="row margin-extra-bottom">
-            <div class="row extra-top-xlarge-margin text-center collapse margin-extra-bottom">
-                <div class="large-12 columns text-center small-centered extra-top-margin margin-extra-bottom">
-                    <div class="large-4 columns">
-                        <img class="image-main" src="{% static 'images/world.png' %}" width="120" height="120"/>
+        <div class="row">
+            <div class="large-12 columns text-center">
+                <h2>How it Works</h2>
 
-                        <h3>Connect</h3>
+                <h3>It’s time to put your money where your mouth is!</h3>
+            </div>
+        </div>
+        <div class="wide-row row">
+            <div class="large-4 columns text-center">
+                <div class="column">
+                    <h4 class="icon-check">Set Goals</h4>
 
-                        <div class="content"><h4>Engage with peers or tutors through videoconferencing and interactive
-                            whiteboard</h4>
-                        </div>
-                    </div>
-                    <div class="large-4 columns">
-                        <img class="image-main" src="{% static 'images/bulb.png' %}" width="85" height="123"/>
-
-                        <h3>Collaborate</h3>
-
-                        <div class="content"><h4>Review lectures, discuss concepts, and collaborate on assignments</h4>
-                        </div>
-                    </div>
-                    <div class="large-4 columns">
-                        <img class="image-main" src="{% static 'images/study.png' %}" width="139" height="112"/>
-
-                        <h3>Contribute</h3>
-
-                        <div class="content"><h4>Give back to the community by becoming a tutor for courses you
-                            completed</h4>
-                        </div>
-                    </div>
+                    <p>Tell us your personal learning goals are and we’ll make sure you get there.</p>
                 </div>
+            </div>
+            <div class="large-4 columns text-center">
+                <div class="column">
+                    <h4 class="icon-check">Pledge</h4>
+
+                    <p>Make a commitment to yourself. You decide what you’ll pay to other users if you don’t meet
+                        your goals.</p>
+                </div>
+            </div>
+            <div class="large-4 columns text-center">
+                <div class="column">
+                    <h4 class="icon-check">Get Rewarded</h4>
+
+                    <p>Earn hard cash for your hard work and get rewarded for achieving your goals! </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="large-12 columns text-center">
+                <a href="/learn-more"><button class="other-button">Learn More</button></a>
             </div>
         </div>
     </div>
@@ -117,8 +91,8 @@
     <section id="section-foot">
         <footer class="row">
             <div class="small-12 small-centered text-center columns about-us margin-extra-bottom">
-                <h3>We are constantly looking for ways to improve and would to hear from you.</h3>
-                <button class="extra-top-large-margin">Contact Us</button>
+                <h3>We are constantly looking for ways to improve and would love to hear from you.</h3>
+                <button class="extra-top-margin other-button">Contact Us</button>
             </div>
         </footer>
     </section>

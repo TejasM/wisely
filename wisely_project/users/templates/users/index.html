@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% block headers_css %}
+    <link href="{% static 'css/eventCalendar.css' %}" rel="stylesheet"/>
+    <script src="{% static 'js/jquery.eventCalendar.js' %}"></script>
+{% endblock %}
 {% block content %}
     {% include 'nav-bar.html' %}
     <!-- First Band (Slider) -->
@@ -64,6 +68,22 @@
                                         <p>{{ progress|safe }}</p>
                                     {% endif %}
                                 {% endfor %}
+
+                                <div id="calender-{{ course }}"></div>
+                                <script>
+                                    $(function () {
+                                        var dates = [];
+                                        {% for progress in progresses %}
+                                            {% if progress.quiz.course == course %}
+                                                dates.push({{ progress.get_date }});
+                                            {% endif %}
+                                        {% endfor %}
+                                        $('#calender-{{ course|cut:" " }}').eventCalendar({
+                                            eventsjson: 'file.json',
+                                            jsonDateFormat: 'human'
+                                        });
+                                    });
+                                </script>
                             </div>
                         {% endfor %}
                     </div>
@@ -127,15 +147,16 @@
     {% endif %}
 {% endblock %}
 {% block additionalScripts %}
-
     <script>
-        {% if wait %}
-            $('#coursera-wait').lightbox_me({centered: true});
-            setTimeout("location.reload(true);", 30000);
-        {% endif %}
-        $('#update-coursera').click(function () {
-            $('#coursera-update').lightbox_me({centered: true});
-        })
+        $(function () {
+            {% if wait %}
+                $('#coursera-wait').lightbox_me({centered: true});
+                setTimeout("location.reload(true);", 30000);
+            {% endif %}
+            $('#update-coursera').click(function () {
+                $('#coursera-update').lightbox_me({centered: true});
+            });
+        });
     </script>
 
 {% endblock %}
