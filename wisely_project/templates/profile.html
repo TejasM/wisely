@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    {% include 'nav-bar.html' %}
+    <div class="row main-interface learn-more">
+        <div class="row extra-top-margin">
+            <div class="large-6 large-push-1 columns">
+                <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+            </div>
+            username: {{ user.username }} <br/>
+            email: {{ user.email }} <br/>
+            member since: {{ user.date_joined }} <br/>
+            last seen: {{ user.last_login }} <br/>
+
+        </div>
+    </div>
+
+{% endblock %}

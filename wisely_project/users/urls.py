@@ -10,4 +10,5 @@ urlpatterns = patterns('',
                        url(r'^signup/$', views.signup, name='sign-up'),
                        url(r'^index/$', views.index, name='index'),
                        url(r'^check_updated/$', views.check_updated, name='check_update'),
+                       url(r'^profile/$', views.profile, name='profile'),
 )

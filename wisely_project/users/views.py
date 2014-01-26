@@ -27,6 +27,13 @@ def logout_user(request):
     return HttpResponseRedirect('/')
 
 
+@login_required
+def profile(request):
+    context_dict = {'user': request.user,
+    }
+    return render(request, 'profile.html', context_dict)
+
+
 def signup(request):
     if request.method == "POST":
         user = User.objects.create(username=request.POST["email"], email=request.POST["email"],
