@@ -88,6 +88,14 @@ input, button, select, textarea, optgroup, option {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.f-dropdown li {
+    padding-bottom: 10px;
+}
+
+.f-dropdown-logged {
+    width: 196px !important;
+}
+
 .top-bar .right {
     font-weight: 600;
 }

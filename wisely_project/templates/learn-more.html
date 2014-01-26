@@ -64,16 +64,59 @@
             </div>
         </div>
         <div class="row extra-top-margin text-center">
-            {% if 'onboarding' in request.session %}
-                <a href="{% url 'pledges:create' %}">
-                    <button class="other-button">Back to Creating Pledge</button>
-                </a>
+            {% if user.is_authenticated %}
+                {% if 'onboarding' in request.session %}
+                    <a href="{% url 'pledges:create' %}">
+                        <button class="other-button">Back to Creating Pledge</button>
+                    </a>
+                {% else %}
+                    <a href="/faq">
+                        <button class="other-button">FAQ</button>
+                    </a>
+                {% endif %}
             {% else %}
-                <a href="{% url 'users:index' %}">
-                    <button class="other-button">Back</button>
-                </a>
+                <button id='sign' class="other-button">Sign Up</button>
             {% endif %}
         </div>
     </div>
-
+    <div id="sign-up" class="light-box">
+        <div class="row text-center">
+            <div>
+                <a class="btn-auth btn-facebook large" href="{% url 'socialauth_begin' 'facebook' %}">
+                    Sign Up with <b>Facebook</b>
+                </a>
+            </div>
+            <div class="extra-top-small-margin">
+                <a class="btn-auth btn-twitter large" href="{% url 'socialauth_begin' 'twitter' %}">
+                    Sign Up with <b>Twitter</b>
+                </a>
+            </div>
+            <div class="extra-top-small-margin">
+                <a class="btn-auth btn-google large" href="#">
+                    Sign Up with <b>Google</b>
+                </a>
+            </div>
+        </div>
+        <hr/>
+        <div class="row text-center">
+            <form action="{% url 'users:sign-up' %}" method="post">
+                {% csrf_token %}
+                <div>
+                    <input type="text" name="first_name" placeholder="First Name">
+                </div>
+                <div class="extra-margin-top">
+                    <input type="text" name="last_name" placeholder="Last Name">
+                </div>
+                <div class="extra-margin-top">
+                    <input type="email" name="email" placeholder="Email">
+                </div>
+                <div class="extra-margin-top">
+                    <input type="password" name="password" placeholder="Password">
+                </div>
+                <div class="centered extra-margin-top">
+                    <button type="submit">Sign Up</button>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}
