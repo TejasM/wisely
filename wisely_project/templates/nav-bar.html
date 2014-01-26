@@ -20,7 +20,13 @@
                 <a href="/learn-more">
                     <button class="login-button alt-learn">Learn More</button>
                 </a>
-                <a href="{% url 'users:profile' %}">Welcome {{ user.first_name }} {{ user.last_name }}!</a>
+                <a href="#" data-dropdown="drop"
+                   class="login-button dropdown">Welcome {{ user.first_name }} {{ user.last_name }}! &nbsp; <i
+                        class="fa fa-caret-down"></i></a><br>
+                <ul id="drop" data-dropdown-content class="f-dropdown f-dropdown-logged">
+                    <li><a href="{% url 'users:index' %}">Profile</a></li>
+                    <li><a href="{% url 'users:logout' %}">Logout</a></li>
+                </ul>
             </div>
         </div>
     </nav>
