@@ -55,7 +55,6 @@ def share(request, pledge_id):
     return render(request, 'pledges/share.html', {'pledge': pledge})
 
 
-@csrf_exempt
 def follow(request, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
     if request.user.userprofile != pledge.user:

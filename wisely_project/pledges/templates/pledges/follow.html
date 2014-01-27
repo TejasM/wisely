@@ -44,7 +44,12 @@
                     </div>
                     <div class="row">
                         <div class="large-12 columns extra-top-margin padding-bottom">
-                            <button type="submit" id='facebook-follow' class="other-button">Follow with Facebook
+                            <form method="post" action="{% url 'pledges:follow' pledge.id %}" id="facebook-post">
+                                {% csrf_token %}
+                                <input type="hidden" name="email" id="facebook-email" placeholder="Email">
+
+                            </form>
+                            <button id='facebook-follow' class="other-button">Follow with Facebook
                             </button>
                         </div>
                     </div>
@@ -74,19 +79,26 @@
                     FB.getLoginStatus(function (response) {
                         if (response.status === 'connected') {
                             FB.api('/me', function (response) {
-                                $.post('{% url 'pledges:follow' pledge.id %}', {'email': response.email}).always(function (resp) {
-                                    console.log(resp);
-                                });
+                                $('#facebook-email').val(response.email);
+                                $('#facebook-post').submit();
                             });
                         } else if (response.status === 'not_authorized') {
                             FB.login(function (response) {
                                 if (response.authResponse) {
+                                    FB.api('/me', function (response) {
+                                        $('#facebook-email').val(response.email);
+                                        $('#facebook-post').submit();
+                                    });
                                 } else {
                                 }
                             }, {scope: 'email'});
                         } else {
                             FB.login(function (response) {
                                 if (response.authResponse) {
+                                    FB.api('/me', function (response) {
+                                        $('#facebook-email').val(response.email);
+                                        $('#facebook-post').submit();
+                                    });
                                 } else {
                                 }
                             }, {scope: 'email'});
