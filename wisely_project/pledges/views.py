@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from users.models import Course
+from django.views.decorators.csrf import csrf_exempt
 import stripe
 
 __author__ = 'Cheng'
@@ -54,6 +55,7 @@ def share(request, pledge_id):
     return render(request, 'pledges/share.html', {'pledge': pledge})
 
 
+@csrf_exempt
 def follow(request, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
     if request.user.userprofile != pledge.user:
