@@ -7,7 +7,7 @@ __author__ = 'Cheng'
 
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from models import Pledge
+from models import Pledge, Follower
 import wisely_project.settings.base as settings
 
 
@@ -56,11 +56,28 @@ def share(request, pledge_id):
 
 def follow(request, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
-    if request.method == "POST":
-        email = request.POST.get('email', '')
-        
-        return render(request, 'pledges/follow.html', {'pledge': pledge, 'form': True})
-    return render(request, 'pledges/follow.html', {'pledge': pledge})
+    if request.user.userprofile != pledge.user:
+        if request.method == "POST":
+            email = request.POST.get('email', '')
+            if email != '':
+                if Follower.objects.filter(email=email, pledge=pledge).count():
+                    Follower.objects.create(pledge=pledge, email=email)
+                else:
+                    return redirect(reverse('pledges:already', args=(pledge_id,)))
+            return redirect(reverse('pledges:finish', args=(pledge_id,)))
+        return render(request, 'pledges/follow.html', {'pledge': pledge})
+    else:
+        return redirect(reverse('pledges:detail', args=(pledge_id,)))
+
+
+def finish(request, pledge_id):
+    pledge = get_object_or_404(Pledge, pk=pledge_id)
+    return render(request, 'pledges/finish.html', {'good': True})
+
+
+def already(request, pledge_id):
+    pledge = get_object_or_404(Pledge, pk=pledge_id)
+    return render(request, 'pledges/finish.html', {'good': False})
 
 
 @login_required

@@ -24,7 +24,7 @@ urlpatterns = patterns('',
                        url(r'^users/', include('users.urls', namespace="users")),
                        url(r'', include('social_auth.urls')),
                        url(r'^pledges/', include('pledges.urls', namespace="pledges")),
-)
+                    )
 
 if not production.DEBUG:
     urlpatterns += patterns('',

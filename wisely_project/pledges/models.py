@@ -19,4 +19,6 @@ class Pledge(models.Model):
         return self.user + "'s pledges is: " + self.money + " made on " + self.pledge_date + " for course " + self.course
 
 
-
+class Follower(models.Model):
+    pledge = models.ForeignKey(Pledge)
+    email = models.EmailField(default='', blank=True)
