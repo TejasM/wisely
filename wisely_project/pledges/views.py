@@ -62,7 +62,7 @@ def follow(request, pledge_id):
         if request.method == "POST":
             email = request.POST.get('email', '')
             if email != '':
-                if Follower.objects.filter(email=email, pledge=pledge).count():
+                if Follower.objects.filter(email=email, pledge=pledge).count() != 0:
                     Follower.objects.create(pledge=pledge, email=email)
                 else:
                     return redirect(reverse('pledges:already', args=(pledge_id,)))
@@ -74,12 +74,12 @@ def follow(request, pledge_id):
 
 def finish(request, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
-    return render(request, 'pledges/finish.html', {'good': True})
+    return render(request, 'pledges/finish.html', {'pledge': pledge, 'good': True})
 
 
 def already(request, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
-    return render(request, 'pledges/finish.html', {'good': False})
+    return render(request, 'pledges/finish.html', {'pledge': pledge, 'good': False})
 
 
 @login_required
