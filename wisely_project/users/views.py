@@ -29,9 +29,8 @@ def logout_user(request):
 
 @login_required
 def profile(request):
-    context_dict = {'user': request.user,
-    }
-    return render(request, 'profile.html', context_dict)
+    context_dict = {'user': request.user}
+    return render(request, 'users/profile.html', context_dict)
 
 
 def signup(request):

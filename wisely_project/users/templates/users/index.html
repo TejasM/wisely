@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load breaktag %}
 {% load staticfiles %}
 {% block headers_css %}
     <link href="{% static 'css/eventCalendar.css' %}" rel="stylesheet"/>
@@ -48,7 +49,7 @@
                     </div>
                 </div>
             {% else %}
-                <div class="large-9 columns">
+                <div class="large-12 columns">
                     <dl class="tabs vertical" data-tab>
                         <div class="title-courses left"><h3>Courses</h3></div>
                         <span class="right fa fa-plus-square-o fa-2x" id="update-coursera"></span>
@@ -59,10 +60,25 @@
                         {% endfor %}
                     </dl>
                     <div class="tabs-content vertical no-background">
-                        <h3>Current Progress</h3>
+
                         {% for course in user.userprofile.courses.all %}
                             <div class="content {% if forloop.counter == 1 %}active{% endif %}"
                                  id="panel{{ forloop.counter }}a">
+
+                                {% for pledge in pledges %}{% if pledge.course == course %}
+                                    <h3>Your Pledge for ${{ pledge.money|floatformat:2 }}</h3>
+                                    <a href="{% url 'pledges:share' pledge.id %}">
+                                        <button class="login-button alt-learn">View</button>
+                                    </a>
+                                    {{ forloop|break }}
+                                {% endif %}{% if forloop.last or friendlist.count == 1 %}
+                                    <h4>No Pledge for this course. Make one now!</h4>
+                                    <a href="{% url 'pledges:create' %}">
+                                        <button class="login-button alt-learn">Create</button>
+                                    </a>
+                                {% endif %}{% endfor %}
+
+                                <h3 class="extra-top-margin">Current Progress</h3>
                                 {% for progress in progresses %}
                                     {% if progress.quiz.course == course %}
                                         <p>{{ progress|safe }}</p>
@@ -87,27 +103,6 @@
                             </div>
                         {% endfor %}
                     </div>
-                </div>
-                <div class="large-3 columns text-center">
-                    <h3>Your Pledges</h3>
-                    {% if pledges %}
-                        <a href="{% url 'pledges:index' %}">
-                            <button class="other-button">View Pledges</button>
-                        </a>
-                    {% else %}
-                        <h5>You don't have any pledges!</h5>
-                        {% if user.userprofile.courses.all %}
-                            <h5>Make one now</h5>
-                            <a href="{% url 'pledges:create' %}">
-                                <button class="other-button">Create Pledge</button>
-                            </a>
-                        {% endif %}
-                    {% endif %}
-                    {% if pledges and user.userprofile.courses.all %}
-                        <a href="{% url 'pledges:create' %}">
-                            <button class="other-button extra-top-margin">Create Pledge</button>
-                        </a>
-                    {% endif %}
                 </div>
                 </div>
             {% endif %}
