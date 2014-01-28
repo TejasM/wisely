@@ -98,7 +98,7 @@
                 </div>
                 <div class="large-6 columns">
                     <a class="twitter popup"
-                       href="http://twitter.com/share?text=I%20have%20just%20made%20a%20pledge%20for%20{{ pledge.course|truncatechars:38 }}%2C%20help%20me%20stay%20motivated%20by%20following%20the%20pledge!&url=http://www.projectwisely.com/follow/{{ pledge.id }}">
+                       href="http://twitter.com/share?text=I%20have%20just%20made%20a%20pledge%20for%20{{ pledge.course|truncatechars:38 }}%2C%20help%20me%20stay%20motivated%20by%20following%20the%20pledge!&url=http://www.projectwisely.com/pledges/follow/{{ pledge.id }}">
                         <button class="btn-auth btn-twitter" id="share-twitter" type="submit">Share
                             on <b>Twitter</b>
                         </button>
@@ -147,7 +147,7 @@
                                         'I' + ' have just made a' +
                                                 ' pledge for {{ pledge.course }}, help me stay motivated by following the pledge.'
                                         ),
-                                link: 'http://www.projectwisely.com/follow/{{ pledge.id }}',
+                                link: 'http://www.projectwisely.com/pledges/follow/{{ pledge.id }}',
                                 picture: 'http://www.fbrell.com/public/f8.jpg'
                             },
                             function (response) {

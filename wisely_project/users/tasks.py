@@ -12,10 +12,7 @@ from django.utils import timezone
 class CourseraScraper:
     def __init__(self, ):
         from selenium import webdriver
-        from pyvirtualdisplay import Display
 
-        self.display = Display(visible=0, size=(1024, 768))
-        self.display.start()
         self.driver = webdriver.Firefox()
         self.courses = []
 
@@ -34,7 +31,7 @@ class CourseraScraper:
         try:
             soup = BeautifulSoup(self.driver.page_source)
             users_courses = soup.select(
-                '.coursera-dashboard-course-listing-box .coursera-dashboard-course-listing-box-name')
+                '#coursera-feed-tabs-current .coursera-dashboard-course-listing-box .coursera-dashboard-course-listing-box-name')
             return map(lambda x: x.contents[0].contents[0], users_courses), map(lambda x: x.contents[0].attrs['href'],
                                                                                 users_courses)
         except:
@@ -44,6 +41,14 @@ class CourseraScraper:
         self.driver.get(link)
         soup = BeautifulSoup(self.driver.page_source)
         link = soup.find('a', {'data-ab-user-convert': 'navclick_Quizzes'}, href=True)
+        if not link:
+            link = soup.find('a', {'data-ab-user-convert': 'navclick_Homework_Quizzes'}, href=True)
+        if not link:
+            link = soup.find('a', {'data-ab-user-convert': 'navclick_Data_Sets_/_Quizzes'}, href=True)
+        if not link:
+            link = soup.find('a', {'data-ab-user-convert': 'navclick_Review_Questions'}, href=True)
+        if not link:
+            link = soup.find('a', {'data-ab-user-convert': 'navclick_Homework'}, href=True)
         if link and link['href'] and link['href'] != '':
             if link['href'].startswith('/'):
                 link['href'] = 'https://class.coursera.org' + link['href']
@@ -53,14 +58,30 @@ class CourseraScraper:
             quiz_list = soup.select('div.course-item-list .course-item-list-header')
             quiz_details = soup.select('ul.course-item-list-section-list')
             for i, quiz_coursera in enumerate(quiz_list):
-                Quiz.objects.create(heading=quiz_coursera.select('h3')[0].find(text=True, recursive=False), deadline=
-                dateutil.parser.parse(str(
-                    quiz_details[i].select('.course-quiz-item-softdeadline .course-assignment-deadline')[0].contents[
-                        0].replace('\n', ''))),
-                                    hard_deadline=str(
-                                        dateutil.parser.parse(quiz_details[i].select(
-                                            '.course-quiz-item-harddeadline .course-assignment-deadline')[0].contents[
-                                            0].replace('\n', ''))),
+                deadline = None
+                try:
+                    deadline = dateutil.parser.parse(str(
+                        quiz_details[i].select('.course-quiz-item-softdeadline .course-assignment-deadline')[
+                            0].contents[
+                            0].replace('\n', '')))
+                except IndexError:
+                    pass
+                hard_deadline = None
+                try:
+                    hard_deadline = dateutil.parser.parse(quiz_details[i].select(
+                        '.course-quiz-item-harddeadline .course-assignment-deadline')[0].contents[
+                        0].replace('\n', ''))
+                except IndexError:
+                    pass
+                if hard_deadline is None:
+                    hard_deadline = timezone.now()
+
+                if deadline is None:
+                    deadline = hard_deadline
+
+                Quiz.objects.create(heading=quiz_coursera.select('h3')[0].find(text=True, recursive=False),
+                                    deadline=deadline,
+                                    hard_deadline=hard_deadline,
                                     course=course)
             course.save()
 
@@ -83,8 +104,6 @@ class CourseraScraper:
                     progress.save()
                 except Quiz.DoesNotExist:
                     print "Not found"
-        user.userprofile.last_updated = timezone.now()
-        user.userprofile.save()
 
 
 def get_courses(user_id, scraper):
