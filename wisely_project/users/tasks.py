@@ -12,7 +12,10 @@ from django.utils import timezone
 class CourseraScraper:
     def __init__(self, ):
         from selenium import webdriver
+        from pyvirtualdisplay import Display
 
+        self.display = Display(visible=0, size=(1024, 768))
+        self.display.start()
         self.driver = webdriver.Firefox()
         self.courses = []
 
@@ -105,8 +108,13 @@ class CourseraScraper:
                 except Quiz.DoesNotExist:
                     print "Not found"
 
+    def end(self):
+        self.driver.close()
+        self.display.stop()
 
-def get_courses(user_id, scraper):
+
+def get_courses(user_id):
+    scraper = CourseraScraper()
     user = User.objects.get(pk=user_id)
     if str(user.userprofile.coursera_username) != '':
         scraper.driver.implicitly_wait(10)
@@ -127,3 +135,4 @@ def get_courses(user_id, scraper):
                 scraper.get_quiz_link(get_course, course_links[i])
                 user.userprofile.courses.add(get_course)
             scraper.get_course_progress(user, get_course)
+    scraper.end()

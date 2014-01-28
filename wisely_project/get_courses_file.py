@@ -12,20 +12,11 @@ __author__ = 'tmehta'
 
 from users.models import UserProfile
 
-scraper = CourseraScraper()
-from pyvirtualdisplay import Display
-
-scraper.display = Display(visible=0, size=(1024, 768))
-scraper.display.start()
-
 while True:
     for user in UserProfile.objects.filter(last_updated__lt=F('user__last_login')):
         try:
-            get_courses(user.user_id, scraper)
+            get_courses(user.user_id)
             user.last_updated = timezone.now()
             user.save()
         except:
             pass
-
-scraper.driver.close()
-scraper.display.stop()

@@ -9,10 +9,10 @@ import dateutil.parser
 class CourseraScraper:
     def __init__(self, ):
         from selenium import webdriver
-        # from pyvirtualdisplay import Display
+        from pyvirtualdisplay import Display
 
-        # self.display = Display(visible=0, size=(1024, 768))
-        # self.display.start()
+        self.display = Display(visible=0, size=(1024, 768))
+        self.display.start()
         self.driver = webdriver.Firefox()
         self.courses = []
 
@@ -85,8 +85,13 @@ class CourseraScraper:
             print quiz_coursera.select('h3')[0].find(text=True, recursive=False), quiz_details[i].select(
                 '.course-quiz-item-score td span')[0].contents[0]
 
+    def end(self):
+        self.driver.close()
+        self.display.stop()
 
-def get_courses(scraper):
+
+def get_courses():
+    scraper = CourseraScraper()
     scraper.driver.implicitly_wait(10)
     scraper.login('tejasmehta0@gmail.com', 'gitajay')
     time.sleep(3)
@@ -97,14 +102,8 @@ def get_courses(scraper):
         print course, course_links[i]
         quiz_link = scraper.get_quiz_link(course_links[i])
         scraper.get_course_progress(quiz_link)
+    scraper.end()
+
+get_courses()
 
 
-scraper = CourseraScraper()
-from pyvirtualdisplay import Display
-
-scraper.display = Display(visible=0, size=(1024, 768))
-scraper.display.start()
-get_courses(scraper)
-
-scraper.driver.close()
-scraper.display.stop()
