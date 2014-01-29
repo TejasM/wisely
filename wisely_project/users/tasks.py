@@ -116,23 +116,26 @@ class CourseraScraper:
 def get_courses(user_id):
     scraper = CourseraScraper()
     user = User.objects.get(pk=user_id)
+    print user
     if str(user.userprofile.coursera_username) != '':
         scraper.driver.implicitly_wait(10)
         scraper.login(str(user.userprofile.coursera_username), str(user.userprofile.coursera_password))
         time.sleep(3)
         courses, course_links = scraper.get_courses()
+        print courses
         for i, course in enumerate(courses):
-            scraper.login(str(user.userprofile.coursera_username), str(user.userprofile.coursera_password))
-            time.sleep(3)
             try:
                 get_course = Course.objects.get(title=course)
                 get_course.course_link = course_links[i]
                 get_course.save()
-                scraper.get_quiz_link(get_course, course_links[i])
                 user.userprofile.courses.add(get_course)
             except Course.DoesNotExist:
                 get_course = Course.objects.create(title=course, course_link=course_links[i])
-                scraper.get_quiz_link(get_course, course_links[i])
                 user.userprofile.courses.add(get_course)
+        user.userprofile.last_updated = timezone.now()
+        for i, course in enumerate(courses):
+            get_course = Course.objects.get(title=course)
+            scraper.get_quiz_link(get_course, course_links[i])
             scraper.get_course_progress(user, get_course)
+        print "Done"
     scraper.end()
