@@ -61,6 +61,7 @@ class CourseraScraper:
             quiz_list = soup.select('div.course-item-list .course-item-list-header')
             quiz_details = soup.select('ul.course-item-list-section-list')
             for i, quiz_coursera in enumerate(quiz_list):
+                heading = quiz_coursera.select('h3')[0].find(text=True, recursive=False)
                 deadline = None
                 try:
                     deadline = dateutil.parser.parse(str(
@@ -81,11 +82,13 @@ class CourseraScraper:
 
                 if deadline is None:
                     deadline = hard_deadline
-
-                Quiz.objects.create(heading=quiz_coursera.select('h3')[0].find(text=True, recursive=False),
-                                    deadline=deadline,
-                                    hard_deadline=hard_deadline,
-                                    course=course)
+                try:
+                    Quiz.objects.get(heading=heading)
+                except Quiz.DoesNotExist:
+                    Quiz.objects.create(heading=heading,
+                                        deadline=deadline,
+                                        hard_deadline=hard_deadline,
+                                        course=course)
             course.save()
 
     def get_course_progress(self, user, course):
