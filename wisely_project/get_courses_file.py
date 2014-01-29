@@ -18,5 +18,5 @@ while True:
             get_courses(user.user_id)
             user.last_updated = timezone.now()
             user.save()
-        except:
-            pass
+        except Exception as e:
+            print e

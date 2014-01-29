@@ -133,6 +133,7 @@ def get_courses(user_id):
                 get_course = Course.objects.create(title=course, course_link=course_links[i])
                 user.userprofile.courses.add(get_course)
         user.userprofile.last_updated = timezone.now()
+        user.userprofile.save()
         for i, course in enumerate(courses):
             get_course = Course.objects.get(title=course)
             scraper.get_quiz_link(get_course, course_links[i])
