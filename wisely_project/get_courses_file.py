@@ -12,11 +12,10 @@ __author__ = 'tmehta'
 
 from users.models import UserProfile
 
-while True:
-    for user in UserProfile.objects.filter(last_updated__lt=F('user__last_login')):
-        try:
-            get_courses(user.user_id)
-            user.last_updated = timezone.now()
-            user.save()
-        except Exception as e:
-            print e
+for user in UserProfile.objects.filter(last_updated__lt=F('user__last_login')):
+    try:
+        get_courses(user.user_id)
+        user.last_updated = timezone.now()
+        user.save()
+    except Exception as e:
+        print e
