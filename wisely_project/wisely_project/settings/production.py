@@ -9,6 +9,8 @@ from base import *
 from django.core.exceptions import ImproperlyConfigured
 
 DEBUG = True
+
+
 def get_env_setting(setting):
     """ Get the environment setting or return exception """
     try:
@@ -78,8 +80,8 @@ DATABASES = {
 }
 
 PRODCUTION_APPS = (
-        'djcelery',
-        'async',
+    'djcelery',
+    'async',
 )
 
 INSTALLED_APPS += PRODCUTION_APPS
@@ -100,6 +102,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     normpath(join(SITE_ROOT, 'static')),
 )
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 ########## SECRET CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
