@@ -14,8 +14,8 @@ __author__ = 'tmehta'
 from users.models import UserProfile
 
 while True:
+    db.reset_queries()
     for user in UserProfile.objects.filter(last_updated__lt=F('user__last_login')):
-        db.reset_queries()
         try:
             get_courses(user.user_id)
             user.last_updated = timezone.now()
