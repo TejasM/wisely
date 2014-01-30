@@ -83,7 +83,7 @@ class CourseraScraper:
                 if deadline is None:
                     deadline = hard_deadline
                 try:
-                    Quiz.objects.get(heading=heading)
+                    Quiz.objects.get(heading=heading, course=course)
                 except Quiz.DoesNotExist:
                     Quiz.objects.create(heading=heading,
                                         deadline=deadline,
