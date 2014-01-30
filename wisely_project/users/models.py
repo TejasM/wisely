@@ -31,8 +31,8 @@ class UserProfile(models.Model):
     coursera_password = models.CharField(max_length=100, default="")
     last_updated = models.DateTimeField(default=timezone.now())
 
-    picture = models.ImageField(upload_to='profile_images', blank=True)
-    location = models.CharField(max_length=128, blank=True)
+    picture = models.ImageField(upload_to='profile_images', blank=True, null=True)
+    location = models.CharField(max_length=128, blank=True, default="")
 
     MALE = 'M'
     FEMALE = 'F'
