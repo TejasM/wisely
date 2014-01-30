@@ -30,6 +30,29 @@ class UserProfile(models.Model):
     coursera_username = models.CharField(max_length=100, default="")
     coursera_password = models.CharField(max_length=100, default="")
     last_updated = models.DateTimeField(default=timezone.now())
+    location = models.CharField(max_length=128, blank=True)
+
+    MALE = 'M'
+    FEMALE = 'F'
+    OTHER = 'O'
+    UNKNOWN = 'U'
+    GENDER = (
+        (MALE, 'Male'),
+        (FEMALE, 'Female'),
+        (OTHER, 'Other'),
+        (UNKNOWN, 'Unspecified')
+    )
+    gender = models.CharField(max_length=1, choices=GENDER, default=UNKNOWN)
+
+    birthday = models.DateField(blank=True)
+    aboutMe = models.TextField(blank=True, max_length=500)
+    website = models.URLField(blank=True)
+    linkedIn = models.URLField(blank=True)
+    facebook = models.URLField(blank=True)
+    google_plus = models.URLField(blank=True)
+    weibo = models.URLField(blank=True)
+    renren = models.URLField(blank=True)
+    github = models.URLField(blank=True)
 
 
 class Quiz(models.Model):
