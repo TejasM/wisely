@@ -1,4 +1,5 @@
 import sys, os
+from django import db
 
 sys.path.append('/root/wisely/wisely_project/')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'wisely_project.settings.production'
@@ -14,9 +15,10 @@ from users.models import UserProfile
 
 while True:
     for user in UserProfile.objects.filter(last_updated__lt=F('user__last_login')):
+        db.reset_queries()
         try:
             get_courses(user.user_id)
             user.last_updated = timezone.now()
             user.save()
-        except:
-            pass
+        except Exception as e:
+            print e

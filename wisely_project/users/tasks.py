@@ -61,6 +61,7 @@ class CourseraScraper:
             quiz_list = soup.select('div.course-item-list .course-item-list-header')
             quiz_details = soup.select('ul.course-item-list-section-list')
             for i, quiz_coursera in enumerate(quiz_list):
+                heading = quiz_coursera.select('h3')[0].find(text=True, recursive=False)
                 deadline = None
                 try:
                     deadline = dateutil.parser.parse(str(
@@ -81,11 +82,13 @@ class CourseraScraper:
 
                 if deadline is None:
                     deadline = hard_deadline
-
-                Quiz.objects.create(heading=quiz_coursera.select('h3')[0].find(text=True, recursive=False),
-                                    deadline=deadline,
-                                    hard_deadline=hard_deadline,
-                                    course=course)
+                try:
+                    Quiz.objects.get(heading=heading)
+                except Quiz.DoesNotExist:
+                    Quiz.objects.create(heading=heading,
+                                        deadline=deadline,
+                                        hard_deadline=hard_deadline,
+                                        course=course)
             course.save()
 
     def get_course_progress(self, user, course):
@@ -116,23 +119,27 @@ class CourseraScraper:
 def get_courses(user_id):
     scraper = CourseraScraper()
     user = User.objects.get(pk=user_id)
+    print user
     if str(user.userprofile.coursera_username) != '':
         scraper.driver.implicitly_wait(10)
         scraper.login(str(user.userprofile.coursera_username), str(user.userprofile.coursera_password))
         time.sleep(3)
         courses, course_links = scraper.get_courses()
+        print courses
         for i, course in enumerate(courses):
-            scraper.login(str(user.userprofile.coursera_username), str(user.userprofile.coursera_password))
-            time.sleep(3)
             try:
                 get_course = Course.objects.get(title=course)
                 get_course.course_link = course_links[i]
                 get_course.save()
-                scraper.get_quiz_link(get_course, course_links[i])
                 user.userprofile.courses.add(get_course)
             except Course.DoesNotExist:
                 get_course = Course.objects.create(title=course, course_link=course_links[i])
-                scraper.get_quiz_link(get_course, course_links[i])
                 user.userprofile.courses.add(get_course)
+        user.userprofile.last_updated = timezone.now()
+        user.userprofile.save()
+        for i, course in enumerate(courses):
+            get_course = Course.objects.get(title=course)
+            scraper.get_quiz_link(get_course, course_links[i])
             scraper.get_course_progress(user, get_course)
+        print "Done"
     scraper.end()

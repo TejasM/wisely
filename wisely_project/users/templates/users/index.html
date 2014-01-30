@@ -71,12 +71,16 @@
                                         <button class="login-button alt-learn">View</button>
                                     </a>
                                     {{ forloop|break }}
-                                {% endif %}{% if forloop.last or friendlist.count == 1 %}
+                                {% endif %}{% if forloop.last or pledges.count == 1 %}
                                     <h4>No Pledge for this course. Make one now!</h4>
                                     <a href="{% url 'pledges:create' %}">
                                         <button class="login-button alt-learn">Create</button>
                                     </a>
                                 {% endif %}{% endfor %}
+                                {% if not pledges %}<h4>No Pledge for this course. Make one now!</h4>
+                                    <a href="{% url 'pledges:create' %}">
+                                        <button class="login-button alt-learn">Create</button>
+                                    </a>{% endif %}
 
                                 <h3 class="extra-top-margin">Current Progress</h3>
                                 {% for progress in progresses %}
