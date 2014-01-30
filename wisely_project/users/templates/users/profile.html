@@ -5,16 +5,26 @@
     <div class="row main-interface learn-more">
         <div class="row extra-top-margin">
             <div class="large-6 large-push-1 columns">
-                <img src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png" width="300"/>
 
+                {% if user_profile.picture %}
+                    <img src="/media/{{ user_profile.picture }}" width="300"/>
+                {% else %}
+                    <img src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png" width="300"/>
+                {% endif %}
                 <h2 class="extra-top-margin">{{ user.first_name }} {{ user.last_name }}</h2>
             </div>
             <div class="large-5 columns text-left">
-                <div class="row">
-                    <div class="large-12 columns"><strong>Username</strong>: {{ user.username }}</div>
+                <div class="row extra-top-small-margin">
+                <div class="large-12 columns"><strong>Username</strong>: {{ user.username }}</div>
                 </div>
                 <div class="row extra-top-small-margin">
-                    <div class="large-12 columns"><strong>Email</strong>: {{ user.email }}</div>
+                    <div class="large-12 columns"><strong>Gender</strong>: {{ user_profile.gender }}</div>
+                </div>
+                <div class="row extra-top-small-margin">
+                <div class="large-12 columns"><strong>Email</strong>: {{ user.email }}</div>
+                </div>
+                <div class="row extra-top-small-margin">
+                    <div class="large-12 columns"><strong>Website</strong>: {{ user_profile.website }}</div>
                 </div>
                 <div class="row extra-top-small-margin">
                     <div class="large-12 columns"><strong>Member Since</strong>: {{ user.date_joined }}</div>

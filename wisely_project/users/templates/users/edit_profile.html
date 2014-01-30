@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    {% include 'nav-bar.html' %}
+    <div class="row main-interface learn-more">
+        <div class="row extra-top-margin">
+
+            <form id="user_profile_edit_form" method="post" action="/users/edit_profile/" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {% for field in user_profile_form.visible_fields %}
+                    {{ field.errors }}
+                    {{ field.help_text }}<br/>
+                    {{ field }}
+                {% endfor %}
+
+                <input class="btn btn-primary" type="submit" name="submit" value="Update Profile"/>
+            </form>
+
+        </div>
+    </div>
+
+{% endblock %}

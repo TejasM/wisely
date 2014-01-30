@@ -1,6 +1,5 @@
 # Create your views here.
 import json
-from async.api import schedule
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -8,9 +7,9 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from tasks import get_courses
 from models import UserProfile, Progress
 from pledges.models import Pledge
+from forms import UserProfileForm
 
 
 def login_user(request):
@@ -29,7 +28,7 @@ def logout_user(request):
 
 @login_required
 def profile(request):
-    context_dict = {'user': request.user}
+    context_dict = {'user': request.user, 'user_profile': UserProfile.objects.get(user=request.user)}
     return render(request, 'users/profile.html', context_dict)
 
 
@@ -75,3 +74,25 @@ def index(request):
 def check_updated(request):
     return HttpResponse(json.dumps({'updated': request.user.last_login <= request.user.userprofile.last_updated}),
                         mimetype='application/json')
+
+
+@login_required()
+def edit_profile(request):
+    if request.method == 'POST':
+        user_profile = UserProfile.objects.get(user=request.user)
+
+        user_profile_updated = UserProfileForm(request.POST, instance=user_profile)
+        if user_profile_updated.is_valid():
+
+            if 'picture' in request.FILES:
+                user_profile.picture = request.FILES['picture']
+
+            user_profile_updated.save()
+
+        return HttpResponseRedirect(reverse('users:profile'))
+
+    user_profile_form = UserProfileForm()
+
+    return render(request, 'users/edit_profile.html', {'user_profile_form': user_profile_form})
+
+
