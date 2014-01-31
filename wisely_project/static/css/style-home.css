@@ -340,6 +340,11 @@ h2 {
     .middle-cover .columns .column {
         background: none;
     }
+
+    .right {
+        margin-top: -45px;
+        padding-right: 5px;
+    }
 }
 
 .title-courses + span + dd {
