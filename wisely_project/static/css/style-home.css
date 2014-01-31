@@ -345,6 +345,10 @@ h2 {
         margin-top: -45px;
         padding-right: 5px;
     }
+
+    .right .alt-learn {
+        display: none;
+    }
 }
 
 .title-courses + span + dd {
