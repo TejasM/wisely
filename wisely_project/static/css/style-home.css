@@ -507,3 +507,44 @@ h2.course-page-header {
 .question-color {
     color: #4787ed;
 }
+
+ul.levels li {
+    cursor: pointer;
+    display: inline-block;
+    height: 118px;
+    width: 115px;
+    margin: 0;
+    padding: 0 5px 0 0;
+    background: transparent url('../images/whitemail_donate_sprite.png') no-repeat scroll -10px -12px;
+}
+
+ul.levels {
+    font-size: 1rem;
+    line-height: 1.6;
+    list-style-position: outside;
+    font-family: inherit;
+}
+
+ul.levels li.here {
+    background-position: -9px -141px;
+}
+
+ul.levels li span {
+    border-style: solid solid none;
+    border-width: 0;
+    color: black;
+    display: block;
+    margin-top: 48px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+select.course {
+    width: 100%;
+    border-radius: 5px;
+    background-color: #F6F6F6;
+    border-color: #CCCCCC;
+    border-width: 2px;
+    height: 50px;
+    padding: 0.5em;
+}

@@ -32,24 +32,46 @@
                                 <form method="post" action="" id="pay-form">
                                     {% csrf_token %}
                                     <div class="row collapse">
-                                        <input type="hidden" name="onboarding" value="onboaring"/>
+                                        <input type="hidden" name="onboarding" value="onboarding"/>
 
-                                        <div class="large-12 columns extra-top-margin">
-                                            <select class="course" name="course" id="course-select">
-                                                {% for course in user.userprofile.courses.all %}
-                                                    <option value="{{ course.id }}">{{ course }}</option>
-                                                {% endfor %}
-                                            </select>
+                                        <div class="large-12 text-center columns extra-top-margin">
+                                            <div class="large-5 large-centered columns extra-top-margin">
+                                                <select class="course" name="course" id="course-select">
+                                                    {% for course in user.userprofile.courses.all %}
+                                                        <option value="{{ course.id }}">{{ course }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="small-3 large-4 columns extra-top-margin">
-                                            <span class="dollar prefix">$</span>
+                                        <div class="large-12 text-center columns extra-top-margin">
+                                            <ul class="levels">
+                                                <li class="here" id="25"><span><strong>$25</strong></span></li>
+                                                <li id="50" class=""><span><strong>$50</strong></span></li>
+                                                <li id="100" class=""><span><strong>$100</strong></span></li>
+                                                <li id="500" class=""><span><strong>$500</strong></span></li>
+                                                <li id="other" class="">
+                                                    <span><strong>OTHER</strong></span>
+                                                </li>
+                                            </ul>
                                         </div>
-                                        <div class="small-9 large-8 columns  extra-top-margin">
-                                            <input type="text" placeholder="Amount" name="money" id="money"
-                                                   class="dollar">
+                                        <div class="row collapse" id="input-money">
+                                            <div class="large-12 text-center columns">
+                                                <div class="large-5 large-centered columns">
+                                                    <div class="small-3 large-4 columns extra-top-margin">
+                                                        <span class="dollar prefix">$</span>
+                                                    </div>
+                                                    <div class="small-9 large-8 columns  extra-top-margin">
+                                                        <input type="text" placeholder="Amount" name="money" id="money"
+                                                               value="25"
+                                                               class="dollar">
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="large-12 columns extra-top-margin">
-                                            <button class="other-button" type="submit" id="create">Create</button>
+                                        <div class="row collapse">
+                                            <div class="large-12 columns extra-top-margin">
+                                                <button class="other-button" type="submit" id="create">Create</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -67,25 +89,48 @@
                         </div>
                     </div>
                     <div class="row extra-top-margin">
-                        <div class="large-4 text-center centered">
+                        <div class="large-12 text-center centered">
                             <form method="post" action="" id="pay-form">
                                 {% csrf_token %}
                                 <div class="row collapse">
-                                    <div class="large-12 columns extra-top-margin">
-                                        <select class="course" name="course" id="course-select">
-                                            {% for course in user.userprofile.courses.all %}
-                                                <option value="{{ course.id }}">{{ course }}</option>
-                                            {% endfor %}
-                                        </select>
+                                    <div class="large-12 text-center columns extra-top-margin">
+                                        <div class="large-5 large-centered columns extra-top-margin">
+                                            <select class="course" name="course" id="course-select">
+                                                {% for course in user.userprofile.courses.all %}
+                                                    <option value="{{ course.id }}">{{ course }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="small-3 large-4 columns extra-top-margin">
-                                        <span class="dollar prefix">$</span>
+                                    <div class="large-12 text-center columns extra-top-margin">
+                                        <ul class="levels">
+                                            <li class="here" id="25"><span><strong>$25</strong></span></li>
+                                            <li id="50" class=""><span><strong>$50</strong></span></li>
+                                            <li id="100" class=""><span><strong>$100</strong></span></li>
+                                            <li id="500" class=""><span><strong>$500</strong></span></li>
+                                            <li id="other" class="">
+                                                <span><strong>OTHER</strong></span>
+                                            </li>
+                                        </ul>
                                     </div>
-                                    <div class="small-9 large-8 columns  extra-top-margin">
-                                        <input type="text" placeholder="Amount" name="money" id="money" class="dollar">
+                                    <div class="row collapse" id="input-money">
+                                        <div class="large-12 text-center columns">
+                                            <div class="large-5 large-centered columns">
+                                                <div class="small-3 large-4 columns extra-top-margin">
+                                                    <span class="dollar prefix">$</span>
+                                                </div>
+                                                <div class="small-9 large-8 columns  extra-top-margin">
+                                                    <input type="text" placeholder="Amount" name="money" id="money"
+                                                           value="25"
+                                                           class="dollar">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="large-12 columns extra-top-margin">
-                                        <button class="other-button" type="submit" id="create">Create</button>
+                                    <div class="row collapse">
+                                        <div class="large-12 columns extra-top-margin">
+                                            <button class="other-button" type="submit" id="create">Create</button>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -149,7 +194,20 @@
     <script src="{% static 'js/jquery.number.js' %}"></script>
     <script>
         $(function () {
-            $('input.dollar').number(true, 2)
+            var $input = $('input.dollar');
+            $input.number(true, 2);
+            $('#input-money').hide();
+            $('ul.levels li').click(function () {
+                $('.here').removeClass('here');
+                $(this).addClass('here');
+                $('input.dollar').val(parseInt($(this).attr('id')));
+                $('#input-money').hide();
+            });
+            $('#other').click(function () {
+                $('.here').removeClass('here');
+                $(this).addClass('here');
+                $('#input-money').show();
+            });
         });
         {% if wait %}
             $('#coursera-wait').lightbox_me({centered: true, closeEsc: false, closeClick: false});
