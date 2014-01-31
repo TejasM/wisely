@@ -56,9 +56,9 @@ def index(request):
         request.session['onboarding'] = request.user.userprofile.coursera_username == ""
         request.user.userprofile.coursera_username = request.POST['username']
         request.user.userprofile.coursera_password = request.POST['password']
+        request.user.userprofile.save()
         request.user.last_login = timezone.now()
         request.user.save()
-        request.user.userprofile.save()
         if not request.session['onboarding']:
             return render(request, 'users/index.html', {'wait': True})
         else:
