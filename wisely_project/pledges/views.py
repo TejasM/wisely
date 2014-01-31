@@ -31,7 +31,7 @@ def detail(request, pledge_id):
             stripe.api_key = settings.STRIPE_SECRET_KEY
             try:
                 stripe.Charge.create(
-                    amount=int(float(request.POST['money'])) * 100, # amount in cents, again
+                    amount=int(float(pledge.money)) * 100, # amount in cents, again
                     currency="cad",
                     card=token,
                     description=request.user.username,
@@ -92,21 +92,21 @@ def create(request):
         if request.session.get('onboarding', '') != '':
             pledge = Pledge.objects.create(user=request.user.userprofile,
                                            course=Course.objects.get(pk=int(request.POST['course'])),
-                                           money=int(float(request.POST['money'])), active=False)
+                                           money=int(float(request.POST['money'].replace(',', ''))), active=False)
             return redirect(reverse('pledges:detail', args=(pledge.id,)))
         else:
             token = request.POST.get('stripeToken', '')
             stripe.api_key = settings.STRIPE_SECRET_KEY
             try:
                 stripe.Charge.create(
-                    amount=int(float(request.POST['money'])) * 100, # amount in cents, again
+                    amount=int(float(request.POST['money'].replace(',', ''))) * 100, # amount in cents, again
                     currency="cad",
                     card=token,
                     description=request.user.username,
                 )
                 pledge = Pledge.objects.create(user=request.user.userprofile,
                                                course=Course.objects.get(pk=int(request.POST['course'])),
-                                               money=int(float(request.POST['money'])), active=True)
+                                               money=int(float(request.POST['money'].replace(',', ''))), active=True)
             except stripe.CardError, _:
                 return redirect(reverse('pledges:create'))
             return redirect(reverse('pledges:share', args=(pledge.id,)))
