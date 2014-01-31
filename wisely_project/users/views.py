@@ -68,7 +68,7 @@ def index(request):
     else:
         pledges = Pledge.objects.filter(user=profile)
         progresses = Progress.objects.filter(user=request.user.userprofile)
-        return render(request, 'users/index.html', {'pledges': pledges, 'progresses': progresses})
+        return render(request, 'users/index.html', {'pledges': pledges, 'progresses': progresses, 'form': False})
 
 
 def check_updated(request):
