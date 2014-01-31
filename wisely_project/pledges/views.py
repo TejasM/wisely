@@ -89,7 +89,8 @@ def results(request, poll_id):
 @login_required
 def create(request):
     if request.method == "POST":
-        if request.session.get('onboarding', '') != '':
+        if request.session.get('onboarding', '') != '' and Pledge.objects.filter(
+                user=request.user.userprofile).count() == 0:
             pledge = Pledge.objects.create(user=request.user.userprofile,
                                            course=Course.objects.get(pk=int(request.POST['course'])),
                                            money=int(float(request.POST['money'].replace(',', ''))), active=False)
