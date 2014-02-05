@@ -122,7 +122,7 @@ def get_courses(user_id):
     print user
     if str(user.courseraprofile.username) != '':
         scraper.driver.implicitly_wait(10)
-        scraper.login(str(user.courseraprofile.username), str(user.courseraprofile.username))
+        scraper.login(str(user.courseraprofile.username), str(user.courseraprofile.password))
         time.sleep(3)
         courses, course_links = scraper.get_courses()
         print courses
