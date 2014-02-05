@@ -1,12 +1,12 @@
 from __future__ import absolute_import
+import time
 
 from bs4 import BeautifulSoup
-import time
-import pytz
-from users.models import Course, Quiz, Progress
 from django.contrib.auth.models import User
 import dateutil.parser
 from django.utils import timezone
+
+from users.models import Course, Quiz, Progress
 
 
 class CourseraScraper:

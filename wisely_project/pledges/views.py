@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from users.models import Course
-from django.views.decorators.csrf import csrf_exempt
 import stripe
+
+from users.models import Course
+
 
 __author__ = 'Cheng'
 
@@ -14,7 +15,7 @@ import wisely_project.settings.base as settings
 
 @login_required
 def index(request):
-    all_pledges_list = Pledge.objects.filter(user=request.user.userprofile).order_by('-pledge_date')
+    all_pledges_list = Pledge.objects.filter(user=request.user).order_by('-pledge_date')
     context = {'all_pledges_list': all_pledges_list}
     return render(request, 'pledges/index.html', context)
 
@@ -90,7 +91,7 @@ def results(request, poll_id):
 def create(request):
     if request.method == "POST":
         if request.session.get('onboarding', '') != '':
-            pledge = Pledge.objects.create(user=request.user.userprofile,
+            pledge = Pledge.objects.create(user=request.user,
                                            course=Course.objects.get(pk=int(request.POST['course'])),
                                            money=int(float(request.POST['money'].replace(',', ''))), active=False)
             return redirect(reverse('pledges:detail', args=(pledge.id,)))
@@ -104,7 +105,7 @@ def create(request):
                     card=token,
                     description=request.user.username,
                 )
-                pledge = Pledge.objects.create(user=request.user.userprofile,
+                pledge = Pledge.objects.create(user=request.user,
                                                course=Course.objects.get(pk=int(request.POST['course'])),
                                                money=int(float(request.POST['money'].replace(',', ''))), active=True)
             except stripe.CardError, _:
@@ -112,6 +113,6 @@ def create(request):
             return redirect(reverse('pledges:share', args=(pledge.id,)))
     if request.session.get('onboarding', '') != '':
         return render(request, 'pledges/create.html',
-                      {'form': True, 'wait': request.user.last_login > request.user.userprofile.last_updated})
+                      {'form': True, 'wait': request.user.last_login > request.user.courseraprofile.last_updated})
     else:
         return render(request, 'pledges/create.html')

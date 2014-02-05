@@ -1,24 +1,19 @@
 from django.utils import timezone
-from users.models import Course, UserProfile
-
-__author__ = 'Cheng'
-
 from django.db import models
 
+from users.models import Course, BaseModel, User
 
-class Pledge(models.Model):
-    user = models.ForeignKey(UserProfile)
+
+class Pledge(BaseModel):
+    user = models.ForeignKey(User)
     course = models.ForeignKey(Course)
-    money = models.IntegerField(default=0)
+    money = models.DecimalField(max_digits=8, decimal_places=2)
     pledge_date = models.DateTimeField('date pledged', default=timezone.now())
-    complete_date = models.DateTimeField('date completed', blank=True,  default=timezone.now())
-    active = models.BooleanField(default=False)
-    complete = models.BooleanField(default=False)
-
-    def __unicode__(self):
-        return self.user + "'s pledges is: " + self.money + " made on " + self.pledge_date + " for course " + self.course
+    complete_date = models.DateTimeField('date completed', null=True)
+    is_active = models.BooleanField(default=True)
+    is_complete = models.BooleanField(default=False)
 
 
-class Follower(models.Model):
+class Follower(BaseModel):
     pledge = models.ForeignKey(Pledge)
     email = models.EmailField(default='', blank=True)

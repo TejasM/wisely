@@ -54,7 +54,9 @@ def continue_(loop):
 # monkeypatch NodeList to handle break/continue
 def render(self, context):
     return mark_safe(''.join(map(force_unicode,
-                                          _render_nodelist_items(self,context))))
+                                 _render_nodelist_items(self, context))))
+
+
 template.NodeList.render = render
 
 
@@ -95,6 +97,8 @@ def render(self, context):
         if status is loop.BREAK:
             break
     return loop.render(close=True)
+
+
 template.defaulttags.ForNode.render = render
 
 
@@ -141,6 +145,7 @@ class Loop(dict):
         if close:
             self.close()
         return self._rendered_nodelist.render(self._context)
+
     render.alters_data = True
 
     def next(self):
@@ -156,7 +161,7 @@ class Loop(dict):
             raise RuntimeError('This loop is inactive')
         try: # update the exposed attributes
             counter = self['counter']
-            self.update(counter0=counter, counter=counter+1, first=False)
+            self.update(counter0=counter, counter=counter + 1, first=False)
         except KeyError:
             # initialize the exposed attributes the first time this is called
             self.update(counter0=0, counter=1, first=True)
@@ -167,10 +172,11 @@ class Loop(dict):
             # if this is not the target loop, keep bubbling up the exception
             if ex.loop is not self:
                 raise
-            # pop context until (but excluding) the dict that contains this loop
+                # pop context until (but excluding) the dict that contains this loop
             self._pop_context_until_self(inclusive=False)
             status = ex.continue_ and self.CONTINUE or self.BREAK
         return status
+
     next.alters_data = True
 
     def close(self):
@@ -183,6 +189,7 @@ class Loop(dict):
         if self._nodelist:
             self._pop_context_until_self(inclusive=True)
             self._nodelist = None
+
     close.alters_data = True
 
     def _pop_context_until_self(self, inclusive):
@@ -214,12 +221,13 @@ class BoundedLoop(Loop):
             revcounter0 = self['revcounter0']
             if revcounter0 <= 0:
                 raise RuntimeError('Attempted to call `next()` more than %d times' % self._length)
-            self.update(revcounter0=revcounter0-1, revcounter=revcounter0, last=revcounter0==1)
+            self.update(revcounter0=revcounter0 - 1, revcounter=revcounter0, last=revcounter0 == 1)
         except KeyError:
             # initialize the exposed attributes the first time this is called
             length = self._length
-            self.update(revcounter0=length-1, revcounter=length, last=length==1)
+            self.update(revcounter0=length - 1, revcounter=length, last=length == 1)
         return super(BoundedLoop, self).next()
+
     next.alters_data = True
 
 
@@ -236,10 +244,10 @@ def _render_nodelist_items(nodelist, context, result=None):
                 # get the wrapped exception if settings.DEBUG is True
                 if hasattr(ex, 'exc_info'):
                     ex = ex.exc_info[1]
-                # let every exception other than StopLoopException propagate
+                    # let every exception other than StopLoopException propagate
                 if not isinstance(ex, StopLoopException):
                     raise
-                # reraise the StopLoopException with the updated nodelist
+                    # reraise the StopLoopException with the updated nodelist
                 if ex.nodelist:
                     result.extend(ex.nodelist)
                 ex.nodelist = result

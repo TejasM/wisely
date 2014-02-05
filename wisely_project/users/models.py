@@ -1,10 +1,6 @@
-import datetime
 import json
 from django.contrib.auth.models import User
 from django.db import models
-
-
-# Create your models here.
 from django.utils import timezone
 
 
@@ -15,7 +11,15 @@ def convertDatetimeToString(o):
     return o.strftime("%s %s" % (DATE_FORMAT, TIME_FORMAT))
 
 
-class Course(models.Model):
+class BaseModel(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class Course(BaseModel):
     title = models.CharField(max_length=400)
     course_link = models.CharField(max_length=1000, default="")
     quiz_link = models.CharField(max_length=1000, default="")
@@ -24,40 +28,41 @@ class Course(models.Model):
         return self.title
 
 
-class UserProfile(models.Model):
+class CourseraProfile(BaseModel):
     user = models.OneToOneField(User)
     courses = models.ManyToManyField(Course)
-    coursera_username = models.CharField(max_length=100, default="")
-    coursera_password = models.CharField(max_length=100, default="")
-    last_updated = models.DateTimeField(default=timezone.now())
+    username = models.CharField(max_length=100, default="")
+    password = models.CharField(max_length=100, default="")
 
-    picture = models.ImageField(upload_to='profile_images', blank=True, null=True)
+
+class UserProfile(BaseModel):
+    user = models.OneToOneField(User)
+    picture = models.ImageField(upload_to='profile_images', null=True)
     location = models.CharField(max_length=128, blank=True, default="")
 
     MALE = 'M'
     FEMALE = 'F'
     OTHER = 'O'
-    UNKNOWN = 'U'
+    UNSPECIFIED = 'U'
     GENDER = (
         (MALE, 'Male'),
         (FEMALE, 'Female'),
         (OTHER, 'Other'),
-        (UNKNOWN, 'Unspecified')
+        (UNSPECIFIED, 'Unspecified'),
     )
-    gender = models.CharField(max_length=1, choices=GENDER, default=UNKNOWN)
+    gender = models.CharField(max_length=1, choices=GENDER, default=UNSPECIFIED)
 
-    # birthday = models.DateField(blank=True)
-    # aboutMe = models.TextField(blank=True, max_length=500)
-    # website = models.URLField(blank=True)
-    # linkedIn = models.URLField(blank=True)
-    # facebook = models.URLField(blank=True)
-    # google_plus = models.URLField(blank=True)
-    # weibo = models.URLField(blank=True)
-    # renren = models.URLField(blank=True)
-    # github = models.URLField(blank=True)
+    birthday = models.DateField(null=True, blank=True)
+    about_me = models.TextField(null=True, blank=True, max_length=500)
+    website = models.URLField(null=True, blank=True)
+    linkedIn = models.URLField(null=True, blank=True)
+    facebook = models.URLField(null=True, blank=True)
+    twitter = models.URLField(null=True, blank=True)
+    google_plus = models.URLField(null=True, blank=True)
+    github = models.URLField(null=True, blank=True)
 
 
-class Quiz(models.Model):
+class Quiz(BaseModel):
     heading = models.CharField(max_length=400, default="")
     course = models.ForeignKey(Course)
     deadline = models.DateTimeField(null=True, default=None)
@@ -67,8 +72,8 @@ class Quiz(models.Model):
         return self.heading
 
 
-class Progress(models.Model):
-    user = models.ForeignKey(UserProfile)
+class Progress(BaseModel):
+    user = models.ForeignKey(User)
     quiz = models.ForeignKey(Quiz)
     score = models.CharField(max_length=200, default="Pending")
 
