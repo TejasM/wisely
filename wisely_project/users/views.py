@@ -56,6 +56,10 @@ def signup(request):
 @login_required
 def index(request):
     try:
+        user_profile = UserProfile.objects.get(user=request.user)
+    except CourseraProfile.DoesNotExist:
+        user_profile = UserProfile.objects.create(user=request.user)
+    try:
         coursera_profile = CourseraProfile.objects.get(user=request.user)
     except CourseraProfile.DoesNotExist:
         coursera_profile = CourseraProfile.objects.create(user=request.user)
