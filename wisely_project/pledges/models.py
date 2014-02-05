@@ -1,11 +1,11 @@
 from django.utils import timezone
 from django.db import models
 
-from users.models import Course, BaseModel, User
+from users.models import Course, BaseModel, UserProfile
 
 
 class Pledge(BaseModel):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(UserProfile)
     course = models.ForeignKey(Course)
     money = models.DecimalField(max_digits=8, decimal_places=2)
     pledge_date = models.DateTimeField('date pledged', default=timezone.now())
