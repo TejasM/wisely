@@ -73,7 +73,7 @@ class Quiz(BaseModel):
 
 
 class Progress(BaseModel):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(UserProfile)
     quiz = models.ForeignKey(Quiz)
     score = models.CharField(max_length=200, default="Pending")
 
