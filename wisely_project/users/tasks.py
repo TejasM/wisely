@@ -120,9 +120,9 @@ def get_courses(user_id):
     scraper = CourseraScraper()
     user = User.objects.get(pk=user_id)
     print user
-    if str(user.userprofile.coursera_username) != '':
+    if str(user.courseraprofile.username) != '':
         scraper.driver.implicitly_wait(10)
-        scraper.login(str(user.userprofile.coursera_username), str(user.userprofile.coursera_password))
+        scraper.login(str(user.courseraprofile.username), str(user.courseraprofile.username))
         time.sleep(3)
         courses, course_links = scraper.get_courses()
         print courses
@@ -131,12 +131,12 @@ def get_courses(user_id):
                 get_course = Course.objects.get(title=course)
                 get_course.course_link = course_links[i]
                 get_course.save()
-                user.userprofile.courses.add(get_course)
+                user.courseraprofile.courses.add(get_course)
             except Course.DoesNotExist:
                 get_course = Course.objects.create(title=course, course_link=course_links[i])
-                user.userprofile.courses.add(get_course)
-        user.userprofile.last_updated = timezone.now()
-        user.userprofile.save()
+                user.courseraprofile.courses.add(get_course)
+        user.courseraprofile.last_updated = timezone.now()
+        user.courseraprofile.save()
         for i, course in enumerate(courses):
             get_course = Course.objects.get(title=course)
             scraper.get_quiz_link(get_course, course_links[i])

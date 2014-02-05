@@ -12,8 +12,8 @@ def convertDatetimeToString(o):
 
 
 class BaseModel(models.Model):
-    created = models.DateTimeField(auto_now_add=True)
-    last_updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(default=timezone.now())
+    last_updated = models.DateTimeField(default=timezone.now(), auto_now=True)
 
     class Meta:
         abstract = True
