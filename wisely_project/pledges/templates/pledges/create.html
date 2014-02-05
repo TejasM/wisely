@@ -37,7 +37,7 @@
                                         <div class="large-12 text-center columns extra-top-margin">
                                             <div class="large-5 large-centered columns extra-top-margin">
                                                 <select class="course" name="course" id="course-select">
-                                                    {% for course in user.userprofile.courses.all %}
+                                                    {% for course in user.courseraprofile.courses.all %}
                                                         <option value="{{ course.id }}">{{ course }}</option>
                                                     {% endfor %}
                                                 </select>
@@ -96,7 +96,7 @@
                                     <div class="large-12 text-center columns extra-top-margin">
                                         <div class="large-5 large-centered columns extra-top-margin">
                                             <select class="course" name="course" id="course-select">
-                                                {% for course in user.userprofile.courses.all %}
+                                                {% for course in user.courseraprofile.courses.all %}
                                                     <option value="{{ course.id }}">{{ course }}</option>
                                                 {% endfor %}
                                             </select>
