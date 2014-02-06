@@ -15,7 +15,7 @@ import wisely_project.settings.base as settings
 
 @login_required
 def index(request):
-    all_pledges_list = Pledge.objects.filter(user=request.user).order_by('-pledge_date')
+    all_pledges_list = Pledge.objects.filter(user=request.user.userprofile).order_by('-pledge_date')
     context = {'all_pledges_list': all_pledges_list}
     return render(request, 'pledges/index.html', context)
 
