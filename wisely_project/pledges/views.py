@@ -91,7 +91,7 @@ def results(request, poll_id):
 def create(request):
     if request.method == "POST":
         if request.session.get('onboarding', '') != '':
-            pledge = Pledge.objects.create(user=request.user,
+            pledge = Pledge.objects.create(user=request.user.userprofile,
                                            course=Course.objects.get(pk=int(request.POST['course'])),
                                            money=int(float(request.POST['money'].replace(',', ''))), active=False)
             return redirect(reverse('pledges:detail', args=(pledge.id,)))
@@ -105,7 +105,7 @@ def create(request):
                     card=token,
                     description=request.user.username,
                 )
-                pledge = Pledge.objects.create(user=request.user,
+                pledge = Pledge.objects.create(user=request.user.userprofile,
                                                course=Course.objects.get(pk=int(request.POST['course'])),
                                                money=int(float(request.POST['money'].replace(',', ''))), active=True)
             except stripe.CardError, _:
