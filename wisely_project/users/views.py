@@ -82,8 +82,8 @@ def index(request):
     if coursera_profile.username == "":
         return render(request, 'users/index.html', {'form': True})
     else:
-        pledges = Pledge.objects.filter(user=request.user)
-        progresses = Progress.objects.filter(user=request.user)
+        pledges = Pledge.objects.filter(user=request.user.userprofile)
+        progresses = Progress.objects.filter(user=request.user.userprofile)
         return render(request, 'users/index.html', {'pledges': pledges, 'progresses': progresses, 'form': False})
 
 
