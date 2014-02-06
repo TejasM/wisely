@@ -93,7 +93,7 @@ def create(request):
         if request.session.get('onboarding', '') != '':
             pledge = Pledge.objects.create(user=request.user.userprofile,
                                            course=Course.objects.get(pk=int(request.POST['course'])),
-                                           money=int(float(request.POST['money'].replace(',', ''))), active=False)
+                                           money=int(float(request.POST['money'].replace(',', ''))), is_active=False)
             return redirect(reverse('pledges:detail', args=(pledge.id,)))
         else:
             token = request.POST.get('stripeToken', '')
@@ -107,7 +107,7 @@ def create(request):
                 )
                 pledge = Pledge.objects.create(user=request.user.userprofile,
                                                course=Course.objects.get(pk=int(request.POST['course'])),
-                                               money=int(float(request.POST['money'].replace(',', ''))), active=True)
+                                               money=int(float(request.POST['money'].replace(',', ''))), is_active=True)
             except stripe.CardError, _:
                 return redirect(reverse('pledges:create'))
             return redirect(reverse('pledges:share', args=(pledge.id,)))
