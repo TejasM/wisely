@@ -33,7 +33,10 @@ def profile(request):
         user_profile = UserProfile.objects.get(user=request.user)
     except UserProfile.DoesNotExist:
         user_profile = UserProfile.objects.create(user=request.user)
-    context_dict = {'user': request.user, 'user_profile': user_profile}
+
+    user_profile_form = UserProfileForm()
+
+    context_dict = {'user': request.user, 'user_profile': user_profile, 'user_profile_form': user_profile_form}
     return render(request, 'users/profile.html', context_dict)
 
 
@@ -57,7 +60,7 @@ def signup(request):
 def index(request):
     try:
         user_profile = UserProfile.objects.get(user=request.user)
-    except CourseraProfile.DoesNotExist:
+    except UserProfile.DoesNotExist:
         user_profile = UserProfile.objects.create(user=request.user)
     try:
         coursera_profile = CourseraProfile.objects.get(user=request.user)
@@ -93,8 +96,8 @@ def check_updated(request):
 def edit_profile(request):
     if request.method == 'POST':
         user_profile = UserProfile.objects.get(user=request.user)
-
         user_profile_updated = UserProfileForm(request.POST, instance=user_profile)
+
         if user_profile_updated.is_valid():
 
             if 'picture' in request.FILES:
@@ -102,10 +105,9 @@ def edit_profile(request):
 
             user_profile_updated.save()
 
-        return HttpResponseRedirect(reverse('users:profile'))
+    return HttpResponseRedirect(reverse('users:profile'))
 
-    user_profile_form = UserProfileForm()
 
-    return render(request, 'users/edit_profile.html', {'user_profile_form': user_profile_form})
+
 
 

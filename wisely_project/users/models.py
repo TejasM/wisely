@@ -38,28 +38,19 @@ class CourseraProfile(BaseModel):
 class UserProfile(BaseModel):
     user = models.OneToOneField(User)
     picture = models.ImageField(upload_to='profile_images', null=True)
-    location = models.CharField(max_length=128, blank=True, default="")
+    current_city = models.CharField(max_length=32, null=True)
 
     MALE = 'M'
     FEMALE = 'F'
-    OTHER = 'O'
-    UNSPECIFIED = 'U'
     GENDER = (
         (MALE, 'Male'),
         (FEMALE, 'Female'),
-        (OTHER, 'Other'),
-        (UNSPECIFIED, 'Unspecified'),
     )
-    gender = models.CharField(max_length=1, choices=GENDER, default=UNSPECIFIED)
+    gender = models.CharField(max_length=1, choices=GENDER, null=True)
 
     birthday = models.DateField(null=True, blank=True)
     about_me = models.TextField(null=True, blank=True, max_length=500)
     website = models.URLField(null=True, blank=True)
-    linkedIn = models.URLField(null=True, blank=True)
-    facebook = models.URLField(null=True, blank=True)
-    twitter = models.URLField(null=True, blank=True)
-    google_plus = models.URLField(null=True, blank=True)
-    github = models.URLField(null=True, blank=True)
 
 
 class Quiz(BaseModel):

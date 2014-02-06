@@ -14,26 +14,79 @@
                 <h2 class="extra-top-margin">{{ user.first_name }} {{ user.last_name }}</h2>
             </div>
             <div class="large-5 columns text-left">
-                <div class="row extra-top-small-margin">
-                    <div class="large-12 columns"><strong>Username</strong>: {{ user.username }}</div>
+                <input type="button" id="edit" value="Edit"><br/>
+
+                <div id="showProfile">
+                    <div class="row extra-top-small-margin">
+                        <div class="large-12 columns"><strong>Username</strong>: {{ user.username }}</div>
+                    </div>
+                    {% if user_profile.gender != 'U' %}
+                        <div class="row extra-top-small-margin">
+                            <div class="large-12 columns"><strong>Gender</strong>: {{ user_profile.get_gender_display }}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if user.email %}
+                        <div class="row extra-top-small-margin">
+                            <div class="large-12 columns"><strong>Email</strong>: {{ user.email }}</div>
+                        </div>
+                    {% endif %}
+                    {% if user_profile.website %}
+                        <div class="row extra-top-small-margin">
+                            <div class="large-12 columns"><strong>Website</strong>: <a
+                                    href="{{ user_profile.website }}">{{ user_profile.website }}</a></div>
+                        </div>
+                    {% endif %}
+                    {% if user_profile.current_city %}
+                        <div class="row extra-top-small-margin">
+                            <div class="large-12 columns"><strong>Current City</strong>: {{ user_profile.current_city }}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if user_profile.birthday %}
+                        <div class="row extra-top-small-margin">
+                            <div class="large-12 columns"><strong>Birthday</strong>: {{ user_profile.birthday }}</div>
+                        </div>
+                    {% endif %}
+                    {% if user_profile.about_me %}
+                        <div class="row extra-top-small-margin">
+                            <div class="large-12 columns"><strong>About Me</strong>: {{ user_profile.about_me }}</div>
+                        </div>
+                    {% endif %}
+                    <div class="row extra-top-small-margin">
+                        <div class="large-12 columns"><strong>Member Since</strong>: {{ user.date_joined }}</div>
+                    </div>
+                    <div class="row extra-top-small-margin">
+                        <div class="large-12 columns"><strong>Last Seen</strong>: {{ user.last_login }}</div>
+                    </div>
                 </div>
-                <div class="row extra-top-small-margin">
-                    <div class="large-12 columns"><strong>Gender</strong>: {{ user_profile.gender }}</div>
-                </div>
-                <div class="row extra-top-small-margin">
-                    <div class="large-12 columns"><strong>Email</strong>: {{ user.email }}</div>
-                </div>
-                <div class="row extra-top-small-margin">
-                    <div class="large-12 columns"><strong>Website</strong>: {{ user_profile.website }}</div>
-                </div>
-                <div class="row extra-top-small-margin">
-                    <div class="large-12 columns"><strong>Member Since</strong>: {{ user.date_joined }}</div>
-                </div>
-                <div class="row extra-top-small-margin">
-                    <div class="large-12 columns"><strong>Last Seen</strong>: {{ user.last_login }}</div>
+
+                <div id="editProfile" class="invisible">
+                    <form id="user_profile_edit_form" method="post" action="/users/edit_profile/"
+                          enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        {% for field in user_profile_form.visible_fields %}
+                            {{ field.errors }}
+                            {{ field.help_text }}
+                            {{ field }}
+                        {% endfor %}
+
+                        <input class="btn btn-primary" type="submit" name="submit" value="Update Profile"/>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 
+    <script>
+        jQuery(document).ready(function () {
+            jQuery('#editProfile').hide();
+            jQuery('#edit').live('click', function () {
+                jQuery('#showProfile').toggle('show');
+                jQuery('#editProfile').toggle('show');
+            });
+        });
+    </script>
 {% endblock %}
+
