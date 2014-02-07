@@ -1,0 +1,804 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="ie lt-ie9 lt-ie8 lt-ie7 app"> <![endif]-->
+<!--[if IE 7]>    <html class="ie lt-ie9 lt-ie8 app"> <![endif]-->
+<!--[if IE 8]>    <html class="ie lt-ie9 app"> <![endif]-->
+<!--[if gt IE 8]> <html class="app"> <![endif]-->
+<!--[if !IE]><!-->
+<html class="app"><!-- <![endif]-->
+<head>
+    <title>Project Wisely</title>
+
+    <!-- Meta -->
+    <meta charset="UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE"/>
+
+
+    <!--
+    **********************************************************
+    In development, use the LESS files and the less.js compiler
+    instead of the minified CSS loaded by default.
+    **********************************************************
+    -->
+
+    <link rel="stylesheet" href="{% static 'assets/less/pages/serveStyles.css' %}?module=admin&url_rewrite="/>
+
+
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/1.6.1/less.min.js"></script>
+    <link href="{% static 'assets/modules/admin/tables/datatables/assets/lib/extras/TableTools/media/css/TableTools.css' %}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body class="">
+
+<!-- Main Container Fluid -->
+<div class="container-fluid">
+
+<!-- Sidebar Menu -->
+<div id="menu" class="hidden-print">
+
+    <div id="sidebar-discover-wrapper">
+        <div id="logoWrapper">
+            <a href="/" id="logo" class="animated fadeInDown"><img src="{% static 'assets/images/app-logo.png' %}"
+                                                                   alt=""/></a>
+        </div>
+        <ul class="list-unstyled">
+
+            <li class="active">
+                <a href="#sidebar-discover-social" class="glyphicons globe_af"
+                   data-toggle="sidebar-discover"><i></i><span>Social</span></a>
+
+                <div id="sidebar-discover-social" class="sidebar-discover-menu">
+                    <div class="innerAll text-center border-bottom text-white animated pulse">
+                        <strong>Social App</strong>
+                    </div>
+                    <ul class="animated fadeIn">
+                        <li class="active"><a href="index.html?lang=en"><i class="fa fa-flash"></i> Activity</a></li>
+                        <li><a href="email.html?lang=en"><span
+                                class="badge pull-right badge-primary hidden-md">30</span><i class="fa fa-envelope"></i>
+                            Inbox</a></li>
+                        <li><a href="social.html?lang=en"><i class="fa fa-folder"></i> Widgets</a></li>
+                        <li><a href="timeline.html?lang=en"><i class="fa fa-clock-o"></i> Timelines</a></li>
+                        <li><a href="contacts.html?lang=en"><i class="fa fa-phone"></i> Contacts</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li>
+                <a href="#sidebar-discover-manage" class="glyphicons wrench"
+                   data-toggle="sidebar-discover"><i></i><span>Manage</span></a>
+
+                <div id="sidebar-discover-manage" class="sidebar-discover-menu">
+                    <div class="innerAll text-center border-bottom text-white animated pulse">
+                        <strong>Management</strong>
+                    </div>
+                    <ul class="animated fadeIn">
+                        <li><a href="tasks.html?lang=en"><i class="fa fa-clock-o"></i> Tasks</a></li>
+                        <!-- <li><a href="projects.html?lang=en"><i class="fa fa-suitcase"></i> Projects</a></li> -->
+                        <li><a href="employees.html?lang=en"><i class="fa fa-user"></i> Employees</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li>
+                <a href="#sidebar-discover-medical" data-toggle="sidebar-discover"
+                   class="glyphicons circle_plus"><i></i><span>Medical</span></a>
+
+                <div id="sidebar-discover-medical" class="sidebar-discover-menu">
+                    <div class="innerAll text-center border-bottom text-white animated pulse">
+                        <strong>Medical App</strong>
+                    </div>
+                    <ul class="animated fadeIn">
+                        <li class="">
+                            <a href="medical_overview.html?lang=en"><i class="fa fa-medkit"></i> Overview</a>
+                        </li>
+                        <li class="">
+                            <a href="medical_patients.html?lang=en"><span
+                                    class="badge pull-right badge-primary hidden-md">2</span><i
+                                    class="fa fa-user-md"></i> Patients</a>
+                        </li>
+                        <!-- <li class="">
+                            <a href="medical_appointments.html?lang=en"><i class="fa fa-stethoscope"></i> Appointments</a>
+                        </li> -->
+                        <li class="">
+                            <a href="medical_memos.html?lang=en"><i class="fa fa-file-text-o"></i> Memos</a>
+                        </li>
+                        <!-- <li class="border-bottom-none">
+                            <a href="medical_metrics.html?lang=en"><i class="fa fa-bar-chart-o"></i> Metrics</a>
+                        </li> -->
+                    </ul>
+                </div>
+            </li>
+
+            <li><a href="courses.html?lang=en" class="glyphicons crown"><i></i><span>Courses</span></a></li>
+
+            <li>
+                <a href="#sidebar-discover-content" data-toggle="sidebar-discover"
+                   class="glyphicons notes_2"><i></i><span>Content</span></a>
+
+                <div id="sidebar-discover-content" class="sidebar-discover-menu">
+                    <div class="innerAll text-center border-bottom text-white animated pulse">
+                        <strong>Manage content</strong>
+                    </div>
+                    <ul class="animated fadeIn">
+                        <li><a href="faq.html?lang=en"><i class="fa fa-question-circle"></i> FAQ</a></li>
+                        <li><a href="search.html?lang=en"><i class="fa fa-search"></i> Search</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li>
+                <a href="#sidebar-discover-financial" data-toggle="sidebar-discover"
+                   class="glyphicons calculator"><i></i><span>Financial</span></a>
+
+                <div id="sidebar-discover-financial" class="sidebar-discover-menu">
+                    <div class="innerAll text-center border-bottom text-white animated pulse">
+                        <strong>Financial</strong>
+                    </div>
+                    <ul class="animated fadeIn">
+                        <li><a href="invoice.html?lang=en"><i class="fa fa-file-text-o"></i> Invoice</a></li>
+                        <li><a href="finances.html?lang=en"><i class="fa fa-legal"></i> Finances</a></li>
+                        <li><a href="bookings.html?lang=en"><i class="fa fa-ticket"></i> Bookings</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <!-- <li><a href="support.html?lang=en" class="glyphicons life_preserver"><i></i><span>Support</span></a></li> -->
+
+            <li><a href="ui.html?lang=en" class="glyphicons adjust_alt"><i></i><span>Elements</span></a></li>
+
+            <li>
+                <a href="#sidebar-discover-front" data-toggle="sidebar-discover"
+                   class="glyphicons leather"><i></i><span>Website</span></a>
+
+                <div id="sidebar-discover-front" class="sidebar-discover-menu">
+                    <div class="innerAll text-center border-bottom text-white animated pulse">
+                        <strong>Front End Website</strong>
+                    </div>
+                    <ul class="animated fadeIn">
+                        <li><a target="_blank" href="../front/index.html?lang=en"><i class="fa fa-home"></i> Home
+                            page</a></li>
+                        <li><a target="_blank" href="../front/pricing.html?lang=en"><i class="fa fa-home"></i>
+                            Pricing</a></li>
+                        <li><a target="_blank" href="../front/blog.html?lang=en"><i class="fa fa-home"></i> Blog</a>
+                        </li>
+                        <li><a target="_blank" href="../front/team.html?lang=en"><i class="fa fa-home"></i> The Team</a>
+                        </li>
+                        <li><a target="_blank" href="../front/contact.html?lang=en"><i class="fa fa-home"></i>
+                            Contact</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li>
+                <a href="#sidebar-discover-account" data-toggle="sidebar-discover" class="glyphicons user"><i></i><span>Account</span></a>
+
+                <div id="sidebar-discover-account" class="sidebar-discover-menu">
+                    <div class="innerAll text-center border-bottom text-white animated pulse">
+                        <strong>Account</strong>
+                    </div>
+                    <ul class="animated fadeIn">
+                        <li><a href="login.html?lang=en"><i class="fa fa-lock"></i> Login</a></li>
+                        <li><a href="signup.html?lang=en"><i class="fa fa-pencil"></i> Signup</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li><a href="error.html?lang=en" class="glyphicons warning_sign"><i></i><span>Error</span></a></li>
+
+        </ul>
+    </div>
+
+
+</div>
+<!-- // Sidebar Menu END -->
+
+<!-- Content -->
+<div id="content">
+
+<div class="navbar hidden-print navbar-primary box main" role="navigation">
+<a href="index.html?lang=en" class="glyphicons home pull-left hidden-xs"><i></i></a>
+<ul class="notifications pull-left hidden-xs">
+    <li class="dropdown notif">
+        <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="notif-block fa fa-comments-o"></i><span
+                class="badge badge-primary">7</span></a>
+        <ul class="dropdown-menu chat media-list">
+            <li class="media">
+                <a class="pull-left" href="#"><img class="media-object thumb"
+                                                   src="{% static 'assets/images/people/50/15.jpg' %}" alt="50x50"/></a>
+
+                <div class="media-body">
+                    <span class="label label-default pull-right">5 min</span>
+                    <h5 class="media-heading">Adrian D.</h5>
+
+                    <p class="margin-none">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                </div>
+            </li>
+            <li class="media">
+                <a class="pull-left" href="#"><img class="media-object thumb"
+                                                   src="{% static 'assets/images/people/50/16.jpg' %}" alt="50x50"/></a>
+
+                <div class="media-body">
+                    <span class="label label-default pull-right">2 days</span>
+                    <h5 class="media-heading">Jane B.</h5>
+
+                    <p class="margin-none">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                </div>
+            </li>
+            <li class="media">
+                <a class="pull-left" href="#"><img class="media-object thumb"
+                                                   src="{% static 'assets/images/people/50/17.jpg' %}" alt="50x50"/></a>
+
+                <div class="media-body">
+                    <span class="label label-default pull-right">3 days</span>
+                    <h5 class="media-heading">Andrew M.</h5>
+
+                    <p class="margin-none">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                </div>
+            </li>
+            <li><a href="#" class="btn btn-primary"><i class="fa fa-list"></i> <span>View all messages</span></a>
+            </li>
+        </ul>
+    </li>
+    <li class="dropdown notif">
+        <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="notif-block fa fa-bell-o"></i><span
+                class="badge badge-white">2</span></a>
+        <ul class="dropdown-menu alerts">
+            <li class="heading"><i class="fa fa-bell-o"></i><span>Alerts Heading</span></li>
+            <li>
+                <i class="fa fa-folder "></i> <a href="#">Ticket #283901</a>
+                <small> by Jane Smith</small>
+                <div class="action pull-right">
+                    <a href="" class="success"><i class="fa fa-check"></i></a> <a href="" class="delete"><i
+                        class="fa fa-times"></i></a>
+                </div>
+            </li>
+            <li>
+                <i class="fa fa-folder "></i> <a href="#">Ticket #333234</a>
+                <small> by Adrian D.</small>
+                <div class="action pull-right">
+                    <a href="" class="success"><i class="fa fa-check"></i></a> <a href="" class="delete"><i
+                        class="fa fa-times"></i></a>
+                </div>
+            </li>
+            <li>
+                <i class="fa fa-folder "></i> <a href="#">Ticket #484349</a>
+                <small> by mosaicpro</small>
+                <div class="action pull-right">
+                    <a href="" class="success active"><i class="fa fa-check"></i></a> <a href="" class="delete"><i
+                        class="fa fa-times"></i></a>
+                </div>
+            </li>
+            <li>
+                <i class="fa fa-folder "></i> <a href="#">Ticket #283901</a>
+                <small> by Mr. Awesome</small>
+                <div class="action pull-right">
+                    <a href="" class="success"><i class="fa fa-check"></i></a> <a href="" class="delete"><i
+                        class="fa fa-times"></i></a>
+                </div>
+            </li>
+            <li>
+                <i class="fa fa-user "></i> <a href="#">New Sign Up</a>
+                <small> by Adrian</small>
+                <div class="action pull-right">
+                    <a href="" class="success active"><i class="fa fa-check"></i></a> <a href="" class="delete"><i
+                        class="fa fa-times"></i></a>
+                </div>
+            </li>
+            <li>
+                <i class="fa fa-folder "></i> <a href="#">Ticket #283901</a>
+                <small> by Adrian Demian</small>
+                <div class="action pull-right">
+                    <a href="" class="success"><i class="fa fa-check"></i></a> <a href="" class="delete active"><i
+                        class="fa fa-times"></i></a>
+                </div>
+            </li>
+            <li>
+                <i class="fa fa-folder "></i> <a href="#">Ticket #283901</a>
+                <small> by Jane Smith</small>
+                <div class="action pull-right">
+                    <a href="" class="success"><i class="fa fa-check"></i></a> <a href="" class="delete"><i
+                        class="fa fa-times"></i></a>
+                </div>
+            </li>
+            <li>
+                <i class="fa fa-folder "></i> <a href="#">Ticket #333234</a>
+                <small> by Adrian D.</small>
+                <div class="action pull-right">
+                    <a href="" class="success"><i class="fa fa-check"></i></a> <a href="" class="delete"><i
+                        class="fa fa-times"></i></a>
+                </div>
+            </li>
+            <li>
+                <i class="fa fa-folder "></i> <a href="#">Ticket #484349</a>
+                <small> by mosaicpro</small>
+                <div class="action pull-right">
+                    <a href="" class="success active"><i class="fa fa-check"></i></a> <a href="" class="delete"><i
+                        class="fa fa-times"></i></a>
+                </div>
+            </li>
+            <li>
+                <i class="fa fa-folder "></i> <a href="#">Ticket #283901</a>
+                <small> by Mr. Awesome</small>
+                <div class="action pull-right">
+                    <a href="" class="success"><i class="fa fa-check"></i></a> <a href="" class="delete"><i
+                        class="fa fa-times"></i></a>
+                </div>
+            </li>
+            <li>
+                <i class="fa fa-user "></i> <a href="#">New Sign Up</a>
+                <small> by Adrian</small>
+                <div class="action pull-right">
+                    <a href="" class="success active"><i class="fa fa-check"></i></a> <a href="" class="delete"><i
+                        class="fa fa-times"></i></a>
+                </div>
+            </li>
+            <li>
+                <i class="fa fa-folder "></i> <a href="#">Ticket #283901</a>
+                <small> by Adrian Demian</small>
+                <div class="action pull-right">
+                    <a href="" class="success"><i class="fa fa-check"></i></a> <a href="" class="delete active"><i
+                        class="fa fa-times"></i></a>
+                </div>
+            </li>
+            <li class="center loadmore">
+                <a href="#"><i class="fa fa-spinner fa-spin"></i> Load more</a>
+            </li>
+        </ul>
+    </li>
+    <li class="dropdown notif">
+        <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="notif-block  fa fa-star-o"></i><span
+                class="label label-info">35%</span></a>
+        <ul class="dropdown-menu chart ">
+            <li>
+
+                <!-- Stats Widget -->
+                <a href="" class="btn-info">
+                    <div data-builder-exclude="element children" data-percent="35"
+                         class="easy-pie primary easyPieChart pull-left"><span class="value">35</span>%
+                    </div>
+
+                    <span class="txt">Overall Progress</span>
+                    <span class="clearfix"></span>
+                </a>
+                <!-- // Stats Widget END -->
+
+
+            </li>
+            <li class="innerAll">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi vitae sed vel quos quae earum
+                    dolores illo incidunt reprehenderit nihil.
+                </p>
+                <a href="#" class="more pull-right">Read more <i class="fa fa-arrow-circle-o-right"></i></a>
+
+                <div class="clearfix"></div>
+            </li>
+        </ul>
+    </li>
+</ul>
+
+<div class="col-md-3 visible-md visible-lg">
+    <div class="input-group">
+        <input type="text" class="form-control input-sm" placeholder="Search for your friends..."/>
+			      		<span class="input-group-btn">
+			        		<button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+			      		</span>
+    </div>
+    <!-- /input-group -->
+</div>
+
+<div class="user-action pull-right">
+    <div class="dropdown username">
+        <a class="dropdown-toggle " data-toggle="dropdown" href="#">Adrian Demian <span class="caret"></span> </a>
+        <ul class="dropdown-menu pull-right">
+            <li class="active"><a href="#" class="glyphicons user"><i></i> Profile</a></li>
+            <li><a href="#" class="glyphicons list"><i></i>Timeline</a></li>
+            <li><a href="#" class="glyphicons envelope"><i></i>Messages</a></li>
+            <li><a href="">Settings</a></li>
+            <li><a href="">Logout</a></li>
+        </ul>
+    </div>
+    <div class="dropdown dropdown-icons">
+        <a data-toggle="dropdown" href="#" class="btn btn-primary btn-circle dropdown-toggle"><i
+                class="fa fa-user"></i> </a>
+        <ul class="dropdown-menu">
+            <li data-toggle="tooltip" data-title="Photo Gallery" data-placement="left" data-container="body"><a
+                    href="#"><i class="fa fa-camera"></i></a></li>
+            <li data-toggle="tooltip" data-title="Event Calendar" data-placement="left" data-container="body"><a
+                    href="#"><i class="fa fa-calendar"></i></a></li>
+            <li data-toggle="tooltip" data-title="Archive" data-placement="left" data-container="body"><a
+                    href="#"><i class="fa fa-folder-open"></i></a></li>
+            <li data-toggle="tooltip" data-title="Contacts" data-placement="left" data-container="body"><a href="#"><i
+                    class="fa fa-phone-square"></i></a></li>
+        </ul>
+    </div>
+    <button class="btn btn-circle btn-navbar text-primary"><i class="fa fa-list fa-spin"></i></button>
+
+</div>
+<div class="clearfix"></div>
+</div>
+<!-- // END navbar -->
+<div class="layout-app"><!-- row-app -->
+<div class="row row-app">
+
+<!-- col -->
+<div class="col-sm-3 col-md-2">
+
+    <!-- col-separator.box -->
+    <div class="col-separator box col-separator-first">
+
+        <h4 class="innerAll border-bottom margin-none">Learning</h4>
+
+        <div class="border-bottom">
+            <ul class="list-group list-group-1 margin-none borders-none">
+                <li class="list-group-item active"><a href="#"><i class="fa fa-book"></i> Courses</a></li>
+                <li class="list-group-item"><a href="#"><span
+                        class="badge pull-right badge-primary hidden-md hidden-sm">13</span><i
+                        class="fa fa-envelope"></i> Messages</a></li>
+                <li class="list-group-item"><a href="#"><i class="fa fa-user"></i> My Profile</a></li>
+                <li class="list-group-item"><a href="#"><i class="fa fa-cogs"></i> Settings</a></li>
+                <li class="list-group-item border-bottom-none"><a href="#"><i class="fa fa-lock"></i> Logout</a></li>
+            </ul>
+        </div>
+
+        <div class="media innerAll margin-none border-bottom bg-gray">
+            <div class="pull-left">
+                Subscription
+                <div class="strong">25 days left</div>
+            </div>
+            <div class="media-body innerAll">
+                <div class="progress progress-mini margin-none">
+                    <div class="progress-bar progress-bar-primary" style="width: 80%"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- // END col-separator.box -->
+
+</div>
+<!-- // END col -->
+
+<!-- col -->
+<div class="col-sm-5 col-md-6">
+
+    <!-- col-separator -->
+    <div class="col-separator box col-unscrollable">
+
+        <!-- col-table -->
+        <div class="col-table">
+
+            <div class="heading-buttons innerLR border-bottom">
+                <h4 class="margin-none pull-left">Courses</h4>
+
+                <div class="btn-group btn-group-xs pull-right">
+                    <button class="btn btn-default active">All</button>
+                    <button class="btn btn-default btn-stroke">My Courses</button>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <!-- col-table-row -->
+            <div class="col-table-row">
+
+                <!-- col-app -->
+                <div class="col-app col-unscrollable">
+
+                    <!-- col-app -->
+                    <div class="col-app">
+
+                        <div class="innerAll bg-white">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="box-generic bg-primary-light text-center margin-none">
+                                        <div class="innerTB">
+                                            <div class="innerAll"><i class="fa fa-heart fa-4x text-primary"></i></div>
+                                            <h5 class="strong">Lorem ipsum dolor sit amet, consectetur.</h5>
+
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur,
+                                                architecto.</p>
+
+                                            <div class="innerAll">
+                                                <div class="progress bg-white progress-mini">
+                                                    <div class="progress-bar progress-bar-primary"
+                                                         style="width: 30%"></div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-sm btn-primary">Lesson 3/10 <i
+                                                    class="fa fa-fw fa-arrow-right"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="box-generic bg-primary-light text-center margin-none">
+                                        <div class="innerTB">
+                                            <div class="innerAll"><i class="fa fa-camera fa-4x text-primary"></i></div>
+                                            <h5 class="strong">Lorem ipsum dolor sit amet, consectetur.</h5>
+
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur,
+                                                architecto.</p>
+
+                                            <div class="innerAll">
+                                                <div class="progress bg-white progress-mini">
+                                                    <div class="progress-bar progress-bar-primary"
+                                                         style="width: 50%"></div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-sm btn-primary">Lesson 5/10 <i
+                                                    class="fa fa-fw fa-arrow-right"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-separator-h box"></div>
+                        <div class="heading-buttons innerLR border-bottom bg-white">
+                            <h4 class="margin-none pull-left">Available Courses</h4>
+
+                            <div class="btn-group btn-group-xs pull-right">
+                                <button class="btn btn-default active">All</button>
+                                <button class="btn btn-default btn-stroke">Beginners</button>
+                                <button class="btn btn-default btn-stroke">Advanced</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="innerAll">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="box-generic text-center">
+                                        <div class="innerTB">
+                                            <div class="innerAll"><i class="fa fa-map-marker fa-4x text-faded"></i>
+                                            </div>
+                                            <h5 class="strong">Lorem ipsum dolor sit amet, consectetur.</h5>
+
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur,
+                                                architecto.</p>
+                                            <button class="btn btn-sm btn-inverse">Start course <i
+                                                    class="fa fa-fw fa-play-circle"></i></button>
+                                        </div>
+                                        <!-- Ribbon -->
+                                        <div class="ribbon-wrapper">
+                                            <div class="ribbon">50% Off</div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="box-generic text-center">
+                                        <div class="innerTB">
+                                            <div class="innerAll"><i class="fa fa-globe fa-4x text-faded"></i></div>
+                                            <h5 class="strong">Lorem ipsum dolor sit amet, consectetur.</h5>
+
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur,
+                                                architecto.</p>
+                                            <button class="btn btn-sm btn-inverse">Start course <i
+                                                    class="fa fa-fw fa-play-circle"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="box-generic text-center">
+                                        <div class="innerTB">
+                                            <div class="innerAll"><i class="fa fa-code-fork fa-4x text-faded"></i></div>
+                                            <h5 class="strong">Lorem ipsum dolor sit amet, consectetur.</h5>
+
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur,
+                                                architecto.</p>
+                                            <button class="btn btn-sm btn-inverse">Start course <i
+                                                    class="fa fa-fw fa-play-circle"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="box-generic text-center">
+                                        <div class="innerTB">
+                                            <div class="innerAll"><i class="fa fa-twitter fa-4x text-faded"></i></div>
+                                            <h5 class="strong">Lorem ipsum dolor sit amet, consectetur.</h5>
+
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur,
+                                                architecto.</p>
+                                            <button class="btn btn-sm btn-inverse">Start course <i
+                                                    class="fa fa-fw fa-play-circle"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- // END col-app -->
+
+                </div>
+                <!-- // END col-app -->
+
+            </div>
+            <!-- // END col-table-row -->
+
+            <div class="text-center innerAll border-top">
+                <ul class="pagination margin-none">
+                    <li class="disabled"><a href="#">&laquo;</a></li>
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">&raquo;</a></li>
+                </ul>
+
+            </div>
+
+        </div>
+        <!-- // END col-table -->
+
+    </div>
+    <!-- // END col-separator.box -->
+
+</div>
+<!-- // END col -->
+
+<!-- col -->
+<div class="col-sm-4">
+
+    <!-- col-separator.box -->
+    <div class="col-separator col-unscrollable box">
+
+        <!-- col-table -->
+        <div class="col-table">
+
+            <h4 class="innerAll margin-none border-bottom">My Profile</h4>
+
+            <!-- col-table-row -->
+            <div class="col-table-row">
+
+                <!-- col-app -->
+                <div class="col-app col-unscrollable">
+
+                    <!-- col-app -->
+                    <div class="col-app">
+
+                        <div class="bg-gray innerAll">
+                            <div class="media">
+                                <img src="{% static 'assets/images/people/100/10.jpg' %}"
+                                     class="pull-left img-responsive img-circle thumb hidden-sm" width="100"/>
+
+                                <div class="media-body">
+                                    <h3 class="margin-none">Mr. Awesome</h3>
+
+                                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                        Voluptas, ducimus, quidem odit officia minus optio eligendi explicabo non
+                                        facilis laborum ea iure voluptatem magnam repudiandae dolores natus vero in
+                                        reiciendis.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-separator-h box"></div>
+
+                        <!-- Row -->
+                        <div class="row row-merge margin-none">
+                            <div class="col-lg-6">
+
+                                <a href="" class="widget-stats widget-stats-1 widget-stats-inverse margin-none">
+                                    <span class="glyphicons certificate"><i></i><span
+                                            class="txt">Completed courses</span></span>
+
+                                    <div class="clearfix"></div>
+                                    <span class="count">25</span>
+                                </a>
+
+                            </div>
+                            <div class="col-lg-6">
+
+                                <a href="" class="widget-stats widget-stats-primary widget-stats-1 margin-none">
+                                    <span class="glyphicons book"><i></i><span class="txt">Avg. Score (%)</span></span>
+
+                                    <div class="clearfix"></div>
+                                    <span class="count">85</span>
+                                </a>
+
+                            </div>
+                        </div>
+                        <!-- // Row END -->
+
+                        <div class="border-top">
+                            <a href="" class="widget-stats widget-stats-2 text-regular margin-none">
+                                <span class="count">3/5</span>
+                                <span class="txt"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+                                        class="fa fa-star"></i> Stars</span>
+                            </a>
+                        </div>
+
+                        <div class="col-separator-h box"></div>
+
+                        <div class="innerAll text-center">
+                            <div class="innerAll">
+                                <h1>Education Rocks!</h1>
+
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, explicabo, totam
+                                    excepturi maxime ab sint facilis expedita laboriosam possimus non facere quidem
+                                    quibusdam dolor commodi necessitatibus fugit laborum recusandae numquam.</p>
+                                <button class="btn btn-primary btn-lg">Sign me up!</button>
+                            </div>
+                        </div>
+
+                        <div class="col-separator-h box"></div>
+
+                    </div>
+                    <!-- // END col-app -->
+
+                </div>
+                <!-- // END col-app.col-unscrollable -->
+
+            </div>
+            <!-- // END col-table-row -->
+
+        </div>
+        <!-- // END col-table -->
+
+    </div>
+    <!-- // END col-separator.box -->
+
+</div>
+<!-- // END col -->
+
+</div>
+</div>
+</div>
+<!-- // Content END -->
+
+<div class="clearfix"></div>
+<!-- // Sidebar menu & content wrapper END -->
+
+<div id="footer" class="hidden-print">
+
+    <!--  Copyright Line -->
+    <div class="copy">&copy; 2012 - 2013 - <a href="http://www.mosaicpro.biz">MosaicPro</a> - All Rights Reserved. <a
+            href="http://themeforest.net/?ref=mosaicpro" target="_blank">Purchase CORAL on ThemeForest</a> - Current
+        version: v1.0.0 / <a target="_blank" href="http://demo.mosaicpro.biz/flatkit/CHANGELOG">changelog</a></div>
+    <!--  End Copyright Line -->
+
+</div>
+<!-- // Footer END -->
+
+</div>
+<!-- // Main Container Fluid END -->
+
+
+<!-- Global -->
+<script>
+    var basePath = '',
+            commonPath = '../assets/',
+            rootPath = '../',
+            DEV = false,
+            componentsPath = '../assets/components/';
+
+    var primaryColor = '#8ad4cf',
+            dangerColor = '#b55151',
+            successColor = '#609450',
+            warningColor = '#ab7a4b',
+            inverseColor = '#45484d';
+
+    var themerPrimaryColor = primaryColor;
+</script>
+
+<script src="{% static 'assets/library/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/library/modernizr/modernizr.js' %}"></script>
+<script src="{% static 'assets/plugins/holder/holder.js' %}"></script>
+<script src="{% static 'assets/plugins/nicescroll/jquery.nicescroll.min.js' %}"></script>
+<script src="{% static 'assets/plugins/slimscroll/jquery.slimscroll.js' %}"></script>
+<script src="{% static 'assets/components/plugins/image-preview/image-preview.js' %}"></script>
+<script src="{% static 'assets/components/core/js/animations.init.js' %}"></script>
+<script src="{% static 'assets/modules/admin/gallery/blueimp-gallery/assets/lib/js/blueimp-gallery.min.js' %}"></script>
+<script src="{% static 'assets/modules/admin/gallery/blueimp-gallery/assets/lib/js/jquery.blueimp-gallery.min.js' %}"></script>
+<script src="{% static 'assets/modules/admin/charts/easy-pie/assets/custom/easy-pie.init.js' %}"></script>
+<script src="{% static 'assets/modules/admin/charts/easy-pie/assets/lib/js/jquery.easy-pie-chart.js' %}"></script>
+<script src="{% static 'assets/helpers/themer/assets/plugins/cookie/jquery.cookie.js' %}"></script>
+<script src="{% static 'assets/components/core/js/core.init.js' %}"></script>
+</body>
+</html>
