@@ -48,157 +48,110 @@
     {% else %}
         <div class="col-sm-12 col-md-7">
 
-            <!-- col-separator -->
-            <div class="col-separator col-separator-first box col-unscrollable">
 
-                <!-- col-table -->
-                <div class="col-table">
+            <div class="heading-buttons innerLR border-bottom">
+                <h3 class="margin-none innerTB pull-left">Current Courses</h3>
 
-                    <div class="heading-buttons innerLR border-bottom">
-                        <h3 class="margin-none innerTB pull-left">Current Courses</h3>
+                <div class="clearfix"></div>
+            </div>
 
-                        <div class="clearfix"></div>
-                    </div>
 
-                    <!-- col-table-row -->
-                    <div class="col-table-row">
-
-                        <!-- col-app -->
-                        <div class="col-app col-unscrollable">
-
-                            <!-- col-app -->
-                            <div class="col-app">
-
-                                <div class="innerAll bg-white">
-                                    <div class="row">
-                                        {% for course in user.courseraprofile.courses.all %}
-                                            <div class="col-lg-6" id="course-{{ course.id }}-div">
-                                                <div class="box-generic bg-primary-light text-center main-selections">
-                                                    <div class="innerTB">
-                                                        <div class="innerAll"><i
-                                                                class="fa fa-heart fa-4x text-primary"></i>
-                                                        </div>
-                                                        <h5 class="strong">{{ course.title }}</h5>
-
-                                                        <p>{{ course.description }}</p>
-
-                                                        <div class="innerAll">
-                                                            <div class="progress bg-white progress-mini">
-                                                                <div class="progress-bar progress-bar-primary"
-                                                                     style="width: 30%"></div>
-                                                            </div>
-                                                        </div>
-                                                        <button class="btn btn-sm btn-primary">Lesson 3/10 <i
-                                                                class="fa fa-fw fa-arrow-right"></i></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {% endfor %}
+            <div class="innerAll bg-white">
+                <div class="row">
+                    {% for course in user.courseraprofile.courses.all %}
+                        <div class="col-lg-6" id="course-{{ course.id }}-div">
+                            <div class="box-generic bg-primary-light text-center main-selections">
+                                <div class="innerTB">
+                                    <div class="innerAll"><i
+                                            class="fa fa-heart fa-4x text-primary"></i>
                                     </div>
+                                    <h5 class="strong">{{ course.title }}</h5>
+
+                                    <p>{{ course.description }}</p>
+
+                                    <div class="innerAll">
+                                        <div class="progress bg-white progress-mini">
+                                            <div class="progress-bar progress-bar-primary"
+                                                 style="width: 30%"></div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-sm btn-primary">Lesson 3/10 <i
+                                            class="fa fa-fw fa-arrow-right"></i></button>
                                 </div>
                             </div>
-                            <!-- // END col-app -->
                         </div>
-                        <!-- // END col-app -->
-
-                    </div>
-                    <!-- // END col-table-row -->
+                    {% endfor %}
                 </div>
-                <!-- // END col-table -->
-
             </div>
-            <!-- // END col-separator.box -->
-
         </div>
-        <!-- // END col -->
+        <!-- // END col-app -->
+
 
         <!-- col -->
         {% for course in user.courseraprofile.courses.all %}
             <div class="col-md-5 col-sm-12 sides {% if forloop.first %}sides-first{% endif %}"
                  id="side-{{ course.id }}">
 
-                <!-- col-separator.box -->
-                <div class="col-separator col-unscrollable box">
 
-                    <!-- col-table -->
-                    <div class="col-table">
-
-                        <h4 class="innerAll margin-none border-bottom">{{ course.title }}</h4>
-
-                        <div class="col-table-row">
-
-                            <!-- col-app -->
-                            <div class="col-app col-unscrollable">
-
-                                <!-- col-app -->
-                                <div class="col-app">
-
-                                    <div class="col-separator-h box"></div>
-
-                                    <div class="innerAll text-center">
-                                        <div class="innerAll">
-                                            <div class="col-sm-6">
-                                                {% for pledge in pledges %}{% if pledge.course == course %}
-                                                    <h1>Your Pledge</h1>
-                                                    <h3 class="cursive">${{ pledge.money|floatformat:2 }}</h3>
-                                                    <h4>To get at least {{ pledge.get_aim|floatformat:0 }}%</h4>
-                                                    <a href="{% url 'pledges:share' pledge.id %}">
-                                                        <button class="btn btn-primary btn-lg">View</button>
-                                                    </a>
-                                                    {{ forloop|break }}
-                                                {% endif %}{% if forloop.last or pledges.count == 1 %}
-                                                    <h4>No Pledge for this course. Make one now!</h4>
-                                                    <a href="{% url 'pledges:create' %}">
-                                                        <button class="btn btn-primary btn-lg">Create</button>
-                                                    </a>
-                                                {% endif %}{% endfor %}
-                                                {% if not pledges %}<h4>No Pledge for this course. Make one now!</h4>
-                                                    <a href="{% url 'pledges:create' %}">
-                                                        <button class="btn btn-primary btn-lg">Create</button>
-                                                    </a>{% endif %}
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <h3>Current Progress</h3>
-                                                {% for progress in progresses %}
-                                                    {% if progress.quiz.course == course %}
-                                                        <p>{{ progress|safe }}</p>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- // END col-app -->
-
-                                </div>
-                                <!-- // END col-app.col-unscrollable -->
-
-                            </div>
-                        </div>
-                        <!-- // END col-table-row -->
-                        <!-- Widget -->
-                        <div class="widget widget-body-gray">
-                            <!-- Widget Heading -->
-                            <div class="widget-head">
-                                <h4 class="heading glyphicons calendar"><i></i>Calendar</h4>
-                            </div>
-                            <!-- // Widget Heading END -->
-
-                            <div class="widget-body innerAll inner-2x">
-                                <div data-component>
-                                    <div id="calendar-{{ course.id }}"></div>
-
-                                </div>
-
-
-                            </div>
-                        </div>
-                        <!-- col-table-row -->
+                <div class="widget widget-body-white">
+                    <!-- Widget Heading -->
+                    <div class="widget-head">
+                        <h4 class="heading glyphicons calendar"><i></i>{{ course.title }}</h4>
                     </div>
-                    <!-- // END col-table -->
+                    <!-- // Widget Heading END -->
 
+                    <div class="widget-body innerAll inner-2x">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                {% for pledge in pledges %}{% if pledge.course == course %}
+                                    <h1>Your Pledge</h1>
+                                    <h3 class="cursive">${{ pledge.money|floatformat:2 }}</h3>
+                                    <h4>To get at least {{ pledge.get_aim|floatformat:0 }}%</h4>
+                                    <a href="{% url 'pledges:share' pledge.id %}">
+                                        <button class="btn btn-primary btn-lg">View</button>
+                                    </a>
+                                    {{ forloop|break }}
+                                {% endif %}{% if forloop.last or pledges.count == 1 %}
+                                    <h4>No Pledge for this course. Make one now!</h4>
+                                    <a href="{% url 'pledges:create' %}">
+                                        <button class="btn btn-primary btn-lg">Create</button>
+                                    </a>
+                                {% endif %}{% endfor %}
+                                {% if not pledges %}<h4>No Pledge for this course. Make one now!</h4>
+                                    <a href="{% url 'pledges:create' %}">
+                                        <button class="btn btn-primary btn-lg">Create</button>
+                                    </a>{% endif %}
+                            </div>
+                            <div class="col-sm-6">
+                                <h3>Current Progress</h3>
+                                {% for progress in progresses %}
+                                    {% if progress.quiz.course == course %}
+                                        <p>{{ progress|safe }}</p>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <!-- // END col-separator.box -->
 
+                <!-- Widget -->
+                <div class="widget widget-body-gray">
+                    <!-- Widget Heading -->
+                    <div class="widget-head">
+                        <h4 class="heading glyphicons calendar"><i></i>Calendar</h4>
+                    </div>
+                    <!-- // Widget Heading END -->
+
+                    <div class="widget-body innerAll inner-2x">
+                        <div data-component>
+                            <div id="calendar-{{ course.id }}"></div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- col-table-row -->
             </div>
         {% endfor %}
     {% endif %}
