@@ -1,57 +1,47 @@
-{% extends 'base.html' %}
+{% extends 'base-app.html' %}
 {% load staticfiles %}
-{% block headers_css %}
+{% block additionalHeaders %}
     <link href='http://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
+    <link href="{% static 'css/auth-buttons.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style-app.css' %}"/>
 {% endblock %}
 {% block content %}
-    {% include 'nav-bar.html' %}
-    <div class="row main-interface">
-        <div class="row">
-            <div class="large-12 columns">
-                <div class="row">
-                    <div class="large-12 text-center">
-                        <h1>Your Pledges</h1>
-                    </div>
-                </div>
-                <div class="row extra-top-margin">
-                    <div class="large-10 centered">
-                        <ul class="list-large">
-                            {% for pledge in all_pledges_list %}
-                                <li>
-                                    <div class="large-8 columns">
-                                        <label class="h4">{{ pledge.course }}</label>
-                                    </div>
-                                    <div class="large-4 columns padding-bottom">
-                                        <div class="toggleContainer action">
-                                            <div class="large-6 columns">
-                                                <h3 class="cursive">$ {{ pledge.money|floatformat:2 }}</h3></div>
-                                            <div class="large-6 columns">
-                                                <a href="{% url 'pledges:share' pledge.id %}">
-                                                    <button class="other-button text-right">View</button>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr/>
-                                </li>
+    <div class="jumbotron margin-none center">
+        <h1 class="separator bottom">Your Pledges</h1>
 
-                            {% endfor %}
-                        </ul>
+        <div class="row extra-top-margin col-separator" style="position: static;">
+            {% for pledge in all_pledges_list %}
+                {% if forloop.first %}
+                    <div class="col-separator-h"></div>
+                {% endif %}
+                <div class="media margin-none">
+                    <a class="pull-left bg-success innerAll text-center" href="#"><i
+                            class="fa fa-fw icon-desktop-play fa-5x"></i></a>
+
+                    <div class="media-body innerAll">
+                        <h4 class="media-heading innerT"><a href=""
+                                                            class="text-inverse">{{ pledge.course }}</a> <span
+                                class="text-small"><i
+                                class="fa fa-fw fa-clock-o"></i>&nbsp; {{ pledge.created }}</span>
+                        </h4>
+
+                        <div class="row extra-top-margin">
+                            <div class="col-sm-6">
+                                Pledge of &nbsp;<h3 style="display: inline" class="cursive">
+                                $ {{ pledge.money|floatformat:2 }}</h3> &nbsp;to get at least {{ pledge.get_aim|floatformat:0 }}%
+                            </div>
+                            <div class="col-sm-6">
+                                <a href="{% url 'pledges:share' pledge.id %}">
+                                    <button class="btn btn-primary btn-lg text-right">View</button>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="col-separator-h"></div>
+            {% endfor %}
         </div>
     </div>
-    <footer class="row">
-        <div class="large-12 columns">
-            <hr/>
-            <div class="row">
-                <div class="large-6 columns">
-                    <p>© Copyright Wisely</p>
-                </div>
-            </div>
-        </div>
-    </footer>
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'js/jquery.number.js' %}"></script>

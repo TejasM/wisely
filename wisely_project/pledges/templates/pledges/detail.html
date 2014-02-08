@@ -1,125 +1,91 @@
-{% extends 'base.html' %}
+{% extends 'base-app.html' %}
 {% load staticfiles %}
-{% block headers_css %}
+{% block additionalHeaders %}
     <link href='http://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style-app.css' %}"/>
 {% endblock %}
 {% block content %}
-    {% include 'nav-bar.html' %}
-    <div class="row main-interface">
-        <div class="row">
-            {% if form %}
-                <div class="row">
-                    <div class="large-12 columns">
-                        <div class="large-1 columns text-center">
-                            <div class="cursive page-number">3</div>
-                        </div>
-                        <div class="large-1 columns right-align text-center">
-                            <span class="question-mark">?</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="large-12 columns text-center">
-                        <h1>Here is your pledge!</h1>
+    {% if form %}
+        <div class="jumbotron margin-none center bg-white">
+            <h1 class="separator bottom">Here is your pledge!</h1>
 
-                        <h2>Looking Good</h2>
-                    </div>
-                </div>
-                <div class="row extra-top-margin">
-                    <div class="large-4 text-center centered">
-                        <div class="row collapse">
-                            <div class="large-12 columns extra-top-margin">
-                                <span class="course-title"><h3>{{ pledge.course }}</h3></span>
-                            </div>
-                            <div class="small-3 large-4 columns extra-top-margin">
-                                <span class="dollar prefix">$</span>
-                            </div>
-                            <div class="small-9 large-8 columns extra-top-margin">
-                                <span class="left dollar-detail">{{ pledge.money|floatformat:2 }}</span>
-                            </div>
-                            <div class="large-12 columns extra-top-margin">
-                                <button class="other-button pull-1" id="real-make" type="submit">Make It Real</button>
-                                <button class="other-button push-1" id="trial" type="submit">Take A Trial</button>
-                            </div>
-                        </div>
-                        <form method="post" action="" id="pay-form">
-                            {% csrf_token %}
-                            <input type="hidden" value="trial" name="type" id="type">
-                        </form>
-                        <script src="https://checkout.stripe.com/checkout.js"></script>
-                        <script>
-                            var string = "#real-make";
-                            var string2 = "#pay-form";
-                            $('#trial').click(function () {
-                                $(string2).submit();
-                            });
-                            $(string).click(function () {
-                                var token = function (res) {
-                                    var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                    $(string2).append($input).submit();
-                                };
-                                var money = parseInt("{{ pledge.money }}") * 100;
-                                $('#type').val('real');
-                                if (!isNaN(money)) {
-                                    StripeCheckout.open({
-                                        key: 'pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb',
-                                        address: false,
-                                        amount: money,
-                                        currency: 'cad',
-                                        name: "Pledge",
-                                        description: "For " + "{{ pledge.course }}",
-                                        panelLabel: 'Pledge ',
-                                        token: token
-                                    });
-                                }
-                                return false;
-                            });
-                        </script>
-                    </div>
-                </div>
-            {% else %}
-                <div class="large-12 columns">
+            <h2 class="heading">Looking Good</h2>
+
+            <div class="innerLR row extra-top-margin">
+                <div class="col-sm-8 col-sm-offset-2">
                     <div class="row">
-                        <div class="large-12 text-center">
-                            <h1>Your Pledge</h1>
-
-                            <h2>Looking Good!</h2>
-                        </div>
+                        <span class="course-title"><h3>{{ pledge.course }}</h3></span>
                     </div>
                     <div class="row extra-top-margin">
-                        <div class="large-4 text-center centered">
-                            <div class="row collapse">
-                                <div class="large-12 columns extra-top-margin">
-                                    <span class="course-title"><h3>{{ pledge.course }}</h3></span>
-                                </div>
-                                <div class="small-3 large-4 columns extra-top-margin">
-                                    <span class="dollar prefix">$</span>
-                                </div>
-                                <div class="small-9 large-8 columns extra-top-margin">
-                                    <span class="left dollar-detail">{{ pledge.money|floatformat:2 }}</span>
-                                </div>
-                                <div class="large-12 columns extra-top-margin">
-                                    <a href="{% url 'pledges:index' %}">
-                                        <button class="other-button" type="submit">Back</button>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                        <span class="dollar-detail">$ {{ pledge.money|floatformat:2 }}</span>
                     </div>
-                </div>
-            {% endif %}
-        </div>
-    </div>
-    <footer class="row">
-        <div class="large-12 columns">
-            <hr/>
-            <div class="row">
-                <div class="large-6 columns">
-                    <p>© Copyright Wisely</p>
+                    <div class="row">
+                        <h3>To get at least {{ pledge.get_aim|floatformat:0 }}%</h3>
+                    </div>
+                    <div class="row">
+                        <button class="btn btn-primary btn-lg" id="trial" type="submit">Make It Real</button>
+
+                        <button class="btn btn-primary btn-lg" id="trial" type="submit">Take A Trial</button>
+                    </div>
+                    <form method="post" action="" id="pay-form">
+                        {% csrf_token %}
+                        <input type="hidden" value="trial" name="type" id="type">
+                    </form>
+                    <script src="https://checkout.stripe.com/checkout.js"></script>
+                    <script>
+                        var string = "#real-make";
+                        var string2 = "#pay-form";
+                        $('#trial').click(function () {
+                            $(string2).submit();
+                        });
+                        $(string).click(function () {
+                            var token = function (res) {
+                                var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                $(string2).append($input).submit();
+                            };
+                            var money = parseInt("{{ pledge.money }}") * 100;
+                            $('#type').val('real');
+                            if (!isNaN(money)) {
+                                StripeCheckout.open({
+                                    key: 'pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb',
+                                    address: false,
+                                    amount: money,
+                                    currency: 'cad',
+                                    name: "Pledge",
+                                    description: "For " + "{{ pledge.course }}",
+                                    panelLabel: 'Pledge ',
+                                    token: token
+                                });
+                            }
+                            return false;
+                        });
+                    </script>
                 </div>
             </div>
         </div>
-    </footer>
+    {% else %}
+        <div class="jumbotron margin-none center bg-white">
+            <h1 class="separator bottom">Here is your pledge!</h1>
+
+            <h2 class="heading">Looking Good</h2>
+
+            <div class="innerLR row extra-top-margin">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <div class="row">
+                        <span class="course-title"><h3>{{ pledge.course }}</h3></span>
+                    </div>
+                    <div class="row extra-top-margin">
+                        <span class="dollar-detail">$ {{ pledge.money|floatformat:2 }}</span>
+                    </div>
+                    <div class="row">
+                        <a href="{% url 'pledges:index' %}">
+                            <button class="btn btn-primary btn-lg" type="submit">Back</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'js/jquery.number.js' %}"></script>

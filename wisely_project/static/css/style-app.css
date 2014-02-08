@@ -48,3 +48,42 @@ select.course {
     width: 30px;
     height: 30px;
 }
+
+input[type='text'].dollar {
+    font-family: 'Satisfy', cursive;
+    font-size: 25px;
+    height: 66px;
+    padding-left: 20px;
+}
+
+span.dollar-detail {
+    font-family: 'Satisfy', cursive;
+    font-size: 50px;
+    height: 66px;
+    width: 100%;
+    padding-top: 20px;
+}
+
+.cursive {
+    font-family: 'Satisfy', cursive;
+}
+
+.extra-top-small-margin {
+    margin-top: 10px !important;
+}
+
+.main-selections:hover, .main-selections:focus {
+    background: #FF9E91 !important;
+}
+
+.extra-top-mini-margin {
+    margin-top: 5px !important;
+}
+
+.extra-top-margin {
+    margin-top: 20px !important;
+}
+
+.extra-top-large-margin {
+    margin-top: 35px !important;
+}

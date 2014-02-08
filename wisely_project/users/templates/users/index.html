@@ -1,6 +1,19 @@
 {% extends 'base-app.html' %}
 {% load breaktag %}
 {% load staticfiles %}
+{% block additionalHeaders %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style-app.css' %}"/>
+{% endblock %}
+{% block nav-bar %}
+    <li class="active"><a href="{% url 'users:index' %}"><i class="fa fa-book"></i><span>Courses</span></a>
+    </li>
+    <li class=""><a href="{% url 'pledges:index' %}"><i
+            class="fa fa-book"></i><span>Pledges</span></a>
+    </li>
+    <li class=""><a href="#"><i
+            class="fa fa-book"></i><span>More Coming Soon!</span></a>
+    </li>
+{% endblock %}
 {% block content %}
     <!-- col -->
     {% if form %}
@@ -60,7 +73,7 @@
                                     <div class="row">
                                         {% for course in user.courseraprofile.courses.all %}
                                             <div class="col-lg-6" id="course-{{ course.id }}-div">
-                                                <div class="box-generic bg-primary-light text-center">
+                                                <div class="box-generic bg-primary-light text-center main-selections">
                                                     <div class="innerTB">
                                                         <div class="innerAll"><i
                                                                 class="fa fa-heart fa-4x text-primary"></i>
@@ -100,74 +113,99 @@
         <!-- // END col -->
 
         <!-- col -->
-        <div class="col-md-5 col-sm-12">
+        {% for course in user.courseraprofile.courses.all %}
+            <div class="col-md-5 col-sm-12 sides {% if forloop.first %}sides-first{% endif %}"
+                 id="side-{{ course.id }}">
 
-            <!-- col-separator.box -->
-            <div class="col-separator col-unscrollable box">
+                <!-- col-separator.box -->
+                <div class="col-separator col-unscrollable box">
 
-                <!-- col-table -->
-                <div class="col-table">
+                    <!-- col-table -->
+                    <div class="col-table">
 
-                    <h4 class="innerAll margin-none border-bottom">Course Selected Title</h4>
+                        <h4 class="innerAll margin-none border-bottom">{{ course.title }}</h4>
 
-                    <!-- Widget -->
-                    <div class="widget widget-body-gray">
-                        <!-- Widget Heading -->
-                        <div class="widget-head">
-                            <h4 class="heading glyphicons calendar"><i></i>Calendar</h4>
-                        </div>
-                        <!-- // Widget Heading END -->
-
-                        <div class="widget-body innerAll inner-2x">
-                            <div data-component>
-                                <div id="calendar"></div>
-
-                            </div>
-
-
-                        </div>
-                    </div>
-                    <!-- col-table-row -->
-                    <div class="col-table-row">
-
-                        <!-- col-app -->
-                        <div class="col-app col-unscrollable">
+                        <div class="col-table-row">
 
                             <!-- col-app -->
-                            <div class="col-app">
+                            <div class="col-app col-unscrollable">
 
-                                <div class="col-separator-h box"></div>
+                                <!-- col-app -->
+                                <div class="col-app">
 
-                                <div class="innerAll text-center">
-                                    <div class="innerAll">
-                                        <h1>Your Pledge</h1>
+                                    <div class="col-separator-h box"></div>
 
-                                        <p>Congrats you are pledging .... Or You are not?</p>
-                                        <button class="btn btn-primary btn-lg">Pledge Now!</button>
+                                    <div class="innerAll text-center">
+                                        <div class="innerAll">
+                                            <div class="col-sm-6">
+                                                {% for pledge in pledges %}{% if pledge.course == course %}
+                                                    <h1>Your Pledge</h1>
+                                                    <h3 class="cursive">${{ pledge.money|floatformat:2 }}</h3>
+                                                    <h4>To get at least {{ pledge.get_aim|floatformat:0 }}%</h4>
+                                                    <a href="{% url 'pledges:share' pledge.id %}">
+                                                        <button class="btn btn-primary btn-lg">View</button>
+                                                    </a>
+                                                    {{ forloop|break }}
+                                                {% endif %}{% if forloop.last or pledges.count == 1 %}
+                                                    <h4>No Pledge for this course. Make one now!</h4>
+                                                    <a href="{% url 'pledges:create' %}">
+                                                        <button class="btn btn-primary btn-lg">Create</button>
+                                                    </a>
+                                                {% endif %}{% endfor %}
+                                                {% if not pledges %}<h4>No Pledge for this course. Make one now!</h4>
+                                                    <a href="{% url 'pledges:create' %}">
+                                                        <button class="btn btn-primary btn-lg">Create</button>
+                                                    </a>{% endif %}
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <h3>Current Progress</h3>
+                                                {% for progress in progresses %}
+                                                    {% if progress.quiz.course == course %}
+                                                        <p>{{ progress|safe }}</p>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
                                     </div>
+                                    <!-- // END col-app -->
+
                                 </div>
+                                <!-- // END col-app.col-unscrollable -->
+
                             </div>
-                            <!-- // END col-app -->
-
                         </div>
-                        <!-- // END col-app.col-unscrollable -->
+                        <!-- // END col-table-row -->
+                        <!-- Widget -->
+                        <div class="widget widget-body-gray">
+                            <!-- Widget Heading -->
+                            <div class="widget-head">
+                                <h4 class="heading glyphicons calendar"><i></i>Calendar</h4>
+                            </div>
+                            <!-- // Widget Heading END -->
 
+                            <div class="widget-body innerAll inner-2x">
+                                <div data-component>
+                                    <div id="calendar-{{ course.id }}"></div>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <!-- col-table-row -->
                     </div>
-                    <!-- // END col-table-row -->
+                    <!-- // END col-table -->
 
                 </div>
-                <!-- // END col-table -->
+                <!-- // END col-separator.box -->
 
             </div>
-            <!-- // END col-separator.box -->
-
-        </div>
+        {% endfor %}
     {% endif %}
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'assets/components/modules/admin/calendar/assets/lib/js/fullcalendar.min.js' %}?v=v1.9.6&sv=v0.0.1"></script>
     <script src="{% static 'assets/components/modules/admin/calendar/assets/lib/js/gcal.js' %}?v=v1.9.6&sv=v0.0.1"></script>
-    <script src="{% static 'assets/components/modules/admin/calendar/assets/custom/js/calendar.init.js' %}?v=v1.9.6&sv=v0.0.1"></script>
     <script>
         $(function () {
             {% if wait %}
@@ -177,6 +215,27 @@
             $('#update-coursera').click(function () {
                 $('#coursera-update').lightbox_me({centered: true});
             });
+            {% for course in user.courseraprofile.courses.all %}
+                $('#calendar-{{ course.id }}').fullCalendar({
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'month,agendaWeek,agendaDay'
+                    },
+                    editable: false,
+                    droppable: false,
+                    events: {
+                    }
+                });
+                $('#course-{{ course.id }}-div').click(function () {
+                    $('.sides').hide();
+                    $('#side-{{ course.id }}').show();
+                });
+                if (!window.location.origin)
+                    window.location.origin = window.location.protocol + "//" + window.location.host;
+            {% endfor %}
+            $('.sides').hide();
+            $('.sides-first').show();
         });
     </script>
 

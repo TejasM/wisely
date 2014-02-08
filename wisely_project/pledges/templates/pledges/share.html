@@ -1,121 +1,50 @@
-{% extends 'base.html' %}
+{% extends 'base-app.html' %}
 {% load staticfiles %}
-{% block headers_css %}
+{% block additionalHeaders %}
     <link href='http://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
+    <link href="{% static 'css/auth-buttons.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style-app.css' %}"/>
 {% endblock %}
 {% block content %}
-    {% include 'nav-bar.html' %}
-    <div class="row main-interface">
-    <div class="row">
-    {% if form %}
-        <div class="row">
-            <div class="large-12 columns">
-                <div class="large-1 columns text-center">
-                    <div class="cursive page-number">4</div>
-                </div>
-                <div class="large-1 columns right-align text-center">
-                    <span class="question-mark">?</span>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="large-12 columns text-center">
-                <h1>Share Your Pledge</h1>
+    <div class="jumbotron margin-none center bg-white">
+        <h1 class="separator bottom">Share Your pledge!</h1>
 
-                <h2>Be even more motivated!</h2>
-            </div>
-        </div>
-        <div class="row extra-top-margin">
-            <div class="large-4 columns large-centered text-center centered">
-                <div class="row collapse">
-                    <div class="large-12 columns extra-top-margin">
-                        <span class="course-title"><h3>{{ pledge.course }}</h3></span>
-                    </div>
-                    <div class="small-3 large-4 columns extra-top-margin">
-                        <span class="dollar prefix">$</span>
-                    </div>
-                    <div class="small-9 large-8 columns extra-top-margin">
-                        <span class="left dollar-detail">{{ pledge.money|floatformat:2 }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row extra-top-margin">
-            <div class="large-6 large-centered text-center centered">
-                <div class="large-6 columns">
-                    <button class="btn-auth btn-facebook" id="share-facebook" type="submit">Share
-                        on <b>Facebook</b>
-                    </button>
-                </div>
-                <div class="large-6 columns">
-                    <a class="twitter popup"
-                       href="http://twitter.com/share?text=I%20have%20just%20made%20a%20pledge%20for%20{{ pledge.course }}%2C%20help%20me%20stay%20motivated%20by%20following%20the%20pledge!&url=http://www.projectwisely.com/follow/{{ pledge.id }}">
-                        <button class="btn-auth btn-twitter" id="share-twitter" type="submit">Share
-                            on <b>Twitter</b>
-                        </button>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="row extra-top-margin">
-            <div class="large-4 columns large-centered text-center centered">
-                <div class="row collapse">
-                    <a href="{% url 'pledges:index' %}">
-                        <button class="other-button">Finish</button>
-                    </a>
-                </div>
-            </div>
-        </div>
-    {% else %}
-        <div class="row">
-            <div class="large-12 text-center">
-                <h1>Share Your Pledge</h1>
+        <h2 class="heading">Get Even More Motivated</h2>
 
-                <h2>Be even more motivated!</h2>
-            </div>
-        </div>
-        <div class="row extra-top-margin">
-            <div class="large-4 text-center centered">
-                <div class="row collapse">
-                    <div class="large-12 columns extra-top-margin">
-                        <span class="course-title"><h3>{{ pledge.course }}</h3></span>
-                    </div>
-                    <div class="small-3 large-4 columns extra-top-margin">
-                        <span class="dollar prefix">$</span>
-                    </div>
-                    <div class="small-9 large-8 columns extra-top-margin">
-                        <span class="left dollar-detail">{{ pledge.money|floatformat:2 }}</span>
-                    </div>
+        <div class="innerLR row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="row extra-top-margin">
+                    <span class="course-title"><h3>{{ pledge.course }}</h3></span>
+                </div>
+                <div class="row extra-top-margin">
+                    <span class="dollar-detail">$ {{ pledge.money|floatformat:2 }}</span>
                 </div>
             </div>
         </div>
-        <div class="row extra-top-margin">
-            <div class="large-6 large-centered text-center centered">
-                <div class="large-6 columns">
-                    <button class="btn-auth btn-facebook" id="share-facebook" type="submit">Share
-                        on <b>Facebook</b>
+        <div class="innerLR row">
+            <h3>To get at least {{ pledge.get_aim|floatformat:0 }}%</h3>
+        </div>
+        <div class="innerLR row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <button class="btn-auth btn-facebook" id="share-facebook" type="submit">Share
+                    on <b>Facebook</b>
+                </button>
+                <a class="twitter popup"
+                   href="http://twitter.com/share?text=I%20have%20just%20made%20a%20pledge%20for%20{{ pledge.course }}%2C%20help%20me%20stay%20motivated%20by%20following%20the%20pledge!&url=http://www.projectwisely.com/follow/{{ pledge.id }}">
+                    <button class="btn-auth btn-twitter" id="share-twitter" type="submit">Share
+                        on <b>Twitter</b>
                     </button>
-                </div>
-                <div class="large-6 columns">
-                    <a class="twitter popup"
-                       href="http://twitter.com/share?text=I%20have%20just%20made%20a%20pledge%20for%20{{ pledge.course|truncatechars:38 }}%2C%20help%20me%20stay%20motivated%20by%20following%20the%20pledge!&url=http://www.projectwisely.com/pledges/follow/{{ pledge.id }}">
-                        <button class="btn-auth btn-twitter" id="share-twitter" type="submit">Share
-                            on <b>Twitter</b>
-                        </button>
-                    </a>
-                </div>
+                </a>
             </div>
         </div>
         <div class="row extra-top-margin">
-            <div class="large-4 columns large-centered text-center centered">
-                <div class="row collapse">
-                    <a href="{% url 'pledges:index' %}">
-                        <button class="other-button">Finish</button>
-                    </a>
-                </div>
+            <div class="col-sm-8 col-sm-offset-2">
+                <a href="{% url 'pledges:index' %}">
+                    <button class="btn btn-primary btn-lg">Finish</button>
+                </a>
             </div>
         </div>
-    {% endif %}
+    </div>
     <div id="fb-root"></div>
     <script>
         window.fbAsyncInit = function () {
@@ -227,18 +156,6 @@
         });
 
     </script>
-    </div>
-    </div>
-    <footer class="row">
-        <div class="large-12 columns">
-            <hr/>
-            <div class="row">
-                <div class="large-6 columns">
-                    <p>© Copyright Wisely</p>
-                </div>
-            </div>
-        </div>
-    </footer>
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'js/jquery.number.js' %}"></script>

@@ -19,14 +19,14 @@
     **********************************************************
     In development, use the LESS files and the less.js compiler
     instead of the minified CSS loaded by default.
-    **********************************************************
-    <link rel="stylesheet/less" href="{% static 'assets/less/admin/module.admin.stylesheet-complete.sidebar_type.fusion.less' %}" />
-    -->
+    ********************************************************** -->
+    <link rel="stylesheet/less"
+          href="{% static 'assets/less/admin/module.admin.stylesheet-complete.sidebar_type.fusion.less' %}"/>
 
     <!--[if lt IE 9]><link rel="stylesheet" href="{% static 'assets/components/library/bootstrap/css/bootstrap.min.css' %}" />
     <![endif]-->
-    <link rel="stylesheet"
-          href="{% static 'assets/css/admin/module.admin.stylesheet-complete.sidebar_type.fusion.min.css' %}"/>
+    <!-- <link rel="stylesheet"
+          href="{% static 'assets/css/admin/module.admin.stylesheet-complete.sidebar_type.fusion.min.css' %}"/> -->
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -52,6 +52,7 @@
 <div class="container-fluid menu-hidden">
 
     <!-- Main Sidebar Menu -->
+
     <div id="menu" class="hidden-print hidden-xs sidebar-blue sidebar-brand-primary">
 
 
@@ -74,19 +75,23 @@
             </div>
 
             <ul class="menu list-unstyled" id="navigation_current_page">
-
-                <li class=""><a href="{% url 'users:index' %}"><i class="fa fa-book"></i><span>Courses</span></a></li>
-                <li class=" active"><a href="{% url 'pledges:index' %}"><i
-                        class="fa fa-book"></i><span>Pledges</span></a>
-                </li>
-                <li class=""><a href="#"><i
-                        class="fa fa-book"></i><span>More Coming Soon!</span></a>
-                </li>
+                {% block nav-bar %}
+                    <li class=""><a href="{% url 'users:index' %}"><i class="fa fa-book"></i><span>Courses</span></a>
+                    </li>
+                    <li class=" active"><a href="{% url 'pledges:index' %}"><i
+                            class="fa fa-book"></i><span>Pledges</span></a>
+                    </li>
+                    <li class=""><a href="#"><i
+                            class="fa fa-book"></i><span>More Coming Soon!</span></a>
+                    </li>
+                {% endblock %}
             </ul>
+
         </div>
 
 
     </div>
+
     <!-- // Main Sidebar Menu END -->
 
     <!-- Content -->
@@ -120,8 +125,8 @@
 				</span>
                     </a>
                     <ul class="dropdown-menu pull-right">
-                        <li><a href="/" class="glyphicons user"><i></i> Profile</a></li>
-                        <li><a href="" class="glyphicons envelope"><i></i>Messages</a></li>
+                        <li><a href="{% url 'users:profile' %}" class="glyphicons user"><i></i> Profile</a></li>
+                        <li><a href="#" class="glyphicons envelope"><i></i>Messages</a></li>
                         <li><a href="{% url 'users:logout' %}">Logout</a></li>
                     </ul>
                 </div>

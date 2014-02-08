@@ -14,6 +14,9 @@ class Pledge(BaseModel):
     is_complete = models.BooleanField(default=False)
     aim = models.FloatField(default=0.50)
 
+    def get_aim(self):
+        return self.aim*100
+
 
 class Follower(BaseModel):
     pledge = models.ForeignKey(Pledge)

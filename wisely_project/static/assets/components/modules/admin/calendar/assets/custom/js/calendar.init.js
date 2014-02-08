@@ -31,23 +31,6 @@ $(function () {
 
     /* initialize the calendar
      -----------------------------------------------------------------*/
-    if (!window.location.origin)
-        window.location.origin = window.location.protocol + "//" + window.location.host;
-    $('#calendar').fullCalendar({
-        header: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'month,agendaWeek,agendaDay'
-        },
-        editable: false,
-        droppable: false,
-        events: {
-            url: window.location.origin + '/static/calendar.ics',
-            className: 'gcal-event',           // an option!
-            currentTimezone: 'America/New_York' // an option!
-        }
-    });
-
 
 })
 ;
