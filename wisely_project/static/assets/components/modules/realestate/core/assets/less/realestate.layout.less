@@ -1,0 +1,97 @@
+//
+// Layout
+// --------------------------------------------------
+ 
+#footer {
+	padding: 20px 0;
+	background: #373737;
+	ul {
+		margin: 0;
+		li { 
+			display: inline-block; 
+			&:last-of-type {margin:0;}
+			a { 
+				color:#fff; 
+				font-size: 14px;
+				font-weight: bold; 
+				text-decoration: none; 
+				padding: 0 10px;
+				&:hover {color:@primaryColor;}
+			} 
+			&.active a {
+				color:@primaryColor;
+			}
+		}
+	}
+	.copy {
+		margin-top:6px;
+		text-align: center;
+		color: lighten(#000000,35%);
+		a { color: darken(#fff,50%); text-decoration: underline; &:hover { color:@primaryColor} }
+	}
+	
+}
+
+.row {
+	margin-left: -10px;
+	margin-right: -10px;
+	[class*="col-"] {
+		padding: 10px;
+	}
+}
+
+// helpers
+.bg-primary { background: @primaryColor !important; color: #fff; }
+.bg-primary-light {
+	background: lighten(@primaryColor, 27%) !important;
+	*:not(.btn) { border-color: lighten(@primaryColor, 17%) !important; }
+	.caret { 
+		border-left-color: transparent !important;
+		border-bottom-color: transparent !important;
+		border-top-color: transparent !important;
+		border-right-color: lighten(@primaryColor, 17%) !important;
+	}
+}
+.bg-gray { background: #f9f9f9 !important; }
+.bg-white { background: #fff !important; }
+.text-white { color: #fff; }
+
+// global helpers
+.border-top { border-top : 1px solid #efefef;}
+.border-right { border-right: 1px solid #efefef;}
+.border-bottom { border-bottom: 1px solid #efefef;}
+.border-left { border-left: 1px solid #efefef;}
+.half {
+	&.innerAll { padding: @spacing / 2 !important; }
+	&.innerLR { padding-left: @spacing / 2 !important; padding-right: @spacing / 2 !important; }
+	&.innerTB { padding-top: @spacing / 2 !important; padding-bottom: @spacing / 2 !important; }
+	&.innerT { padding-top: @spacing / 2 !important; }
+	&.innerB { padding-bottom: @spacing / 2 !important; }
+}
+
+.row-app { overflow: hidden; }
+.nicescroll-rails { display: none; }
+.overflow-hidden { overflow: hidden !important; }
+
+.panel {
+	.panel-heading {
+		&.bg-primary { &, *, i:before { color: #fff !important; } }
+	}
+}
+.separator {
+	padding: 0 0 @spacing;
+}
+
+.well, 
+.panel {
+	margin-bottom: 15px;
+}
+
+.row [class*="col-"] {
+	.well,
+	.panel,
+	.widget,
+	.box-generic {
+		&:last-of-type { margin-bottom: 0; }
+	}
+}

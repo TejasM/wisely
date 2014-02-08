@@ -1,0 +1,42 @@
+.navbar.main {
+	&.navbar-blue {
+		@navbarBg: #283943;
+		background: @navbarBg;
+		border-color: @navbarBg;
+		.badge { border: none; }
+		.dropdown {
+			.dropdown-toggle {
+				color: #bfc2c7;
+				.caret { border-top-color: #bfc2c7; }
+				&.active, &:focus {
+					color: #ffffff;
+				}
+			}
+			&.dropdown-icons a.dropdown-toggle {
+				background: none;
+			}
+		}
+		[class*="border-"],
+		.notifications>li {
+			border-color: lighten(@navbarBg, 5%);
+			a.notif-block.fa { color: #bfc2c7; } 
+			&:hover, 
+			&.open {
+				background-color: lighten(@navbarBg,5%);
+			}
+		}
+		.input-group {
+			input {
+				background-color: lighten(@navbarBg,3%);
+				border-color: lighten(@navbarBg,5%);
+				&:hover, &:active, &:focus {
+				  	background-color: lighten(@navbarBg,5%);
+				}
+				.placeholderColor(#bfc2c7);
+			}
+		}
+		.btn-primary.btn-stroke {
+			border-color: lighten(@navbarBg,5%);
+		}
+	}
+}

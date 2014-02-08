@@ -1,0 +1,76 @@
+.whoweare {
+	border-bottom: solid 1px @primaryColor;
+}
+.panel {
+	.panel-heading {
+		.heading {
+			margin-bottom: 0px;
+			padding-bottom: 0px;
+			line-height: 1;
+		}
+		.subtitle {
+			color: #ccc;
+			font-size: 12px;
+		}
+		.fa {
+			font-size: 30px;
+			color: #ccc;
+			line-height: 40px;
+		}
+	}
+	.panel-body {
+		img { display: inline-block; }
+		.subtitle {
+			color: #888;
+			font-size: 12px;
+			display: block;
+			margin-bottom: 15px;
+		}
+		strong { display: block; margin-bottom: 10px; color: #454545; }
+		.progress {
+			height: 10px;
+			.rounded(5px,5px,5px,5px);
+			.progress-bar {	.rounded(5px,5px,5px,5px); }
+		}
+	}
+}
+.center { text-align: center; }
+
+.well {
+	&.work {
+		height: 150px;
+		position: relative;
+		background-color: lighten(@primaryColor,10%);
+		border: none;
+
+		span { display: block; margin-top: 0px; margin-bottom: 0px; }
+		.large-text {
+			font-size: 50px;
+			font-weight: bold;
+			color: #fff;
+			display: block;
+			text-shadow: 4px 4px 2px darken(@primaryColor, 40%);
+		}
+		.ribbon {
+			background-color: @inverseColor;
+		}
+		.subtitle {
+			position: relative;
+			top: -15px;
+		}
+	}
+
+	&.labels {
+		background-color: #fff;
+
+		.label {
+			padding: 8px 10px;
+			font-size: 12px;
+			&.label-default {
+			background: lighten(@defaultColor,3%);
+			color: darken(@defaultColor,30%);
+			margin:3px;
+			}
+		}
+	}
+}

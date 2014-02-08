@@ -12,6 +12,7 @@ class Pledge(BaseModel):
     complete_date = models.DateTimeField('date completed', null=True)
     is_active = models.BooleanField(default=True)
     is_complete = models.BooleanField(default=False)
+    aim = models.FloatField(default=0.50)
 
 
 class Follower(BaseModel):

@@ -1,0 +1,56 @@
+.navbar.main {
+	&.navbar-primary {
+		@navbarBg: @primaryColor;
+		@navbarText: lighten(@navbarBg,30%);
+		@navbarButtonBg: lighten(@navbarBg, 5%);
+
+		.btn-primary {
+			background: @navbarButtonBg;
+			color: #fff;
+		}
+
+		background: @navbarBg;
+		border-color: @navbarBg;
+		.badge { border: none; }
+		.dropdown {
+			.dropdown-toggle {
+				color: @navbarText;
+				.caret { border-top-color: @navbarText; }
+				&.active, &:focus {
+					color: #ffffff;
+				}
+			}
+			&.dropdown-icons a.dropdown-toggle {
+				background-color: @navbarButtonBg;
+			}
+		}
+		[class*="border-"],
+		.notifications>li {
+			border-color: lighten(@navbarBg, 5%);
+			a .notif-block.fa { color: @navbarText; } 
+			&:hover, 
+			&.open {
+				background-color: @navbarButtonBg;
+			}
+		}
+		.input-group {
+			input {
+				background-color: @navbarButtonBg;
+				border-color: @navbarBg;
+				&:hover, &:active, &:focus {
+				  	background-color: lighten(@navbarBg,10%);
+				}
+				.placeholderColor(@navbarText);
+				color: #fff;
+			}
+		}
+		.btn-primary.btn-stroke {
+			border-color: lighten(@navbarBg,5%);
+		}
+		.user-action-btn-navbar {
+			&.pull-left {
+				background-color: @navbarButtonBg;
+			}
+		}
+	}
+}

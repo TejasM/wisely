@@ -96,6 +96,9 @@
 		// update
 		update: function()
 		{
+			if (!$(charts.chart_live.placeholder).length)
+				return;
+
 			charts.chart_live.plot.setData([ charts.chart_live.getRandomData() ]);
 	        charts.chart_live.plot.draw();
 	        

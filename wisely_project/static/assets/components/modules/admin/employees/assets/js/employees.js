@@ -1,5 +1,18 @@
 $(function()
 {
+	window.equalHeight = function(boxes, substract)
+	{
+		if (typeof substract == 'undefined')
+			var substract = 0;
+		
+		boxes.height('auto');
+		if (parseInt($(window).width()) <= 400)
+			return;
+			
+		var maxHeight = Math.max.apply( Math, boxes.map(function(){ return $(this).height() - substract; }).get());
+		boxes.height(maxHeight);
+	}
+
 	$('.widget-employees').each(function(){
 		if (typeof $.fn.select2 != 'undefined') 
 			$(this).find('select').select2();

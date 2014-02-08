@@ -35,12 +35,22 @@ class CourseraScraper:
             soup = BeautifulSoup(self.driver.page_source)
             users_courses = soup.select(
                 '#coursera-feed-tabs-current .coursera-dashboard-course-listing-box .coursera-dashboard-course-listing-box-name')
+            info_links = soup.select(
+'#coursera-feed-tabs-current .coursera-dashboard-course-listing-box .coursera-dashboard-course-listing-box-links .internal-home')
             return map(lambda x: x.contents[0].contents[0], users_courses), map(lambda x: x.contents[0].attrs['href'],
-                                                                                users_courses)
+                                                                                users_courses), map(
+                lambda x: x.attrs['href'],
+                info_links)
         except:
-            return [], []
+            return [], [], []
 
     def get_quiz_link(self, course, link):
+        if course.info_link:
+            self.driver.get('https://www.coursera.org/' + course.info_link)
+            soup = BeautifulSoup(self.driver.page_source)
+            p_description = soup.select('.coursera-course-content p:first')
+            if p_description:
+                course.description = p_description[0].contents[0]
         self.driver.get(link)
         soup = BeautifulSoup(self.driver.page_source)
         link = soup.find('a', {'data-ab-user-convert': 'navclick_Quizzes'}, href=True)
@@ -74,7 +84,7 @@ class CourseraScraper:
                 try:
                     hard_deadline = dateutil.parser.parse(quiz_details[i].select(
                         '.course-quiz-item-harddeadline .course-assignment-deadline')[0].contents[
-                        0].replace('\n', ''))
+                                                              0].replace('\n', ''))
                 except IndexError:
                     pass
                 if hard_deadline is None:
@@ -89,7 +99,7 @@ class CourseraScraper:
                                         deadline=deadline,
                                         hard_deadline=hard_deadline,
                                         course=course)
-            course.save()
+        course.save()
 
     def get_course_progress(self, user, course):
         if course.quiz_link and course.quiz_link != '':
@@ -124,16 +134,17 @@ def get_courses(user_id):
         scraper.driver.implicitly_wait(10)
         scraper.login(str(user.courseraprofile.username), str(user.courseraprofile.password))
         time.sleep(3)
-        courses, course_links = scraper.get_courses()
+        courses, course_links, internal_links = scraper.get_courses()
         print courses
         for i, course in enumerate(courses):
             try:
                 get_course = Course.objects.get(title=course)
                 get_course.course_link = course_links[i]
+                get_course.info_link = internal_links[i]
                 get_course.save()
                 user.courseraprofile.courses.add(get_course)
             except Course.DoesNotExist:
-                get_course = Course.objects.create(title=course, course_link=course_links[i])
+                get_course = Course.objects.create(title=course, course_link=course_links[i], info_link=internal_links[i])
                 user.courseraprofile.courses.add(get_course)
         user.courseraprofile.last_updated = timezone.now()
         user.courseraprofile.save()

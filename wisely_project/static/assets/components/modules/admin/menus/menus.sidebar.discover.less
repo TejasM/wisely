@@ -1,0 +1,278 @@
+.sidebar.sidebar-discover {
+
+	@menuSidebarWidth: @menuSidebarDiscoverWidth;
+	@menuSidebarItemHeight: 43px;
+	@menuSidebarBg: darken(@inverseColor, 10%);
+
+	#menu {
+
+		img { border-color: lighten(@inverseColor, 10%); }
+		a { color: #fff; }
+		.text-faded { color: lighten(@inverseColor, 20%) !important; }
+		.bg-primary .text-faded { color: #fff !important; }
+		
+		width: @menuSidebarWidth;
+		background: @menuSidebarBg;
+
+		#toggleNavbarColor {
+			position: absolute;
+			right: 6px;
+			top: 0;
+			a {
+				&.color {
+					display: inline-block;
+					width: 6px;
+					height: 6px;
+				}
+			}
+		}
+		
+		#sidebar-discover-wrapper {
+			#logoWrapper {
+				position: relative;
+				z-index: 3;
+				background: lighten(@menuSidebarBg, 2%);
+				height: 100px;
+				width: @menuSidebarWidth;
+				#logo {
+					width: 58px;
+					display: block;
+					position: absolute;
+					top: 21px;
+					left: 56px;
+					img { border: none; max-width: 100%; }
+				}
+			}
+			.sidebar-discover-menu { 
+				display: none; 
+			}
+			#discover {
+				.transition(all 1s ease);
+				opacity: 0;
+				background: @menuSidebarBg;
+				position: absolute;
+				height: 100%;
+				top: 0;
+				right: 0;
+				width: @menuSidebarWidth - 50px;
+				z-index: 1;
+				overflow: hidden;
+				.border-bottom { border-color: @menuSidebarBg !important; }
+				ul {
+					list-style: none;
+					padding: 0;
+					li {
+						border-bottom: 1px solid lighten(@menuSidebarBg,6%);
+						a {
+							position: relative;
+							text-align: center;
+							display: block;
+							color: #999999;
+							font-weight: 600;
+							padding: 10px 0;
+							i { 
+								display: block; 
+								font-size: 29px;
+							}
+							.badge {
+								position: absolute;
+								top: 10px;
+								right: 10px;
+								padding: 3px 5px;
+								font-size: 11px;
+								color: @inverseColor;
+								border-color: @inverseColor;
+								font-weight: 700;
+								background: #999;
+							}
+							&:hover { 
+								color: #fff; 
+								span.badge {
+									border-color: @primaryColor;
+									background: #2c2c2c;
+									color: #fff;
+								}
+							}
+						}
+						&.active {
+							> a {
+								background: #2c2c2c;
+								color: #ffffff;
+								> i:before { color:@primaryColor; }
+							}
+							span.badge {
+								border-color: @primaryColor;
+								background: #2c2c2c;
+								color: #fff;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		#sidebar-discover-wrapper.hover-closed {
+			> ul > li.reset { display: none; }
+		}
+		#sidebar-discover-wrapper.open {
+			#logoWrapper {
+				overflow: hidden;
+				width: 50px;
+				#logo {
+					left: 8px;
+					width: 33px;
+					top: 30px;
+				}
+			}
+			#discover {
+				opacity: 1;
+				background: @inverseColor;
+				ul { padding: 0; }
+			}
+			> ul {
+				width: 50px;
+				padding: 0;
+				> li {
+					> a {
+						> i {
+							width: 50px;
+							&:before { width: 50px; }
+						}
+						&.open {
+							> i:before {
+								color: @primaryColor;
+							}
+						}
+						&:hover > i:before { color: @primaryColor; }
+						span { opacity: 0; }
+					}
+					&.active > a { background: none; }
+					> a.open { background: darken(@inverseColor,10%); }
+					&.active > a.open i:before { color: #fff; }
+					&.active > a { background: @primaryColor; }
+					&.reset {
+						// display: none;
+						opacity: 0;
+						height: 0;
+					}
+				}
+			}
+		}
+		> div {
+			position: relative;
+			overflow: hidden;
+			height: 100%;
+		
+			> ul {
+				padding: 0;
+				width: @menuSidebarWidth;
+				position: absolute;
+				top: 100px;
+				left: 0;
+				z-index: 2;
+				background: @menuSidebarBg;
+				overflow: hidden;
+				> li {
+					.btn-inverse:hover {
+						color: #fff;
+						i { color: @primaryColor; }
+					}
+					position: relative;
+					height: @menuSidebarItemHeight;
+					border-bottom: 1px solid lighten(@menuSidebarBg, 2%);
+					padding: 0;
+					> a {
+						padding: 0 0 0 16px;
+						display: block;
+						color: #999999;
+						font-weight: 600;
+						text-decoration: none;
+						height: @menuSidebarItemHeight;
+						line-height: @menuSidebarItemHeight;
+						position: relative;
+						font-size: 14px;
+						> span {
+							position: absolute;
+							left: 46px;
+							&.badge {
+								display: inline-block;
+								position: absolute;
+								top: 13px;
+								right: 15px;
+								left: auto;
+								padding: 3px 5px;
+								font-size: 11px;
+								color: @inverseColor;
+								border-color: @inverseColor;
+								font-weight: 700;
+								background: #999;
+								&.badge-inverse {
+									color: #fff;
+									border-color: @primaryColor;
+									background: @menuSidebarBg;
+								}
+							}
+						}
+						> i {
+							display: inline-block;
+							height: @menuSidebarItemHeight;
+							vertical-align: middle;
+							width: 40px;
+							&:before { 
+								color: #999999;
+								position: relative;
+								text-align: left;
+								top: -2px;
+								left: auto;
+								width: 40px;
+								font-size: 18px;
+								height: @menuSidebarItemHeight;
+								line-height: @menuSidebarItemHeight;
+							}
+						}
+						&:hover {
+							background: darken(@inverseColor,5%);
+							> i:before { color: @primaryColor; }
+							span.badge {
+								border-color: @primaryColor;
+								background: #2c2c2c;
+								color: #fff;
+							}
+						}
+					}
+					&.active {
+						> a {
+							background: @primaryColor;
+							color: #ffffff;
+							> i:before { color:#fff; }
+							> span.badge-inverse {
+								border-color: @menuSidebarBg;
+							}
+						}
+						span.badge {
+							border-color: @primaryColor;
+							background: #2c2c2c;
+							color: #fff;
+						}
+					}
+					&.reset {
+						height: auto;
+						opacity: 1;
+					}
+				}
+			}
+		}
+		.profile-avatar {
+			.btn-avatar {
+				right: 10px;
+				top: 10px;
+			}
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	.menu-left-visible .menu-left-hidden-xs {
+		display: none !important;
+	}
+}

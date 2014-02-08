@@ -1,0 +1,60 @@
+.panel.panel-contact {
+	border:none;
+	&.panel-primary { 
+		.panel-heading {
+			background: @primaryColor; .rounded(5px,5px,5px,5px); border:none;
+			font-size:16px;
+
+			small { font-size:13px; color: fade(#000, 50%);  }
+		}
+	}
+	&.panel-default {
+		.panel-heading {
+			background: @inverseColor;
+			height: 48px;
+			.panel-title{
+				color:white;
+				line-height: 25px;	
+				font-size: 15px;
+			}
+		}
+		.panel-body {
+			list-style: none;
+			padding:0px;
+			margin-bottom: 0px;
+			li {
+				background-color: #f9f9f9;
+				padding:10px 15px ;
+				border-bottom:solid 1px #fff;
+				
+				span {
+					font-weight: bold;
+					font-size: 15px;
+				}
+				i { line-height: 40px; margin: 0 20px 0 10px; color:#d2d1d0;}
+				small {color:#797979;}
+				a {
+					margin-top: -2px;
+					font-style: italic;
+				}
+			}
+		}
+	}
+}
+
+.well-info {
+	background: @secondaryColor;
+	border:none;
+	color:#fff;
+	font-size: 14px;
+	font-weight: bold;
+	h3 {color:#fff; font-weight: bold; }
+	ul {margin-left: 20px; }
+	.fa-background {
+		position: absolute;
+		right:0;
+		margin-top:-55px;
+		color: fade(#fff,20%);
+		font-size: 160px;
+	}
+}

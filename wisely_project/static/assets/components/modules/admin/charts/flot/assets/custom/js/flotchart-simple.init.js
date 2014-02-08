@@ -18,21 +18,13 @@
 		// chart options
 		options: 
 		{
-			grid: 
-			{
-				show: true,
-			    aboveData: true,
-			    color: "#3f3f3f",
-			    labelMargin: 5,
-			    axisMargin: 0, 
-			    borderWidth: 0,
-			    borderColor:null,
-			    minBorderMargin: 5,
+			colors: [ primaryColor, "#7c7c7c" ],
+			grid: {
+				color: "#dedede",
+			    borderWidth: 1,
+			    borderColor: "transparent",
 			    clickable: true, 
-			    hoverable: true,
-			    autoHighlight: true,
-			    mouseActiveRadius: 20,
-			    backgroundColor : { }
+			    hoverable: true
 			},
 	        series: {
 	        	grow: {active: false},
@@ -50,9 +42,10 @@
 	            	borderColor: "#fff"
 	            }
 	        },
-	        legend: { position: "se", backgroundColor: null, backgroundOpacity: 0 },
-	        colors: [],
-	        shadowSize:1,
+	        legend: { position: "se", backgroundColor: null, backgroundOpacity: 0, noColumns: 2 },
+	        shadowSize:0,
+	        yaxis: { ticks:3 },
+	        xaxis: { ticks:4, tickDecimals: 0, tickColor: 'transparent' },
 	        tooltip: true, //activate tooltip
 			tooltipOpts: {
 				content: "%s : %y.3",
@@ -69,9 +62,6 @@
 		// initialize
 		init: function()
 		{
-			// apply styling
-			charts.utility.applyStyle(this);
-
 			if (this.plot == null)
 			{
 				for (var i = 0; i < 14; i += 0.5) 

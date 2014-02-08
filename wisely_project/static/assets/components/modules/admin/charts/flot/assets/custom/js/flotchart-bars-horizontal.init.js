@@ -15,19 +15,11 @@
 		options: 
 		{
 			grid: {
-				show: true,
-			    aboveData: false,
-			    color: "#3f3f3f" ,
-			    labelMargin: 5,
-			    axisMargin: 0, 
-			    borderWidth: 0,
-			    borderColor:null,
-			    minBorderMargin: 5 ,
+				color: "#dedede",
+			    borderWidth: 1,
+			    borderColor: "transparent",
 			    clickable: true, 
-			    hoverable: true,
-			    autoHighlight: false,
-			    mouseActiveRadius: 20,
-			    backgroundColor : { }
+			    hoverable: true
 			},
 	        series: {
 	        	grow: {active:false},
@@ -38,8 +30,14 @@
 					fill:1
 				}
 	        },
-	        legend: { position: "ne", backgroundColor: null, backgroundOpacity: 0 },
-	        colors: [],
+	        legend: { position: "nw", backgroundColor: null, backgroundOpacity: 0 },
+	        yaxis: { 
+	        	ticks:3, 
+	        	tickColor: 'transparent',
+	        	tickFormatter: function(val, axis) { return val + "k";} 
+	    	},
+	        xaxis: { ticks:4, tickDecimals: 0 },
+	        colors: [primaryColor],
 	        tooltip: true,
 			tooltipOpts: {
 				content: "%s : %y.0",
@@ -57,48 +55,22 @@
 		init: function()
 		{
 			// apply styling
-			charts.utility.applyStyle(this);
+			// charts.utility.applyStyle(this);
 			
 			var d1 = [];
-		    for (var i = 0; i <= 5; i += 1)
-		        d1.push([parseInt(Math.random() * 30),i ]);
-
-		    var d2 = [];
-		    for (var i = 0; i <= 5; i += 1)
-		        d2.push([parseInt(Math.random() * 30),i ]);
-
-		    var d3 = [];
-		    for (var i = 0; i <= 5; i += 1)
-		        d3.push([ parseInt(Math.random() * 30),i]);
+		    for (var i = 1; i <= 5; i += 1)
+		        d1.push([parseInt(Math.random() * 30), i ]);
 
 		    this.data = new Array();
 		    this.data.push({
+		    	label: "Sales Volume",
 		        data: d1,
 		        bars: {
 		            horizontal:true, 
 		            show: true, 
-		            barWidth: 0.2, 
-		            order: 1
+		            barWidth: 0.5
 		        }
 		    });
-			this.data.push({
-			    data: d2,
-			    bars: {
-			        horizontal:true, 
-			        show: true, 
-			        barWidth: 0.2, 
-			        order: 2
-			    }
-			});
-			this.data.push({
-			    data: d3,
-			    bars: {
-			        horizontal:true, 
-			        show: true, 
-			        barWidth: 0.2, 
-			        order: 3
-			    }
-			});
 
 			this.plot = $.plot($(this.placeholder), this.data, this.options);
 		}

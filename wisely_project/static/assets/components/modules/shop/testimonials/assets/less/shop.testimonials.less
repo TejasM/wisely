@@ -1,0 +1,65 @@
+.testimonials {
+	.carousel {
+		height:220px;
+  		.carousel-indicators { 
+  			bottom:10px;
+  			li {
+                border-color: @primaryColor;
+  				background: #fff;
+  				.rounded(3px,3px,3px,3px);
+            }
+  			.active {
+  				background: @primaryColor;
+  				border:none;
+  			}
+  		}
+  	}
+  	.media {
+  		a.image-holder {
+  			.rounded(5px,5px,5px,5px);
+  			width:112px;
+  			height:80px;
+  			padding:1px;
+  			margin-top:30px;
+  			border: 5px solid @primaryColor;
+  			.media-object {
+  				.rounded(5px, 5px,0,0);		
+				margin-top: -32px;
+  			}
+  		}
+  		.caret {
+			position:absolute;
+			width: 8px;
+			height: 0;
+			top:20px;
+			left:138px;
+			margin-top:5px;
+			vertical-align: middle;
+			border-right: 8px solid #fff;
+			border-top: 8px solid transparent;
+			border-left: 0 dotted;
+			border-bottom: 8px solid transparent;
+			content: "";
+
+  		}
+  		.media-body {
+  			position: relative;
+			padding: 10px 0px 0 10px;
+			.well { 
+                background: #fff; 
+                border-color: #fff;
+				.fa {color:#dfdfdf;}
+			}
+  		}
+  	}
+    @media (max-width: 991px) {
+      height: auto;
+      .carousel { 
+        height:auto; 
+        .carousel-indicators { bottom: -25px; }
+      }
+      .container {
+        padding: 10px 10px 50px;
+      }
+    }
+}

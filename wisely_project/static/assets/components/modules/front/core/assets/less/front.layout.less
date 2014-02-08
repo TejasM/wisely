@@ -1,0 +1,91 @@
+//
+// Layout
+// --------------------------------------------------
+
+.box { border: 1px solid #efefef; }
+
+// Footer
+// -------------------------
+ 
+#footer {
+	padding: 20px 0;
+	background: #373737;
+	ul {
+		margin: 0;
+		li { 
+			display: inline-block; 
+			&:last-of-type {margin:0;}
+			a { 
+				color:#fff; 
+				font-size: 14px;
+				font-weight: bold; 
+				text-decoration: none; 
+				padding: 0 10px;
+				&:hover {color:@primaryColor;}
+			} 
+			&.active a {
+				color:@primaryColor;
+			}
+		}
+	}
+	.copy {
+		margin-top:6px;
+		text-align: center;
+		color: lighten(#000000,35%);
+		a { color: darken(#fff,50%); text-decoration: underline; &:hover { color:@primaryColor} }
+	}
+	
+}
+
+.row {
+	margin-left: -10px;
+	margin-right: -10px;
+	[class*="col-"] {
+		padding: 10px;
+	}
+	.form-group {
+		[class*="col-"] {
+			padding: 0 10px;
+			&.control-label { padding: 7px 0 0; }
+		}
+	}
+}
+
+.row-app { overflow: hidden; }
+.nicescroll-rails { display: none; }
+
+.panel .panel-heading.bg-primary { &, *, i:before { color: #fff !important; } }
+.separator { padding: 0 0 @spacing; }
+
+.well, 
+.panel { 
+	margin-bottom: 15px; 
+	border-color: #efefef; 
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+.list-group-item,
+.panel-default > .panel-heading {
+	border-color: #efefef; 
+}
+
+.row [class*="col-"] {
+	.well,
+	.panel,
+	.widget,
+	.box-generic {
+		&:last-of-type { margin-bottom: 0; }
+	}
+}
+
+.widget-pinterest {
+	.mark {
+		position: absolute;
+		z-index: 1;
+		top: 0;
+		right: 15px;
+		.caret { position: relative; top: 0; right: 0; }
+		.text { top: 5px; text-align: center; right: 0; }
+	}
+}

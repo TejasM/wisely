@@ -1,0 +1,89 @@
+/* tabcontent  */
+
+/* Navigation Buttons */
+.navigation {
+	padding-top: 0px;
+	margin-top: 0px;
+	.nav-tabs {
+		list-style: none;
+		padding: 0px;
+		border: none;
+		position: relative;
+		li {
+			width: 25%;
+			padding: 10px; 
+			text-align: center;
+			.caret {
+				position: relative;	
+			    border-left: 15px solid transparent;
+			    border-right: 15px solid transparent;
+			    border-top: 25px solid transparent ;
+			}
+			a {
+				border-color: #e4e4e4;
+				border-radius: 5px;
+				height:100px;
+				line-height: 100px;
+				
+				&.glyphicons {
+					padding: 0;
+					i:before { 
+						position:relative;
+						line-height: 100px;
+						color: @primaryColor;
+						font-size: 50px;
+					}
+				}
+				&:hover {
+					background-color: #e4e4e4;
+					i:before { color:#fff; }
+				}
+			}
+			&.active {
+				.caret {
+					border-top: 25px solid @secondaryColor;
+				}
+				a {
+					border-color: @secondaryColor; 
+					color:white;
+					background-color:@secondaryColor;
+					&.glyphicons {
+					padding: 0;
+					i:before { 
+						position:relative;
+						line-height: 100px;
+						color:#fff;
+							
+					}
+				}
+				}
+			}
+		}
+	}
+	.progress-mini{
+		position: absolute;
+		top:0;
+		left:0;
+		right:0;
+		.rounded (5px,5px,5px,5px);
+		.progress-bar { background: @secondaryColor !important; }
+	}
+
+	@media (max-width: 768px) {
+		.nav-tabs li { 
+			padding: 0; 
+			a.glyphicons i:before { font-size: 30px; }
+		}
+	}
+}
+
+.features-list {
+	padding: 0px 20px;
+	li {
+
+		font-weight: bold;
+		color:@inverseColor;
+
+	}
+		
+	}

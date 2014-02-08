@@ -23,6 +23,11 @@ class Course(BaseModel):
     title = models.CharField(max_length=400)
     course_link = models.CharField(max_length=1000, default="")
     quiz_link = models.CharField(max_length=1000, default="")
+    calender_link = models.CharField(max_length=1000, default="")
+    info_link = models.CharField(max_length=1000, default="")
+    description = models.CharField(max_length=10000, default="")
+    start_date = models.DateField(default=None, null=True, blank=True)
+    end_date = models.DateField(default=None, null=True, blank=True)
 
     def __unicode__(self):
         return self.title
