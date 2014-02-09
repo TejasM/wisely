@@ -107,7 +107,7 @@
         <footer class="row">
             <div class="small-12 small-centered text-center columns about-us margin-extra-bottom">
                 <h3>We are constantly looking for ways to improve and would love to hear from you.</h3>
-                <button class="extra-top-margin other-button">Contact Us</button>
+                <button class="extra-top-margin other-button" id="contact">Contact Us</button>
             </div>
         </footer>
     </section>
@@ -168,6 +168,23 @@
             </form>
         </div>
     </div>
+    <div id="contact-us" class="light-box">
+        <div class="row text-center" id="contact-body">
+            <h2>Contact Us</h2>
+            <div class="extra-top-margin">
+                <input type="email" name="email" id='contact-email' placeholder="Your Email Address">
+            </div>
+            <div class="extra-margin-top">
+                <textarea id="contact-mail" placeholder="Your Message"></textarea>
+            </div>
+            <div class="row">
+                <div id="validation-contact" class="validation" style="color: red;"></div>
+            </div>
+            <div class="centered extra-top-margin">
+                <button id="contact-send">Send</button>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 </body>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
@@ -192,6 +209,22 @@
             }
             else {
                 $('#validation').text('That doesn\'t look like a valid email address. Please try again.');
+            }
+        });
+
+        $('#contact').click(function () {
+            $('#contact-us').lightbox_me({centered: true});
+        });
+
+        $('#contact-send').click(function () {
+            var myRootRef = new Firebase('https://wisely.firebaseIO.com/');
+
+            if (validateEmail($('#contact-email').val())) {
+                myRootRef.push({name: $('#contact-email').val().split('@')[0], msg: $('#contact-mail').val()});
+                $('#contact-body').text('Thank You! We will keep you updated!');
+                $('#contact-us').trigger('close');
+            } else {
+                $('#validation-contact').text('That doesn\'t look like a valid email address. Please try again.');
             }
         });
         function validateEmail(email) {
