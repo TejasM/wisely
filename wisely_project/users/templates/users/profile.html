@@ -1,28 +1,94 @@
-{% extends 'base.html' %}
+{% extends 'base-app.html' %}
+{% load staticfiles %}
+{% block additionalHeaders %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style-app.css' %}"/>
+{% endblock %}
+{% block nav-bar %}
+    <li class=""><a href="{% url 'users:index' %}"><i class="fa fa-book"></i><span>Courses</span></a>
+    </li>
+    <li class=""><a href="{% url 'pledges:index' %}"><i
+            class="fa fa-book"></i><span>Pledges</span></a>
+    </li>
+    <li class=""><a href="#"><i
+            class="fa fa-book"></i><span>More Coming Soon!</span></a>
+    </li>
+{% endblock %}
 {% block content %}
+    <div class="col-md-8 col-md-offset-2">
 
-    {% include 'nav-bar.html' %}
-    <div class="row main-interface learn-more">
-        <div class="row extra-top-margin">
-            <div class="large-6 large-push-1 columns">
+    <div class="widget extra-top-margin">
 
-                {% if user_profile.picture %}
-                    <img src="/media/{{ user_profile.picture }}" width="300"/>
-                {% else %}
-                    <img src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png" width="300"/>
-                {% endif %}
-                <h2 class="extra-top-margin">{{ user.first_name }} {{ user.last_name }}</h2>
+        <!-- Widget heading -->
+        <div class="widget-head">
+            <h1 class="separator bottom">Your Profile</h1>
+        </div>
+        <div class="widget-body">
+            <div class="bg-gray innerAll">
+                <div class="media">
+                    <img src="{% if user_profile.picture %}/media/
+                        {{ user_profile.picture }}{% else %}http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png{% endif %}"
+                         class="pull-left img-circle thumb hidden-sm" width="100">
+
+                    <div class="media-body">
+                        <h3 class="margin-none">{{ user.first_name }} {{ user.last_name }}</h3>
+
+                        {% if user_profile.about_me %}<p>{{ user_profile.about_me }}</p>{% endif %}
+                    </div>
+                </div>
             </div>
-            <div class="large-5 columns text-left">
-                <input type="button" id="edit" value="Edit"><br/>
+            <div class="col-separator-h box"></div>
 
+            <!-- Row -->
+            <div class="row row-merge margin-none">
+                <div class="col-lg-4">
+
+                    <a href="" class="widget-stats widget-stats-1 widget-stats-inverse margin-none">
+                                    <span class="glyphicons certificate"><i></i><span
+                                            class="txt">Completed Pledges</span></span>
+
+                        <div class="clearfix"></div>
+                        <span class="count">{{ completed_pledges.count }}</span>
+                    </a>
+
+                </div>
+                <div class="col-lg-4">
+
+                    <a href="" class="widget-stats widget-stats-1 widget-stats-inverse margin-none">
+                                    <span class="glyphicons certificate"><i></i><span
+                                            class="txt">Current Pledges</span></span>
+
+                        <div class="clearfix"></div>
+                        <span class="count">{{ current_pledges.count }}</span>
+                    </a>
+
+                </div>
+                <div class="col-lg-4">
+
+                    <a href="" class="widget-stats widget-stats-primary widget-stats-1 margin-none">
+                        <span class="glyphicons book"><i></i><span class="txt">Avg. Score (%)</span></span>
+
+                        <div class="clearfix"></div>
+                        <span class="count">100</span>
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- // END col-app -->
+
+    </div>
+    <div class="widget extra-top-margin">
+        <div class="widget-body innerAll inner-2x">
+            <div class="row">
                 <div id="showProfile">
                     <div class="row extra-top-small-margin">
                         <div class="large-12 columns"><strong>Username</strong>: {{ user.username }}</div>
                     </div>
                     {% if user_profile.gender != 'U' %}
                         <div class="row extra-top-small-margin">
-                            <div class="large-12 columns"><strong>Gender</strong>: {{ user_profile.get_gender_display }}
+                            <div class="large-12 columns">
+                                <strong>Gender</strong>: {{ user_profile.get_gender_display }}
                             </div>
                         </div>
                     {% endif %}
@@ -39,18 +105,21 @@
                     {% endif %}
                     {% if user_profile.current_city %}
                         <div class="row extra-top-small-margin">
-                            <div class="large-12 columns"><strong>Current City</strong>: {{ user_profile.current_city }}
+                            <div class="large-12 columns"><strong>Current
+                                City</strong>: {{ user_profile.current_city }}
                             </div>
                         </div>
                     {% endif %}
                     {% if user_profile.birthday %}
                         <div class="row extra-top-small-margin">
-                            <div class="large-12 columns"><strong>Birthday</strong>: {{ user_profile.birthday }}</div>
+                            <div class="large-12 columns"><strong>Birthday</strong>: {{ user_profile.birthday }}
+                            </div>
                         </div>
                     {% endif %}
                     {% if user_profile.about_me %}
                         <div class="row extra-top-small-margin">
-                            <div class="large-12 columns"><strong>About Me</strong>: {{ user_profile.about_me }}</div>
+                            <div class="large-12 columns"><strong>About Me</strong>: {{ user_profile.about_me }}
+                            </div>
                         </div>
                     {% endif %}
                     <div class="row extra-top-small-margin">
@@ -61,32 +130,122 @@
                     </div>
                 </div>
 
-                <div id="editProfile" class="invisible">
-                    <form id="user_profile_edit_form" method="post" action="/users/edit_profile/"
+                <div id="editProfile">
+                    <form id="user_profile_edit_form" method="post" action="{% url 'users:edit_profile' %}"
                           enctype="multipart/form-data">
                         {% csrf_token %}
 
-                        {% for field in user_profile_form.visible_fields %}
-                            {{ field.errors }}
-                            {{ field.help_text }}
-                            {{ field }}
-                        {% endfor %}
+                        <div class="row">
+                            <label class="col-sm-2 control-label">
+                                Please select your gender.</label>
 
-                        <input class="btn btn-primary" type="submit" name="submit" value="Update Profile"/>
+                            <div class="col-sm-10">
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-primary">
+                                        <input type="radio" name="gender" id="option1" value="M"
+                                               checked="{% if user_profile_form.gender.value == "Male" %}checked{% endif %}">Male
+                                    </label>
+                                    <label class="btn btn-primary">
+                                        <input type="radio" name="gender" id="option2" value="F"
+                                               checked="{% if user_profile_form.gender.value == "Female" %}checked{% endif %}">Female
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row extra-top-margin">
+                            <label class="col-sm-2 control-label">
+                                Please enter your website.
+                            </label>
+
+                            <div class="col-sm-10">
+                                <input id="id_website" name="website" type="text" class="form-control"
+                                       {% if user_profile_form.website.value %}value="{{ user_profile_form.website.value }}"{% endif %}
+                                       placeholder="Website">
+                            </div>
+                        </div>
+
+
+                        <div class="row extra-top-margin">
+                            <label class="col-sm-2 control-label">
+                                Please enter your current city.
+                            </label>
+
+                            <div class="col-sm-10">
+                                <input id="id_website" name="current_city" type="text" class="form-control"
+                                       value="{{ user_profile_form.current_city.value|default_if_none:"" }}"
+                                       placeholder="City">
+                            </div>
+                        </div>
+                        <div class="row extra-top-margin">
+                            <label class="col-sm-2 control-label">
+                                Please enter your birth date.
+                            </label>
+
+                            <div class="col-sm-10">
+                                <div class="input-group date" id="datepicker1">
+                                    <input type="text" class="form-control" name="birthday"
+                                           value="{{ user_profile_form.birthday.value|default_if_none:"" }}">
+                                    <span class="input-group-addon"><i class="fa fa-th"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row extra-top-margin">
+                            <label class="col-sm-2 control-label">
+                                Please give a description about yourself.
+                            </label>
+
+                            <div class="col-sm-10">
+                                <textarea id="id_about_me" name="about_me" type="text" class="form-control"
+                                          style="max-width: 100%">{{ user_profile_form.about_me.value }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="row extra-top-margin">
+                            <label class="col-sm-2 control-label">
+                                Please select a profile image to upload.
+                            </label>
+
+                            <div class="col-sm-10">
+                                <div class="fileupload margin-none {% if user_profile_form.picture.value %}fileupload-exists{% else %}fileupload-new{% endif %}"
+                                     data-provides="fileupload"><input
+                                        type="hidden" value="" name="picture">
+                                    <span class="btn btn-default btn-file"><span
+                                            class="fileupload-new">Select file</span><span class="fileupload-exists">Change</span><input
+                                            type="file" class="margin-none" name=""></span>
+                                    <span class="fileupload-preview"></span>
+                                    <a href="#" class="close fileupload-exists" data-dismiss="fileupload"
+                                       style="float: none">×</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <input class="btn extra-top-margin btn-primary" type="submit" name="submit"
+                               value="Update Profile"/>
                     </form>
                 </div>
+                <input type="button" id="edit" class="btn extra-top-margin btn-primary btn-lg" value="Edit"><br/>
             </div>
+
+            <!-- // END col-app.col-unscrollable -->
         </div>
     </div>
+    </div>
 
+{% endblock %}
+{% block additionalScripts %}
     <script>
-        jQuery(document).ready(function () {
-            jQuery('#editProfile').hide();
-            jQuery('#edit').live('click', function () {
-                jQuery('#showProfile').toggle('show');
-                jQuery('#editProfile').toggle('show');
+        $(document).ready(function () {
+            $('#editProfile').hide();
+            $('#edit').live('click', function () {
+                $('#edit').hide();
+                $('#showProfile').hide();
+                $('#editProfile').show();
             });
         });
     </script>
+    <script src="{% static 'assets/components/common/forms/elements/bootstrap-datepicker/assets/lib/js/bootstrap-datepicker.js' %}?v=v1.9.6&sv=v0.0.1"></script>
+    <script src="{% static 'assets/components/common/forms/elements/bootstrap-datepicker/assets/custom/js/bootstrap-datepicker.init.js' %}?v=v1.9.6&sv=v0.0.1"></script>
+    <script src="{% static 'assets/components/common/forms/elements/jasny-fileupload/assets/js/bootstrap-fileupload.js' %}?v=v1.9.6&sv=v0.0.1"></script>
 {% endblock %}
-

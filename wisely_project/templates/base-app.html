@@ -62,18 +62,6 @@
                         src="{% static 'assets/images/logo/app-logo-style-default.png' %}" alt=""></a>
                 <a href=" "><span class="text">Wisely</span></a>
             </div>
-            <div id="logoWrapper">
-                <div id="logo">
-
-                    <a href="" class="btn btn-sm btn-inverse"><i
-                            class="fa fa-fw icon-home-fill-1"></i></a>
-                    <a href="" class="btn btn-sm btn-inverse"><i
-                            class="fa fa-fw fa-envelope"></i><span
-                            class="badge pull-right badge-primary">2</span></a>
-
-                </div>
-            </div>
-
             <ul class="menu list-unstyled" id="navigation_current_page">
                 {% block nav-bar %}
                     <li class=""><a href="{% url 'users:index' %}"><i class="fa fa-book"></i><span>Courses</span></a>
@@ -131,29 +119,6 @@
                     </ul>
                 </div>
             </div>
-            <ul class="notifications pull-right hidden-xs">
-                <li class="dropdown notif">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown"><i
-                            class="notif-block fa fa-comments-o"></i><span class="badge badge-primary">7</span></a>
-                    <ul class="dropdown-menu chat media-list">
-                        <li class="media">
-                            <a class="pull-left" href="#"><img class="media-object thumb"
-                                                               src="{% static 'assets/images/people/100/15.jpg' %}"
-                                                               alt="50x50" width="50"/></a>
-
-                            <div class=" media-body">
-                                <span class="label label-default pull-right">Due Date</span>
-                                <h5 class="media-heading">Course Name</h5>
-
-                                <p class="margin-none">Announcement</p>
-                            </div>
-                        </li>
-                        <li><a href="#" class="btn btn-primary"><i class="fa fa-list"></i>
-                            <span>View all messages</span></a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
             <div class="clearfix"></div>
         </div>
         <!-- // END navbar -->

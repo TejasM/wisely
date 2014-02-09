@@ -34,9 +34,13 @@ def profile(request):
     except UserProfile.DoesNotExist:
         user_profile = UserProfile.objects.create(user=request.user)
 
-    user_profile_form = UserProfileForm()
+    user_profile_form = UserProfileForm(instance=user_profile)
 
-    context_dict = {'user': request.user, 'user_profile': user_profile, 'user_profile_form': user_profile_form}
+    completed_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=True)
+    current_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=False)
+
+    context_dict = {'user': request.user, 'user_profile': user_profile, 'user_profile_form': user_profile_form,
+                    'completed_pledges': completed_pledges, 'current_pledges': current_pledges}
     return render(request, 'users/profile.html', context_dict)
 
 
