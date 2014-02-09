@@ -41,14 +41,16 @@
 
                         <div id="dis" class="subtitle">
                             <div class="row">
-                                <div class="large-6 large-offset-3 columns"><input type="text" style="height: 57px" placeholder="Email" id="email"></div>
+                                <div class="large-6 large-offset-3 columns"><input type="text" style="height: 57px"
+                                                                                   placeholder="Email" id="email"></div>
                                 <div class="large-3 columns">
                                     <button id="sign" class="other-button left">Sign Up</button>
                                 </div>
                             </div>
-                            <div id="validation" class="validation"></div>
-                            <p>Wisely is currently under construction. Sign Up for the early
-                                preview.
+                            <div id="validation" class="validation" style="color: red;"></div>
+                            <p style="color: #fff;"><strong>Wisely is currently under construction. Sign Up for the
+                                early
+                                preview.</strong>
                             </p>
                             {% comment %}<button id="sign" class="other-button">Get Started</button>{% endcomment %}
                         </div>
@@ -186,6 +188,7 @@
             if (validateEmail($email)) {
                 myRootRef.push({name: $email.split('@')[0], email: $email});
                 $('#dis').text('Thank You! We will keep you updated!');
+                $('#dis').css('color', '#fff');
             }
             else {
                 $('#validation').text('That doesn\'t look like a valid email address. Please try again.');
