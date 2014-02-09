@@ -1,103 +1,203 @@
-{% extends 'base.html' %}
+{% extends 'base-app.html' %}
 {% load staticfiles %}
-{% block headers_css %}
-    <link href='http://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
+{% block additionalHeaders %}
+    <link href="{% static 'css/auth-buttons.css' %}" rel="stylesheet">
+    <link href="{% static 'css/auth-buttons.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style-app.css' %}"/>
+{% endblock %}
+{% block nav-bar %}
+    <li class=""><a href="{% url 'users:index' %}"><i class="fa fa-book"></i><span>Courses</span></a>
+    </li>
+    <li class=""><a href="{% url 'pledges:index' %}"><i
+            class="fa fa-book"></i><span>Pledges</span></a>
+    </li>
+    <li class=""><a href="#"><i
+            class="fa fa-book"></i><span>More Coming Soon!</span></a>
+    </li>
 {% endblock %}
 {% block content %}
-    {% include 'nav-bar.html' %}
-    <div class="row main-interface">
-        <div class="row">
-            <div class="row">
-                <div class="large-12 columns text-center">
-                    <h1>Follow Your Friend's Pledge</h1>
+    <div class="jumbotron margin-none center bg-white">
+        <h1 class="separator bottom">Follow Your Friend's Pledge</h1>
 
-                    <h2>Motivate them even more!</h2>
+        <h2 class="heading">Motivate them even more!</h2>
+
+        <div class="innerLR row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="row extra-top-margin">
+                    <p class="course-title">
+                        <strong>{{ pledge.user.user.first_name }} {{ pledge.user.user.last_name }}</strong> is
+                        aiming to complete <strong>{{ pledge.course }}</strong></p>
+                </div>
+                <div class="row extra-top-margin">
+                    {% if good %}<p>Thank you for
+                    following {{ pledge.user.user.first_name }} {{ pledge.user.user.last_name }}'s pledge. We
+                    will keep you updated on their progress.
+                        </p>
+                        {% if not user.is_authenticated %}
+                            <p>Want to make your own pledge? Get Started Now!</p>
+                            <button class="extra-top-margin btn btn-primary btn-lg" id="sign">Sign Up</button>
+                            <div id="sign-up" class="light-box">
+                                <div class="row text-center">
+                                    <div>
+                                        <a class="btn-auth btn-facebook large"
+                                           href="{% url 'socialauth_begin' 'facebook' %}">
+                                            Sign Up with <b>Facebook</b>
+                                        </a>
+                                    </div>
+                                    <div class="extra-top-small-margin">
+                                        <a class="btn-auth btn-twitter large"
+                                           href="{% url 'socialauth_begin' 'twitter' %}">
+                                            Sign Up with <b>Twitter</b>
+                                        </a>
+                                    </div>
+                                    <div class="extra-top-small-margin">
+                                        <a class="btn-auth btn-google large" href="#">
+                                            Sign Up with <b>Google</b>
+                                        </a>
+                                    </div>
+                                </div>
+                                <hr/>
+                                <div class="row text-center">
+                                    <form action="{% url 'users:sign-up' %}" method="post">
+                                        {% csrf_token %}
+                                        <div class="row extra-top-margin">
+                                            <input type="text" name="first_name" placeholder="First Name"
+                                                   class="form-control">
+                                        </div>
+                                        <div class="row extra-top-margin">
+                                            <input type="text" name="last_name" placeholder="Last Name"
+                                                   class="form-control">
+                                        </div>
+                                        <div class="row extra-top-margin">
+                                            <input type="email" name="email" placeholder="Email" class="form-control">
+                                        </div>
+                                        <div class="row extra-top-margin">
+                                            <input type="password" name="password" placeholder="Password"
+                                                   class="form-control">
+                                        </div>
+                                        <div class="row tex-center extra-top-margin">
+                                            <button class="btn btn-primary btn-lg" type="submit">Sign Up</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <p>Already following! Stop stressing out your friend! :)
+                        </p>
+                        {% if not user.is_authenticated %}
+                            <p>Want to make your own pledge? Get Started Now!</p>
+                            <button class="extra-top-margin btn btn-primary btn-lg" id="sign">Sign Up</button>
+                            <div id="sign-up" class="light-box">
+                                <div class="row text-center">
+                                    <div>
+                                        <a class="btn-auth btn-facebook large"
+                                           href="{% url 'socialauth_begin' 'facebook' %}">
+                                            Sign Up with <b>Facebook</b>
+                                        </a>
+                                    </div>
+                                    <div class="extra-top-small-margin">
+                                        <a class="btn-auth btn-twitter large"
+                                           href="{% url 'socialauth_begin' 'twitter' %}">
+                                            Sign Up with <b>Twitter</b>
+                                        </a>
+                                    </div>
+                                    <div class="extra-top-small-margin">
+                                        <a class="btn-auth btn-google large" href="#">
+                                            Sign Up with <b>Google</b>
+                                        </a>
+                                    </div>
+                                </div>
+                                <hr/>
+                                <div class="row text-center">
+                                    <form action="{% url 'users:sign-up' %}" method="post">
+                                        {% csrf_token %}
+                                        <div class="row extra-top-margin">
+                                            <input type="text" name="first_name" placeholder="First Name"
+                                                   class="form-control">
+                                        </div>
+                                        <div class="row extra-top-margin">
+                                            <input type="text" name="last_name" placeholder="Last Name"
+                                                   class="form-control">
+                                        </div>
+                                        <div class="row extra-top-margin">
+                                            <input type="email" name="email" placeholder="Email" class="form-control">
+                                        </div>
+                                        <div class="row extra-top-margin">
+                                            <input type="password" name="password" placeholder="Password"
+                                                   class="form-control">
+                                        </div>
+                                        <div class="row tex-center extra-top-margin">
+                                            <button class="btn btn-primary btn-lg" type="submit">Sign Up</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>{% endif %}
+                    {% endif %}
                 </div>
             </div>
-            <div class="row extra-top-margin">
-                <div class="large-4 columns large-centered text-center centered">
-                    <div class="row">
-                        <div class="large-12 columns extra-top-margin">
-                            <p class="course-title">
-                                <strong>{{ pledge.user.user.first_name }} {{ pledge.user.user.last_name }}</strong> is
-                                aiming to complete <strong>{{ pledge.course }}</strong></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row extra-top-margin">
-                <div class="large-4 columns large-centered text-center centered">
-                    <div class="row">
-                        <div class="large-12 columns extra-top-margin padding-bottom">
-                            {% if good %}<p>Thank you for
-                            following {{ pledge.user.user.first_name }} {{ pledge.user.user.last_name }}'s pledge. We
-                            will keep you updated on their progress.
-                                </p>
-                                {% if not user.is_authenticated %}
-                                    <p>Want to make your own pledge? Get Started Now!</p>
-                                    <button class="extra-top-margin other-button" id="sign">Sign Up</button>
-                                {% endif %}
-                            {% else %}
-                                <p>Already following! Stop stressing out your friend! :)
-                                </p>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="fb-root"></div>
-            <script>
-                window.fbAsyncInit = function () {
-                    FB.init({
-                        appId: '405339162934237',
-                        status: true,
-                        xfbml: true
-                    });
-                };
-
-                (function (d, s, id) {
-                    var js, fjs = d.getElementsByTagName(s)[0];
-                    if (d.getElementById(id)) {
-                        return;
-                    }
-                    js = d.createElement(s);
-                    js.id = id;
-                    js.src = "//connect.facebook.net/en_US/all.js";
-                    fjs.parentNode.insertBefore(js, fjs);
-                }(document, 'script', 'facebook-jssdk'));
-                $('#facebook-follow').click(function () {
-                    FB.getLoginStatus(function (response) {
-                        if (response.status === 'connected') {
-                            FB.api('/me', function (response) {
-                                console.log('Good to see you, ' + response.email + '.');
-                            });
-                        } else if (response.status === 'not_authorized') {
-                            FB.login(function (response) {
-                                if (response.authResponse) {
-                                } else {
-                                }
-                            }, {scope: 'email'});
-                        } else {
-                            FB.login(function (response) {
-                                if (response.authResponse) {
-                                } else {
-                                }
-                            }, {scope: 'email'});
-                        }
-                    }, true);
-
-                });
-            </script>
         </div>
     </div>
-    <footer class="row">
-        <div class="large-12 columns">
-            <hr/>
-            <div class="row">
-                <div class="large-6 columns">
-                    <p>© Copyright Wisely</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <div id="fb-root"></div>
+{% endblock %}
+{% block additionalScripts %}
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '405339162934237',
+                status: true,
+                xfbml: true
+            });
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/en_US/all.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+        $('#facebook-follow').click(function () {
+            FB.getLoginStatus(function (response) {
+                if (response.status === 'connected') {
+                    FB.api('/me', function (response) {
+                        $('#facebook-email').val(response.email);
+                        $('#facebook-post').submit();
+                    });
+                } else if (response.status === 'not_authorized') {
+                    FB.login(function (response) {
+                        if (response.authResponse) {
+                            FB.api('/me', function (response) {
+                                $('#facebook-email').val(response.email);
+                                $('#facebook-post').submit();
+                            });
+                        } else {
+                        }
+                    }, {scope: 'email'});
+                } else {
+                    FB.login(function (response) {
+                        if (response.authResponse) {
+                            FB.api('/me', function (response) {
+                                $('#facebook-email').val(response.email);
+                                $('#facebook-post').submit();
+                            });
+                        } else {
+                        }
+                    }, {scope: 'email'});
+                }
+            }, true);
+
+        });
+    </script>
+    {% if not user.is_authenticated %}
+        <script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
+        <script>
+            $('#sign').click(function () {
+                $('#sign-up').lightbox_me({centered: true});
+            });
+        </script>
+    {% endif %}
 {% endblock %}
