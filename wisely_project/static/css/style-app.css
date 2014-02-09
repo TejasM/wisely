@@ -87,3 +87,37 @@ span.dollar-detail {
 .extra-top-large-margin {
     margin-top: 35px !important;
 }
+
+.light-box {
+    left: 50%;
+    position: absolute;
+    z-index: 901;
+    padding: 30px 40px 34px;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    background: #fff;
+    display: none;
+    border-radius: 3px;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    width: 380px;
+    margin-top: 150px;
+    margin-left: -200px;
+}
+
+.light-box button {
+}
+
+.light-box .btn-auth {
+    width: 80% !important;
+}
+
+.centered {
+    margin: 0 auto;
+}
+
+.light-box form {
+    margin-bottom: 0;
+}

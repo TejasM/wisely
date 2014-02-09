@@ -40,7 +40,17 @@
                         rewarded for your hard work.</h2><br><br>
 
                         <div id="dis" class="subtitle">
-                            <button id="sign" class="other-button">Get Started</button>
+                            <div class="row">
+                                <div class="large-6 large-offset-3 columns"><input type="text" style="height: 57px" placeholder="Email" id="email"></div>
+                                <div class="large-3 columns">
+                                    <button id="sign" class="other-button left">Sign Up</button>
+                                </div>
+                            </div>
+                            <div id="validation" class="validation"></div>
+                            <p>Wisely is currently under construction. Sign Up for the early
+                                preview.
+                            </p>
+                            {% comment %}<button id="sign" class="other-button">Get Started</button>{% endcomment %}
                         </div>
                     </div>
                 </div>
@@ -162,12 +172,30 @@
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script src="{% static 'js/foundation.min.js' %}"></script>
 <script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
+<script type='text/javascript' src='https://cdn.firebase.com/v0/firebase.js'></script>
 <script>
     $(function () {
         $(document).foundation();
-        $('#sign').click(function () {
+        {% comment %}$('#sign').click(function () {
             $('#sign-up').lightbox_me({centered: true});
+        });{% endcomment %}
+        $('#sign').click(function () {
+            var myRootRef = new Firebase('https://wisely.firebaseIO.com/');
+            var $email = $('#email').val();
+
+            if (validateEmail($email)) {
+                myRootRef.push({name: $email.split('@')[0], email: $email});
+                $('#dis').text('Thank You! We will keep you updated!');
+            }
+            else {
+                $('#validation').text('That doesn\'t look like a valid email address. Please try again.');
+            }
         });
+        function validateEmail(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        }
+
         $('#login').click(function () {
             $('#login-up').lightbox_me({centered: true});
         });

@@ -78,7 +78,7 @@
                 {% block nav-bar %}
                     <li class=""><a href="{% url 'users:index' %}"><i class="fa fa-book"></i><span>Courses</span></a>
                     </li>
-                    <li class=" active"><a href="{% url 'pledges:index' %}"><i
+                    <li class="active"><a href="{% url 'pledges:index' %}"><i
                             class="fa fa-book"></i><span>Pledges</span></a>
                     </li>
                     <li class=""><a href="#"><i
@@ -102,11 +102,11 @@
             <div class="user-action user-action-btn-navbar pull-left border-right">
                 <button class="btn btn-sm btn-navbar btn-primary btn-stroke"><i class="fa fa-bars fa-2x"></i></button>
             </div>
-            <div class="col-md-3 padding-none visible-md visible-lg">
+            <div class="col-md-6 padding-none visible-md visible-lg">
                 <div class="input-group innerLR">
-                    <input type="text" class="form-control input-sm" placeholder="Search courses ...">
       		<span class="input-group-btn">
-        		<button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+        		<a href="/faq"><button class="btn btn-primary" type="button"><i class="fa fa-question"></i>&nbsp; FAQ</button></a>&nbsp;&nbsp;
+        		<a href="/learn-more"><button class="btn btn-primary" type="button"><i class="fa fa-star"></i>&nbsp; Learn More</button></a>
       		</span>
                 </div>
                 <!-- /input-group -->
