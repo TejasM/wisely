@@ -1,7 +1,7 @@
 from django import forms
 from django.forms.extras.widgets import SelectDateWidget
 
-from models import UserProfile
+from models import UserProfile, User
 
 
 class UserProfileForm(forms.ModelForm):
@@ -27,3 +27,10 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ['gender', 'website', 'current_city', 'birthday', 'headline', 'about_me', 'picture']
 
+
+class UserForm(forms.ModelForm):
+    email = forms.CharField(help_text="Please enter your email.", required=False)
+
+    class Meta:
+        model = User
+        fields = ['email']

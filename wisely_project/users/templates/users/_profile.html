@@ -1,0 +1,300 @@
+<form id="user_profile_form" method="post" action="{% url 'users:edit_profile' %}"
+      enctype="multipart/form-data">
+{% csrf_token %}
+<div class="hidden">
+    {% for field in user_profile_form.visible_fields %}
+        {{ field }}
+    {% endfor %}
+
+    {% for field in user_form.visible_fields %}
+        {{ field }}
+    {% endfor %}
+</div>
+
+<div class="widget extra-top-margin">
+
+    <!-- Widget heading -->
+    {#        <div class="widget-head">#}
+    {#            <h1 class="separator bottom">Your Profile</h1>#}
+    {#        </div>#}
+
+
+    <div class="widget-body">
+        <div class="bg-gray innerAll">
+            <div class="media">
+                <img src="{% if user_profile.picture %}/media/
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    {{ user_profile.picture }}{% else %}http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png{% endif %}"
+                     class="pull-left img-circle thumb hidden-sm" width="100">
+
+                <div class="media-body">
+                    <h3 class="margin-none">{{ user.first_name }} {{ user.last_name }}</h3>
+
+                    <div id="partial_profile_header">
+
+
+                        <div id="headline-div">
+                            {% if user_profile.headline %}
+                                {{ user_profile.headline }}
+                                <a href="javascript:void(0)" class="edit" id="edit-headline">Edit</a>
+                            {% else %}
+                                <a href="javascript:void(0)" class="edit" id="edit-headline">Add</a> a headline
+                            {% endif %}
+                        </div>
+                        <div id="edit-headline-div" class="col-sm-10">
+
+                            <input name="headline" type="text" class="form-control"
+                                   value="{{ user_profile_form.headline.value|default_if_none:"" }}"
+                                   placeholder="{{ "Add a headline" }}">
+                            <input class="btn extra-top-margin btn-primary" type="submit" value="Update"
+                                   id="submit-headline"/>
+
+                            <a id="cancel-headline" class="btn extra-top-margin btn-secondary"
+                               href="javascript:void(0)">Cancel</a>
+
+                        </div>
+
+                        <div id="about_me-div">
+                            {% if user_profile.about_me %}
+                                {{ user_profile.about_me }}
+                                <a href="javascript:void(0)" class="edit" id="edit-about_me">Edit</a>
+                            {% else %}
+                                <a href="javascript:void(0)" class="edit" id="edit-about_me">Add</a> a
+                                description about
+                                yourself
+                            {% endif %}
+                        </div>
+                        <div id="edit-about_me-div" class="col-sm-10">
+
+
+                            <input name="about_me" type="text" class="form-control"
+                                   value="{{ user_profile_form.about_me.value|default_if_none:"" }}"
+                                   placeholder="{{ "Add a description about yourself" }}">
+                            <input class="btn extra-top-margin btn-primary" type="submit" value="Update"
+                                   id="submit-about_me"/>
+                            <a id="cancel-about_me" class="btn extra-top-margin btn-secondary"
+                               href="javascript:void(0)">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-separator-h box"></div>
+
+        <!-- Row -->
+        <div class="row row-merge margin-none">
+            <div class="col-lg-4">
+
+                <a href="" class="widget-stats widget-stats-1 widget-stats-inverse margin-none">
+                                    <span class="glyphicons certificate"><i></i><span
+                                            class="txt">Completed Pledges</span></span>
+
+                    <div class="clearfix"></div>
+                    <span class="count">{{ completed_pledges.count }}</span>
+                </a>
+
+            </div>
+            <div class="col-lg-4">
+
+                <a href="" class="widget-stats widget-stats-1 widget-stats-inverse margin-none">
+                                    <span class="glyphicons certificate"><i></i><span
+                                            class="txt">Current Pledges</span></span>
+
+                    <div class="clearfix"></div>
+                    <span class="count">{{ current_pledges.count }}</span>
+                </a>
+
+            </div>
+            <div class="col-lg-4">
+
+                <a href="" class="widget-stats widget-stats-primary widget-stats-1 margin-none">
+                    <span class="glyphicons book"><i></i><span class="txt">Avg. Score (%)</span></span>
+
+                    <div class="clearfix"></div>
+                    <span class="count">100</span>
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- // END col-app -->
+
+</div>
+<div class="widget extra-top-margin">
+    <div class="widget-body innerAll inner-2x">
+        <div class="row">
+
+            <div class="row extra-top-small-margin">
+                <div class="large-12 columns"><strong>Username</strong>: {{ user.username }}</div>
+            </div>
+
+            <div class="row extra-top-small-margin">
+                <div class="large-12 columns" id="gender-div">
+
+                    <strong>Gender</strong>:
+                    {% if user_profile.get_gender_display %}
+                        {{ user_profile.get_gender_display }}
+                        <a href="javascript:void(0)" class="edit" id="edit-gender">Edit</a>
+                    {% else %}
+                        <a href="javascript:void(0)" class="edit" id="edit-gender">Select</a> your gender
+                    {% endif %}
+                </div>
+
+                <div class="col-sm-10" id="edit-gender-div">
+                    <strong>Gender</strong>:
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-primary">
+                            <input type="radio" name="gender" id="option1" value="M"
+                                   checked="{% if user_profile_form.gender.value == "Male" %}checked{% endif %}">Male
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type="radio" name="gender" id="option2" value="F"
+                                   checked="{% if user_profile_form.gender.value == "Female" %}checked{% endif %}">Female
+                        </label>
+                        <input class="btn btn-secondary" type="submit" value="Update"
+                               id="submit-gender"/>
+                        <a id="cancel-gender" class="btn btn-secondary"
+                           href="javascript:void(0)">Cancel</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row extra-top-small-margin">
+                <div class="large-12 columns" id="email-div">
+                    <strong>Email</strong>:
+                    {% if user.email %}
+                        {{ user.email }}
+                        <a href="javascript:void(0)" class="edit" id="edit-email">Edit</a>
+                    {% else %}
+                        <a href="javascript:void(0)" class="edit" id="edit-email">Add</a> your email
+                    {% endif %}
+                </div>
+                <div class="col-sm-10" id="edit-email-div">
+                    <strong>Email</strong>:
+                    <input id="id_email" name="email" type="text" class="form-control"
+                           {% if user_form.email.value %}value="{{ user_form.email.value }}"{% endif %}
+                           placeholder="Email">
+                    <input class="btn btn-primary" type="submit" value="Update"
+                           id="submit-email"/>
+                    <a id="cancel-email" class="btn btn-secondary"
+                       href="javascript:void(0)">Cancel</a>
+                </div>
+            </div>
+
+
+            <div class="row extra-top-small-margin">
+                <div class="large-12 columns" id="website-div">
+                    <strong>Website</strong>:
+                    {% if user_profile.website %}
+                        {{ user_profile.website }}
+                        <a href="javascript:void(0)" class="edit" id="edit-website">Edit</a>
+                    {% else %}
+                        <a href="javascript:void(0)" class="edit" id="edit-website">Add</a> your website
+                    {% endif %}
+                </div>
+
+                <div class="col-sm-10" id="edit-website-div">
+                    <strong>Website</strong>:
+                    <input id="id_website" name="website" type="text" class="form-control"
+                           {% if user_profile_form.website.value %}value="{{ user_profile_form.website.value }}"{% endif %}
+                           placeholder="Website">
+                    <input class="btn btn-primary" type="submit" value="Update"
+                           id="submit-website"/>
+                    <a id="cancel-website" class="btn btn-secondary"
+                       href="javascript:void(0)">Cancel</a>
+                </div>
+            </div>
+
+            <div class="row extra-top-small-margin">
+                <div class="large-12 columns" id="current_city-div">
+                    <strong>Current City</strong>:
+                    {% if user_profile.current_city %}
+                        {{ user_profile.current_city }}
+                        <a href="javascript:void(0)" class="edit" id="edit-current_city">Edit</a>
+                    {% else %}
+                        <a href="javascript:void(0)" class="edit" id="edit-current_city">Add</a> your current city
+                    {% endif %}
+                </div>
+                <div class="col-sm-10" id="edit-current_city-div">
+                    <strong>Current City</strong>:
+                    <input id="id_website" name="current_city" type="text" class="form-control"
+                           value="{{ user_profile_form.current_city.value|default_if_none:"" }}"
+                           placeholder="City">
+                    <input class="btn btn-primary" type="submit" value="Update"
+                           id="submit-current_city"/>
+                    <a id="cancel-current_city" class="btn btn-secondary"
+                       href="javascript:void(0)">Cancel</a>
+                </div>
+
+            </div>
+
+            <div class="row extra-top-small-margin">
+                <div class="large-12 columns" id="birthday-div">
+                    <strong>Birthday</strong>:
+                    {% if user_profile.birthday %}
+                        {{ user_profile.birthday }}
+                        <a href="javascript:void(0)" class="edit" id="edit-birthday">Edit</a>
+                    {% else %}
+                        <a href="javascript:void(0)" class="edit" id="edit-birthday">Add</a> your birth date
+                    {% endif %}
+                </div>
+                <div class="col-sm-10" id="edit-birthday-div">
+                    <strong>Birthday</strong>:
+                    <div class="input-group date" id="datepicker1">
+                        <input type="text" class="form-control" name="birthday"
+                               value="{{ user_profile_form.birthday.value|default_if_none:"" }}">
+                        <span class="input-group-addon"><i class="fa fa-th"></i></span>
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="Update"
+                           id="submit-birthday"/>
+                    <a id="cancel-birthday" class="btn btn-secondary"
+                       href="javascript:void(0)">Cancel</a>
+                </div>
+            </div>
+
+            <div class="row extra-top-small-margin">
+                <div class="large-12 columns"><strong>Member Since</strong>: {{ user.date_joined }}</div>
+            </div>
+            <div class="row extra-top-small-margin">
+                <div class="large-12 columns"><strong>Last Seen</strong>: {{ user.last_login }}</div>
+            </div>
+
+            {#        <div class="row extra-top-margin">#}
+            {#            <label class="col-sm-2 control-label">#}
+            {#                Please select a profile image to upload.#}
+            {#            </label>#}
+            {##}
+            {#            <div class="col-sm-10">#}
+            {#                <div class="fileupload margin-none {% if user_profile_form.picture.value %}fileupload-exists{% else %}fileupload-new{% endif %}"#}
+            {#                     data-provides="fileupload"><input#}
+            {#                        type="hidden" value="" name="picture">#}
+            {#                                    <span class="btn btn-default btn-file"><span#}
+            {#                                            class="fileupload-new">Select file</span><span class="fileupload-exists">Change</span><input#}
+            {#                                            type="file" class="margin-none" name=""></span>#}
+            {#                    <span class="fileupload-preview"></span>#}
+            {#                    <a href="#" class="close fileupload-exists" data-dismiss="fileupload"#}
+            {#                       style="float: none">×</a>#}
+            {#                </div>#}
+            {#            </div>#}
+            {#        </div>#}
+        </div>
+    </div>
+
+    <!-- // END col-app.col-unscrollable -->
+</div>
+</div>
+</form>

@@ -10,7 +10,7 @@ from django.utils import timezone
 
 from models import CourseraProfile, Progress, UserProfile
 from pledges.models import Pledge
-from forms import UserProfileForm
+from forms import UserProfileForm, UserForm
 
 
 def login_user(request):
@@ -35,12 +35,13 @@ def profile(request):
         user_profile = UserProfile.objects.create(user=request.user)
 
     user_profile_form = UserProfileForm(instance=user_profile)
+    user_form = UserForm(instance=user_profile)
 
     completed_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=True)
     current_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=False)
 
     context_dict = {'user': request.user, 'user_profile': user_profile, 'user_profile_form': user_profile_form,
-                    'completed_pledges': completed_pledges, 'current_pledges': current_pledges}
+                    'user_form': user_form, 'completed_pledges': completed_pledges, 'current_pledges': current_pledges}
     return render(request, 'users/profile.html', context_dict)
 
 
@@ -100,7 +101,11 @@ def check_updated(request):
 def edit_profile(request):
     if request.method == 'POST':
         user_profile = UserProfile.objects.get(user=request.user)
-        user_profile_form = UserProfileForm(request.POST, instance=user_profile)
+        user_profile_form = UserProfileForm(data=request.POST, instance=user_profile)
+        user_form = UserForm(data=request.POST, instance=request.user)
+
+        print request.POST
+
         if user_profile_form.is_valid():
             print "is valid"
             if 'picture' in request.FILES:
@@ -108,13 +113,27 @@ def edit_profile(request):
 
             user_profile_form.save()
 
-        user_profile = UserProfile.objects.get(user=request.user)
+        if user_form.is_valid():
+            user_form.save()
+
+        user = User.objects.get(id=request.user.id)
+        user_profile = UserProfile.objects.get(user=user)
+
         #json_user_profile = serializers.serialize("json", [user_profile, ])
         #json_user_profile = json.loads(json_user_profile)
         user_profile_form_updated = UserProfileForm(instance=user_profile)
-        return render(request, 'users/partial-profile-header.html',
-                      {'user_profile': user_profile, 'user_profile_form': user_profile_form_updated})
-        #return HttpResponse(json.dumps({'user_profile': json_user_profile[0]}), mimetype='application/json')
+        user_form_updated = UserForm(instance=user)
+
+        completed_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=True)
+        current_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=False)
+
+        context_dict = {'user': request.user, 'user_profile': user_profile,
+                        'user_profile_form': user_profile_form_updated,
+                        'user_form': user_form_updated, 'completed_pledges': completed_pledges,
+                        'current_pledges': current_pledges}
+
+        return render(request, 'users/_profile.html',
+                      context_dict)
 
     # return HttpResponseRedirect(reverse('users:profile'))
     return HttpResponse("error")

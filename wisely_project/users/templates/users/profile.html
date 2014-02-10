@@ -14,138 +14,114 @@
     </li>
 {% endblock %}
 {% block content %}
-    <div class="col-md-8 col-md-offset-2">
-
-    <div class="widget extra-top-margin">
-
-        <!-- Widget heading -->
-        <div class="widget-head">
-            <h1 class="separator bottom">Your Profile</h1>
-        </div>
-        <div class="widget-body">
-            <div class="bg-gray innerAll">
-                <div class="media">
-                    <img src="{% if user_profile.picture %}/media/
-
-
-                        {{ user_profile.picture }}{% else %}http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png{% endif %}"
-                         class="pull-left img-circle thumb hidden-sm" width="100">
-
-                    <div class="media-body">
-                        <h3 class="margin-none">{{ user.first_name }} {{ user.last_name }}</h3>
-
-                        <div id="partial_profile_header"> {% include "users/partial-profile-header.html" %} </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-separator-h box"></div>
-
-            <!-- Row -->
-            <div class="row row-merge margin-none">
-                <div class="col-lg-4">
-
-                    <a href="" class="widget-stats widget-stats-1 widget-stats-inverse margin-none">
-                                    <span class="glyphicons certificate"><i></i><span
-                                            class="txt">Completed Pledges</span></span>
-
-                        <div class="clearfix"></div>
-                        <span class="count">{{ completed_pledges.count }}</span>
-                    </a>
-
-                </div>
-                <div class="col-lg-4">
-
-                    <a href="" class="widget-stats widget-stats-1 widget-stats-inverse margin-none">
-                                    <span class="glyphicons certificate"><i></i><span
-                                            class="txt">Current Pledges</span></span>
-
-                        <div class="clearfix"></div>
-                        <span class="count">{{ current_pledges.count }}</span>
-                    </a>
-
-                </div>
-                <div class="col-lg-4">
-
-                    <a href="" class="widget-stats widget-stats-primary widget-stats-1 margin-none">
-                        <span class="glyphicons book"><i></i><span class="txt">Avg. Score (%)</span></span>
-
-                        <div class="clearfix"></div>
-                        <span class="count">100</span>
-                    </a>
-
-                </div>
-            </div>
-
-        </div>
-        <!-- // END col-app -->
-
-    </div>
-    <div class="widget extra-top-margin">
-        <div class="widget-body innerAll inner-2x">
-            <div class="row">
-                {% include "users/partial-profile-main.html" %}
-            </div>
-
-            <!-- // END col-app.col-unscrollable -->
-        </div>
-    </div>
+    <div class="col-md-8 col-md-offset-2" id="partial-profile">
+        {% include 'users/_profile.html' %}
     </div>
 
 {% endblock %}
 {% block additionalScripts %}
     <script>
+
+        function hideAllEdit() {
+            $('#edit-headline-div').hide();
+            $('#edit-about_me-div').hide();
+            $('#edit-gender-div').hide();
+            $('#edit-email-div').hide();
+            $('#edit-website-div').hide();
+            $('#edit-current_city-div').hide();
+            $('#edit-birthday-div').hide();
+        }
+
+        function submitEdit(event) {
+            console.log(event.target.id + "has just been clicked");
+            var form_id = '#user_profile_form';
+            console.log(form_id + "about to post");
+            $.post('{% url 'users:edit_profile' %}', $(form_id).serialize(), function (partial_render) {
+                console.log("partial-profile start rendering");
+                $('#partial-profile').html(partial_render);
+                hideAllEdit();
+                console.log("partial-profile rendered");
+            });
+            event.preventDefault();
+        }
+
+        function displayEdit(event) {
+            var field = event.target.id.substring(event.target.id.indexOf("-") + 1);
+            $('#' + field + '-div').fadeOut("fast");
+            $('#edit-' + field + '-div').fadeIn("slow");
+        }
+
+        function cancelEdit(event) {
+            var field = event.target.id.substring(event.target.id.indexOf("-") + 1);
+            $('#edit-' + field + '-div').fadeOut("fast");
+            $('#' + field + '-div').fadeIn("slow");
+        }
+
+
         $(document).ready(function () {
-            $('#editProfile').hide();
-            $('#edit').live('click', function () {
-                $('#edit').hide();
-                $('#showProfile').hide();
-                $('#editProfile').show();
+            hideAllEdit();
+            $('#edit-headline').live('click', function (event) {
+                displayEdit(event);
             });
-
-            $('#edit_headline_div').hide();
-            $('#edit_headline').live('click', function () {
-                $('#show_headline_div').fadeOut("fast");
-                $('#edit_headline_div').fadeIn("slow");
+            $('#cancel-headline').live('click', function (event) {
+                cancelEdit(event);
             });
-
-            $('#cancel_edit_headline').live('click', function () {
-                $('#edit_headline_div').fadeOut("fast");
-                $('#show_headline_div').fadeIn("slow");
+            $('#submit-headline').live('click', function (event) {
+                submitEdit(event);
             });
-
-            $('#submit_edit_headline').live('click', function () {
-                $('#edit_headline_div').fadeOut("fast");
-                console.log("about to submit");
-                $.post('{% url 'users:edit_profile' %}', $('#form_headline').serialize(), function (partial_render) {
-                    $('#partial_profile_header').html(partial_render);
-                    $('#edit_headline_div').hide();
-                    $('#edit_about_me_div').hide();
-                    console.log("reloaded");
-                });
-                return false;
+            $('#edit-about_me').live('click', function (event) {
+                displayEdit(event);
             });
-
-            $('#edit_about_me_div').hide();
-            $('#edit_about_me').live('click', function () {
-                $('#show_about_me_div').fadeOut("fast");
-                $('#edit_about_me_div').fadeIn("slow");
+            $('#cancel-about_me').live('click', function (event) {
+                cancelEdit(event);
             });
-
-            $('#cancel_edit_about_me').live('click', function () {
-                $('#edit_about_me_div').fadeOut("fast");
-                $('#show_about_me_div').fadeIn("slow");
+            $('#submit-about_me').live('click', function (event) {
+                submitEdit(event);
             });
-
-            $('#submit_edit_about_me').live('click', function () {
-                $('#edit_about_me_div').fadeOut("fast");
-                console.log("about to submit");
-                $.post('{% url 'users:edit_profile' %}', $('#form_about_me').serialize(), function (partial_render) {
-                    $('#partial_profile_header').html(partial_render);
-                    $('#edit_headline_div').hide();
-                    $('#edit_about_me_div').hide();
-                    console.log("reloaded");
-                });
-                return false;
+            $('#edit-gender').live('click', function (event) {
+                displayEdit(event);
+            });
+            $('#cancel-gender').live('click', function (event) {
+                cancelEdit(event);
+            });
+            $('#submit-gender').live('click', function (event) {
+                submitEdit(event);
+            });
+            $('#edit-email').live('click', function (event) {
+                displayEdit(event);
+            });
+            $('#cancel-email').live('click', function (event) {
+                cancelEdit(event);
+            });
+            $('#submit-email').live('click', function (event) {
+                submitEdit(event);
+            });
+            $('#edit-website').live('click', function (event) {
+                displayEdit(event);
+            });
+            $('#cancel-website').live('click', function (event) {
+                cancelEdit(event);
+            });
+            $('#submit-website').live('click', function (event) {
+                submitEdit(event);
+            });
+            $('#edit-current_city').live('click', function (event) {
+                displayEdit(event);
+            });
+            $('#cancel-current_city').live('click', function (event) {
+                cancelEdit(event);
+            });
+            $('#submit-current_city').live('click', function (event) {
+                submitEdit(event);
+            });
+            $('#edit-birthday').live('click', function (event) {
+                displayEdit(event);
+            });
+            $('#cancel-birthday').live('click', function (event) {
+                cancelEdit(event);
+            });
+            $('#submit-birthday').live('click', function (event) {
+                submitEdit(event);
             });
         });
     </script>
