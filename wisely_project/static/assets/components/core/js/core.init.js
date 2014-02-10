@@ -251,11 +251,6 @@ if (window.location != window.parent.location)
 		enableResponsiveNavbarSubmenus();
 	});
 
-	$(window).bind('enterBreakpoint768',function() {
-		$('.container-fluid').removeClass('menu-hidden');
-		enableNavbarMenusHover();
-		disableResponsiveNavbarSubmenus();
-	});
 
 	$(window).bind('exitBreakpoint992',function() {		
 		disableContentNiceScroll();

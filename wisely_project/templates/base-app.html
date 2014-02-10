@@ -102,6 +102,10 @@
         		<a href="/learn-more">
                     <button class="btn btn-primary" type="button"><i class="fa fa-star"></i>&nbsp; Learn More</button>
                 </a>
+                &nbsp;&nbsp;
+                <a href="/">
+                    <button class="btn btn-primary" type="button"><i class="fa fa-home"></i>&nbsp; Home</button>
+                </a>
       		</span>
                 </div>
                 <!-- /input-group -->
@@ -226,6 +230,20 @@
 <script src="{% static 'assets/components/core/js/sidebar.kis.init.js' %}?v=v1.9.6"></script>
 <script src="{% static 'assets/components/core/js/core.init.js' %}?v=v1.9.6"></script>
 <script src="{% static 'assets/components/core/js/animations.init.js' %}?v=v1.9.6"></script>
+<script>
+    {% if user.is_authenticated %}
+        $(window).bind('enterBreakpoint768', function () {
+            $('.container-fluid').removeClass('menu-hidden');
+            enableNavbarMenusHover();
+            disableResponsiveNavbarSubmenus();
+        });
+    {% else %}
+        $(window).bind('enterBreakpoint768', function () {
+            enableNavbarMenusHover();
+            disableResponsiveNavbarSubmenus();
+        });
+    {% endif %}
+</script>
 {% block additionalScripts %}
 {% endblock %}
 </body>
