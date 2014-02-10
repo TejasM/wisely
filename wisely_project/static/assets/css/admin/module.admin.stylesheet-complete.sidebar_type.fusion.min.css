@@ -674,7 +674,7 @@ h1 [class*="icon-"], h2 [class*="icon-"], h3 [class*="icon-"], h4 [class*="icon-
 }
 
 .bg-primary-light {
-    background: #fdf2f0 !important
+    background: #cee8b2 !important
 }
 
 .bg-primary-light *:not(.btn) {
