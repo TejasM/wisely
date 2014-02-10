@@ -219,7 +219,7 @@ h3 {
 
 .title {
     font-weight: bold;
-    color: #333333;
+    color: #fff;
     margin: 50px auto auto;
     text-align: right;
     border-radius: 10px;
@@ -230,6 +230,7 @@ h3 {
 h1 {
     font-size: 4rem;
     font-weight: 100;
+    color: #fff;
     -webkit-margin-before: 0em;
     -webkit-margin-after: 0em;
 }
@@ -245,7 +246,7 @@ h2 {
     font-weight: 100;
     -webkit-margin-before: 0em;
     -webkit-margin-after: 0em;
-    color: #333;
+    color: #fff;
 }
 
 .f-dropdown:before {

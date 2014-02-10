@@ -15,12 +15,12 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 
-    <!-- 
+    <!--
     **********************************************************
     In development, use the LESS files and the less.js compiler
     instead of the minified CSS loaded by default.
     ********************************************************** -->
-    <!-- <link rel="stylesheet/less"
+    <!--<link rel="stylesheet/less"
           href="{% static 'assets/less/admin/module.admin.stylesheet-complete.sidebar_type.fusion.less' %}"/>-->
 
     <!--[if lt IE 9]><link rel="stylesheet" href="{% static 'assets/components/library/bootstrap/css/bootstrap.min.css' %}" />
@@ -37,7 +37,7 @@
     <script src="{% static 'assets/components/library/jquery/jquery.min.js' %}?v=v1.9.6&sv=v0.0.1"></script>
     <script src="{% static 'assets/components/library/jquery/jquery-migrate.min.js' %}?v=v1.9.6&sv=v0.0.1"></script>
     <script src="{% static 'assets/components/library/modernizr/modernizr.js' %}?v=v1.9.6&sv=v0.0.1"></script>
-    <!-- <script src="{% static 'assets/components/plugins/less-js/less.min.js' %}?v=v1.9.6&sv=v0.0.1"></script> -->
+    <!--<script src="{% static 'assets/components/plugins/less-js/less.min.js' %}?v=v1.9.6&sv=v0.0.1"></script>-->
     {#    <script src="{% static 'assets/components/modules/admin/charts/flot/assets/lib/excanvas.js' %}?v=v1.9.6&sv=v0.0.1"></script>#}
     {#    <script src="{% static 'assets/components/plugins/browser/ie/ie.prototype.polyfill.js' %}?v=v1.9.6&sv=v0.0.1"></script>#}
     <script>if (/*@cc_on!@*/false && document.documentMode === 10) {
@@ -59,7 +59,7 @@
         <div id="sidebar-fusion-wrapper">
             <div id="brandWrapper">
                 <a href="/" class="display-block-inline pull-left logo"><img
-                        src="{% static 'assets/images/logo/app-logo-style-default.png' %}" alt=""></a>
+                        src="{% static 'assets/images/logo/app-logo-green.png' %}" alt=""></a>
                 <a href=" "><span class="text">Wisely</span></a>
             </div>
             {% if user.is_authenticated %}
@@ -101,6 +101,10 @@
                 </a>&nbsp;&nbsp;
         		<a href="/learn-more">
                     <button class="btn btn-primary" type="button"><i class="fa fa-star"></i>&nbsp; Learn More</button>
+                </a>
+                &nbsp;&nbsp;
+                <a href="/">
+                    <button class="btn btn-primary" type="button"><i class="fa fa-home"></i>&nbsp; Home</button>
                 </a>
       		</span>
                 </div>
@@ -204,12 +208,12 @@
             layoutApp = true,
             module = 'admin';
 
-    var primaryColor = '#eb6a5a',
-            dangerColor = '#b55151',
-            successColor = '#609450',
-            infoColor = '#4a8bc2',
-            warningColor = '#ab7a4b',
-            inverseColor = '#45484d';
+	var primaryColor = '#87c844',
+		dangerColor = '#b55151',
+		successColor = '#609450',
+		infoColor = '#4a8bc2',
+		warningColor = '#ab7a4b',
+		inverseColor = '#45484d';
 
     var themerPrimaryColor = primaryColor;
 </script>
@@ -226,6 +230,20 @@
 <script src="{% static 'assets/components/core/js/sidebar.kis.init.js' %}?v=v1.9.6"></script>
 <script src="{% static 'assets/components/core/js/core.init.js' %}?v=v1.9.6"></script>
 <script src="{% static 'assets/components/core/js/animations.init.js' %}?v=v1.9.6"></script>
+<script>
+    {% if user.is_authenticated %}
+        $(window).bind('enterBreakpoint768', function () {
+            $('.container-fluid').removeClass('menu-hidden');
+            enableNavbarMenusHover();
+            disableResponsiveNavbarSubmenus();
+        });
+    {% else %}
+        $(window).bind('enterBreakpoint768', function () {
+            enableNavbarMenusHover();
+            disableResponsiveNavbarSubmenus();
+        });
+    {% endif %}
+</script>
 {% block additionalScripts %}
 {% endblock %}
 </body>
