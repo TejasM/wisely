@@ -54,6 +54,7 @@ class UserProfile(BaseModel):
     gender = models.CharField(max_length=1, choices=GENDER, null=True)
 
     birthday = models.DateField(null=True, blank=True)
+    headline = models.TextField(null=True, blank=True, max_length=64)
     about_me = models.TextField(null=True, blank=True, max_length=500)
     website = models.URLField(null=True, blank=True)
 

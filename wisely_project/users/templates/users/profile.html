@@ -26,13 +26,15 @@
             <div class="bg-gray innerAll">
                 <div class="media">
                     <img src="{% if user_profile.picture %}/media/
+
+
                         {{ user_profile.picture }}{% else %}http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png{% endif %}"
                          class="pull-left img-circle thumb hidden-sm" width="100">
 
                     <div class="media-body">
                         <h3 class="margin-none">{{ user.first_name }} {{ user.last_name }}</h3>
 
-                        {% if user_profile.about_me %}<p>{{ user_profile.about_me }}</p>{% endif %}
+                        <div id="partial_profile_header"> {% include "users/partial-profile-header.html" %} </div>
                     </div>
                 </div>
             </div>
@@ -81,151 +83,7 @@
     <div class="widget extra-top-margin">
         <div class="widget-body innerAll inner-2x">
             <div class="row">
-                <div id="showProfile">
-                    <div class="row extra-top-small-margin">
-                        <div class="large-12 columns"><strong>Username</strong>: {{ user.username }}</div>
-                    </div>
-                    {% if user_profile.gender != 'U' %}
-                        <div class="row extra-top-small-margin">
-                            <div class="large-12 columns">
-                                <strong>Gender</strong>: {{ user_profile.get_gender_display }}
-                            </div>
-                        </div>
-                    {% endif %}
-                    {% if user.email %}
-                        <div class="row extra-top-small-margin">
-                            <div class="large-12 columns"><strong>Email</strong>: {{ user.email }}</div>
-                        </div>
-                    {% endif %}
-                    {% if user_profile.website %}
-                        <div class="row extra-top-small-margin">
-                            <div class="large-12 columns"><strong>Website</strong>: <a
-                                    href="{{ user_profile.website }}">{{ user_profile.website }}</a></div>
-                        </div>
-                    {% endif %}
-                    {% if user_profile.current_city %}
-                        <div class="row extra-top-small-margin">
-                            <div class="large-12 columns"><strong>Current
-                                City</strong>: {{ user_profile.current_city }}
-                            </div>
-                        </div>
-                    {% endif %}
-                    {% if user_profile.birthday %}
-                        <div class="row extra-top-small-margin">
-                            <div class="large-12 columns"><strong>Birthday</strong>: {{ user_profile.birthday }}
-                            </div>
-                        </div>
-                    {% endif %}
-                    {% if user_profile.about_me %}
-                        <div class="row extra-top-small-margin">
-                            <div class="large-12 columns"><strong>About Me</strong>: {{ user_profile.about_me }}
-                            </div>
-                        </div>
-                    {% endif %}
-                    <div class="row extra-top-small-margin">
-                        <div class="large-12 columns"><strong>Member Since</strong>: {{ user.date_joined }}</div>
-                    </div>
-                    <div class="row extra-top-small-margin">
-                        <div class="large-12 columns"><strong>Last Seen</strong>: {{ user.last_login }}</div>
-                    </div>
-                </div>
-
-                <div id="editProfile">
-                    <form id="user_profile_edit_form" method="post" action="{% url 'users:edit_profile' %}"
-                          enctype="multipart/form-data">
-                        {% csrf_token %}
-
-                        <div class="row">
-                            <label class="col-sm-2 control-label">
-                                Please select your gender.</label>
-
-                            <div class="col-sm-10">
-                                <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-primary">
-                                        <input type="radio" name="gender" id="option1" value="M"
-                                               checked="{% if user_profile_form.gender.value == "Male" %}checked{% endif %}">Male
-                                    </label>
-                                    <label class="btn btn-primary">
-                                        <input type="radio" name="gender" id="option2" value="F"
-                                               checked="{% if user_profile_form.gender.value == "Female" %}checked{% endif %}">Female
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row extra-top-margin">
-                            <label class="col-sm-2 control-label">
-                                Please enter your website.
-                            </label>
-
-                            <div class="col-sm-10">
-                                <input id="id_website" name="website" type="text" class="form-control"
-                                       {% if user_profile_form.website.value %}value="{{ user_profile_form.website.value }}"{% endif %}
-                                       placeholder="Website">
-                            </div>
-                        </div>
-
-
-                        <div class="row extra-top-margin">
-                            <label class="col-sm-2 control-label">
-                                Please enter your current city.
-                            </label>
-
-                            <div class="col-sm-10">
-                                <input id="id_website" name="current_city" type="text" class="form-control"
-                                       value="{{ user_profile_form.current_city.value|default_if_none:"" }}"
-                                       placeholder="City">
-                            </div>
-                        </div>
-                        <div class="row extra-top-margin">
-                            <label class="col-sm-2 control-label">
-                                Please enter your birth date.
-                            </label>
-
-                            <div class="col-sm-10">
-                                <div class="input-group date" id="datepicker1">
-                                    <input type="text" class="form-control" name="birthday"
-                                           value="{{ user_profile_form.birthday.value|default_if_none:"" }}">
-                                    <span class="input-group-addon"><i class="fa fa-th"></i></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row extra-top-margin">
-                            <label class="col-sm-2 control-label">
-                                Please give a description about yourself.
-                            </label>
-
-                            <div class="col-sm-10">
-                                <textarea id="id_about_me" name="about_me" type="text" class="form-control"
-                                          style="max-width: 100%">{{ user_profile_form.about_me.value }}</textarea>
-                            </div>
-                        </div>
-
-                        <div class="row extra-top-margin">
-                            <label class="col-sm-2 control-label">
-                                Please select a profile image to upload.
-                            </label>
-
-                            <div class="col-sm-10">
-                                <div class="fileupload margin-none {% if user_profile_form.picture.value %}fileupload-exists{% else %}fileupload-new{% endif %}"
-                                     data-provides="fileupload"><input
-                                        type="hidden" value="" name="picture">
-                                    <span class="btn btn-default btn-file"><span
-                                            class="fileupload-new">Select file</span><span class="fileupload-exists">Change</span><input
-                                            type="file" class="margin-none" name=""></span>
-                                    <span class="fileupload-preview"></span>
-                                    <a href="#" class="close fileupload-exists" data-dismiss="fileupload"
-                                       style="float: none">×</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <input class="btn extra-top-margin btn-primary" type="submit" name="submit"
-                               value="Update Profile"/>
-                    </form>
-                </div>
-                <input type="button" id="edit" class="btn extra-top-margin btn-primary btn-lg" value="Edit"><br/>
+                {% include "users/partial-profile-main.html" %}
             </div>
 
             <!-- // END col-app.col-unscrollable -->
@@ -242,6 +100,52 @@
                 $('#edit').hide();
                 $('#showProfile').hide();
                 $('#editProfile').show();
+            });
+
+            $('#edit_headline_div').hide();
+            $('#edit_headline').live('click', function () {
+                $('#show_headline_div').fadeOut("fast");
+                $('#edit_headline_div').fadeIn("slow");
+            });
+
+            $('#cancel_edit_headline').live('click', function () {
+                $('#edit_headline_div').fadeOut("fast");
+                $('#show_headline_div').fadeIn("slow");
+            });
+
+            $('#submit_edit_headline').live('click', function () {
+                $('#edit_headline_div').fadeOut("fast");
+                console.log("about to submit");
+                $.post('{% url 'users:edit_profile' %}', $('#form_headline').serialize(), function (partial_render) {
+                    $('#partial_profile_header').html(partial_render);
+                    $('#edit_headline_div').hide();
+                    $('#edit_about_me_div').hide();
+                    console.log("reloaded");
+                });
+                return false;
+            });
+
+            $('#edit_about_me_div').hide();
+            $('#edit_about_me').live('click', function () {
+                $('#show_about_me_div').fadeOut("fast");
+                $('#edit_about_me_div').fadeIn("slow");
+            });
+
+            $('#cancel_edit_about_me').live('click', function () {
+                $('#edit_about_me_div').fadeOut("fast");
+                $('#show_about_me_div').fadeIn("slow");
+            });
+
+            $('#submit_edit_about_me').live('click', function () {
+                $('#edit_about_me_div').fadeOut("fast");
+                console.log("about to submit");
+                $.post('{% url 'users:edit_profile' %}', $('#form_about_me').serialize(), function (partial_render) {
+                    $('#partial_profile_header').html(partial_render);
+                    $('#edit_headline_div').hide();
+                    $('#edit_about_me_div').hide();
+                    console.log("reloaded");
+                });
+                return false;
             });
         });
     </script>

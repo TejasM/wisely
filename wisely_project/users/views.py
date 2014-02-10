@@ -96,20 +96,28 @@ def check_updated(request):
                         mimetype='application/json')
 
 
-@login_required()
+@login_required
 def edit_profile(request):
     if request.method == 'POST':
         user_profile = UserProfile.objects.get(user=request.user)
-        user_profile_updated = UserProfileForm(request.POST, instance=user_profile)
-
-        if user_profile_updated.is_valid():
-
+        user_profile_form = UserProfileForm(request.POST, instance=user_profile)
+        if user_profile_form.is_valid():
+            print "is valid"
             if 'picture' in request.FILES:
                 user_profile.picture = request.FILES['picture']
 
-            user_profile_updated.save()
+            user_profile_form.save()
 
-    return HttpResponseRedirect(reverse('users:profile'))
+        user_profile = UserProfile.objects.get(user=request.user)
+        #json_user_profile = serializers.serialize("json", [user_profile, ])
+        #json_user_profile = json.loads(json_user_profile)
+        user_profile_form_updated = UserProfileForm(instance=user_profile)
+        return render(request, 'users/partial-profile-header.html',
+                      {'user_profile': user_profile, 'user_profile_form': user_profile_form_updated})
+        #return HttpResponse(json.dumps({'user_profile': json_user_profile[0]}), mimetype='application/json')
+
+    # return HttpResponseRedirect(reverse('users:profile'))
+    return HttpResponse("error")
 
 
 

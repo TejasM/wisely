@@ -19,10 +19,11 @@ class UserProfileForm(forms.ModelForm):
                                choices=GENDER)
 
     birthday = forms.DateField(widget=SelectDateWidget, help_text="Please enter your birth date.", required=False)
-    about_me = forms.CharField(help_text="Please give a description about yourself.", required=False)
+    headline = forms.CharField(required=False)
+    about_me = forms.CharField(required=False)
     website = forms.CharField(help_text="Please enter your website.", required=False)
 
     class Meta:
         model = UserProfile
-        fields = ['gender', 'website', 'current_city', 'birthday', 'about_me', 'picture']
+        fields = ['gender', 'website', 'current_city', 'birthday', 'headline', 'about_me', 'picture']
 

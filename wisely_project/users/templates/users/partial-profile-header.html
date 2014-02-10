@@ -1,0 +1,51 @@
+<div id="show_headline_div">
+    {% if user_profile.headline %}
+        {{ user_profile.headline }}
+        <a href="javascript:void(0)" class="edit" id="edit_headline">Edit</a>
+    {% else %}
+        <a href="javascript:void(0)" class="edit" id="edit_headline">Add</a> a headline
+    {% endif %}
+</div>
+<div id="edit_headline_div" class="col-sm-10">
+    {#    <form action="javascript:void(0)" method="post" id="submit_edit_headline">#}
+    <form action="javascript:void(0)" method="post" id="form_headline">
+        {% csrf_token %}
+        <div class="hidden">
+            {% for field in user_profile_form.visible_fields %}
+                {{ field }}
+            {% endfor %}
+        </div>
+        <input name="headline" type="text" class="form-control"
+               value="{{ user_profile_form.headline.value }}"
+               placeholder="{{ "Add a headline" }}">
+        <input class="btn extra-top-margin btn-primary" type="submit" value="Update" id="submit_edit_headline"/>
+
+        <a id="cancel_edit_headline" class="btn extra-top-margin btn-secondary" href="javascript:void(0)">Cancel</a>
+    </form>
+</div>
+
+<div id="show_about_me_div">
+    {% if user_profile.about_me %}
+        {{ user_profile.about_me }}
+        <a href="javascript:void(0)" class="edit" id="edit_about_me">Edit</a>
+    {% else %}
+        <a href="javascript:void(0)" class="edit" id="edit_about_me">Add</a> a description about
+        yourself
+    {% endif %}
+</div>
+<div id="edit_about_me_div" class="col-sm-10">
+    {#    <form action="javascript:void(0)" method="post" id="submit_edit_about_me">#}
+    <form action="javascript:void(0)" method="post" id="form_about_me">
+        {% csrf_token %}
+        <div class="hidden">
+            {% for field in user_profile_form.visible_fields %}
+                {{ field }}
+            {% endfor %}
+        </div>
+        <input name="about_me" type="text" class="form-control"
+               value="{{ user_profile_form.about_me.value|default_if_none:"" }}"
+               placeholder="{{ "Add a description about yourself" }}">
+        <input class="btn extra-top-margin btn-primary" type="submit" value="Update" id="submit_edit_about_me"/>
+        <a id="cancel_edit_about_me" class="btn extra-top-margin btn-secondary" href="javascript:void(0)">Cancel</a>
+    </form>
+</div>
