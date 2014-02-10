@@ -49,7 +49,7 @@
 <body class="scripts-async menu-right-hidden">
 
 <!-- Main Container Fluid -->
-<div class="container-fluid menu-hidden">
+<div class="container-fluid menu-hidden" id="menu-main">
 
     <!-- Main Sidebar Menu -->
 
@@ -62,18 +62,21 @@
                         src="{% static 'assets/images/logo/app-logo-style-default.png' %}" alt=""></a>
                 <a href=" "><span class="text">Wisely</span></a>
             </div>
-            <ul class="menu list-unstyled" id="navigation_current_page">
-                {% block nav-bar %}
-                    <li class=""><a href="{% url 'users:index' %}"><i class="fa fa-book"></i><span>Courses</span></a>
-                    </li>
-                    <li class="active"><a href="{% url 'pledges:index' %}"><i
-                            class="fa fa-book"></i><span>Pledges</span></a>
-                    </li>
-                    <li class=""><a href="#"><i
-                            class="fa fa-book"></i><span>More Coming Soon!</span></a>
-                    </li>
-                {% endblock %}
-            </ul>
+            {% if user.is_authenticated %}
+                <ul class="menu list-unstyled" id="navigation_current_page">
+                    {% block nav-bar %}
+                        <li class=""><a href="{% url 'users:index' %}"><i
+                                class="fa fa-book"></i><span>Courses</span></a>
+                        </li>
+                        <li class="active"><a href="{% url 'pledges:index' %}"><i
+                                class="fa fa-book"></i><span>Pledges</span></a>
+                        </li>
+                        <li class=""><a href="#"><i
+                                class="fa fa-book"></i><span>More Coming Soon!</span></a>
+                        </li>
+                    {% endblock %}
+                </ul>
+            {% endif %}
 
         </div>
 
@@ -93,16 +96,20 @@
             <div class="col-md-6 padding-none visible-md visible-lg">
                 <div class="input-group innerLR">
       		<span class="input-group-btn">
-        		<a href="/faq"><button class="btn btn-primary" type="button"><i class="fa fa-question"></i>&nbsp; FAQ</button></a>&nbsp;&nbsp;
-        		<a href="/learn-more"><button class="btn btn-primary" type="button"><i class="fa fa-star"></i>&nbsp; Learn More</button></a>
+        		<a href="/faq">
+                    <button class="btn btn-primary" type="button"><i class="fa fa-question"></i>&nbsp; FAQ</button>
+                </a>&nbsp;&nbsp;
+        		<a href="/learn-more">
+                    <button class="btn btn-primary" type="button"><i class="fa fa-star"></i>&nbsp; Learn More</button>
+                </a>
       		</span>
                 </div>
                 <!-- /input-group -->
             </div>
-
-            <div class="user-action pull-right menu-right-hidden-xs menu-left-hidden-xs">
-                <div class="dropdown username hidden-xs pull-left">
-                    <a class="dropdown-toggle " data-toggle="dropdown" href="#">
+            {% if user.is_authenticated %}
+                <div class="user-action pull-right menu-right-hidden-xs menu-left-hidden-xs">
+                    <div class="dropdown username hidden-xs pull-left">
+                        <a class="dropdown-toggle " data-toggle="dropdown" href="#">
 				<span class="media margin-none">
 					<span class="pull-left"><img
                             src="{% static 'assets/images/people/35/16.jpg' %}" alt="user" class="img-circle"></span>
@@ -111,14 +118,15 @@
                             class="caret"></span>
 					</span>
 				</span>
-                    </a>
-                    <ul class="dropdown-menu pull-right">
-                        <li><a href="{% url 'users:profile' %}" class="glyphicons user"><i></i> Profile</a></li>
-                        <li><a href="#" class="glyphicons envelope"><i></i>Messages</a></li>
-                        <li><a href="{% url 'users:logout' %}">Logout</a></li>
-                    </ul>
+                        </a>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="{% url 'users:profile' %}" class="glyphicons user"><i></i> Profile</a></li>
+                            <li><a href="#" class="glyphicons envelope"><i></i>Messages</a></li>
+                            <li><a href="{% url 'users:logout' %}">Logout</a></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
             <div class="clearfix"></div>
         </div>
         <!-- // END navbar -->

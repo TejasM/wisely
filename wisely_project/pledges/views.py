@@ -58,11 +58,11 @@ def share(request, pledge_id):
 
 def follow(request, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
-    if request.user.userprofile != pledge.user:
+    if (request.user.is_authenticated() and request.user.userprofile != pledge.user) or not request.user.is_authenticated():
         if request.method == "POST":
             email = request.POST.get('email', '')
             if email != '':
-                if Follower.objects.filter(email=email, pledge=pledge).count() != 0:
+                if Follower.objects.filter(email=email, pledge=pledge).count() == 0:
                     Follower.objects.create(pledge=pledge, email=email)
                 else:
                     return redirect(reverse('pledges:already', args=(pledge_id,)))

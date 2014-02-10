@@ -1,122 +1,108 @@
-{% extends 'base.html' %}
+{% extends 'base-app.html' %}
 {% load staticfiles %}
-{% block headers_css %}
-    <link href='http://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
+{% block additionalHeaders %}
+    <link href="{% static 'css/auth-buttons.css' %}" rel="stylesheet">
+    <link href="{% static 'css/auth-buttons.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style-app.css' %}"/>
+{% endblock %}
+{% block nav-bar %}
+    <li class=""><a href="{% url 'users:index' %}"><i class="fa fa-book"></i><span>Courses</span></a>
+    </li>
+    <li class=""><a href="{% url 'pledges:index' %}"><i
+            class="fa fa-book"></i><span>Pledges</span></a>
+    </li>
+    <li class=""><a href="#"><i
+            class="fa fa-book"></i><span>More Coming Soon!</span></a>
+    </li>
 {% endblock %}
 {% block content %}
-    {% include 'nav-bar.html' %}
-    <div class="row main-interface">
-        <div class="row">
-            <div class="row">
-                <div class="large-12 columns text-center">
-                    <h1>Follow Your Friend's Pledge</h1>
+    <div class="jumbotron margin-none center bg-white">
+        <h1 class="separator bottom">Follow Your Friend's Pledge</h1>
 
-                    <h2>Motivate them even more!</h2>
-                </div>
-            </div>
-            <div class="row extra-top-margin">
-                <div class="large-4 columns large-centered text-center centered">
-                    <div class="row">
-                        <div class="large-12 columns extra-top-margin">
-                            <p class="course-title">
-                                <strong>{{ pledge.user.user.first_name }} {{ pledge.user.user.last_name }}</strong> is
-                                aiming to complete <strong>{{ pledge.course }}</strong></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row extra-top-margin">
-                <div class="large-4 columns large-centered text-center centered">
-                    <div class="row">
-                        <div class="large-12 columns extra-top-margin">
-                            <form method="post" action="{% url 'pledges:follow' pledge.id %}">
-                                {% csrf_token %}
-                                <input type="email" name="email" placeholder="Email">
-                                <button type="submit" class="other-button">Follow</button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="large-12 columns extra-top-margin">
-                            <hr/>
-                            OR
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="large-12 columns extra-top-margin padding-bottom">
-                            <form method="post" action="{% url 'pledges:follow' pledge.id %}" id="facebook-post">
-                                {% csrf_token %}
-                                <input type="hidden" name="email" id="facebook-email" placeholder="Email">
+        <h2 class="heading">Motivate them even more!</h2>
 
-                            </form>
-                            <button id='facebook-follow' class="other-button">Follow with Facebook
-                            </button>
+        <div class="innerLR row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="row extra-top-margin">
+                    <p class="course-title">
+                        <strong>{{ pledge.user.user.first_name }} {{ pledge.user.user.last_name }}</strong> is
+                        aiming to complete <strong>{{ pledge.course }}</strong></p>
+                </div>
+                <div class="row extra-top-margin">
+                    <form method="post" action="{% url 'pledges:follow' pledge.id %}">
+                        {% csrf_token %}
+                        <div class="col-sm-12">
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <input type="email" name="email" placeholder="Email" class="form-control">
+                            </div>
                         </div>
-                    </div>
+                        <button type="submit" class="btn extra-top-margin btn-primary btn-lg">Follow</button>
+                    </form>
+                </div>
+                <div class="row extra-top-margin">
+                    OR
+                </div>
+                <div class="row extra-top-margin">
+                    <form method="post" action="{% url 'pledges:follow' pledge.id %}" id="facebook-post">
+                        {% csrf_token %}
+                        <input type="hidden" name="email" id="facebook-email" placeholder="Email" class="form-control">
+                    </form>
+                    <button id='facebook-follow' class="btn btn-primary btn-lg">Follow with Facebook
+                    </button>
                 </div>
             </div>
-            <div id="fb-root"></div>
-            <script>
-                window.fbAsyncInit = function () {
-                    FB.init({
-                        appId: '405339162934237',
-                        status: true,
-                        xfbml: true
+        </div>
+    </div>
+    <div id="fb-root"></div>
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '405339162934237',
+                status: true,
+                xfbml: true
+            });
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/en_US/all.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+        $('#facebook-follow').click(function () {
+            FB.getLoginStatus(function (response) {
+                if (response.status === 'connected') {
+                    FB.api('/me', function (response) {
+                        $('#facebook-email').val(response.email);
+                        $('#facebook-post').submit();
                     });
-                };
-
-                (function (d, s, id) {
-                    var js, fjs = d.getElementsByTagName(s)[0];
-                    if (d.getElementById(id)) {
-                        return;
-                    }
-                    js = d.createElement(s);
-                    js.id = id;
-                    js.src = "//connect.facebook.net/en_US/all.js";
-                    fjs.parentNode.insertBefore(js, fjs);
-                }(document, 'script', 'facebook-jssdk'));
-                $('#facebook-follow').click(function () {
-                    FB.getLoginStatus(function (response) {
-                        if (response.status === 'connected') {
+                } else if (response.status === 'not_authorized') {
+                    FB.login(function (response) {
+                        if (response.authResponse) {
                             FB.api('/me', function (response) {
                                 $('#facebook-email').val(response.email);
                                 $('#facebook-post').submit();
                             });
-                        } else if (response.status === 'not_authorized') {
-                            FB.login(function (response) {
-                                if (response.authResponse) {
-                                    FB.api('/me', function (response) {
-                                        $('#facebook-email').val(response.email);
-                                        $('#facebook-post').submit();
-                                    });
-                                } else {
-                                }
-                            }, {scope: 'email'});
                         } else {
-                            FB.login(function (response) {
-                                if (response.authResponse) {
-                                    FB.api('/me', function (response) {
-                                        $('#facebook-email').val(response.email);
-                                        $('#facebook-post').submit();
-                                    });
-                                } else {
-                                }
-                            }, {scope: 'email'});
                         }
-                    }, true);
+                    }, {scope: 'email'});
+                } else {
+                    FB.login(function (response) {
+                        if (response.authResponse) {
+                            FB.api('/me', function (response) {
+                                $('#facebook-email').val(response.email);
+                                $('#facebook-post').submit();
+                            });
+                        } else {
+                        }
+                    }, {scope: 'email'});
+                }
+            }, true);
 
-                });
-            </script>
-        </div>
-    </div>
-    <footer class="row">
-        <div class="large-12 columns">
-            <hr/>
-            <div class="row">
-                <div class="large-6 columns">
-                    <p>© Copyright Wisely</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+        });
+    </script>
 {% endblock %}
