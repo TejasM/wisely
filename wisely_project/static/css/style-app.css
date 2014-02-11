@@ -126,6 +126,6 @@ span.dollar-detail {
     margin-bottom: 0;
 }
 
-body, h1, h2, h3, span, h4, h5, h6, p {
+body, h1, h2, h3 {
     font-family: 'nova',sans-serif;
 }
