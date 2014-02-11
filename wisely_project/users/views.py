@@ -89,7 +89,11 @@ def index(request):
     else:
         pledges = Pledge.objects.filter(user=request.user.userprofile)
         progresses = Progress.objects.filter(user=request.user.userprofile)
-        return render(request, 'users/index.html', {'pledges': pledges, 'progresses': progresses, 'form': False})
+        other_pledgers_list = []
+        for course in coursera_profile.courses.all():
+            other_pledgers_list.append(Pledge.objects.filter(course=course).order_by('?')[:5])
+        return render(request, 'users/index.html', {'pledges': pledges, 'progresses': progresses, 'form': False,
+                                                    'others': other_pledgers_list})
 
 
 def check_updated(request):

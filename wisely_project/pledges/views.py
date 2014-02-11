@@ -32,7 +32,7 @@ def detail(request, pledge_id):
             stripe.api_key = settings.STRIPE_SECRET_KEY
             try:
                 stripe.Charge.create(
-                    amount=int(float(pledge.money)) * 100, # amount in cents, again
+                    amount=int(float(pledge.money)) * 100,  # amount in cents, again
                     currency="cad",
                     card=token,
                     description=request.user.username,
@@ -58,7 +58,8 @@ def share(request, pledge_id):
 
 def follow(request, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
-    if (request.user.is_authenticated() and request.user.userprofile != pledge.user) or not request.user.is_authenticated():
+    if (
+        request.user.is_authenticated() and request.user.userprofile != pledge.user) or not request.user.is_authenticated():
         if request.method == "POST":
             email = request.POST.get('email', '')
             if email != '':
@@ -94,14 +95,14 @@ def create(request):
             pledge = Pledge.objects.create(user=request.user.userprofile,
                                            course=Course.objects.get(pk=int(request.POST['course'])),
                                            money=int(float(request.POST['money'].replace(',', ''))), is_active=False,
-                                           aim=float(request.POST['aim'].replace('%', ''))/100)
+                                           aim=float(request.POST['aim'].replace('%', '')) / 100)
             return redirect(reverse('pledges:detail', args=(pledge.id,)))
         else:
             token = request.POST.get('stripeToken', '')
             stripe.api_key = settings.STRIPE_SECRET_KEY
             try:
                 stripe.Charge.create(
-                    amount=int(float(request.POST['money'].replace(',', ''))) * 100, # amount in cents, again
+                    amount=int(float(request.POST['money'].replace(',', ''))) * 100,  # amount in cents, again
                     currency="cad",
                     card=token,
                     description=request.user.username,
@@ -109,12 +110,17 @@ def create(request):
                 pledge = Pledge.objects.create(user=request.user.userprofile,
                                                course=Course.objects.get(pk=int(request.POST['course'])),
                                                money=int(float(request.POST['money'].replace(',', ''))), is_active=True,
-                                               aim=float(request.POST['aim'].replace('%', ''))/100)
+                                               aim=float(request.POST['aim'].replace('%', '')) / 100)
             except stripe.CardError, _:
                 return redirect(reverse('pledges:create'))
             return redirect(reverse('pledges:share', args=(pledge.id,)))
+
+    other_pledgers_list = []
+    for course in request.user.courseraprofile.courses.all():
+        other_pledgers_list.append(Pledge.objects.filter(course=course).order_by('?')[:5])
     if request.session.get('onboarding', '') != '':
         return render(request, 'pledges/create.html',
-                      {'form': True, 'wait': request.user.last_login > request.user.courseraprofile.last_updated})
+                      {'form': True, 'wait': request.user.last_login > request.user.courseraprofile.last_updated,
+                       'others': other_pledgers_list})
     else:
-        return render(request, 'pledges/create.html')
+        return render(request, 'pledges/create.html', {'others': other_pledgers_list})

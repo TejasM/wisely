@@ -6,84 +6,36 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/style-app.css' %}"/>
 {% endblock %}
 {% block content %}
-    {% if form %}
-        <div class="jumbotron margin-none center bg-white">
-            <h1 class="separator bottom">Keep Yourself Motivated!</h1>
 
-            <h2 class="heading">Create a Pledge</h2>
+    <div class="jumbotron margin-none center bg-white">
+        <h1 class="separator bottom">Keep Yourself Motivated!</h1>
 
-            <div class="innerLR row">
-                <form class="form-horizontal col-sm-8 col-sm-offset-2" method="post" action="" id="pay-form">
-                    {% csrf_token %}
-                    <input type="hidden" name="onboarding" value="onboarding"/>
+        <h2 class="heading">Create a Pledge</h2>
 
-                    <div class="form-group">
-                        <div class="col-sm-8 col-sm-offset-2">
-                            <select class="course" name="course" id="course-select">
-                                {% for course in user.courseraprofile.courses.all %}
-                                    <option value="{{ course.id }}">{{ course }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-8 col-sm-offset-2">
-                            <div class="increments-slider row form-horizontal">
-                                <div class="control-group">
-                                    <label class="col-sm-6 control-label">Minimum Grade You Want to Earn:</label>
+        <div class="innerLR row extra-top-margin">
+            {% for pledges in others %}
+                {% if pledges.count != 0 %}
 
-                                    <div class="col-sm-4 padding-none">
-                                        <input type="text" class="percentage-amount form-control" name="aim"/>
-                                    </div>
-                                </div>
-                                <div class="col-md-12" style="padding-top: 9px;">
-                                    <div class="slider slider-primary"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Amount to Pledge</label>
+                    <div class="col-sm-2 side-pledges" id="pledges-{{ pledges.0.course.id }}">
+                        <h5 class="innerAll bg-primary margin-bottom-none">Top Pledges</h5>
 
-                        <div class="col-sm-12">
-                            <ul class="levels">
-                                <li class="here" id="25"><span><strong>$25</strong></span></li>
-                                <li id="50" class=""><span><strong>$50</strong></span></li>
-                                <li id="100" class=""><span><strong>$100</strong></span></li>
-                                <li id="500" class=""><span><strong>$500</strong></span></li>
-                                <li id="other" class="">
-                                    <span><strong>OTHER</strong></span>
+                        <ul class="list-group list-group-1 margin-none borders-none">
+                            {% for pledge in pledges %}
+                                <li class="list-group-item animated fadeInUp"><a
+                                        href="{% url 'pledges:follow' pledge.id %}">{{ pledge.user.user.first_name }} {{ pledge.user.user.last_name }}
+                                    is pledging ${{ pledge.money }} to get at least {{ pledge.get_aim }}%</a>
                                 </li>
-                            </ul>
-                        </div>
+                            {% endfor %}
+                        </ul>
                     </div>
-                    <div class="form-group" id="input-money">
-                        <div class="col-sm-4 col-sm-offset-4">
-                            <div class="input-group">
-                                <span class="input-group-addon">$</span>
-                                <input id="money" class="form-control col-md-12 dollar" name="money"
-                                       type="text" placeholder="Amount">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <button type="submit" class="btn btn-primary btn-lg">Create</button>
-                        </div>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    {% else %}
-        <div class="jumbotron margin-none center bg-white">
-            <h1 class="separator bottom">Create Pledge</h1>
-
-            <h2 class="heading">Motivate your Learning!</h2>
-
-            <div class="innerLR row">
-                <form class="form-horizontal col-sm-8 col-sm-offset-2" method="post" action="" id="pay-form">
+                {% endif %}
+            {% endfor %}
+            <div class="col-sm-8 {% if pledge_list.0.count != 0 %}col-sm-offset-2{% endif %}" id="side-or-not">
+                <form class="form-horizontal" method="post" action="" id="pay-form">
                     {% csrf_token %}
+                    {% if form %}
+                        <input type="hidden" name="onboarding" value="onboarding"/>
+                    {% endif %}
 
                     <div class="form-group">
                         <div class="col-sm-8 col-sm-offset-2">
@@ -140,34 +92,36 @@
                         </div>
                     </div>
                 </form>
-                <script src="https://checkout.stripe.com/checkout.js"></script>
-                <script>
-                    var string = "#create";
-                    var string2 = "#pay-form";
-                    $(string).click(function () {
-                        var token = function (res) {
-                            var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                            $(string2).append($input).submit();
-                        };
-                        var money = parseInt($('#money').val()) * 100;
-                        if (!isNaN(money)) {
-                            StripeCheckout.open({
-                                key: 'pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb',
-                                address: false,
-                                amount: money,
-                                currency: 'cad',
-                                name: "Pledge",
-                                description: "For " + $('#course-select').find('option:selected ').text(),
-                                panelLabel: 'Pledge ',
-                                token: token
-                            });
-                        }
-                        return false;
-                    });
-                </script>
+                {% if not form %}
+                    <script src="https://checkout.stripe.com/checkout.js"></script>
+                    <script>
+                        var string = "#create";
+                        var string2 = "#pay-form";
+                        $(string).click(function () {
+                            var token = function (res) {
+                                var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                $(string2).append($input).submit();
+                            };
+                            var money = parseInt($('#money').val()) * 100;
+                            if (!isNaN(money)) {
+                                StripeCheckout.open({
+                                    key: 'pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb',
+                                    address: false,
+                                    amount: money,
+                                    currency: 'cad',
+                                    name: "Pledge",
+                                    description: "For " + $('#course-select').find('option:selected ').text(),
+                                    panelLabel: 'Pledge ',
+                                    token: token
+                                });
+                            }
+                            return false;
+                        });
+                    </script>
+                {% endif %}
             </div>
         </div>
-    {% endif %}
+    </div>
     {% if wait %}
         <div id="coursera-wait" class="light-box">
             <div class="row text-center">
@@ -217,6 +171,30 @@
             }
             intervalUpdated = setInterval(checkIfUpdated, 200);
         {% endif %}
+    </script>
+    <script>
+        var course_with_pledges_id = [];
+        {% for pledges in others %}
+            {% if pledges.count != 0 %}
+                course_with_pledges_id.push({{ pledges.0.course.id }});
+            {% endif %}
+        {% endfor %}
+        $('.side-pledges').hide();
+        {% if  others.0 %}
+            $('#side-or-not').removeClass('col-sm-offset-2');
+            $('#pledges-{{ others.0.0.course.id }}').show();
+        {% endif %}
+        $('#course-select').change(function () {
+            if (course_with_pledges_id.indexOf(parseInt($(this).val())) > -1) {
+                $('#side-or-not').removeClass('col-sm-offset-2');
+                $('.side-pledges').hide();
+                $('#pledges-' + $(this).val().toString()).show();
+            } else {
+                $('.side-pledges').hide();
+                $('#side-or-not').addClass('col-sm-offset-2');
+            }
+        });
+
     </script>
     <script src="{% static 'assets/components/common/sliders/jqueryui-sliders/assets/custom/js/jqueryui-sliders.init.js' %}?v=v1.9.6&sv=v0.0.1"></script>
 {% endblock %}

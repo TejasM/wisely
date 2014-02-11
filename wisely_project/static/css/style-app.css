@@ -1,3 +1,7 @@
+@font-face {
+    font-family: 'nova';
+    src: url('../fonts/Mark%20Simonson%20-%20Proxima%20Nova%20ScOsf%20Regular.otf');
+}
 
 ul.levels li {
     cursor: pointer;
@@ -120,4 +124,8 @@ span.dollar-detail {
 
 .light-box form {
     margin-bottom: 0;
+}
+
+body, h1, h2, h3, span, h4, h5, h6, p {
+    font-family: 'nova',sans-serif;
 }

@@ -121,12 +121,12 @@
                                     </div>
                                     {{ forloop|break }}
                                 {% endif %}{% if forloop.last or pledges.count == 1 %}
-                                    <h4>No Pledge for this course. Make one now!</h4>
+                                    <h4>No Pledge for this course. <br><br> Make one now!</h4>
                                     <a href="{% url 'pledges:create' %}">
                                         <button class="btn btn-primary btn-lg">Create</button>
                                     </a>
                                 {% endif %}{% endfor %}
-                                {% if not pledges %}<h4>No Pledge for this course. Make one now!</h4>
+                                {% if not pledges %}<h4>No Pledge for this course. <br><br> Make one now!</h4>
                                     <a href="{% url 'pledges:create' %}">
                                         <button class="btn btn-primary btn-lg">Create</button>
                                     </a>{% endif %}
@@ -143,22 +143,39 @@
                     </div>
                 </div>
                 <!-- Widget -->
-                <div class="widget widget-body-gray">
-                    <!-- Widget Heading -->
-                    <div class="widget-head">
-                        <h4 class="heading glyphicons calendar"><i></i>Calendar</h4>
-                    </div>
-                    <!-- // Widget Heading END -->
+                {% for ps in others %}
 
-                    <div class="widget-body innerAll inner-2x">
-                        <div data-component>
-                            <div id="calendar-{{ course.id }}"></div>
+                    {% if forloop.parentloop.counter == forloop.counter %}
+                        {% if ps %}
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <h5 class="innerAll bg-primary margin-bottom-none">Top Pledges</h5>
 
-                        </div>
+                                <ul class="list-group list-group-1 margin-none borders-none">
+                                    {% for pledge in ps %}
+                                        <li class="list-group-item animated fadeInUp"><a
+                                                href="{% url 'pledges:follow' pledge.id %}">{{ pledge.user.user.first_name }} {{ pledge.user.user.last_name }}
+                                            is pledging ${{ pledge.money }} to get at least {{ pledge.get_aim }}%</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% else %}
+                            <div class="widget widget-body-gray">
+                                <!-- Widget Heading -->
+                                <div class="widget-head">
+                                    <h4 class="heading glyphicons calendar"><i></i>Calendar</h4>
+                                </div>
+                                <!-- // Widget Heading END -->
 
-
-                    </div>
-                </div>
+                                <div class="widget-body innerAll inner-2x">
+                                    <div data-component>
+                                        <div id="calendar-{{ course.id }}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
                 <!-- col-table-row -->
             </div>
         {% endfor %}
