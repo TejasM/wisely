@@ -1,19 +1,15 @@
-@font-face {
-    font-family: 'nova';
-    src: url('../fonts/Mark%20Simonson%20-%20Proxima%20Nova%20ScOsf%20Regular.otf');
-}
+@import url(http://fonts.googleapis.com/css?family=Questrial);
 
 html {
-    font-family: 'nova', 'Open Sans', "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
     color: #383838;
 }
 
-h1, h2, h3 {
-    font-family: 'nova', 'Open Sans', "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+html, h1, h2, h3, input, button, select, textarea, optgroup, option, p {
+    font-family: 'Questrial', "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
 }
 
-input, button, select, textarea, optgroup, option {
-    font-family: 'Open Sans', "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+strong {
+    font-family: 'Open Sans', 'Questrial',sans-serif;
 }
 
 .top-bar {
@@ -45,7 +41,7 @@ input, button, select, textarea, optgroup, option {
     border: 1px solid #e4e4e4;
     color: #fff;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-    font-family: "Open Sans" sans-serif;
+    font-family: "Questrial" sans-serif;
     font-weight: 600;
     font-size: 13px;
     color: #777;
@@ -247,7 +243,7 @@ h1 {
 
 h2 {
     font-size: 1.3rem;
-    font-family: 'nova', sans-serif;
+    font-family: 'Questrial', sans-serif;
     font-weight: 100;
     -webkit-margin-before: 0em;
     -webkit-margin-after: 0em;
@@ -280,7 +276,7 @@ h2 {
 .about-us h3 {
     font-size: 2rem;
     color: #fff;
-    font-family: 'nova', Helvetica, serif;
+    font-family: 'Questrial', Helvetica, serif;
 }
 
 .light-box {
@@ -513,7 +509,7 @@ h2.course-page-header {
 .alt-faq, .alt-faq:hover, .alt-faq:focus {
     color: #222;
     font-weight: 600 !important;
-    font-family: "Open Sans", serif;
+    font-family: "Questrial", serif;
     background: none;
     padding: 0 10px 0 5px;
     font-size: 14px;
