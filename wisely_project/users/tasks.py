@@ -168,7 +168,8 @@ def get_courses(user_id):
         user.courseraprofile.save()
         for i, course in enumerate(courses):
             get_course = Course.objects.get(title=course)
-            scraper.get_quiz_link(get_course, course_links[i])
-            scraper.get_course_progress(user, get_course)
+            if get_course.end_date >= timezone.now().date():
+                scraper.get_quiz_link(get_course, course_links[i])
+                scraper.get_course_progress(user, get_course)
         print "Done"
     scraper.end()
