@@ -16,7 +16,8 @@ from forms import UserProfileForm, UserForm
 
 def login_user(request):
     if request.method == "POST":
-        login(request, authenticate(username=request.POST["email"], password=request.POST['password']))
+        user = authenticate(username=request.POST["email"], password=request.POST['password'])
+        login(request, user)
         request.user.last_login = timezone.now()
         request.user.save()
         return redirect(reverse('users:index'))
@@ -56,11 +57,15 @@ def signup(request):
                                last_name=request.POST["last_name"], is_active=True)
         user.set_password(request.POST["password"])
         user.save()
-        user_profile = UserProfile.objects.create(user=user)
-        user_profile.save()
-        login(request, authenticate(username=request.POST["email"], password=request.POST['password']))
-        request.user.last_login = timezone.now()
-        request.user.save()
+        UserProfile.objects.create(user=user)
+        user = authenticate(username=request.POST["email"], password=request.POST['password'])
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                user.last_login = timezone.now()
+                user.save()
+        else:
+            return render(request, 'base.html')
         return redirect(reverse('users:index'))
     return render(request, 'base.html')
 

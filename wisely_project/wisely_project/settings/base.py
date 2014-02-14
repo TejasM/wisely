@@ -255,6 +255,7 @@ GITHUB_APP_ID = '06f5134f1cc26effbef9'
 GITHUB_API_SECRET = '281c5607b51d8ccd574fac2f5cb9692766ca6dd3'
 
 AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
     'social_auth.backends.facebook.FacebookBackend',
     'social_auth.backends.twitter.TwitterBackend',
 )
