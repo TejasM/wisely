@@ -7,43 +7,47 @@
 {% endblock %}
 {% block content %}
     <div class="jumbotron margin-none center bg-white">
-        <h1 class="separator bottom">Share Your pledge!</h1>
+        <h1 class="separator bottom">Congratulations</h1>
 
 
-        <h2 class="heading">Get Even More Motivated</h2>
+        <h2 class="heading">You have Achieved Your Goal!</h2>
+
         <div class="innerLR row">
             <div class="col-sm-8 col-sm-offset-2">
                 <div class="row extra-top-margin">
                     <span class="course-title"><h3>{{ pledge.course }}</h3></span>
                 </div>
                 <div class="row extra-top-margin">
-                    <span class="dollar-detail">$ {{ pledge.money|floatformat:2 }}</span>
+                    <span class="dollar-detail">You had pledged $ {{ pledge.money|floatformat:2 }}</span>
                 </div>
             </div>
         </div>
         <div class="innerLR row">
-            <h3>To get at least {{ pledge.get_aim|floatformat:0 }}%</h3>
+            <h3>To get at least {{ pledge.get_aim|floatformat:0 }}% and you got {{ pledge.get_actual_mark }}%</h3>
         </div>
         <div class="innerLR row">
+            <h3>Here is your hard earned reward: ${{ pledge.reward }}</h3>
+        </div>
+        <div class="row extra-top-margin">
             <div class="col-sm-8 col-sm-offset-2">
-                <button class="btn-auth btn-facebook" id="share-facebook" type="submit">Share
-                    on <b>Facebook</b>
-                </button>
-                <a class="twitter popup"
-                   href="http://twitter.com/share?text=I%20have%20just%20made%20a%20pledge%20for%20{{ pledge.course }}%2C%20help%20me%20stay%20motivated%20by%20following%20the%20pledge!&url=http://www.projectwisely.com/follow/{{ pledge.id }}">
-                    <button class="btn-auth btn-twitter" id="share-twitter" type="submit">Share
-                        on <b>Twitter</b>
-                    </button>
+                <a href="#">
+                    <button class="btn btn-primary btn-lg">Claim</button>
+                </a>
+                <a href="{% url 'pledges:index' %}">
+                    <button class="btn btn-primary btn-lg">Back</button>
                 </a>
             </div>
         </div>
         <div class="innerLR row">
-            <p>For every follower you will get 1% extra reward and for every follower that pledges an extra 2%, up to a maximum of 20%.</p>
-        </div>
-        <div class="row extra-top-margin">
             <div class="col-sm-8 col-sm-offset-2">
-                <a href="{% url 'pledges:index' %}">
-                    <button class="btn btn-primary btn-lg">Finish</button>
+                <button class="btn-auth btn-facebook" id="share-facebook" type="submit">Share your success
+                    on <b>Facebook</b>
+                </button>
+                <a class="twitter popup"
+                   href="http://twitter.com/share?text=I%20have%20success%20fully%20completed%20a%20pledge%20for%20{{ pledge.course }}%2C%20and%20earned%20%24{{ pledge.reward }}&url=http://www.projectwisely.com/">
+                    <button class="btn-auth btn-twitter" id="share-twitter" type="submit">Share your success
+                        on <b>Twitter</b>
+                    </button>
                 </a>
             </div>
         </div>
@@ -76,10 +80,10 @@
                                 method: 'feed',
                                 name: 'Pledge for {{ pledge.course }}',
                                 description: (
-                                        'I' + ' have just made a' +
-                                                ' pledge for {{ pledge.course }}, help me stay motivated by following the pledge.'
+                                        'I have success fully completed a' +
+                                                ' pledge for {{ pledge.course }}, and earned ${{ pledge.reward }}'
                                         ),
-                                link: 'http://www.projectwisely.com/pledges/follow/{{ pledge.id }}',
+                                link: 'http://www.projectwisely.com/',
                                 picture: 'http://www.fbrell.com/public/f8.jpg'
                             },
                             function (response) {
@@ -96,8 +100,8 @@
                                         method: 'feed',
                                         name: 'Pledge for {{ pledge.course }}',
                                         description: (
-                                                'I' + ' have just made a' +
-                                                        ' pledge for {{ pledge.course }}, help me stay motivated by following the pledge.'
+                                                'I have success fully completed a' +
+                                                ' pledge for {{ pledge.course }}, and earned ${{ pledge.reward }}'
                                                 ),
                                         link: 'http://www.projectwisely.com/follow/{{ pledge.id }}',
                                         picture: 'http://www.fbrell.com/public/f8.jpg'
@@ -120,8 +124,8 @@
                                         method: 'feed',
                                         name: 'Pledge for {{ pledge.course }}',
                                         description: (
-                                                'I' + ' have just made a' +
-                                                        ' pledge for {{ pledge.course }}, help me stay motivated by following the pledge.'
+                                                'I have success fully completed a' +
+                                                ' pledge for {{ pledge.course }}, and earned ${{ pledge.reward }}'
                                                 ),
                                         link: 'http://www.projectwisely.com/follow/{{ pledge.id }}',
                                         picture: 'http://www.fbrell.com/public/f8.jpg'

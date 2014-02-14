@@ -1,3 +1,4 @@
+from __future__ import division
 import json
 from django.contrib.auth.models import User
 from django.db import models
@@ -21,6 +22,7 @@ class BaseModel(models.Model):
 
 class Course(BaseModel):
     title = models.CharField(max_length=400)
+    course_id = models.IntegerField(default=None, null=True, blank=True)
     course_link = models.CharField(max_length=1000, default="")
     quiz_link = models.CharField(max_length=1000, default="")
     calender_link = models.CharField(max_length=1000, default="")
@@ -32,12 +34,24 @@ class Course(BaseModel):
     def __unicode__(self):
         return self.title
 
+    def get_amount_progress(self):
+        percentage = 50
+        if self.end_date is not None and self.start_date is not None:
+            if self.end_date > timezone.now().date():
+                percentage = (timezone.now().date() - self.start_date).days / (
+                (self.end_date - self.start_date).days) * 100
+            else:
+                percentage = 100
+
+        return percentage
+
 
 class CourseraProfile(BaseModel):
     user = models.OneToOneField(User)
     courses = models.ManyToManyField(Course)
     username = models.CharField(max_length=100, default="")
     password = models.CharField(max_length=100, default="")
+    counted_as_completed = models.CommaSeparatedIntegerField(default='', blank=True, max_length=200)
 
 
 class UserProfile(BaseModel):

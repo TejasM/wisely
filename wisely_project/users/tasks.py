@@ -1,11 +1,13 @@
-from __future__ import absolute_import
+from __future__ import absolute_import, division
 from datetime import datetime
+import re
 import time
 
 from bs4 import BeautifulSoup
 from django.contrib.auth.models import User
 import dateutil.parser
 from django.utils import timezone
+from pledges.models import Pledge
 
 from users.models import Course, Quiz, Progress
 
@@ -42,13 +44,15 @@ class CourseraScraper:
                 '#coursera-feed-tabs-current .coursera-dashboard-course-listing-box .coursera-dashboard-course-listing-box-progress .progress-label')
             start_dates = dates[::2]
             end_dates = dates[1::2]
+            course_ids = soup.select('#coursera-feed-tabs-current .coursera-dashboard-course-listing-box')
+            course_ids = map(lambda x: int(x.attrs['data-course-id']), course_ids)
             return map(lambda x: x.contents[0].contents[0], users_courses), map(lambda x: x.contents[0].attrs['href'],
                                                                                 users_courses), map(
                 lambda x: x.attrs['href'],
                 info_links), map(lambda x: str(x.contents[0] + ' 2014'), start_dates), map(
-                lambda x: str(x.contents[0] + ' 2014'), end_dates)
+                lambda x: str(x.contents[0] + ' 2014'), end_dates), course_ids
         except:
-            return [], [], [], [], []
+            return [], [], [], [], [], []
 
     def get_quiz_link(self, course, link):
         if course.info_link:
@@ -127,6 +131,35 @@ class CourseraScraper:
                 except Quiz.DoesNotExist:
                     print "Not found"
 
+    def get_course_completion(self, courseraprofile, pledges):
+        self.driver.get('https://www.coursera.org/account/records')
+        btn = self.driver.find_element_by_xpath(
+            '//*[@id="origami"]/div/div/div[1]/div[3]/div[1]/div/div[2]/div[1]/div/a')
+        btn.click()
+        soup = BeautifulSoup(self.driver.page_source)
+        course_ids = soup.select('.coursera-records-course-listing-box')
+        course_ids = map(lambda x: int(x.attrs['data-course-id']), course_ids)
+        grades = soup.select(
+            '.coursera-course-records-listings-without .coursera-course-listing-grade-section div[class~=hide] span')[
+                 ::2]
+        for i, grade in enumerate(grades):
+            if str(course_ids[i]) not in courseraprofile.counted_as_completed.split(','):
+                your_pledges = pledges.filter(course__course_id=course_ids[i])
+                for pledge in your_pledges:
+                    mark = re.findall("\d+.\d+", grade.contents[0])
+                    if mark:
+                        pledge.actual_mark = float(mark[0]) / 100
+                        pledge.is_complete = True
+                        pledge.complete_date = timezone.now()
+                        pledge.save()
+                if str(courseraprofile.counted_as_completed) != '':
+                    courseraprofile.counted_as_completed += ',' + str(course_ids[i])
+                else:
+                    courseraprofile.counted_as_completed += str(course_ids[i])
+
+        courseraprofile.save()
+
+
     def end(self):
         self.driver.close()
         self.display.stop()
@@ -140,36 +173,42 @@ def get_courses(user_id):
         scraper.driver.implicitly_wait(5)
         scraper.login(str(user.courseraprofile.username), str(user.courseraprofile.password))
         time.sleep(3)
-        courses, course_links, internal_links, start_dates, end_dates = scraper.get_courses()
+        courses, course_links, internal_links, start_dates, end_dates, course_ids = scraper.get_courses()
         print courses, start_dates, end_dates
+        django_courses = []
         for i, course in enumerate(courses):
             try:
                 get_course = Course.objects.get(title=course)
+                django_courses.append(get_course)
                 get_course.course_link = course_links[i]
                 get_course.info_link = internal_links[i]
-                get_course.start_date = time.strptime(
-                    start_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', ''), "%b %d %Y")
-                get_course.start_date = time.strptime(
-                    end_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', ''), "%b %d %Y")
+                get_course.course_id = course_ids[i]
+                get_course.start_date = datetime.strptime(
+                    start_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', ''),
+                    "%b %d %Y").date()
+                get_course.end_date = datetime.strptime(
+                    end_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', ''),
+                    "%b %d %Y").date()
                 get_course.save()
                 user.courseraprofile.courses.add(get_course)
             except Course.DoesNotExist:
-                get_course = Course.objects.create(title=course, course_link=course_links[i],
+                get_course = Course.objects.create(title=course, course_link=course_links[i], course_id=course_ids[i],
                                                    info_link=internal_links[i], start_date=
                     datetime.strptime(
                         str(start_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', '')),
-                        '%b %d %Y').strftime('%Y-%m-%d'),
+                        '%b %d %Y').date(),
                                                    end_date=datetime.strptime(str(
                                                        end_dates[i].replace('th', '').replace('st', '').replace('nd',
                                                                                                                 '').replace(
-                                                           'rd', '')), '%b %d %Y').strftime('%Y-%m-%d'))
+                                                           'rd', '')), '%b %d %Y').date())
                 user.courseraprofile.courses.add(get_course)
         user.courseraprofile.last_updated = timezone.now()
         user.courseraprofile.save()
-        for i, course in enumerate(courses):
-            get_course = Course.objects.get(title=course)
+        for i, course in enumerate(django_courses):
+            get_course = course
             if get_course.end_date >= timezone.now().date():
                 scraper.get_quiz_link(get_course, course_links[i])
                 scraper.get_course_progress(user, get_course)
+        scraper.get_course_completion(user.courseraprofile, Pledge.objects.filter(user=user.userprofile, is_complete=False))
         print "Done"
     scraper.end()

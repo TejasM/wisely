@@ -13,9 +13,14 @@ class Pledge(BaseModel):
     is_active = models.BooleanField(default=True)
     is_complete = models.BooleanField(default=False)
     aim = models.FloatField(default=0.50)
+    reward = models.FloatField(default=0)
+    actual_mark = models.FloatField(default=None, null=True, blank=True)
 
     def get_aim(self):
         return self.aim*100
+
+    def get_actual_mark(self):
+        return self.actual_mark*100
 
 
 class Follower(BaseModel):

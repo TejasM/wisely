@@ -7782,9 +7782,6 @@ div.DTCR_pointer {
     padding: 10px;
     position: relative;
     background: #fff;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    -moz-border-radius: 5px 5px 5px 5px;
-    border-radius: 5px 5px 5px 5px;
     margin: 0 0 10px
 }
 

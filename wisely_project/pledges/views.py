@@ -78,6 +78,11 @@ def finish(request, pledge_id):
     return render(request, 'pledges/finish.html', {'pledge': pledge, 'good': True})
 
 
+def congrats(request, pledge_id):
+    pledge = get_object_or_404(Pledge, pk=pledge_id, is_complete=True)
+    return render(request, 'pledges/success.html', {'pledge': pledge})
+
+
 def already(request, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
     return render(request, 'pledges/finish.html', {'pledge': pledge, 'good': False})
@@ -88,7 +93,7 @@ def results(request, poll_id):
     return HttpResponse("You're looking at the results of pledge %s." % poll_id)
 
 
-@login_required
+#@login_required
 def create(request):
     if request.method == "POST":
         if request.session.get('onboarding', '') != '':

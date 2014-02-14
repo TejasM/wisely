@@ -1,4 +1,5 @@
 import json
+from django.contrib import messages
 
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -47,9 +48,12 @@ def profile(request):
 
 def signup(request):
     if request.method == "POST":
+        if User.objects.filter(username=request.POST["email"]).count() > 0:
+            messages.error(request, 'Username already taken!')
+            return redirect('/')
         user = User.objects.create(username=request.POST["email"], email=request.POST["email"],
-                                   first_name=request.POST["first_name"],
-                                   last_name=request.POST["last_name"], is_active=True)
+                               first_name=request.POST["first_name"],
+                               last_name=request.POST["last_name"], is_active=True)
         user.set_password(request.POST["password"])
         user.save()
         user_profile = UserProfile.objects.create(user=user)

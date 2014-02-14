@@ -194,8 +194,13 @@
 
 
 </div>
+<div id="messages" class="light-box">
+    <div class="row text-center">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
 </div>
-
 <!-- // Main Container Fluid END -->
 
 <!-- Global -->
@@ -208,14 +213,15 @@
             layoutApp = true,
             module = 'admin';
 
-	var primaryColor = '#87c844',
-		dangerColor = '#b55151',
-		successColor = '#609450',
-		infoColor = '#4a8bc2',
-		warningColor = '#ab7a4b',
-		inverseColor = '#45484d';
+    var primaryColor = '#87c844',
+            dangerColor = '#b55151',
+            successColor = '#609450',
+            infoColor = '#4a8bc2',
+            warningColor = '#ab7a4b',
+            inverseColor = '#45484d';
 
     var themerPrimaryColor = primaryColor;
+
 </script>
 <!-- Global -->
 <script src="{% static 'assets/components/library/bootstrap/js/bootstrap.min.js' %}?v=v1.9.6&sv=v0.0.1"></script>
@@ -230,6 +236,7 @@
 <script src="{% static 'assets/components/core/js/sidebar.kis.init.js' %}?v=v1.9.6"></script>
 <script src="{% static 'assets/components/core/js/core.init.js' %}?v=v1.9.6"></script>
 <script src="{% static 'assets/components/core/js/animations.init.js' %}?v=v1.9.6"></script>
+<script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
 <script>
     {% if user.is_authenticated %}
         $(window).bind('enterBreakpoint768', function () {
@@ -242,6 +249,9 @@
             enableNavbarMenusHover();
             disableResponsiveNavbarSubmenus();
         });
+    {% endif %}
+    {% if messages %}
+        $('#messages').lightbox_me({centered: true})
     {% endif %}
 </script>
 {% block additionalScripts %}

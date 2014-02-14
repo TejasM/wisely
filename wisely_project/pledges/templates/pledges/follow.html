@@ -33,7 +33,7 @@
                         {% csrf_token %}
                         <div class="col-sm-12">
                             <div class="col-sm-6 col-sm-offset-3">
-                                <input type="email" name="email" placeholder="Email" class="form-control">
+                                <input type="email" name="email" placeholder="Email" class="form-control" value="{% if user.is_authenticated %}{{ user.email }}{% endif %}">
                             </div>
                         </div>
                         <button type="submit" class="btn extra-top-margin btn-primary btn-lg">Follow</button>
