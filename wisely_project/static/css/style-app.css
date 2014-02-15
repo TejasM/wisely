@@ -171,3 +171,10 @@ span.dollar-detail {
     font-weight: bold;
 }
 
+.btn-lg {
+    border-radius: 0;
+}
+
+.btn {
+    border-radius: 0;
+}
