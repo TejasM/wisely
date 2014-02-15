@@ -46,13 +46,15 @@ class CourseraScraper:
             end_dates = dates[1::2]
             course_ids = soup.select('#coursera-feed-tabs-current .coursera-dashboard-course-listing-box')
             course_ids = map(lambda x: int(x.attrs['data-course-id']), course_ids)
+            image_links = soup.select('#coursera-feed-tabs-current .coursera-dashboard-course-listing-box .coursera-dashboard-course-listing-box-icon')
+            image_links = map(lambda x: x.attrs['src'], image_links)
             return map(lambda x: x.contents[0].contents[0], users_courses), map(lambda x: x.contents[0].attrs['href'],
                                                                                 users_courses), map(
                 lambda x: x.attrs['href'],
                 info_links), map(lambda x: str(x.contents[0] + ' 2014'), start_dates), map(
-                lambda x: str(x.contents[0] + ' 2014'), end_dates), course_ids
+                lambda x: str(x.contents[0] + ' 2014'), end_dates), course_ids, image_links
         except:
-            return [], [], [], [], [], []
+            return [], [], [], [], [], [], []
 
     def get_quiz_link(self, course, link):
         if course.info_link:
@@ -173,8 +175,8 @@ def get_courses(user_id):
         scraper.driver.implicitly_wait(5)
         scraper.login(str(user.courseraprofile.username), str(user.courseraprofile.password))
         time.sleep(3)
-        courses, course_links, internal_links, start_dates, end_dates, course_ids = scraper.get_courses()
-        print courses, start_dates, end_dates
+        courses, course_links, internal_links, start_dates, end_dates, course_ids, image_links = scraper.get_courses()
+        print courses, image_links
         django_courses = []
         for i, course in enumerate(courses):
             try:
@@ -183,6 +185,7 @@ def get_courses(user_id):
                 get_course.course_link = course_links[i]
                 get_course.info_link = internal_links[i]
                 get_course.course_id = course_ids[i]
+                get_course.image_link = image_links[i]
                 get_course.start_date = datetime.strptime(
                     start_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', ''),
                     "%b %d %Y").date()
@@ -200,7 +203,8 @@ def get_courses(user_id):
                                                    end_date=datetime.strptime(str(
                                                        end_dates[i].replace('th', '').replace('st', '').replace('nd',
                                                                                                                 '').replace(
-                                                           'rd', '')), '%b %d %Y').date())
+                                                           'rd', '')), '%b %d %Y').date(),
+                                                   image_link=image_links[i])
                 user.courseraprofile.courses.add(get_course)
         user.courseraprofile.last_updated = timezone.now()
         user.courseraprofile.save()

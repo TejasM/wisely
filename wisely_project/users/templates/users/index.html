@@ -62,8 +62,7 @@
                         <div class="col-lg-6" id="course-{{ course.id }}-div">
                             <div class="box-generic bg-primary-light text-center main-selections">
                                 <div class="innerTB">
-                                    <div class="innerAll"><i
-                                            class="fa fa-heart fa-4x text-primary"></i>
+                                    <div class="innerAll"><img src="{{ course.image_link }}"/>
                                     </div>
                                     <h5 class="strong">{{ course.title }}</h5>
 
@@ -157,8 +156,7 @@
                         {% for pledge in ps %}
                             <li class="list-group-item animated fadeInUp"><a
                                     href="{% url 'pledges:follow' pledge.id %}">{{ pledge.user.user.first_name }} {{ pledge.user.user.last_name }}
-                                is pledging ${{ pledge.money }} to get at
-                                least {{ pledge.get_aim }}%</a>
+                                is pledging ${{ pledge.money }} to get {{ pledge.get_aim }}%</a>
                             </li>
                         {% endfor %}
                     </ul>

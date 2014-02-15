@@ -37,7 +37,7 @@
                     <div class="form-group">
                         <div class="col-sm-8 col-sm-offset-2">
                             <select class="course" name="course" id="course-select">
-                                {% for course in user.courseraprofile.courses.all %}
+                                {% for course in courses %}
                                     <option value="{{ course.id }}">{{ course }}</option>
                                 {% endfor %}
                             </select>

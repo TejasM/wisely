@@ -30,6 +30,7 @@ class Course(BaseModel):
     description = models.CharField(max_length=10000, default="")
     start_date = models.DateField(default=None, null=True, blank=True)
     end_date = models.DateField(default=None, null=True, blank=True)
+    image_link = models.CharField(default="", max_length=10000)
 
     def __unicode__(self):
         return self.title

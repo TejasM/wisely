@@ -2,6 +2,7 @@ from __future__ import division
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 import stripe
 
 from users.models import Course
@@ -82,8 +83,7 @@ def share(request, pledge_id):
 
 def follow(request, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
-    if (
-                request.user.is_authenticated() and request.user.userprofile != pledge.user) or not request.user.is_authenticated():
+    if (request.user.is_authenticated() and request.user.userprofile != pledge.user) or not request.user.is_authenticated():
         if request.method == "POST":
             email = request.POST.get('email', '')
             if email != '':
@@ -117,7 +117,7 @@ def results(request, poll_id):
     return HttpResponse("You're looking at the results of pledge %s." % poll_id)
 
 
-#@login_required
+@login_required
 def create(request):
     if request.method == "POST":
         if request.POST.get('onboarding', '') != '':
@@ -146,10 +146,12 @@ def create(request):
 
     other_pledgers_list = []
     for course in request.user.courseraprofile.courses.all():
-        other_pledgers_list.append(Pledge.objects.filter(course=course).order_by('?')[:5])
+        other_pledgers_list.append(Pledge.objects.filter(~Q(user=request.user)).filter(course=course).order_by('?')[:5])
+    pledged_courses = Pledge.objects.filter(user=request.user.userprofile).values('course')
+    courses_available = request.user.courseraprofile.courses.filter(~Q(pk=pledged_courses))
     if request.session.get('onboarding', '') != '':
         return render(request, 'pledges/create.html',
                       {'form': True, 'wait': request.user.last_login > request.user.courseraprofile.last_updated,
-                       'others': other_pledgers_list})
+                       'others': other_pledgers_list, 'courses': courses_available})
     else:
-        return render(request, 'pledges/create.html', {'others': other_pledgers_list})
+        return render(request, 'pledges/create.html', {'others': other_pledgers_list, 'courses': courses_available})
