@@ -124,3 +124,57 @@ span.dollar-detail {
 .box-generic-darker {
     border: 2px solid #000;
 }
+.circles {
+    display: inline-block;
+    color: #fff;
+}
+.full-reward {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #72C8A3;
+    margin-right: 50px;
+}
+
+.full-reward p {
+    font-size: 40px;
+    padding-top: 45px;
+}
+
+.pure-reward {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #066BBD;
+    padding-top: 35px;
+    margin-right: 20px;
+}
+
+.follower-reward {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #E8980D;
+    padding-top: 25px;
+}
+
+.sub {
+    width: 100px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.super {
+    width: 100px;
+    color: #69E598;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.btn-lg {
+    border-radius: 0;
+}
+
+.btn {
+    border-radius: 0;
+}

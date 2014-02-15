@@ -1,4 +1,6 @@
+from __future__ import division
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 import stripe
 
@@ -47,19 +49,41 @@ def detail(request, pledge_id):
     return redirect(reverse('pledges:share', args=(pledge.id,)))
 
 
+def calculate_projected_rewards(pledge):
+    all_pledges = Pledge.objects.filter(course=pledge.course)
+    total_pool = reduce(lambda x, y: x + y, map(lambda x: x.money, all_pledges))
+    probable_pool = 0.2 * float(total_pool)
+    average_aim = reduce(lambda x, y: x + y, map(lambda x: x.aim, all_pledges)) / all_pledges.count()
+    probable_num_rewarded = all_pledges.count() * 0.8
+    probable_earning = (1 + (pledge.aim - average_aim) / 2) * probable_pool / probable_num_rewarded
+    return probable_earning
+
+
+def calculate_bonus_rewards(pledge):
+    followers = Follower.objects.filter(pledge=pledge)
+    return min(followers.count() / 100, 10)
+
+
 @login_required
 def share(request, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
+    bonus_reward = calculate_bonus_rewards(pledge)
+    projected_rewards = calculate_projected_rewards(pledge)
+    actual_full_projection = projected_rewards * (1 + bonus_reward)
     if request.session.get('onboarding', '') != '':
         request.session.pop('onboarding')
-        return render(request, 'pledges/share.html', {'pledge': pledge, 'form': True})
-    return render(request, 'pledges/share.html', {'pledge': pledge})
+        return render(request, 'pledges/share.html', {'pledge': pledge, 'form': True,
+                                                      'bonus_per': bonus_reward, 'initial_reward': projected_rewards,
+                                                      'final_projection': actual_full_projection})
+    return render(request, 'pledges/share.html', {'pledge': pledge,
+                                                  'bonus_per': bonus_reward, 'initial_reward': projected_rewards,
+                                                  'final_projection': actual_full_projection})
 
 
 def follow(request, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
     if (
-        request.user.is_authenticated() and request.user.userprofile != pledge.user) or not request.user.is_authenticated():
+                request.user.is_authenticated() and request.user.userprofile != pledge.user) or not request.user.is_authenticated():
         if request.method == "POST":
             email = request.POST.get('email', '')
             if email != '':
@@ -96,7 +120,7 @@ def results(request, poll_id):
 #@login_required
 def create(request):
     if request.method == "POST":
-        if request.session.get('onboarding', '') != '':
+        if request.POST.get('onboarding', '') != '':
             pledge = Pledge.objects.create(user=request.user.userprofile,
                                            course=Course.objects.get(pk=int(request.POST['course'])),
                                            money=int(float(request.POST['money'].replace(',', ''))), is_active=False,

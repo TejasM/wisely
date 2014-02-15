@@ -16,7 +16,7 @@
                 {% if pledges.count != 0 %}
 
                     <div class="col-sm-2 side-pledges" id="pledges-{{ pledges.0.course.id }}">
-                        <h5 class="innerAll bg-primary margin-bottom-none">Top Pledges</h5>
+                        <h5 class="innerAll bg-primary margin-bottom-none">Other Pledges</h5>
 
                         <ul class="list-group list-group-1 margin-none borders-none">
                             {% for pledge in pledges %}
@@ -32,9 +32,7 @@
             <div class="col-sm-8 {% if pledge_list.0.count != 0 %}col-sm-offset-2{% endif %}" id="side-or-not">
                 <form class="form-horizontal" method="post" action="" id="pay-form">
                     {% csrf_token %}
-                    {% if form %}
-                        <input type="hidden" name="onboarding" value="onboarding"/>
-                    {% endif %}
+                    <input type="hidden" name="onboarding" value="onboarding"/>
 
                     <div class="form-group">
                         <div class="col-sm-8 col-sm-offset-2">
@@ -80,7 +78,7 @@
                         <div class="col-sm-4 col-sm-offset-4">
                             <div class="input-group">
                                 <span class="input-group-addon">$</span>
-                                <input id="money" class="form-control col-md-12 dollar" name="money"
+                                <input id="money" class="form-control col-md-12 dollar" name="money" value="25"
                                        type="text" placeholder="Amount">
                             </div>
                         </div>
@@ -91,33 +89,6 @@
                         </div>
                     </div>
                 </form>
-                {% if not form %}
-                    <script src="https://checkout.stripe.com/checkout.js"></script>
-                    <script>
-                        var string = "#create";
-                        var string2 = "#pay-form";
-                        $(string).click(function () {
-                            var token = function (res) {
-                                var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                                $(string2).append($input).submit();
-                            };
-                            var money = parseInt($('#money').val()) * 100;
-                            if (!isNaN(money)) {
-                                StripeCheckout.open({
-                                    key: 'pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb',
-                                    address: false,
-                                    amount: money,
-                                    currency: 'cad',
-                                    name: "Pledge",
-                                    description: "For " + $('#course-select').find('option:selected ').text(),
-                                    panelLabel: 'Pledge ',
-                                    token: token
-                                });
-                            }
-                            return false;
-                        });
-                    </script>
-                {% endif %}
             </div>
         </div>
     </div>
@@ -138,7 +109,6 @@
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'js/jquery.number.js' %}"></script>
-    <script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
     <script>
         $(function () {
             var $input = $('#money');
