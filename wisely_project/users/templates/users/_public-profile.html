@@ -68,6 +68,29 @@
             </div>
         </div>
 
+        <div class="row extra-top-margin">
+            {% for course in user.courseraprofile.courses.all %}
+                <div class="col-lg-6" id="course-{{ course.id }}-div">
+                    <div class="box-generic bg-primary-light text-center main-selections">
+                        <div class="innerTB">
+                            <div class="innerAll"><img src="{{ course.image_link }}"/>
+                            </div>
+                            <h5 class="strong">{{ course.title }}</h5>
+
+                            <p>{{ course.description }}</p>
+
+                            <div class="innerAll">
+                                <div class="progress bg-white progress-mini">
+                                    <div class="progress-bar progress-bar-primary"
+                                         style="width: {{ course.get_amount_progress }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
     </div>
     <!-- // END col-app -->
 

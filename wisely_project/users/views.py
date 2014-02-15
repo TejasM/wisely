@@ -51,15 +51,15 @@ def profile(request):
 
 def public_profile(request, user_id):
     try:
-        user = User.objects.get(id=user_id)
-        user_profile = UserProfile.objects.get(user=user)
+        viewed_user = User.objects.get(id=user_id)
+        user_profile = UserProfile.objects.get(user=viewed_user)
     except User.DoesNotExist or UserProfile.DoesNotExist:
         return HttpResponseRedirect('/')
 
     completed_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=True)
     current_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=False)
 
-    context_dict = {'user': request.user, 'user_profile': user_profile, 'completed_pledges': completed_pledges,
+    context_dict = {'viewed_user': viewed_user, 'user_profile': user_profile, 'completed_pledges': completed_pledges,
                     'current_pledges': current_pledges, 'public': True}
     return render(request, 'users/profile.html', context_dict)
 
