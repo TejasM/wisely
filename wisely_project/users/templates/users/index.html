@@ -91,23 +91,24 @@
                  id="side-{{ course.id }}">
 
 
-                <div class="widget widget-body-white">
-                    <!-- Widget Heading -->
-                    <div class="widget-head">
-                        <h4 class="heading glyphicons calendar"><i></i>{{ course.title }}</h4>
-                    </div>
-                    <!-- // Widget Heading END -->
+            <div class="widget widget-body-white">
+                <!-- Widget Heading -->
+                <div class="widget-head">
+                    <h4 class="heading glyphicons calendar"><i></i>{{ course.title }}</h4>
+                </div>
+                <!-- // Widget Heading END -->
 
-                    <div class="widget-body innerAll inner-2x">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                {% for pledge in pledges %}{% if pledge.course == course %}
-                                    <h1>Your Pledge</h1>
-                                    <h3 class="cursive">${{ pledge.money|floatformat:2 }}</h3>
-                                    <h4>To get at least {{ pledge.get_aim|floatformat:0 }}%</h4>
-                                    <a href="{% url 'pledges:share' pledge.id %}">
-                                        <button class="btn btn-primary btn-lg">Share</button>
-                                    </a>
+                <div class="widget-body innerAll inner-2x">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {% for pledge in pledges %}{% if pledge.course == course %}
+                                <h1>Your Pledge</h1>
+                                <h3 class="cursive">${{ pledge.money|floatformat:2 }}</h3>
+                                <h4>To get at least {{ pledge.get_aim|floatformat:0 }}%</h4>
+                                <a href="{% url 'pledges:share' pledge.id %}">
+                                    <button class="btn btn-primary btn-lg">Share</button>
+                                </a>
+                                {% if pledge.follower_set.all.count == 0 %}
                                     <div class="innerAll inner-2x">
                                         <div class="media margin-none">
                                             <div class="pull-left"><i class="fa fa-fw fa-eye fa-2x"></i></div>
@@ -117,65 +118,82 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{ forloop|break }}
-                                {% endif %}{% if forloop.last or pledges.count == 1 %}
-                                    <h4>No Pledge for this course. <br><br> Make one now!</h4>
-                                    <a href="{% url 'pledges:create' %}">
-                                        <button class="btn btn-primary btn-lg">Create</button>
-                                    </a>
-                                {% endif %}{% endfor %}
-                                {% if not pledges %}<h4>No Pledge for this course. <br><br> Make one now!</h4>
-                                    <a href="{% url 'pledges:create' %}">
-                                        <button class="btn btn-primary btn-lg">Create</button>
-                                    </a>{% endif %}
-                            </div>
-                            <div class="col-sm-6">
-                                <h3>Current Progress</h3>
-                                {% for progress in progresses %}
-                                    {% if progress.quiz.course == course %}
-                                        <p>{{ progress|safe }}</p>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
+                                {% endif %}
+                                {{ forloop|break }}
+                            {% endif %}{% if forloop.last or pledges.count == 1 %}
+                                <h4>No Pledge for this course. <br><br> Make one now!</h4>
+                                <a href="{% url 'pledges:create' %}">
+                                    <button class="btn btn-primary btn-lg">Create</button>
+                                </a>
+                            {% endif %}{% endfor %}
+                            {% if not pledges %}<h4>No Pledge for this course. <br><br> Make one now!</h4>
+                                <a href="{% url 'pledges:create' %}">
+                                    <button class="btn btn-primary btn-lg">Create</button>
+                                </a>{% endif %}
+                        </div>
+                        <div class="col-sm-6">
+                            <h3>Current Progress</h3>
+                            {% for progress in progresses %}
+                                {% if progress.quiz.course == course %}
+                                    <p>{{ progress|safe }}</p>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
-                <!-- Widget -->
-                {% for ps in others %}
-
-                    {% if forloop.parentloop.counter == forloop.counter %}
-                        {% if ps %}
+            </div>
+            <!-- Widget -->
+            {% for ps in others %}
+                {% if forloop.parentloop.counter == forloop.counter %}
+                    {% if ps or pledge.follower_set.all.count > 0 %}
+                        {% if pledge.follower_set.all.count == 0 %}
                             <div class="col-sm-6 col-sm-offset-3">
-                                <h5 class="innerAll bg-primary margin-bottom-none">Top Pledges</h5>
+                        {% else %}
+                            <div class="col-sm-6">
+                        {% endif %}
+                    <h5 class="innerAll bg-primary margin-bottom-none">Other Pledges</h5>
 
+                    <ul class="list-group list-group-1 margin-none borders-none">
+                        {% for pledge in ps %}
+                            <li class="list-group-item animated fadeInUp"><a
+                                    href="{% url 'pledges:follow' pledge.id %}">{{ pledge.user.user.first_name }} {{ pledge.user.user.last_name }}
+                                is pledging ${{ pledge.money }} to get at
+                                least {{ pledge.get_aim }}%</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    </div>
+                        {% if pledge.follower_set.all.count > 0 %}
+                            <div class="col-sm-6">
+                                <div class="lead margin-none strong">{{ pledge.follower_set.all.count }}</div>
+                                <p class="margin-none">followers</p>
                                 <ul class="list-group list-group-1 margin-none borders-none">
-                                    {% for pledge in ps %}
-                                        <li class="list-group-item animated fadeInUp"><a
-                                                href="{% url 'pledges:follow' pledge.id %}">{{ pledge.user.user.first_name }} {{ pledge.user.user.last_name }}
-                                            is pledging ${{ pledge.money }} to get at least {{ pledge.get_aim }}%</a>
+                                    {% for follower in pledge.follower_set.all %}
+                                        <li class="list-group-item animated fadeInUp">{{ follower.email }}
                                         </li>
                                     {% endfor %}
                                 </ul>
                             </div>
-                        {% else %}
-                            <div class="widget widget-body-gray">
-                                <!-- Widget Heading -->
-                                <div class="widget-head">
-                                    <h4 class="heading glyphicons calendar"><i></i>Calendar</h4>
-                                </div>
-                                <!-- // Widget Heading END -->
+                        {% endif %}
+                    {% else %}
+                        <div class="widget widget-body-gray">
+                            <!-- Widget Heading -->
+                            <div class="widget-head">
+                                <h4 class="heading glyphicons calendar"><i></i>Calendar</h4>
+                            </div>
+                            <!-- // Widget Heading END -->
 
-                                <div class="widget-body innerAll inner-2x">
-                                    <div data-component>
-                                        <div id="calendar-{{ course.id }}"></div>
-                                    </div>
+                            <div class="widget-body innerAll inner-2x">
+                                <div data-component>
+                                    <div id="calendar-{{ course.id }}"></div>
                                 </div>
                             </div>
-                        {% endif %}
+                        </div>
                     {% endif %}
-                {% endfor %}
-                <!-- col-table-row -->
-            </div>
+                {% endif %}
+            {% endfor %}
+        <!-- col-table-row -->
+        </div>
         {% endfor %}
     {% endif %}
 {% endblock %}
