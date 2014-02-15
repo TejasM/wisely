@@ -7,7 +7,9 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
 from django.utils import timezone
+from django.utils.safestring import mark_safe
 
 from models import CourseraProfile, Progress, UserProfile
 from pledges.models import Pledge
@@ -53,8 +55,8 @@ def signup(request):
             messages.error(request, 'Username already taken!')
             return redirect('/')
         user = User.objects.create(username=request.POST["email"], email=request.POST["email"],
-                               first_name=request.POST["first_name"],
-                               last_name=request.POST["last_name"], is_active=True)
+                                   first_name=request.POST["first_name"],
+                                   last_name=request.POST["last_name"], is_active=True)
         user.set_password(request.POST["password"])
         user.save()
         UserProfile.objects.create(user=user)
@@ -119,7 +121,7 @@ def edit_profile(request):
         user_form = UserForm(data=request.POST, instance=request.user)
 
         print request.POST
-
+        has_error = False
         if user_profile_form.is_valid() and user_form.is_valid():
             print "is valid"
 
@@ -134,6 +136,7 @@ def edit_profile(request):
             user_form = UserForm(instance=user)
         else:
             user = request.user
+            has_error = True
             print user_profile_form.errors, user_form.errors
 
         completed_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=True)
@@ -144,8 +147,11 @@ def edit_profile(request):
                         'user_form': user_form, 'completed_pledges': completed_pledges,
                         'current_pledges': current_pledges}
 
-        return render(request, 'users/_profile.html',
-                      context_dict)
+        parsed_html = render_to_string('users/_profile.html',
+                                       context_dict)
+        print parsed_html
+        return HttpResponse(json.dumps({'parsed_html': parsed_html, 'has_error': has_error}),
+                            mimetype='application/json')
 
     return HttpResponseRedirect(reverse('users:profile'))
 

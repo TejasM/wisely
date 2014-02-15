@@ -1,7 +1,6 @@
 <form id="user_profile_form" method="post" action="{% url 'users:edit_profile' %}"
       enctype="multipart/form-data">
 {% csrf_token %}
-
 <div class="widget extra-top-margin">
     <div class="widget-body">
         <div class="bg-gray innerAll">
@@ -14,59 +13,63 @@
                     <h3 class="margin-none">{{ user.first_name }} {{ user.last_name }}</h3>
 
                     <div class="row extra-top-small-margin">
-                        <div id="headline-div">
-                            {% if user_profile.headline %}
-                                {{ user_profile.headline }}
-                                <a href="javascript:void(0)" class="edit" id="edit-headline">Edit</a>
-                            {% else %}
-                                <a href="javascript:void(0)" class="edit" id="edit-headline">Add</a> a headline
-                            {% endif %}
-                        </div>
-                        <div id="edit-headline-div">
-
-                            <div class="row">
-                                <div class="col-sm-8">
-                                    <input name="headline" type="text" class="form-control"
-                                           value="{{ user_profile_form.headline.value|default_if_none:"" }}"
-                                           placeholder="{{ "Add a headline" }}">
-                                </div>
+                        <div class="col-sm-12">
+                            <div id="headline-div">
+                                {% if user_profile.headline %}
+                                    {{ user_profile.headline }}
+                                    <a href="javascript:void(0)" class="edit" id="edit-headline">Edit</a>
+                                {% else %}
+                                    <a href="javascript:void(0)" class="edit" id="edit-headline">Add</a> a headline
+                                {% endif %}
                             </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <input class="btn extra-top-margin btn-primary" type="submit" value="Update"
-                                           id="submit-headline"/>
-                                    <a id="cancel-headline" class="btn extra-top-margin btn-secondary"
-                                       href="javascript:void(0)">Cancel</a>
+                            <div id="edit-headline-div">
+
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <input name="headline" type="text" class="form-control"
+                                               value="{{ user_profile_form.headline.value|default_if_none:"" }}"
+                                               placeholder="{{ "Add a headline" }}">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <input class="btn extra-top-margin btn-primary" type="submit" value="Update"
+                                               id="submit-headline"/>
+                                        <a id="cancel-headline" class="btn extra-top-margin btn-secondary"
+                                           href="javascript:void(0)">Cancel</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row extra-top-small-margin">
-                        <div id="about_me-div">
+                        <div class="col-sm-12">
+                            <div id="about_me-div">
 
-                            {% if user_profile.about_me %}
-                                {{ user_profile.about_me }}
-                                <a href="javascript:void(0)" class="edit" id="edit-about_me">Edit</a>
-                            {% else %}
-                                <a href="javascript:void(0)" class="edit" id="edit-about_me">Add</a> a
-                                description about
-                                yourself
-                            {% endif %}
-                        </div>
-                        <div id="edit-about_me-div">
-                            <div class="row">
-                                <div class="col-sm-8">
-                                    <input name="about_me" type="text" class="form-control"
-                                           value="{{ user_profile_form.about_me.value|default_if_none:"" }}"
-                                           placeholder="{{ "Add a description about yourself" }}">
-                                </div>
+                                {% if user_profile.about_me %}
+                                    {{ user_profile.about_me }}
+                                    <a href="javascript:void(0)" class="edit" id="edit-about_me">Edit</a>
+                                {% else %}
+                                    <a href="javascript:void(0)" class="edit" id="edit-about_me">Add</a> a
+                                    description about
+                                    yourself
+                                {% endif %}
                             </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <input class="btn extra-top-margin btn-primary" type="submit" value="Update"
-                                           id="submit-about_me"/>
-                                    <a id="cancel-about_me" class="btn extra-top-margin btn-secondary"
-                                       href="javascript:void(0)">Cancel</a>
+                            <div id="edit-about_me-div">
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <input name="about_me" type="text" class="form-control"
+                                               value="{{ user_profile_form.about_me.value|default_if_none:"" }}"
+                                               placeholder="{{ "Add a description about yourself" }}">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <input class="btn extra-top-margin btn-primary" type="submit" value="Update"
+                                               id="submit-about_me"/>
+                                        <a id="cancel-about_me" class="btn extra-top-margin btn-secondary"
+                                           href="javascript:void(0)">Cancel</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -179,10 +182,10 @@
 
             <div class="row extra-top-small-margin">
                 <div class="large-12 columns" id="website-div">
-                    {{ user_profile_form.website.error_messages }}
+                    {{ user_profile_form.website.error }}
                     <strong>Website</strong>:
                     {% if user_profile.website %}
-                        {{ user_profile.website }}
+                        <a href="{{ user_profile.website }}">{{ user_profile.website }}</a>
                         <a href="javascript:void(0)" class="edit" id="edit-website">Edit</a>
                     {% else %}
                         <a href="javascript:void(0)" class="edit" id="edit-website">Add</a> your website

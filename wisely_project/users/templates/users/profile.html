@@ -34,10 +34,13 @@
 
         function submitEdit(event) {
             console.log(event.target.id + "has just been clicked");
-            $.post('{% url 'users:edit_profile' %}', $('#user_profile_form').serialize(), function (partial_render) {
+            $.post('{% url 'users:edit_profile' %}', $('#user_profile_form').serialize(), function (data) {
+                var partial_render = data['parsed_html'];
                 console.log("partial-profile start rendering");
                 $('#partial-profile').html(partial_render);
-                hideAllEdit();
+                if (!data['has-error']) {
+                    hideAllEdit();
+                }
                 console.log("partial-profile rendered");
             });
             event.preventDefault();
