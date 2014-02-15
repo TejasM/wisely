@@ -17,15 +17,15 @@ class UserProfileForm(forms.ModelForm):
 
     gender = forms.ChoiceField(widget=forms.RadioSelect, help_text="Please select your gender.", required=False,
                                choices=GENDER)
-
     birthday = forms.DateField(widget=SelectDateWidget, help_text="Please enter your birth date.", required=False)
     headline = forms.CharField(required=False)
     about_me = forms.CharField(required=False)
-    website = forms.CharField(help_text="Please enter your website.", required=False)
+    website = forms.URLField(initial='http://', help_text="Please enter your website.", required=False)
 
     class Meta:
         model = UserProfile
-        fields = ['gender', 'website', 'current_city', 'birthday', 'headline', 'about_me', 'picture']
+        #fields = ['gender', 'website', 'current_city', 'birthday', 'headline', 'about_me', 'picture']
+        fields = ['gender', 'website', 'current_city', 'headline', 'about_me', 'picture']
 
 
 class UserForm(forms.ModelForm):

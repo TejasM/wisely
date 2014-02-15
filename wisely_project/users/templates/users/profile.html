@@ -34,9 +34,7 @@
 
         function submitEdit(event) {
             console.log(event.target.id + "has just been clicked");
-            var form_id = '#user_profile_form';
-            console.log(form_id + "about to post");
-            $.post('{% url 'users:edit_profile' %}', $(form_id).serialize(), function (partial_render) {
+            $.post('{% url 'users:edit_profile' %}', $('#user_profile_form').serialize(), function (partial_render) {
                 console.log("partial-profile start rendering");
                 $('#partial-profile').html(partial_render);
                 hideAllEdit();
@@ -49,12 +47,14 @@
             var field = event.target.id.substring(event.target.id.indexOf("-") + 1);
             $('#' + field + '-div').fadeOut("fast");
             $('#edit-' + field + '-div').fadeIn("slow");
+            event.preventDefault();
         }
 
         function cancelEdit(event) {
             var field = event.target.id.substring(event.target.id.indexOf("-") + 1);
             $('#edit-' + field + '-div').fadeOut("fast");
             $('#' + field + '-div').fadeIn("slow");
+            event.preventDefault();
         }
 
 

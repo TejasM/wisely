@@ -1,6 +1,6 @@
 import json
-from django.contrib import messages
 
+from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -37,7 +37,7 @@ def profile(request):
         user_profile = UserProfile.objects.create(user=request.user)
 
     user_profile_form = UserProfileForm(instance=user_profile)
-    user_form = UserForm(instance=user_profile)
+    user_form = UserForm(instance=request.user)
 
     completed_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=True)
     current_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=False)
@@ -113,43 +113,41 @@ def check_updated(request):
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
+
         user_profile = UserProfile.objects.get(user=request.user)
         user_profile_form = UserProfileForm(data=request.POST, instance=user_profile)
         user_form = UserForm(data=request.POST, instance=request.user)
 
         print request.POST
 
-        if user_profile_form.is_valid():
+        if user_profile_form.is_valid() and user_form.is_valid():
             print "is valid"
+
             if 'picture' in request.FILES:
                 user_profile.picture = request.FILES['picture']
 
-            user_profile_form.save()
-
-        if user_form.is_valid():
             user_form.save()
-
-        user = User.objects.get(id=request.user.id)
-        user_profile = UserProfile.objects.get(user=user)
-
-        #json_user_profile = serializers.serialize("json", [user_profile, ])
-        #json_user_profile = json.loads(json_user_profile)
-        user_profile_form_updated = UserProfileForm(instance=user_profile)
-        user_form_updated = UserForm(instance=user)
+            user_profile_form.save()
+            user = User.objects.get(id=request.user.id)
+            user_profile = UserProfile.objects.get(user=user)
+            user_profile_form = UserProfileForm(instance=user_profile)
+            user_form = UserForm(instance=user)
+        else:
+            user = request.user
+            print user_profile_form.errors, user_form.errors
 
         completed_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=True)
         current_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=False)
 
-        context_dict = {'user': request.user, 'user_profile': user_profile,
-                        'user_profile_form': user_profile_form_updated,
-                        'user_form': user_form_updated, 'completed_pledges': completed_pledges,
+        context_dict = {'user': user, 'user_profile': user_profile,
+                        'user_profile_form': user_profile_form,
+                        'user_form': user_form, 'completed_pledges': completed_pledges,
                         'current_pledges': current_pledges}
 
         return render(request, 'users/_profile.html',
                       context_dict)
 
-    # return HttpResponseRedirect(reverse('users:profile'))
-    return HttpResponse("error")
+    return HttpResponseRedirect(reverse('users:profile'))
 
 
 
