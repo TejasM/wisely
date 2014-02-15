@@ -24,7 +24,8 @@ ul.levels li span {
     border-width: 0;
     color: black;
     display: block;
-    margin-top: 48px;
+    margin-top: 40px;
+    font-size: 20px;
     text-align: center;
     text-transform: uppercase;
 }
@@ -64,6 +65,7 @@ span.dollar-detail {
 }
 
 .cursive {
+    font-size: 20px;
     font-family: 'Satisfy', cursive;
 }
 
@@ -129,16 +131,16 @@ span.dollar-detail {
     color: #fff;
 }
 .full-reward {
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     background-color: #72C8A3;
     margin-right: 50px;
 }
 
 .full-reward p {
-    font-size: 40px;
-    padding-top: 45px;
+    font-size: 21px;
+    padding-top: 35px;
 }
 
 .pure-reward {

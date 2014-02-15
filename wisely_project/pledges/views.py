@@ -19,7 +19,13 @@ import wisely_project.settings.base as settings
 @login_required
 def index(request):
     all_pledges_list = Pledge.objects.filter(user=request.user.userprofile).order_by('-pledge_date')
-    context = {'all_pledges_list': all_pledges_list}
+    list_projections = []
+    for pledge in all_pledges_list:
+        bonus_reward = calculate_bonus_rewards(pledge)
+        projected_rewards = calculate_projected_rewards(pledge)
+        actual_full_projection = projected_rewards * (1 + bonus_reward)
+        list_projections.append((bonus_reward, projected_rewards, actual_full_projection))
+    context = {'all_pledges_list': all_pledges_list, 'all_projections': list_projections}
     return render(request, 'pledges/index.html', context)
 
 
@@ -62,7 +68,7 @@ def calculate_projected_rewards(pledge):
 
 def calculate_bonus_rewards(pledge):
     followers = Follower.objects.filter(pledge=pledge)
-    return min(followers.count() / 100, 10)
+    return followers.count()
 
 
 @login_required

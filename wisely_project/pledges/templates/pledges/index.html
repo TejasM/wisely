@@ -12,7 +12,9 @@
                 <h1 class="separator bottom">Your Pledges</h1>
             </div>
             <div class="col-sm-1">
-                <a href="{% url 'pledges:create' %}"><button class="btn btn-primary btn-lg text-right">Create</button></a>
+                <a href="{% url 'pledges:create' %}">
+                    <button class="btn btn-primary btn-lg text-right">Create</button>
+                </a>
             </div>
         </div>
 
@@ -22,9 +24,6 @@
                     <div class="col-separator-h"></div>
                 {% endif %}
                 <div class="media margin-none">
-                    <a class="pull-left bg-success innerAll text-center" href="#"><i
-                            class="fa fa-fw icon-desktop-play fa-5x"></i></a>
-
                     <div class="media-body innerAll">
                         <h4 class="media-heading innerT"><a href=""
                                                             class="text-inverse">{{ pledge.course }}</a> <span
@@ -42,9 +41,62 @@
                                 <a href="{% url 'pledges:share' pledge.id %}">
                                     <button class="btn btn-primary btn-lg text-right">View</button>
                                 </a>
+                                <span style="float: right">
+                                <i class="fa fa-eye"></i> {{ pledge.follower_set.count }} followers</span>
+
                             </div>
                         </div>
                     </div>
+                    {% for projections in all_projections %}
+                        {% if forloop.counter == forloop.parentloop.counter %}
+                            <div class="widget" style="margin-bottom: 0" data-toggle="collapse-widget"
+                                 data-collapse-closed="true">
+                                <div class="widget-head"><h4 class="heading">Projected Rewards</h4><span
+                                        class="collapse-toggle"></span></div>
+                                <div class="widget-body collapse" style="height: 20px;">
+                                    <div class="innerLR row extra-top-margin">
+                                        <div class="centered">
+                                            <div class="row centered">
+                                                <div class="col-sm-12">
+                                                    <p class="super" style="display: inline-block; margin-left: 160px;">
+                                                        Pledge Goal
+                                                    </p>
+
+                                                    <p class="super" style="display: inline-block; margin-left: 25px;">
+                                                        Followers
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12" style="margin-top: -7px">
+                                                    <div class="full-reward centered circles">
+                                                        <p>${{ projections.2 }}</p>
+                                                    </div>
+                                                    <div class="pure-reward centered circles">
+                                                        <p>{{ pledge.get_aim }}%</p>
+                                                    </div>
+                                                    <div class="follower-reward centered circles">
+                                                        <i class="fa fa-eye"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row centered">
+                                                <div class="col-sm-12" style="margin-top: -10px">
+                                                    <p class="sub" style="display: inline-block; margin-left: 160px;">
+                                                        ${{ projections.1 }}
+                                                    </p>
+
+                                                    <p class="sub" style="display: inline-block; margin-left: 35px;">
+                                                        {{ projections.0 }}%
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
                 <div class="col-separator-h"></div>
             {% endfor %}
@@ -53,6 +105,7 @@
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'js/jquery.number.js' %}"></script>
+    <script src="{% static 'assets/components/modules/admin/widgets/widget-collapsible/assets/widget-collapsible.init.js' %}?v=v1.9.6&sv=v0.0.1"></script>
     <script>
         $(function () {
             $('input.dollar').number(true, 2)
