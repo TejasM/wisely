@@ -2,6 +2,7 @@ import json
 
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -9,7 +10,6 @@ from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.utils import timezone
-from django.utils.safestring import mark_safe
 
 from models import CourseraProfile, Progress, UserProfile
 from pledges.models import Pledge
@@ -46,6 +46,21 @@ def profile(request):
 
     context_dict = {'user': request.user, 'user_profile': user_profile, 'user_profile_form': user_profile_form,
                     'user_form': user_form, 'completed_pledges': completed_pledges, 'current_pledges': current_pledges}
+    return render(request, 'users/profile.html', context_dict)
+
+
+def public_profile(request, user_id):
+    try:
+        user = User.objects.get(id=user_id)
+        user_profile = UserProfile.objects.get(user=user)
+    except User.DoesNotExist or UserProfile.DoesNotExist:
+        return HttpResponseRedirect('/')
+
+    completed_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=True)
+    current_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=False)
+
+    context_dict = {'user': request.user, 'user_profile': user_profile, 'completed_pledges': completed_pledges,
+                    'current_pledges': current_pledges, 'public': True}
     return render(request, 'users/profile.html', context_dict)
 
 

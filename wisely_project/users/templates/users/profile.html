@@ -14,8 +14,13 @@
     </li>
 {% endblock %}
 {% block content %}
+
     <div class="col-md-8 col-md-offset-2" id="partial-profile">
-        {% include 'users/_profile.html' %}
+        {% if public %}
+            {% include 'users/_public-profile.html' %}
+        {% else %}
+            {% include 'users/_profile.html' %}
+        {% endif %}
     </div>
 
 {% endblock %}
