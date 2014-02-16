@@ -1,9 +1,7 @@
 import json
-from urllib2 import HTTPError
 
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
@@ -12,11 +10,13 @@ from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.utils import timezone
+from requests import request as request2, HTTPError
+from django.template import RequestContext
 
 from models import CourseraProfile, Progress, UserProfile
 from pledges.models import Pledge
 from forms import UserProfileForm, UserForm
-from requests import request as request2, HTTPError
+
 
 def login_user(request):
     if request.method == "POST":
@@ -104,7 +104,7 @@ def index(request):
             except HTTPError:
                 pass
             user_profile.picture.save('{0}_social.jpg'.format(request.user.username),
-                                       ContentFile(response.content))
+                                      ContentFile(response.content))
             user_profile.save()
     try:
         coursera_profile = CourseraProfile.objects.get(user=request.user)
@@ -137,13 +137,13 @@ def index(request):
 
 def check_updated(request):
     return HttpResponse(json.dumps({'updated': request.user.last_login <= request.user.courseraprofile.last_updated}),
-                        mimetype='application/json')
+                        content_type='application/json')
 
 
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
-
+        context = RequestContext(request)
         user_profile = UserProfile.objects.get(user=request.user)
         user_profile_form = UserProfileForm(data=request.POST, instance=user_profile)
         user_form = UserForm(data=request.POST, instance=request.user)
@@ -176,10 +176,10 @@ def edit_profile(request):
                         'current_pledges': current_pledges}
 
         parsed_html = render_to_string('users/_profile.html',
-                                       context_dict)
-        print parsed_html
+                                       context_dict, context)
+
         return HttpResponse(json.dumps({'parsed_html': parsed_html, 'has_error': has_error}),
-                            mimetype='application/json')
+                            content_type='application/json')
 
     return HttpResponseRedirect(reverse('users:profile'))
 
