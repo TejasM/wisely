@@ -25,7 +25,7 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         #fields = ['gender', 'website', 'current_city', 'birthday', 'headline', 'about_me', 'picture']
-        fields = ['gender', 'website', 'current_city', 'headline', 'about_me', 'picture']
+        fields = ['gender', 'website', 'current_city', 'headline', 'about_me']
 
 
 class UserForm(forms.ModelForm):
