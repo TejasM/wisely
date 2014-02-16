@@ -95,6 +95,12 @@
                                             </a>
                                         {% endif %}
                                     {% endfor %}
+                                    {% if not pledges %}
+                                        <a href="{% url 'pledges:create' %}">
+                                            <button class="btn btn-sm btn-primary">Create a Pledge <i
+                                                    class="fa fa-fw fa-arrow-right"></i></button>
+                                        </a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
