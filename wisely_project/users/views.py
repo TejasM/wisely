@@ -55,7 +55,7 @@ def public_profile(request, user_id):
     try:
         viewed_user = User.objects.get(id=user_id)
         user_profile = UserProfile.objects.get(user=viewed_user)
-    except User.DoesNotExist or UserProfile.DoesNotExist:
+    except (User.DoesNotExist, UserProfile.DoesNotExist) as _:
         return HttpResponseRedirect('/')
 
     completed_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=True)

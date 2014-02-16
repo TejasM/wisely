@@ -72,8 +72,22 @@
         <div class="row extra-top-margin">
             {% for course in user.courseraprofile.courses.all %}
                 <div class="col-lg-6" id="course-{{ course.id }}-div">
-                    <a href="#"><img src="{% static 'images/stock-footage-a-stamp-is-printing-the-word-approved-in-green.png' %}"
-                            style="position: absolute; top: 0; left: 0; z-index: 10; border: none !important" width="200"></a>
+                    {% for pledge in completed_pledges %}
+                        {% if pledge.course == course %}
+                            <a href="{% url 'pledges:follow' pledge.id %}"><img
+                                    src="{% static 'images/stock-footage-a-stamp-is-printing-the-word-approved-in-green.png' %}"
+                                    style="position: absolute; top: 0; left: 0; z-index: 10; border: none !important"
+                                    width="200"></a>
+                        {% endif %}
+                    {% endfor %}
+                    {% for pledge in current_pledges %}
+                        {% if pledge.course == course %}
+                            <a href="{% url 'pledges:follow' pledge.id %}"><img
+                                    src="{% static 'images/stock-footage-a-stamp-is-printing-the-word-approved-in-green.png' %}"
+                                    style="position: absolute; top: 0; left: 0; z-index: 10; border: none !important"
+                                    width="200"></a>
+                        {% endif %}
+                    {% endfor %}
                     <div class="box-generic bg-primary-dark text-center main-selections">
                         <div class="innerTB">
                             <div class="innerAll"><img src="{{ course.image_link }}"/>
