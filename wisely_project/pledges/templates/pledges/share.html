@@ -26,6 +26,37 @@
             <h3>To get at least {{ pledge.get_aim|floatformat:0 }}%</h3>
         </div>
         <div class="innerLR row extra-top-margin">
+            <button class="btn btn-primary btn-lg" id="real-make" type="submit">Make It Real</button>
+            <form method="post" action="" id="pay-form">
+                {% csrf_token %}
+            </form>
+            <script src="https://checkout.stripe.com/checkout.js"></script>
+            <script>
+                var string = "#real-make";
+                var string2 = "#pay-form";
+                $(string).click(function () {
+                    var token = function (res) {
+                        var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                        $(string2).append($input).submit();
+                    };
+                    var money = parseInt("{{ pledge.money }}") * 100;
+                    if (!isNaN(money)) {
+                        StripeCheckout.open({
+                            key: 'pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb',
+                            address: false,
+                            amount: money,
+                            currency: 'cad',
+                            name: "Pledge",
+                            description: "For " + "{{ pledge.course }}",
+                            panelLabel: 'Pledge ',
+                            token: token
+                        });
+                    }
+                    return false;
+                });
+            </script>
+        </div>
+        <div class="innerLR row extra-top-margin">
             <div class="col-sm-8 col-sm-offset-2">
                 <button class="btn-auth btn-facebook" id="share-facebook" type="submit">Share
                     on <b>Facebook</b>
@@ -41,6 +72,7 @@
         <div class="innerLR row extra-top-margin">
         </div>
         <p>For every follower you will get $1</p>
+
         <div class="row extra-top-margin">
             <div class="col-sm-8 col-sm-offset-2">
                 <a href="{% url 'pledges:index' %}">
