@@ -23,7 +23,7 @@
                                 {% endif %}
                             </div>
                             <div id="edit-headline-div">
-
+                                {{ user_profile_form.headline.errors }}
                                 <div class="row">
                                     <div class="col-sm-8">
                                         <input name="headline" type="text" class="form-control"
@@ -45,7 +45,6 @@
                     <div class="row extra-top-small-margin">
                         <div class="col-sm-12">
                             <div id="about_me-div">
-
                                 {% if user_profile.about_me %}
                                     {{ user_profile.about_me }}
                                     <a href="javascript:void(0)" class="edit" id="edit-about_me">Edit</a>
@@ -56,6 +55,7 @@
                                 {% endif %}
                             </div>
                             <div id="edit-about_me-div">
+                                {{ user_profile_form.aboue_me.errors }}
                                 <div class="row">
                                     <div class="col-sm-8">
                                         <input name="about_me" type="text" class="form-control"
@@ -134,6 +134,7 @@
                     {% endif %}
                 </div>
                 <div class="col-sm-10" id="edit-email-div">
+                    {{ user_form.email.errors }}
                     <div class="row">
                         <strong>Email</strong>:
                         <input id="id_email" name="email" type="text" class="form-control"
@@ -162,6 +163,7 @@
                 </div>
 
                 <div class="col-sm-10" id="edit-gender-div">
+                    {{ user_profile_form.gender.errors }}
                     <strong>Gender</strong>:
                     <div class="btn-group" data-toggle="buttons">
                         <label class="btn btn-primary {% if user_profile_form.gender.value == "M" %}active{% endif %}">
@@ -182,7 +184,6 @@
 
             <div class="row extra-top-small-margin">
                 <div class="large-12 columns" id="website-div">
-                    {{ user_profile_form.website.error }}
                     <strong>Website</strong>:
                     {% if user_profile.website %}
                         <a href="{{ user_profile.website }}">{{ user_profile.website }}</a>
@@ -193,6 +194,7 @@
                 </div>
 
                 <div class="col-sm-10" id="edit-website-div">
+                    {{ user_profile_form.website.errors }}
                     <div class="row">
                         <strong>Website</strong>:
                         <input id="id_website" name="website" type="text" class="form-control"
@@ -220,6 +222,7 @@
                     {% endif %}
                 </div>
                 <div class="col-sm-10" id="edit-current_city-div">
+                    {{ user_profile_form.current_city.errors }}
                     <div class="row">
                         <strong>Current City</strong>:
                         <input id="id_website" name="current_city" type="text" class="form-control"

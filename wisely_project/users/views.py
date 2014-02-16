@@ -163,7 +163,7 @@ def edit_profile(request):
             user_profile_form = UserProfileForm(instance=user_profile)
             user_form = UserForm(instance=user)
         else:
-            user = request.user
+            user = User.objects.get(id=request.user.id)
             has_error = True
             print user_profile_form.errors, user_form.errors
 

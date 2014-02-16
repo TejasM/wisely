@@ -27,25 +27,55 @@
 {% block additionalScripts %}
     <script>
 
-        function hideAllEdit() {
-            $('#edit-headline-div').hide();
-            $('#edit-about_me-div').hide();
-            $('#edit-gender-div').hide();
-            $('#edit-email-div').hide();
-            $('#edit-website-div').hide();
-            $('#edit-current_city-div').hide();
-            $('#edit-birthday-div').hide();
+        function hideAllEdit(field) {
+            if (field != "headline")
+                $('#edit-headline-div').hide();
+            if (field != "about_me")
+                $('#edit-about_me-div').hide();
+            if (field != "gender")
+                $('#edit-gender-div').hide();
+            if (field != "email")
+                $('#edit-email-div').hide();
+            if (field != "website")
+                $('#edit-website-div').hide();
+            if (field != "current_city")
+                $('#edit-current_city-div').hide();
+            if (field != "birthday")
+                $('#edit-birthday-div').hide();
+        }
+
+        function showAllField(field) {
+            if (field != "headline")
+                $('#headline-div').show();
+            if (field != "about_me")
+                $('#about_me-div').show();
+            if (field != "gender")
+                $('#gender-div').show();
+            if (field != "email")
+                $('#email-div').show();
+            if (field != "website")
+                $('#website-div').show();
+            if (field != "current_city")
+                $('#current_city-div').show();
+            if (field != "birthday")
+                $('#birthday-div').show();
         }
 
         function submitEdit(event) {
-            console.log(event.target.id + "has just been clicked");
+            var field = event.target.id.substring(event.target.id.indexOf("-") + 1);
+            console.log(field + "has just been clicked");
             $.post('{% url 'users:edit_profile' %}', $('#user_profile_form').serialize(), function (data) {
                 var partial_render = data['parsed_html'];
                 console.log("partial-profile start rendering");
                 $('#partial-profile').html(partial_render);
-                if (!data['has-error']) {
-                    hideAllEdit();
+
+                if (data['has_error']) {
+                    hideAllEdit(field);
+                    $('#' + field + '-div').hide();
                 }
+                else
+                    hideAllEdit("");
+
                 console.log("partial-profile rendered");
             });
             event.preventDefault();
@@ -55,6 +85,8 @@
             var field = event.target.id.substring(event.target.id.indexOf("-") + 1);
             $('#' + field + '-div').fadeOut("fast");
             $('#edit-' + field + '-div').fadeIn("slow");
+            hideAllEdit(field);
+            showAllField(field);
             event.preventDefault();
         }
 
@@ -67,7 +99,7 @@
 
 
         $(document).ready(function () {
-            hideAllEdit();
+            hideAllEdit("");
             $('#edit-headline').live('click', function (event) {
                 displayEdit(event);
             });
