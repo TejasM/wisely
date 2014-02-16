@@ -121,7 +121,7 @@
 				<span class="media margin-none">
 					<span class="pull-left"><img
                             {% if not user.is_authenticated or user.userprofile == None or not user.userprofile.picture %}src="{% static 'assets/images/people/35/16.jpg' %}"{% else %}
-                            src="/media/{{ user_profile.picture }}"
+                            src="/media/{{ user.userprofile.picture }}"
                             {% endif %}
                             alt="user" class="img-circle"></span>
 					<span class=" media-body">

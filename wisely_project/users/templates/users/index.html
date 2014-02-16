@@ -87,7 +87,8 @@
                                                             class="fa fa-fw fa-arrow-right"></i></button>
                                                 </a>
                                             {% endif %}
-                                        {% else %}
+                                            {{ forloop|break }}
+                                        {% elif forloop.counter == pledges.count %}
                                             <a href="{% url 'pledges:create' %}">
                                                 <button class="btn btn-sm btn-primary">Create a Pledge <i
                                                         class="fa fa-fw fa-arrow-right"></i></button>
