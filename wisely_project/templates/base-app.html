@@ -106,6 +106,10 @@
                 <a href="/">
                     <button class="btn btn-primary" type="button"><i class="fa fa-home"></i>&nbsp; Home</button>
                 </a>
+                &nbsp;&nbsp;
+                <a href="#" id="contact">
+                    <button class="btn btn-primary" type="button"><i class="fa fa-share"></i>&nbsp; Contact</button>
+                </a>
       		</span>
                 </div>
                 <!-- /input-group -->
@@ -209,17 +213,17 @@
     <div class="row text-center" id="contact-body">
         <h2>Contact Us</h2>
 
-        <div class="extra-top-margin">
-            <input type="email" name="email" id='contact-email' placeholder="Your Email Address">
+        <div class="row extra-top-margin">
+            <input type="email" name="email" id='contact-email' placeholder="Your Email Address" class="form-control">
         </div>
-        <div class="extra-margin-top">
-            <textarea id="contact-mail" placeholder="Your Message"></textarea>
+        <div class="row extra-top-margin">
+            <textarea id="contact-mail" placeholder="Your Message" class="form-control"></textarea>
         </div>
-        <div class="row">
+        <div class="row extra-top-margin">
             <div id="validation-contact" class="validation" style="color: red;"></div>
         </div>
         <div class="centered extra-top-margin">
-            <button id="contact-send">Send</button>
+            <button id="contact-send" class="btn btn-primary btn-lg">Send</button>
         </div>
     </div>
 </div>
