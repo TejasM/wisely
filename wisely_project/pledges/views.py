@@ -1,4 +1,5 @@
 from __future__ import division
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -22,6 +23,27 @@ import wisely_project.settings.base as settings
 def index(request):
     all_pledges_list = Pledge.objects.filter(user=request.user.userprofile).order_by('-pledge_date')
     list_projections = []
+    if request.method == "POST":
+        try:
+            pledge = Pledge.objects.get(pk=request.POST['pledge-id'])
+        except Pledge.DoesNotExist:
+            messages.error(request, 'Something really wrong happened')
+            return redirect('pledges:index')
+        token = request.POST.get('stripeToken', '')
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        try:
+            stripe.Charge.create(
+                amount=int(float(pledge.money)) * 100,  # amount in cents, again
+                currency="cad",
+                card=token,
+                description=request.user.username,
+            )
+            pledge.active = True
+            pledge.save()
+        except stripe.CardError, _:
+            messages.error(request, 'Credit Card Error')
+            return redirect(reverse('pledges:detail', args=(pledge.id,)))
+        return redirect(reverse('pledges:share', args=(pledge.id,)))
     for pledge in all_pledges_list:
         bonus_reward = calculate_bonus_rewards(pledge)
         projected_rewards = calculate_projected_rewards(pledge)
@@ -88,6 +110,22 @@ def calculate_bonus_rewards(pledge):
 @login_required
 def share(request, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
+    if request.method == "POST":
+        token = request.POST.get('stripeToken', '')
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        try:
+            stripe.Charge.create(
+                amount=int(float(pledge.money)) * 100,  # amount in cents, again
+                currency="cad",
+                card=token,
+                description=request.user.username,
+            )
+            pledge.active = True
+            pledge.save()
+        except stripe.CardError, _:
+            messages.error(request, 'Credit Card Error')
+            return redirect(reverse('pledges:detail', args=(pledge.id,)))
+        return redirect(reverse('pledges:share', args=(pledge.id,)))
     if request.session.get('onboarding', '') != '':
         request.session.pop('onboarding')
         return render(request, 'pledges/share.html', {'pledge': pledge, 'form': True})

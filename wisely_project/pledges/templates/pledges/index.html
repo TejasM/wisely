@@ -4,6 +4,7 @@
     <link href='http://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
     <link href="{% static 'css/auth-buttons.css' %}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'css/style-app.css' %}"/>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
 {% endblock %}
 {% block content %}
     <div class="jumbotron margin-none center">
@@ -93,11 +94,51 @@
                                             </div>
                                         </div>
                                     </div>
+                                    {% if not pledge.is_active %}
+                                        <div class="innerLR row extra-top-margin">
+                                            <div class="col-sm-12">
+                                                Note: Rewarded only if pledge is made real.
+                                                <button class="btn btn-primary btn-lg" id="real-make-{{ pledge.id }}"
+                                                        type="submit">Make
+                                                    It Real
+                                                </button>
+                                                <script>
+                                                    var string = "#real-make-{{ pledge.id }}";
+                                                    var string2 = "#pay-form";
+                                                    $(string).click(function () {
+                                                        $('#pay-pledge-id').val('{{ pledge.id }}');
+                                                        var token = function (res) {
+                                                            var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                                            $(string2).append($input).submit();
+                                                        };
+                                                        var money = parseInt("{{ pledge.money }}") * 100;
+                                                        if (!isNaN(money)) {
+                                                            StripeCheckout.open({
+                                                                key: 'pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb',
+                                                                address: false,
+                                                                amount: money,
+                                                                currency: 'cad',
+                                                                name: "Pledge",
+                                                                description: "For " + "{{ pledge.course }}",
+                                                                panelLabel: 'Pledge ',
+                                                                token: token
+                                                            });
+                                                        }
+                                                        return false;
+                                                    });
+                                                </script>
+                                            </div>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         {% endif %}
                     {% endfor %}
                 </div>
+                <form method="post" action="" id="pay-form">
+                    {% csrf_token %}
+                    <input type="hidden" value="" name="pledge-id" id="pay-pledge-id">
+                </form>
                 <div class="col-separator-h"></div>
             {% endfor %}
         </div>
