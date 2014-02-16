@@ -50,7 +50,7 @@
                                     <label class="col-sm-6 control-label">Minimum Grade You Want to Earn:</label>
 
                                     <div class="col-sm-4 padding-none">
-                                        <input type="text" class="percentage-amount form-control" name="aim"/>
+                                        <input type="text" class="percentage-amount form-control" name="aim" id="aim"/>
                                     </div>
                                 </div>
                                 <div class="col-md-12" style="padding-top: 9px;">
@@ -90,6 +90,25 @@
                     </div>
                 </form>
             </div>
+            {% for projection in projections %}
+                <div class="col-sm-2 side-projections" id="projection-{{ projection.2 }}">
+                    <div class="widget-head"><h4 class="heading" style="text-align: left; margin-left: 30px">Projected
+                        Rewards</h4></div>
+                    <div class="widget-body">
+                        <div class="innerLR row extra-top-margin">
+                            <div class="centered">
+                                <div class="row">
+                                    <div class="col-sm-12" style="margin-top: -7px">
+                                        <div class="full-reward centered circles">
+                                            <p id="proj-value-{{ projection.2 }}">$5</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
     {% if wait %}
@@ -142,28 +161,86 @@
         {% endif %}
     </script>
     <script>
-        var course_with_pledges_id = [];
-        {% for pledges in others %}
-            {% if pledges.count != 0 %}
-                course_with_pledges_id.push({{ pledges.0.course.id }});
-            {% endif %}
-        {% endfor %}
-        $('.side-pledges').hide();
-        {% if  others.0 %}
-            $('#side-or-not').removeClass('col-sm-offset-2');
-            $('#pledges-{{ others.0.0.course.id }}').show();
-        {% endif %}
-        $('#course-select').change(function () {
-            if (course_with_pledges_id.indexOf(parseInt($(this).val())) > -1) {
+        $(function () {
+            var course_with_pledges_id = [];
+            {% for pledges in others %}
+                {% if pledges.count != 0 %}
+                    course_with_pledges_id.push({{ pledges.0.course.id }});
+                {% endif %}
+            {% endfor %}
+            $('.side-pledges').hide();
+            $('.side-projections').hide();
+            $('#projection-{{ courses.0.id }}').show();
+            {% if  others.0 %}
                 $('#side-or-not').removeClass('col-sm-offset-2');
-                $('.side-pledges').hide();
-                $('#pledges-' + $(this).val().toString()).show();
-            } else {
-                $('.side-pledges').hide();
-                $('#side-or-not').addClass('col-sm-offset-2');
-            }
+                $('#pledges-{{ others.0.0.course.id }}').show();
+            {% endif %}
+            $('#course-select').change(function () {
+                if (course_with_pledges_id.indexOf(parseInt($(this).val())) > -1) {
+                    $('#side-or-not').removeClass('col-sm-offset-2');
+                    $('.side-pledges').hide();
+                    $('#pledges-' + $(this).val().toString()).show();
+                } else {
+                    $('.side-pledges').hide();
+                    $('#side-or-not').addClass('col-sm-offset-2');
+                }
+                $('.side-projections').hide();
+                $('#projection-' + $(this).val()).show();
+                var course_id = parseInt($('#course-select').val());
+                {% for projection in projections %}
+                    if ("{{ projection.2 }}" == course_id.toString()) {
+                        var value =
+                        {{ projection.0 }} *
+                        (1 + ($(this).val() / 100 - {{ projection.1 }}) /{{ projection.1 }});
+                        if (isNaN(value)) {
+                            value = 5;
+                        }
+                        $('#proj-value-' + course_id.toString()).text('$' + value.toString())
+                    }
+                {% endfor %}
+            });
         });
 
+
     </script>
-    <script src="{% static 'assets/components/common/sliders/jqueryui-sliders/assets/custom/js/jqueryui-sliders.init.js' %}?v=v1.9.6&sv=v0.0.1"></script>
+    <script>
+        function JQSliderCreate() {
+            $(this)
+                    .removeClass('ui-corner-all ui-widget-content')
+                    .wrap('<span class="ui-slider-wrap"></span>')
+                    .find('.ui-slider-handle')
+                    .removeClass('ui-corner-all ui-state-default');
+        }
+        if ($('.increments-slider').size() > 0) {
+            $(".increments-slider .slider").slider({
+                create: JQSliderCreate,
+                value: 75,
+                min: 50,
+                max: 100,
+                step: 5,
+                slide: function (event, ui) {
+                    $(".increments-slider .percentage-amount").val(ui.value + " %");
+                    var course_id = parseInt($('#course-select').val());
+                    {% for projection in projections %}
+                        if ("{{ projection.2 }}" == course_id.toString()) {
+                            var value =
+                            {{ projection.0 }} *
+                            (1 + (ui.value / 100 - {{ projection.1 }}) /{{ projection.1 }});
+                            if (isNaN(value)) {
+                                value = 5;
+                            }
+                            $('#proj-value-' + course_id.toString()).text('$' + value.toString())
+                        }
+                    {% endfor %}
+                },
+                start: function () {
+                    if (typeof mainYScroller != 'undefined') mainYScroller.disable();
+                },
+                stop: function () {
+                    if (typeof mainYScroller != 'undefined') mainYScroller.enable();
+                }
+            });
+            $(".increments-slider .percentage-amount").val($(".increments-slider .slider").slider("value") + " %");
+        }
+    </script>
 {% endblock %}

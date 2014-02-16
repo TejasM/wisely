@@ -80,22 +80,7 @@ $(function()
 	/*
 	 * JQueryUI Slider: Snap to Increments
 	 */
-	if ($('.increments-slider').size() > 0)
-    {
-		$( ".increments-slider .slider" ).slider({
-			create: JQSliderCreate,
-			value: 75,
-	        min:  50,
-	        max: 100,
-	        step: 5,
-	        slide: function( event, ui ) {
-	            $( ".increments-slider .percentage-amount" ).val( ui.value + " %");
-	        },
-	        start: function() { if (typeof mainYScroller != 'undefined') mainYScroller.disable(); },
-	        stop: function() { if (typeof mainYScroller != 'undefined') mainYScroller.enable(); }
-	    });
-		$( ".increments-slider .percentage-amount" ).val( $( ".increments-slider .slider" ).slider( "value" ) + " %" );
-    }
+
 	
 	/*
 	 * JQueryUI Slider: Vertical Range Slider

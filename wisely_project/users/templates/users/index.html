@@ -90,78 +90,77 @@
                  id="side-{{ course.id }}">
 
 
-                <div class="widget widget-body-white">
-                    <!-- Widget Heading -->
-                    <div class="widget-head">
-                        <h4 class="heading glyphicons calendar"><i></i>{{ course.title }}</h4>
-                    </div>
-                    <!-- // Widget Heading END -->
-
-                    <div class="widget-body innerAll inner-2x">
-                        <div class="row">
-                            <div class="col-sm-12 col-md-12 col-lg-12">
-                                <h3>Current Progress</h3>
-                                {% for progress in progresses %}
-                                    {% if progress.quiz.course == course %}
-                                        <p>{{ progress|safe }}</p>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
+            <div class="widget widget-body-white">
+                <!-- Widget Heading -->
+                <div class="widget-head">
+                    <h4 class="heading glyphicons calendar"><i></i>{{ course.title }}</h4>
                 </div>
-                <!-- Widget -->
-                {% for ps in others %}
-                    {% if forloop.parentloop.counter == forloop.counter %}
-                        {% if ps or pledge.follower_set.all.count > 0 %}
-                            {% if pledge.follower_set.all.count <= 0 %}
-                                <div class="col-sm-12">
-                            {% else %}
-                                <div class="col-sm-6">
-                            {% endif %}
-                        <h5 class="innerAll bg-primary margin-bottom-none">Other Pledges</h5>
+                <!-- // Widget Heading END -->
 
-                        <ul class="list-group list-group-1 margin-none borders-none">
-                            {% for pledge in ps %}
-                                <li class="list-group-item animated fadeInUp"><a
-                                        href="{% url 'pledges:follow' pledge.id %}">{{ pledge.user.user.first_name }} {{ pledge.user.user.last_name }}
-                                    is pledging ${{ pledge.money }} to get {{ pledge.get_aim }}%</a>
-                                </li>
+                <div class="widget-body innerAll inner-2x">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <h3>Current Progress</h3>
+                            {% for progress in progresses %}
+                                {% if progress.quiz.course == course %}
+                                    <p>{{ progress|safe }}</p>
+                                {% endif %}
                             {% endfor %}
-                        </ul>
                         </div>
-                            {% if pledge.follower_set.all.count > 0 %}
-                                <div class="col-sm-6">
-                                    <div class="lead margin-none strong">{{ pledge.follower_set.all.count }}</div>
-                                    <p class="margin-none">followers</p>
-                                    <ul class="list-group list-group-1 margin-none borders-none">
-                                        {% for follower in pledge.follower_set.all %}
-                                            <li class="list-group-item animated fadeInUp">{{ follower.email }}
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            {% endif %}
-                        {% else %}
-                            <div class="widget widget-body-gray">
-                                <!-- Widget Heading -->
-                                <div class="widget-head">
-                                    <h4 class="heading glyphicons calendar"><i></i>Calendar</h4>
-                                </div>
-                                <!-- // Widget Heading END -->
-
-                                <div class="widget-body innerAll inner-2x">
-                                    <div data-component>
-                                        <div id="calendar-{{ course.id }}"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-                <!-- col-table-row -->
+                    </div>
                 </div>
             </div>
+            <!-- Widget -->
+            {% for ps in others %}
+                {% if forloop.parentloop.counter == forloop.counter %}
+                    {% if ps or pledge.follower_set.all.count > 0 %}
+                        {% if pledge.follower_set.all.count <= 0 %}
+                            <div class="col-sm-12">
+                        {% else %}
+                            <div class="col-sm-6">
+                        {% endif %}
+                    <h5 class="innerAll bg-primary margin-bottom-none">Other Pledges</h5>
+
+                    <ul class="list-group list-group-1 margin-none borders-none">
+                        {% for pledge in ps %}
+                            <li class="list-group-item animated fadeInUp"><a
+                                    href="{% url 'pledges:follow' pledge.id %}">{{ pledge.user.user.first_name }} {{ pledge.user.user.last_name }}
+                                is pledging ${{ pledge.money }} to get {{ pledge.get_aim }}%</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    </div>
+                        {% if pledge.follower_set.all.count > 0 %}
+                            <div class="col-sm-6">
+                                <div class="lead margin-none strong">{{ pledge.follower_set.all.count }}</div>
+                                <p class="margin-none">followers</p>
+                                <ul class="list-group list-group-1 margin-none borders-none">
+                                    {% for follower in pledge.follower_set.all %}
+                                        <li class="list-group-item animated fadeInUp">{{ follower.email }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="widget widget-body-gray">
+                            <!-- Widget Heading -->
+                            <div class="widget-head">
+                                <h4 class="heading glyphicons calendar"><i></i>Calendar</h4>
+                            </div>
+                            <!-- // Widget Heading END -->
+
+                            <div class="widget-body innerAll inner-2x">
+                                <div data-component>
+                                    <div id="calendar-{{ course.id }}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        <!-- col-table-row -->
+        </div>
         {% endfor %}
     {% endif %}
 {% endblock %}

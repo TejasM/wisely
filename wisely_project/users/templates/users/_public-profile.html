@@ -1,4 +1,5 @@
-<div class="widget extra-top-margin">
+{% load staticfiles %}
+<div class="widget extra-top-margin" xmlns="http://www.w3.org/1999/html">
     <div class="widget-body">
         <div class="bg-gray innerAll">
             <div class="media">
@@ -71,13 +72,13 @@
         <div class="row extra-top-margin">
             {% for course in user.courseraprofile.courses.all %}
                 <div class="col-lg-6" id="course-{{ course.id }}-div">
-                    <div class="box-generic bg-primary-light text-center main-selections">
+                    <a href="#"><img src="{% static 'images/stock-footage-a-stamp-is-printing-the-word-approved-in-green.png' %}"
+                            style="position: absolute; top: 0; left: 0; z-index: 10; border: none !important" width="200"></a>
+                    <div class="box-generic bg-primary-dark text-center main-selections">
                         <div class="innerTB">
                             <div class="innerAll"><img src="{{ course.image_link }}"/>
                             </div>
                             <h5 class="strong">{{ course.title }}</h5>
-
-                            <p>{{ course.description }}</p>
 
                             <div class="innerAll">
                                 <div class="progress bg-white progress-mini">

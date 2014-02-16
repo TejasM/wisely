@@ -1,10 +1,12 @@
 import json
+from urllib2 import HTTPError
 
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.files.base import ContentFile
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -14,7 +16,7 @@ from django.utils import timezone
 from models import CourseraProfile, Progress, UserProfile
 from pledges.models import Pledge
 from forms import UserProfileForm, UserForm
-
+from requests import request as request2, HTTPError
 
 def login_user(request):
     if request.method == "POST":
@@ -93,6 +95,17 @@ def index(request):
         user_profile = UserProfile.objects.get(user=request.user)
     except UserProfile.DoesNotExist:
         user_profile = UserProfile.objects.create(user=request.user)
+    if user_profile.picture._file is None:
+        if request.user.social_auth.all().count() > 0 and request.user.social_auth.all()[0].provider == 'facebook':
+            url = 'http://graph.facebook.com/{0}/picture'.format(request.user.social_auth.all()[0].uid)
+            try:
+                response = request2('GET', url, params={'type': 'large'})
+                response.raise_for_status()
+            except HTTPError:
+                pass
+            user_profile.picture.save('{0}_social.jpg'.format(request.user.username),
+                                       ContentFile(response.content))
+            user_profile.save()
     try:
         coursera_profile = CourseraProfile.objects.get(user=request.user)
     except CourseraProfile.DoesNotExist:

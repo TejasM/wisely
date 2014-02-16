@@ -8,6 +8,8 @@ import stripe
 from users.models import Course
 
 
+
+
 __author__ = 'Cheng'
 
 from django.http import HttpResponse
@@ -23,7 +25,7 @@ def index(request):
     for pledge in all_pledges_list:
         bonus_reward = calculate_bonus_rewards(pledge)
         projected_rewards = calculate_projected_rewards(pledge)
-        actual_full_projection = projected_rewards * (1 + bonus_reward)
+        actual_full_projection = projected_rewards + min(bonus_reward, projected_rewards / 2)
         list_projections.append((bonus_reward, projected_rewards, actual_full_projection))
     context = {'all_pledges_list': all_pledges_list, 'all_projections': list_projections}
     return render(request, 'pledges/index.html', context)
@@ -66,6 +68,18 @@ def calculate_projected_rewards(pledge):
     return probable_earning
 
 
+def calculate_pooled_average(course):
+    all_pledges = Pledge.objects.filter(course=course)
+    if all_pledges:
+        total_pool = reduce(lambda x, y: x + y, map(lambda x: x.money, all_pledges))
+        probable_pool = 0.2 * float(total_pool)
+        average_aim = reduce(lambda x, y: x + y, map(lambda x: x.aim, all_pledges)) / all_pledges.count()
+        probable_num_rewarded = all_pledges.count() * 0.8
+        return probable_pool / probable_num_rewarded, average_aim
+    else:
+        return 0, 0
+
+
 def calculate_bonus_rewards(pledge):
     followers = Follower.objects.filter(pledge=pledge)
     return followers.count()
@@ -74,22 +88,16 @@ def calculate_bonus_rewards(pledge):
 @login_required
 def share(request, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
-    bonus_reward = calculate_bonus_rewards(pledge)
-    projected_rewards = calculate_projected_rewards(pledge)
-    actual_full_projection = projected_rewards * (1 + bonus_reward)
     if request.session.get('onboarding', '') != '':
         request.session.pop('onboarding')
-        return render(request, 'pledges/share.html', {'pledge': pledge, 'form': True,
-                                                      'bonus_per': bonus_reward, 'initial_reward': projected_rewards,
-                                                      'final_projection': actual_full_projection})
-    return render(request, 'pledges/share.html', {'pledge': pledge,
-                                                  'bonus_per': bonus_reward, 'initial_reward': projected_rewards,
-                                                  'final_projection': actual_full_projection})
+        return render(request, 'pledges/share.html', {'pledge': pledge, 'form': True})
+    return render(request, 'pledges/share.html', {'pledge': pledge})
 
 
 def follow(request, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
-    if (request.user.is_authenticated() and request.user.userprofile != pledge.user) or not request.user.is_authenticated():
+    if (
+        request.user.is_authenticated() and request.user.userprofile != pledge.user) or not request.user.is_authenticated():
         if request.method == "POST":
             email = request.POST.get('email', '')
             if email != '':
@@ -151,13 +159,18 @@ def create(request):
             return redirect(reverse('pledges:share', args=(pledge.id,)))
 
     other_pledgers_list = []
-    for course in request.user.courseraprofile.courses.all():
-        other_pledgers_list.append(Pledge.objects.filter(~Q(user=request.user)).filter(course=course).order_by('?')[:5])
+    projections = []
     pledged_courses = Pledge.objects.filter(user=request.user.userprofile).values('course')
     courses_available = request.user.courseraprofile.courses.filter(~Q(pk=pledged_courses))
+    for course in courses_available:
+        other_pledgers_list.append(Pledge.objects.filter(~Q(user=request.user)).filter(course=course).order_by('?')[:5])
+        potential, average_aim = calculate_pooled_average(course)
+        projections.append((potential, average_aim, course.id))
+
     if request.session.get('onboarding', '') != '':
         return render(request, 'pledges/create.html',
                       {'form': True, 'wait': request.user.last_login > request.user.courseraprofile.last_updated,
-                       'others': other_pledgers_list, 'courses': courses_available})
+                       'others': other_pledgers_list, 'courses': courses_available, 'projections': projections})
     else:
-        return render(request, 'pledges/create.html', {'others': other_pledgers_list, 'courses': courses_available})
+        return render(request, 'pledges/create.html', {'others': other_pledgers_list, 'courses': courses_available,
+                                                       'projections': projections})
