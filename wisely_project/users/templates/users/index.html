@@ -184,6 +184,20 @@
         </div>
         {% endfor %}
     {% endif %}
+    {% if form %}
+        <div id="incorrect-lightbox" class="light-box">
+            <div class="row text-center">
+                Incorrect Coursera Login. Please confirm and try again.
+            </div>
+        </div>
+
+    {% endif %}
+    <div id="no-courses-lightbox" class="light-box">
+        <div class="row text-center">
+            You have no courses you can pledge for. Sign up for a course at <a href="https://coursera.org">Coursera</a>
+            to get started.
+        </div>
+    </div>
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'assets/components/modules/admin/calendar/assets/lib/js/fullcalendar.min.js' %}?v=v1.9.6&sv=v0.0.1"></script>
@@ -218,6 +232,16 @@
             {% endfor %}
             $('.sides').hide();
             $('.sides-first').show();
+            {% if form %}
+                if (RegExp('incorrect', 'gi').test(window.location.search)) {
+                    $('#incorrect-lightbox').lightbox_me({centered: true});
+                    setTimeout(function () {
+                        $('#incorrect-lightbox').trigger('close');
+                    }, 3000);
+                }
+            {% endif %}
+            {% if not form and user.courseraprofile.courses.all.count == 0 %}
+            {% endif %}
         });
     </script>
 

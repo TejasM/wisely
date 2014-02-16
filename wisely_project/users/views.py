@@ -123,7 +123,7 @@ def index(request):
         else:
             return redirect(reverse('pledges:create'))
 
-    if coursera_profile.username == "":
+    if coursera_profile.username == "" or coursera_profile.incorrect_login:
         return render(request, 'users/index.html', {'form': True})
     else:
         pledges = Pledge.objects.filter(user=request.user.userprofile)
@@ -136,7 +136,8 @@ def index(request):
 
 
 def check_updated(request):
-    return HttpResponse(json.dumps({'updated': request.user.last_login <= request.user.courseraprofile.last_updated}),
+    return HttpResponse(json.dumps({'updated': request.user.last_login <= request.user.courseraprofile.last_updated,
+                                    'incorrect': request.user.courseraprofile.incorrect_login}),
                         content_type='application/json')
 
 

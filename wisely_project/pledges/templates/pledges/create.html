@@ -152,8 +152,12 @@
                 $.get("{% url 'users:check_update' %}", function (res) {
                     if (res['updated'] == true) {
                         clearInterval(intervalUpdated);
-                        $('#coursera-wait').trigger('close');
-                        location.reload();
+                        if (res['incorrect'] == true) {
+                            location.href = '{% url 'users:index' %}?incorrect=true';
+                        } else {
+                            $('#coursera-wait').trigger('close');
+                            location.reload();
+                        }
                     }
                 });
             }

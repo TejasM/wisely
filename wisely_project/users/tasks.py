@@ -35,6 +35,8 @@ class CourseraScraper:
 
     def get_courses(self):
         try:
+            if self.driver.current_url != 'https://www.coursera.org/':
+                return [], [], [], [], [], [], [], "Incorrect Login"
             soup = BeautifulSoup(self.driver.page_source)
             users_courses = soup.select(
                 '#coursera-feed-tabs-current .coursera-dashboard-course-listing-box .coursera-dashboard-course-listing-box-name')
@@ -46,15 +48,16 @@ class CourseraScraper:
             end_dates = dates[1::2]
             course_ids = soup.select('#coursera-feed-tabs-current .coursera-dashboard-course-listing-box')
             course_ids = map(lambda x: int(x.attrs['data-course-id']), course_ids)
-            image_links = soup.select('#coursera-feed-tabs-current .coursera-dashboard-course-listing-box .coursera-dashboard-course-listing-box-icon')
+            image_links = soup.select(
+                '#coursera-feed-tabs-current .coursera-dashboard-course-listing-box .coursera-dashboard-course-listing-box-icon')
             image_links = map(lambda x: x.attrs['src'], image_links)
             return map(lambda x: x.contents[0].contents[0], users_courses), map(lambda x: x.contents[0].attrs['href'],
                                                                                 users_courses), map(
                 lambda x: x.attrs['href'],
                 info_links), map(lambda x: str(x.contents[0] + ' 2014'), start_dates), map(
-                lambda x: str(x.contents[0] + ' 2014'), end_dates), course_ids, image_links
+                lambda x: str(x.contents[0] + ' 2014'), end_dates), course_ids, image_links, None
         except:
-            return [], [], [], [], [], [], []
+            return [], [], [], [], [], [], [], None
 
     def get_quiz_link(self, course, link):
         if course.info_link:
@@ -175,7 +178,14 @@ def get_courses(user_id):
         scraper.driver.implicitly_wait(5)
         scraper.login(str(user.courseraprofile.username), str(user.courseraprofile.password))
         time.sleep(3)
-        courses, course_links, internal_links, start_dates, end_dates, course_ids, image_links = scraper.get_courses()
+        courses, course_links, internal_links, start_dates, end_dates, course_ids, image_links, error = scraper.get_courses()
+        if error is not None:
+            user.courseraprofile.incorrect_login = True
+            user.courseraprofile.last_updated = timezone.now()
+            user.courseraprofile.save()
+            return
+        else:
+            user.courseraprofile.incorrect_login = False
         print courses, image_links
         django_courses = []
         for i, course in enumerate(courses):
@@ -213,6 +223,7 @@ def get_courses(user_id):
             if get_course.end_date >= timezone.now().date():
                 scraper.get_quiz_link(get_course, course_links[i])
                 scraper.get_course_progress(user, get_course)
-        scraper.get_course_completion(user.courseraprofile, Pledge.objects.filter(user=user.userprofile, is_complete=False))
+        scraper.get_course_completion(user.courseraprofile,
+                                      Pledge.objects.filter(user=user.userprofile, is_complete=False))
         print "Done"
     scraper.end()

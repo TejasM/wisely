@@ -53,6 +53,7 @@ class CourseraProfile(BaseModel):
     username = models.CharField(max_length=100, default="")
     password = models.CharField(max_length=100, default="")
     counted_as_completed = models.CommaSeparatedIntegerField(default='', blank=True, max_length=200)
+    incorrect_login = models.BooleanField(default=False)
 
 
 class UserProfile(BaseModel):
