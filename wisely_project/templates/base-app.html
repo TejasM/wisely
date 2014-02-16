@@ -116,7 +116,10 @@
                         <a class="dropdown-toggle " data-toggle="dropdown" href="#">
 				<span class="media margin-none">
 					<span class="pull-left"><img
-                            src="{% static 'assets/images/people/35/16.jpg' %}" alt="user" class="img-circle"></span>
+                            {% if not user.is_authenticated or user.userprofile == None or not user.userprofile.picture %}src="{% static 'assets/images/people/35/16.jpg' %}"{% else %}
+                            src="/media/{{ user_profile.picture }}"
+                            {% endif %}
+                            alt="user" class="img-circle"></span>
 					<span class=" media-body">
 						{{ request.user.first_name|upper }} {{ request.user.last_name|upper }}<span
                             class="caret"></span>
@@ -201,6 +204,25 @@
         {% endfor %}
     </div>
 </div>
+
+<div id="contact-us" class="light-box">
+    <div class="row text-center" id="contact-body">
+        <h2>Contact Us</h2>
+
+        <div class="extra-top-margin">
+            <input type="email" name="email" id='contact-email' placeholder="Your Email Address">
+        </div>
+        <div class="extra-margin-top">
+            <textarea id="contact-mail" placeholder="Your Message"></textarea>
+        </div>
+        <div class="row">
+            <div id="validation-contact" class="validation" style="color: red;"></div>
+        </div>
+        <div class="centered extra-top-margin">
+            <button id="contact-send">Send</button>
+        </div>
+    </div>
+</div>
 <!-- // Main Container Fluid END -->
 
 <!-- Global -->
@@ -250,9 +272,27 @@
             disableResponsiveNavbarSubmenus();
         });
     {% endif %}
-    {% if messages %}
-        $('#messages').lightbox_me({centered: true})
-    {% endif %}
+    $(function () {
+        {% if messages %}
+            $('#messages').lightbox_me({centered: true});
+        {% endif %}
+        $('#contact').click(function () {
+            $('#contact-us').lightbox_me({centered: true});
+        });
+
+        $('#contact-send').click(function () {
+            var myRootRef = new Firebase('https://wisely.firebaseIO.com/');
+
+            if (validateEmail($('#contact-email').val())) {
+                myRootRef.push({name: $('#contact-email').val().split('@')[0], msg: $('#contact-mail').val()});
+                $('#contact-body').text('Thank You! We will keep you updated!');
+                $('#contact-us').trigger('close');
+            } else {
+                $('#validation-contact').text('That doesn\'t look like a valid email address. Please try again.');
+            }
+        });
+    });
+
 </script>
 {% block additionalScripts %}
 {% endblock %}

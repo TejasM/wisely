@@ -74,6 +74,26 @@
                                                  style="width: {{ course.get_amount_progress }}%"></div>
                                         </div>
                                     </div>
+                                    {% for pledge in pledges %}
+                                        {% if pledge.course == course %}
+                                            {% if pledge.is_complete %}
+                                                <a href="{% url 'pledges:congrats' pledge.id %}">
+                                                    <button class="btn btn-sm btn-primary">Collect Your Rewards <i
+                                                            class="fa fa-fw fa-arrow-right"></i></button>
+                                                </a>
+                                            {% else %}
+                                                <a href="{% url 'pledges:share' pledge.id %}">
+                                                    <button class="btn btn-sm btn-primary">View Pledge <i
+                                                            class="fa fa-fw fa-arrow-right"></i></button>
+                                                </a>
+                                            {% endif %}
+                                        {% else %}
+                                            <a href="{% url 'pledges:create' %}">
+                                                <button class="btn btn-sm btn-primary">Create a Pledge <i
+                                                        class="fa fa-fw fa-arrow-right"></i></button>
+                                            </a>
+                                        {% endif %}
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
