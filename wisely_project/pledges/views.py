@@ -36,7 +36,7 @@ def detail(request, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
     if request.method == "POST":
         if request.POST['type'] == 'trial':
-            pledge.active = True
+            pledge.active = False
             pledge.save()
         else:
             token = request.POST.get('stripeToken', '')
