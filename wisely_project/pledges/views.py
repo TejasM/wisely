@@ -160,7 +160,7 @@ def create(request):
 
     other_pledgers_list = []
     projections = []
-    pledged_courses = Pledge.objects.filter(user=request.user.userprofile).values('course')
+    pledged_courses = Pledge.objects.filter(user=request.user.userprofile).values_list('course_id')
     courses_available = request.user.courseraprofile.courses.filter(~Q(pk=pledged_courses))
     for course in courses_available:
         other_pledgers_list.append(Pledge.objects.filter(~Q(user=request.user)).filter(course=course).order_by('?')[:5])
