@@ -125,6 +125,12 @@
             </div>
         </div>
     {% endif %}
+    <div id="no-courses-lightbox" class="light-box">
+        <div class="row text-center">
+            You have no courses you can pledge for. Sign up for a course at <a href="https://coursera.org">Coursera</a>
+            to get started.
+        </div>
+    </div>
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'js/jquery.number.js' %}"></script>
@@ -245,6 +251,9 @@
                 }
             });
             $(".increments-slider .percentage-amount").val($(".increments-slider .slider").slider("value") + " %");
+            {% if not wait and courses.count == 0 %}
+                $('#no-courses-lightbox').lightbox_me({centered: true, close_on_esc: false, close_on_background_click: false});
+            {% endif %}
         }
     </script>
 {% endblock %}
