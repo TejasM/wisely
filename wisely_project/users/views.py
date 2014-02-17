@@ -25,7 +25,7 @@ def login_user(request):
         request.user.last_login = timezone.now()
         request.user.save()
         return redirect(reverse('users:index'))
-    return render(request, 'base.html')
+    return redirect('/')
 
 
 def logout_user(request):

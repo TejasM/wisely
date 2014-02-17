@@ -4,11 +4,12 @@ from django.views.generic import TemplateView
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 from settings import production
+from wisely_project import view
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
-                       url(r'^$', TemplateView.as_view(template_name='base.html')),
+                       url(r'^$', view.index),
                        url(r'^learn-more$', TemplateView.as_view(template_name='learn-more.html')),
                        url(r'^faq$', TemplateView.as_view(template_name='faq.html')),
                        url(r'^more$', TemplateView.as_view(template_name='more-coming.html')),
