@@ -34,7 +34,7 @@ def index(request):
                 card=token,
                 description=request.user.username,
             )
-            pledge.active = True
+            pledge.is_active = True
             pledge.save()
         except stripe.CardError, _:
             messages.error(request, 'Credit Card Error')
@@ -54,7 +54,7 @@ def detail(request, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
     if request.method == "POST":
         if request.POST['type'] == 'trial':
-            pledge.active = False
+            pledge.is_active = False
             pledge.save()
         else:
             token = request.POST.get('stripeToken', '')
@@ -66,7 +66,7 @@ def detail(request, pledge_id):
                     card=token,
                     description=request.user.username,
                 )
-                pledge.active = True
+                pledge.is_active = True
                 pledge.save()
             except stripe.CardError, _:
                 return redirect(reverse('pledges:detail', args=(pledge.id,)))
@@ -116,7 +116,7 @@ def share(request, pledge_id):
                 card=token,
                 description=request.user.username,
             )
-            pledge.active = True
+            pledge.is_active = True
             pledge.save()
         except stripe.CardError, _:
             messages.error(request, 'Credit Card Error')
