@@ -10,7 +10,7 @@
     <li class=""><a href="{% url 'pledges:index' %}"><i
             class="fa fa-book"></i><span>Pledges</span></a>
     </li>
-    <li class=""><a href="#"><i
+    <li class=""><a href="/more"><i
             class="fa fa-book"></i><span>More Coming Soon!</span></a>
     </li>
 {% endblock %}
@@ -222,16 +222,21 @@
                     header: {
                         left: 'prev,next today',
                         center: 'title',
-                        right: 'month,agendaWeek,agendaDay'
+                        right: ''
                     },
                     editable: false,
                     droppable: false,
                     events: {
                     }
                 });
+                {% if forloop.first %}
+                    $('#course-{{ course.id }}-div > div').attr('style', "background : #D2FFA3 !important");
+                {% endif %}
                 $('#course-{{ course.id }}-div').click(function () {
                     $('.sides').hide();
                     $('#side-{{ course.id }}').show();
+                    $('.main-selections').attr('style', "");
+                    $('#course-{{ course.id }}-div > div').attr('style', "background : #D2FFA3 !important");
                 });
                 if (!window.location.origin)
                     window.location.origin = window.location.protocol + "//" + window.location.host;
@@ -251,5 +256,4 @@
             {% endif %}
         });
     </script>
-
 {% endblock %}

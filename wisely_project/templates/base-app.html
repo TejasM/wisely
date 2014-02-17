@@ -71,7 +71,7 @@
                         <li class="active"><a href="{% url 'pledges:index' %}"><i
                                 class="fa fa-book"></i><span>Pledges</span></a>
                         </li>
-                        <li class=""><a href="#"><i
+                        <li class=""><a href="/more"><i
                                 class="fa fa-book"></i><span>More Coming Soon!</span></a>
                         </li>
                     {% endblock %}
@@ -295,6 +295,11 @@
                 $('#validation-contact').text('That doesn\'t look like a valid email address. Please try again.');
             }
         });
+        function validateEmail(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        }
+
     });
 
 </script>
