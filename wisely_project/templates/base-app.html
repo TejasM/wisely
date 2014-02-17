@@ -132,7 +132,7 @@
                         </a>
                         <ul class="dropdown-menu pull-right">
                             <li><a href="{% url 'users:profile' %}" class="glyphicons user"><i></i> Profile</a></li>
-{#                            <li><a href="#" class="glyphicons envelope"><i></i>Messages</a></li>#}
+                            {#                            <li><a href="#" class="glyphicons envelope"><i></i>Messages</a></li>#}
                             <li><a href="{% url 'users:logout' %}">Logout</a></li>
                         </ul>
                     </div>
@@ -213,6 +213,10 @@
     <div class="row text-center" id="contact-body">
         <h2>Contact Us</h2>
 
+        <div class="row extra-top-margin text-center">
+            We're always looking looking to connect. Shoot us a message!
+        </div>
+
         <div class="row extra-top-margin">
             <input type="email" name="email" id='contact-email' placeholder="Your Email Address" class="form-control">
         </div>
@@ -224,6 +228,18 @@
         </div>
         <div class="centered extra-top-margin">
             <button id="contact-send" class="btn btn-primary btn-lg">Send</button>
+        </div>
+    </div>
+</div>
+<div id="thank-us" class="light-box">
+    <div class="row text-center" id="contact-body">
+        <h2>Thank You!</h2>
+
+        <div class="row extra-top-margin text-center">
+            We will try and get back as soon as possible!
+        </div>
+        <div class="centered extra-top-margin">
+            <button class="btn btn-primary btn-lg close">Close</button>
         </div>
     </div>
 </div>
@@ -263,6 +279,7 @@
 <script src="{% static 'assets/components/core/js/core.init.js' %}?v=v1.9.6"></script>
 <script src="{% static 'assets/components/core/js/animations.init.js' %}?v=v1.9.6"></script>
 <script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
+<script type='text/javascript' src='https://cdn.firebase.com/v0/firebase.js'></script>
 <script>
     {% if user.is_authenticated %}
         $(window).bind('enterBreakpoint768', function () {
@@ -291,6 +308,7 @@
                 myRootRef.push({name: $('#contact-email').val().split('@')[0], msg: $('#contact-mail').val()});
                 $('#contact-body').text('Thank You! We will keep you updated!');
                 $('#contact-us').trigger('close');
+                $('#thank-us').lightbox_me({centered: true});
             } else {
                 $('#validation-contact').text('That doesn\'t look like a valid email address. Please try again.');
             }
