@@ -41,10 +41,10 @@
                         $(string).click(function () {
                             var token = function (res) {
                                 var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                                $('#type').val('real');
                                 $(string2).append($input).submit();
                             };
                             var money = parseInt("{{ pledge.money }}") * 100;
-                            $('#type').val('real');
                             if (!isNaN(money)) {
                                 StripeCheckout.open({
                                     key: 'pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb',
