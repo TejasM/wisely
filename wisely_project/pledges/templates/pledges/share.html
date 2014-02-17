@@ -85,14 +85,6 @@
     </div>
     <div id="fb-root"></div>
     <script>
-        window.fbAsyncInit = function () {
-            FB.init({
-                appId: '405339162934237',
-                status: true,
-                xfbml: true
-            });
-        };
-
         (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) {
@@ -103,77 +95,86 @@
             js.src = "//connect.facebook.net/en_US/all.js";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
-        $('#share-facebook').click(function () {
-            FB.getLoginStatus(function (response) {
-                if (response.status === 'connected') {
-                    FB.ui(
-                            {
-                                method: 'feed',
-                                name: 'Pledge for {{ pledge.course }}',
-                                description: (
-                                        'I' + ' have just made a' +
-                                                ' pledge for {{ pledge.course }}, help me stay motivated by following the pledge.'
-                                        ),
-                                link: 'http://www.projectwisely.com/pledges/follow/{{ pledge.id }}',
-                                picture: 'http://www.fbrell.com/public/f8.jpg'
-                            },
-                            function (response) {
-                                if (response && response.post_id) {
-                                } else {
+        $(function () {
+            window.fbAsyncInit = function () {
+                FB.init({
+                    appId: '405339162934237',
+                    status: true,
+                    xfbml: true
+                });
+            };
+            $('#share-facebook').click(function () {
+                FB.getLoginStatus(function (response) {
+                    if (response.status === 'connected') {
+                        FB.ui(
+                                {
+                                    method: 'feed',
+                                    name: 'Pledge for {{ pledge.course }}',
+                                    description: (
+                                            'I' + ' have just made a' +
+                                                    ' pledge for {{ pledge.course }}, help me stay motivated by following the pledge.'
+                                            ),
+                                    link: 'http://www.projectwisely.com/pledges/follow/{{ pledge.id }}',
+                                    picture: 'http://www.fbrell.com/public/f8.jpg'
+                                },
+                                function (response) {
+                                    if (response && response.post_id) {
+                                    } else {
+                                    }
                                 }
+                        );
+                    } else if (response.status === 'not_authorized') {
+                        FB.login(function (response) {
+                            if (response.authResponse) {
+                                FB.ui(
+                                        {
+                                            method: 'feed',
+                                            name: 'Pledge for {{ pledge.course }}',
+                                            description: (
+                                                    'I' + ' have just made a' +
+                                                            ' pledge for {{ pledge.course }}, help me stay motivated by following the pledge.'
+                                                    ),
+                                            link: 'http://www.projectwisely.com/follow/{{ pledge.id }}',
+                                            picture: 'http://www.fbrell.com/public/f8.jpg'
+                                        },
+                                        function (response) {
+                                            if (response && response.post_id) {
+                                            } else {
+                                            }
+                                        }
+                                );
+                            } else {
+                                console.log('User cancelled login or did not fully authorize.');
                             }
-                    );
-                } else if (response.status === 'not_authorized') {
-                    FB.login(function (response) {
-                        if (response.authResponse) {
-                            FB.ui(
-                                    {
-                                        method: 'feed',
-                                        name: 'Pledge for {{ pledge.course }}',
-                                        description: (
-                                                'I' + ' have just made a' +
-                                                        ' pledge for {{ pledge.course }}, help me stay motivated by following the pledge.'
-                                                ),
-                                        link: 'http://www.projectwisely.com/follow/{{ pledge.id }}',
-                                        picture: 'http://www.fbrell.com/public/f8.jpg'
-                                    },
-                                    function (response) {
-                                        if (response && response.post_id) {
-                                        } else {
+                        });
+                    } else {
+                        FB.login(function (response) {
+                            if (response.authResponse) {
+                                FB.ui(
+                                        {
+                                            method: 'feed',
+                                            name: 'Pledge for {{ pledge.course }}',
+                                            description: (
+                                                    'I' + ' have just made a' +
+                                                            ' pledge for {{ pledge.course }}, help me stay motivated by following the pledge.'
+                                                    ),
+                                            link: 'http://www.projectwisely.com/follow/{{ pledge.id }}',
+                                            picture: 'http://www.fbrell.com/public/f8.jpg'
+                                        },
+                                        function (response) {
+                                            if (response && response.post_id) {
+                                            } else {
+                                            }
                                         }
-                                    }
-                            );
-                        } else {
-                            console.log('User cancelled login or did not fully authorize.');
-                        }
-                    });
-                } else {
-                    FB.login(function (response) {
-                        if (response.authResponse) {
-                            FB.ui(
-                                    {
-                                        method: 'feed',
-                                        name: 'Pledge for {{ pledge.course }}',
-                                        description: (
-                                                'I' + ' have just made a' +
-                                                        ' pledge for {{ pledge.course }}, help me stay motivated by following the pledge.'
-                                                ),
-                                        link: 'http://www.projectwisely.com/follow/{{ pledge.id }}',
-                                        picture: 'http://www.fbrell.com/public/f8.jpg'
-                                    },
-                                    function (response) {
-                                        if (response && response.post_id) {
-                                        } else {
-                                        }
-                                    }
-                            );
-                        } else {
-                            console.log('User cancelled login or did not fully authorize.');
-                        }
-                    });
-                }
-            }, true);
+                                );
+                            } else {
+                                console.log('User cancelled login or did not fully authorize.');
+                            }
+                        });
+                    }
+                }, true);
 
+            });
         });
 
         $('.popup').click(function (event) {
