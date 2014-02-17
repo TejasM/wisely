@@ -66,7 +66,7 @@
                 <ul class="menu list-unstyled" id="navigation_current_page">
                     {% block nav-bar %}
                         <li class=""><a href="{% url 'users:index' %}"><i
-                                class="fa fa-book"></i><span>Courses</span></a>
+                                class="fa fa-book"></i><span>Dashboard</span></a>
                         </li>
                         <li class="active"><a href="{% url 'pledges:index' %}"><i
                                 class="fa fa-book"></i><span>Pledges</span></a>
@@ -131,6 +131,7 @@
 				</span>
                         </a>
                         <ul class="dropdown-menu pull-right">
+                            <li><a href="{% url 'users:index' %}" class="glyphicons user"><i></i> Dashboard</a></li>
                             <li><a href="{% url 'users:profile' %}" class="glyphicons user"><i></i> Profile</a></li>
                             {#                            <li><a href="#" class="glyphicons envelope"><i></i>Messages</a></li>#}
                             <li><a href="{% url 'users:logout' %}">Logout</a></li>
