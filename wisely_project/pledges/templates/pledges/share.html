@@ -64,7 +64,7 @@
                     on <b>Facebook</b>
                 </button>
                 <a class="twitter popup"
-                   href="http://twitter.com/share?text=I%20have%20just%20made%20a%20pledge%20for%20{{ pledge.course }}%2C%20help%20me%20stay%20motivated%20by%20following%20the%20pledge!&url=http://www.projectwisely.com/follow/{{ pledge.id }}">
+                   href="http://twitter.com/share?text=Just%20made%20a%20pledge%20for%20{{ pledge.course|truncatechars:45 }}%2C%20help%20me%20stay%20motivated%20by%20following%20the%20pledge!&url=http://www.projectwisely.com/follow/{{ pledge.id }}">
                     <button class="btn-auth btn-twitter" id="share-twitter" type="submit">Share
                         on <b>Twitter</b>
                     </button>
