@@ -70,7 +70,7 @@
         </div>
 
         <div class="row extra-top-margin">
-            {% for course in user.courseraprofile.courses.all %}
+            {% for course in viewed_user.courseraprofile.courses.all %}
                 <div class="col-lg-6" id="course-{{ course.id }}-div">
                     {% for pledge in completed_pledges %}
                         {% if pledge.course == course %}

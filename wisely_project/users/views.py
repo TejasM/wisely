@@ -58,8 +58,8 @@ def public_profile(request, user_id):
     except (User.DoesNotExist, UserProfile.DoesNotExist) as _:
         return HttpResponseRedirect('/')
 
-    completed_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=True)
-    current_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=False)
+    completed_pledges = Pledge.objects.filter(user=viewed_user.userprofile, is_complete=True)
+    current_pledges = Pledge.objects.filter(user=viewed_user.userprofile, is_complete=False)
 
     context_dict = {'viewed_user': viewed_user, 'user_profile': user_profile, 'completed_pledges': completed_pledges,
                     'current_pledges': current_pledges, 'public': True}
