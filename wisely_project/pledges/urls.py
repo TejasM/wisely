@@ -10,10 +10,10 @@ urlpatterns = patterns('',
                        url(r'^create/$', views.create, name='create'),
                        # /pledges/23
                        url(r'^(?P<pledge_id>\d+)/$', views.detail, name='detail'),
-                       url(r'^follow/(?P<user_id>\d+)/$', views.follow, name='follow'),
-                       url(r'^finish/(?P<user_id>\d+)/$', views.finish, name='finish'),
+                       url(r'^follow/(?P<pledge_id>\d+)/$', views.follow, name='follow'),
+                       url(r'^finish/(?P<pledge_id>\d+)/$', views.finish, name='finish'),
                        url(r'^success/(?P<pledge_id>\d+)/$', views.congrats, name='congrats'),
-                       url(r'^already/(?P<user_id>\d+)/$', views.already, name='already'),
+                       url(r'^already/(?P<pledge_id>\d+)/$', views.already, name='already'),
                        url(r'^share/(?P<pledge_id>\d+)/$', views.share, name='share'),
                        # /pledges/23/
                        url(r'^(?P<pledge_id>\d+)/results/$', views.results, name='results'),

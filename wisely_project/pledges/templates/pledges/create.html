@@ -205,7 +205,7 @@
                         if (isNaN(value)) {
                             value = 5;
                         }
-                        $('#proj-value-' + course_id.toString()).text('$' + value.toString())
+                        $('#proj-value-' + course_id.toString()).text('$' + (Math.round(value * 100) / 100).toString())
                     }
                 {% endfor %}
             });
@@ -239,7 +239,7 @@
                             if (isNaN(value)) {
                                 value = 5;
                             }
-                            $('#proj-value-' + course_id.toString()).text('$' + value.toString())
+                            $('#proj-value-' + course_id.toString()).text('$' + (Math.round(value * 100) / 100).toString())
                         }
                     {% endfor %}
                 },

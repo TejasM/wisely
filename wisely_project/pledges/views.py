@@ -7,10 +7,6 @@ from django.db.models import Q
 import stripe
 
 from users.models import Course
-
-
-
-
 __author__ = 'Cheng'
 
 from django.http import HttpResponse

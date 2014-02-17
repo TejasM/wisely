@@ -35,12 +35,11 @@
                         <div class="row extra-top-margin">
                             <div class="col-sm-6">
                                 Pledge of &nbsp;<h3 style="display: inline" class="cursive">
-                                $ {{ pledge.money|floatformat:2 }}</h3> &nbsp;to get at
-                                least {{ pledge.get_aim|floatformat:0 }}%
+                                $ {{ pledge.money|floatformat:2 }}</h3> &nbsp;to get {{ pledge.get_aim|floatformat:0 }}%
                             </div>
                             <div class="col-sm-6">
                                 <a href="{% url 'pledges:share' pledge.id %}">
-                                    <button class="btn btn-primary btn-lg text-right">View</button>
+                                    <button class="btn btn-primary btn-lg text-right">Share</button>
                                 </a>
                                 <span style="float: right">
                                 <i class="fa fa-eye"></i> {{ pledge.follower_set.count }} followers</span>
@@ -71,7 +70,7 @@
                                             <div class="row">
                                                 <div class="col-sm-12" style="margin-top: -7px">
                                                     <div class="full-reward centered circles">
-                                                        <p>${{ projections.2 }}</p>
+                                                        <p>${{ projections.2|floatformat }}</p>
                                                     </div>
                                                     <div class="pure-reward centered circles">
                                                         <p>{{ pledge.get_aim }}%</p>
@@ -84,11 +83,11 @@
                                             <div class="row centered">
                                                 <div class="col-sm-12" style="margin-top: -10px">
                                                     <p class="sub" style="display: inline-block; margin-left: 160px;">
-                                                        ${{ projections.1 }}
+                                                        ${{ projections.1|floatformat }}
                                                     </p>
 
                                                     <p class="sub" style="display: inline-block; margin-left: 35px;">
-                                                        ${{ projections.0 }}
+                                                        ${{ projections.0|floatformat }}
                                                     </p>
                                                 </div>
                                             </div>

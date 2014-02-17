@@ -40,7 +40,7 @@
                         rewards for your hard work.</h2><br><br>
 
                         <div id="dis" class="subtitle">
-                            <div class="row">
+                            {% comment %}<div class="row">
                                 <div class="large-6 large-offset-2 columns"><input type="text" style="height: 57px; font-size: 20px"
                                                                                    placeholder="Email" id="email"></div>
                                 <div class="large-4 columns">
@@ -51,8 +51,8 @@
                             <p style="color: #000;"><strong>Wisely is currently under construction. Sign Up for the
                                 early
                                 preview.</strong>
-                            </p>
-                            {% comment %}<button id="sign" class="other-button">Get Started</button>{% endcomment %}
+                            </p>{% endcomment %}
+                            <button id="sign" class="other-button">Get Started</button>
                         </div>
                     </div>
                 </div>
@@ -195,10 +195,10 @@
 <script>
     $(function () {
         $(document).foundation();
-        {% comment %}$('#sign').click(function () {
-            $('#sign-up').lightbox_me({centered: true});
-        });{% endcomment %}
         $('#sign').click(function () {
+            $('#sign-up').lightbox_me({centered: true});
+        });
+        {% comment %}$('#sign').click(function () {
             var myRootRef = new Firebase('https://wisely.firebaseIO.com/');
             var $email = $('#email').val();
 
@@ -210,7 +210,7 @@
             else {
                 $('#validation').text('That doesn\'t look like a valid email address. Please try again.');
             }
-        });
+        });{% endcomment %}
 
         $('#contact').click(function () {
             $('#contact-us').lightbox_me({centered: true});
