@@ -180,3 +180,6 @@ span.dollar-detail {
 .btn {
     border-radius: 0;
 }
+.tooltip {
+    font-size: 15px;
+}

@@ -10,8 +10,10 @@
         <h1 class="separator bottom">Share Your Pledge!</h1>
 
 
-        <h2 class="heading">Get Even More Motivated</h2>
-
+        <h2 class="heading">Stay motivated by getting followers!</h2>
+        {% if user.userprofile.pledge_set.count == 1 %}
+            <h3>Congratulations! You have just made your first Wisely pledge.</h3>
+        {% endif %}
         <div class="innerLR row">
             <div class="col-sm-8 col-sm-offset-2">
                 <div class="row extra-top-margin">
@@ -23,7 +25,7 @@
             </div>
         </div>
         <div class="innerLR row">
-            <h3>To get at least {{ pledge.get_aim|floatformat:0 }}%</h3>
+            <h3>Goal: {{ pledge.get_aim|floatformat:0 }}%</h3>
         </div>
         {% if not pledge.is_active %}
             <div class="innerLR row extra-top-margin">
@@ -73,7 +75,8 @@
         </div>
         <div class="innerLR row extra-top-margin">
         </div>
-        <p>For every follower you will get $1</p>
+        <p>For every follower you will get 1% extra reward on this pledge, up to a maximum of 20%.</p>
+            <p>For every follower that makes a pledge, you get extra 5% reward on this pledge, up to a maximum of 50%</p>
 
         <div class="row extra-top-margin">
             <div class="col-sm-8 col-sm-offset-2">

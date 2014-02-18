@@ -133,6 +133,9 @@
                                     <p>{{ progress|safe }}</p>
                                 {% endif %}
                             {% endfor %}
+                        {% if course.is_done %}
+                            <p>Congratulations, you have completed {{ course.title }}, sit tight while we verify your final grade!</p>
+                        {% endif %}
                         </div>
                     </div>
                 </div>

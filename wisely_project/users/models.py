@@ -1,4 +1,5 @@
 from __future__ import division
+from datetime import date
 import json
 from django.contrib.auth.models import User
 from django.db import models
@@ -45,6 +46,12 @@ class Course(BaseModel):
                 percentage = 100
 
         return percentage
+
+    @property
+    def is_done(self):
+        if date.today() > self.end_date:
+            return True
+        return False
 
 
 class CourseraProfile(BaseModel):
