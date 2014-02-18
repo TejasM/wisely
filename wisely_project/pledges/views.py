@@ -4,9 +4,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db.models import Q
+from django.utils import timezone
 import stripe
 
 from users.models import Course
+from users.utils import divide_timedelta
+
 __author__ = 'Cheng'
 
 from django.http import HttpResponse
@@ -196,9 +199,15 @@ def create(request):
     projections = []
     pledged_courses = Pledge.objects.filter(user=request.user.userprofile).values_list('course_id')
     if pledged_courses:
-        courses_available = request.user.courseraprofile.courses.filter(~Q(pk=pledged_courses))
+        courses_available = request.user.courseraprofile.courses.filter(~Q(pk__in=pledged_courses))
     else:
         courses_available = request.user.courseraprofile.courses.all()
+    to_keep = []
+    for course_available in courses_available:
+        total_time = course_available.end_date - course_available.start_date
+        if course_available.start_date + divide_timedelta(total_time, 2) > timezone.now().date():
+            to_keep.append(course_available.id)
+    courses_available = courses_available.filter(pk__in=to_keep)
     for course in courses_available:
         other_pledgers_list.append(Pledge.objects.filter(~Q(user=request.user)).filter(course=course).order_by('?')[:5])
         potential, average_aim = calculate_pooled_average(course)

@@ -135,9 +135,18 @@ def index(request):
                                                     'others': other_pledgers_list})
 
 
+@login_required
 def check_updated(request):
     return HttpResponse(json.dumps({'updated': request.user.last_login <= request.user.courseraprofile.last_updated,
                                     'incorrect': request.user.courseraprofile.incorrect_login}),
+                        content_type='application/json')
+
+
+@login_required
+def force_updated(request):
+    request.user.last_login = timezone.now()
+    request.user.save()
+    return HttpResponse(json.dumps({}),
                         content_type='application/json')
 
 
