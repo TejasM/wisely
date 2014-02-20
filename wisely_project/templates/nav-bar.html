@@ -1,3 +1,4 @@
+{% load staticfiles %}
 {% if user.is_authenticated %}
     <nav class="top-bar bottom-border" data-topbar>
         <div class="top-bar-inner">
@@ -6,7 +7,7 @@
                 <li class="name">
                     <h1>
                         <a href="{% url 'users:index' %}">
-                            Wisely
+                            <img alt="Wisely" src="{% static 'images/logo.png' %}"/>
                         </a>
                     </h1>
                 </li>
@@ -39,7 +40,7 @@
                 <li class="name">
                     <h1>
                         <a href="/">
-                            Wisely
+                            <img alt="Wisely" src="{% static 'images/logo.png' %}"/>
                         </a>
                     </h1>
                 </li>

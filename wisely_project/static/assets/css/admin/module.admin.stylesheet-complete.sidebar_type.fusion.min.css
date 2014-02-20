@@ -1448,7 +1448,7 @@ div[class*="col-xs-"], div[class*="col-sm-"], div[class*="col-md-"], div[class*=
 }
 
 .app.navbar-sticky #content {
-    padding-top: 59px
+    padding-top: 65px
 }
 
 @media (max-width: 767px) {
@@ -2004,7 +2004,7 @@ div[class*="col-xs-"], div[class*="col-sm-"], div[class*="col-md-"], div[class*=
 }
 
 .navbar .user-action {
-    height: 59px;
+    height: 65px;
     padding: 12px 12px
 }
 
@@ -2062,7 +2062,7 @@ div[class*="col-xs-"], div[class*="col-sm-"], div[class*="col-md-"], div[class*=
 }
 
 .navbar .dropdown.dropdown-light > .dropdown-menu {
-    top: 59px;
+    top: 65px;
     background: #fff;
     margin: -1px 0 0;
     border-color: #dedede
@@ -2375,7 +2375,7 @@ div[class*="col-xs-"], div[class*="col-sm-"], div[class*="col-md-"], div[class*=
 
 .navbar .notifications > li {
     float: left;
-    height: 59px;
+    height: 65px;
     text-align: center;
     padding: 0;
     border-right: 1px solid #efefef
@@ -2402,7 +2402,7 @@ div[class*="col-xs-"], div[class*="col-sm-"], div[class*="col-md-"], div[class*=
 }
 
 .navbar .notifications > li > a {
-    height: 59px
+    height: 65px
 }
 
 .navbar .notifications > li a {
@@ -2433,7 +2433,7 @@ div[class*="col-xs-"], div[class*="col-sm-"], div[class*="col-md-"], div[class*=
     }
 
     .navbar .navbar-header {
-        height: 59px
+        height: 65px
     }
 
     .navbar .navbar-header .navbar-toggle {
@@ -2480,8 +2480,8 @@ div[class*="col-xs-"], div[class*="col-sm-"], div[class*="col-md-"], div[class*=
     }
 
     .navbar ul.nav > li {
-        height: 59px;
-        line-height: 59px;
+        height: 65px;
+        line-height: 65px;
         padding: 0;
         display: block;
         float: left
@@ -2491,8 +2491,8 @@ div[class*="col-xs-"], div[class*="col-sm-"], div[class*="col-md-"], div[class*=
         font-size: 16px;
         color: #424242;
         font-weight: 400;
-        height: 59px;
-        line-height: 59px;
+        height: 65px;
+        line-height: 65px;
         padding: 0 10px
     }
 
@@ -2504,7 +2504,7 @@ div[class*="col-xs-"], div[class*="col-sm-"], div[class*="col-md-"], div[class*=
 
     .navbar.main {
         min-height: 0;
-        height: 59px
+        height: 65px
     }
 }
 
@@ -7124,7 +7124,7 @@ div.DTCR_pointer {
 }
 
 .glyphicons.orange i:before, .glyphicons-social.orange i:before {
-    color: #edb459
+    color: #edb465
 }
 
 .glyphicons.btn-default i:before, .glyphicons-social.btn-default i:before {
@@ -7515,7 +7515,7 @@ div.DTCR_pointer {
 
 .ribbon-wrapper .ribbon.default {
     background-color: #e5e5e5;
-    color: #595959
+    color: #656565
 }
 
 .ribbon-wrapper .ribbon.default:before, .ribbon-wrapper .ribbon.default:after {
@@ -12535,7 +12535,7 @@ ul.social-comments li .user-info abbr {
 
 .sidebar.sidebar-discover #menu.sidebar-blue {
     color: #fff;
-    background: #374a59
+    background: #374a65
 }
 
 .sidebar.sidebar-discover #menu.sidebar-blue img {
@@ -12564,11 +12564,11 @@ ul.social-comments li .user-info abbr {
 }
 
 .sidebar.sidebar-discover #menu.sidebar-blue #sidebar-discover-wrapper #discover {
-    background: #374a59
+    background: #374a65
 }
 
 .sidebar.sidebar-discover #menu.sidebar-blue #sidebar-discover-wrapper #discover .border-bottom {
-    border-color: #374a59 !important
+    border-color: #374a65 !important
 }
 
 .sidebar.sidebar-discover #menu.sidebar-blue #sidebar-discover-wrapper #discover ul li {
@@ -12656,7 +12656,7 @@ ul.social-comments li .user-info abbr {
 }
 
 .sidebar.sidebar-discover #menu.sidebar-blue > div > ul {
-    background: #374a59
+    background: #374a65
 }
 
 .sidebar.sidebar-discover #menu.sidebar-blue > div > ul > li {
@@ -12684,7 +12684,7 @@ ul.social-comments li .user-info abbr {
 .sidebar.sidebar-discover #menu.sidebar-blue > div > ul > li > a > span.badge.badge-inverse {
     color: #fff;
     border-color: #87c844;
-    background: #374a59
+    background: #374a65
 }
 
 .sidebar.sidebar-discover #menu.sidebar-blue > div > ul > li > a > i:before {
@@ -12715,7 +12715,7 @@ ul.social-comments li .user-info abbr {
 }
 
 .sidebar.sidebar-discover #menu.sidebar-blue > div > ul > li.active > a > span.badge-inverse {
-    border-color: #374a59
+    border-color: #374a65
 }
 
 .sidebar.sidebar-discover #menu.sidebar-blue > div > ul > li.active span.badge {
@@ -13072,7 +13072,7 @@ ul.social-comments li .user-info abbr {
 
 .sidebar.sidebar-fusion #menu.sidebar-blue {
     color: #fff;
-    background: #374a59
+    background: #374a65
 }
 
 .sidebar.sidebar-fusion #menu.sidebar-blue img {
@@ -13110,7 +13110,7 @@ ul.social-comments li .user-info abbr {
 }
 
 .sidebar.sidebar-fusion #menu.sidebar-blue > div ul {
-    background: #374a59
+    background: #374a65
 }
 
 .sidebar.sidebar-fusion #menu.sidebar-blue > div ul li {
@@ -13130,7 +13130,7 @@ ul.social-comments li .user-info abbr {
 .sidebar.sidebar-fusion #menu.sidebar-blue > div ul li > a > span.badge.badge-inverse {
     color: #fff;
     border-color: #87c844;
-    background: #374a59
+    background: #374a65
 }
 
 .sidebar.sidebar-fusion #menu.sidebar-blue > div ul li > a > i:before {
@@ -13166,7 +13166,7 @@ ul.social-comments li .user-info abbr {
 }
 
 .sidebar.sidebar-fusion #menu.sidebar-blue > div > ul > li.active > a > span.badge-inverse {
-    border-color: #374a59
+    border-color: #374a65
 }
 
 .sidebar.sidebar-fusion #menu.sidebar-blue > div > ul > li.active span.badge {
@@ -13267,7 +13267,7 @@ ul.social-comments li .user-info abbr {
     position: relative;
     z-index: 3;
     background: #27292a;
-    height: 59px;
+    height: 65px;
     width: 252px;
     padding: 0 15px
 }
@@ -13286,7 +13286,7 @@ ul.social-comments li .user-info abbr {
 }
 
 .sidebar.sidebar-fusion #menu #sidebar-fusion-wrapper #brandWrapper > a {
-    line-height: 59px
+    line-height: 65px
 }
 
 .sidebar.sidebar-fusion #menu #sidebar-fusion-wrapper #brandWrapper > a > span.text {
@@ -13602,7 +13602,7 @@ ul.social-comments li .user-info abbr {
 
 #menu_kis > div > ul > li {
     position: relative;
-    height: 59px;
+    height: 65px;
     padding: 0;
     border-bottom: 1px solid #424242
 }

@@ -23,7 +23,7 @@ strong {
 }
 
 .top-bar {
-    height: 55px;
+    height: 65px;
 }
 
 .top-bar .name h1 a {
@@ -82,6 +82,7 @@ strong {
 
 .top-bar .right {
     font-weight: 600;
+    margin-top: 10px;
 }
 
 #background-image {
