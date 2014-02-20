@@ -84,6 +84,9 @@ PRODCUTION_APPS = (
     'async',
 )
 
+STRIPE_PUBLIC_KEY = "pk_live_0RNa74C7R8WWln4sSxUhJPYT"
+STRIPE_SECRET_KEY = "sk_live_pNRMbo0ViQKfqkqqKZN41mz5"
+
 INSTALLED_APPS += PRODCUTION_APPS
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
