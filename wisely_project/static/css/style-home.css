@@ -94,6 +94,20 @@ strong {
     background: #EBEFF2;
 }
 
+.video-cover {
+    padding: 5% 4%;
+    background: #C6C9CC;
+    text-align: center;
+}
+
+.video-cover h2 {
+    color: #FFFFFF;
+    font-size: 369.23%;
+    letter-spacing: -1px;
+    line-height: 1em;
+    margin-bottom: 0.4em;
+}
+
 .middle-cover h2 {
     color: #4d4d4d;
     font-size: 369.23%;

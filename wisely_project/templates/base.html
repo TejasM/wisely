@@ -65,6 +65,25 @@
         </div>
     </section>
 
+    <div class="video-cover">
+        <div class="row">
+            <div class="large-12 columns text-center">
+                <h2>Commit with Wisely</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="large-12 columns">
+                <iframe width="800" height="459"
+                        src="http://www.wideo.co/embed/2193141392451607407?height=429&width=780" frameborder="0"
+                        allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <div id="dis" class="subtitle extra-top-margin">
+            <button id="sign2" class="other-button">Get Started</button>
+        </div>
+    </div>
+
     <div class="middle-cover">
         <div class="row">
             <div class="large-12 columns text-center">
@@ -135,9 +154,9 @@
         <div class="row text-center">
             <p><strong>Welcome to Wisely!</strong><br>
 
-            We are currently in Beta. Take a look around!<br>
+                We are currently in Beta. Take a look around!<br>
 
-            We would love to hear your feedback.</p>
+                We would love to hear your feedback.</p>
         </div>
         <div class="row text-center">
             <div>
@@ -207,6 +226,10 @@
     $(function () {
         $(document).foundation();
         $('#sign').click(function () {
+            $('#sign-up').lightbox_me({centered: true});
+        });
+
+        $('#sign2').click(function () {
             $('#sign-up').lightbox_me({centered: true});
         });
         {% comment %}$('#sign').click(function () {
