@@ -133,9 +133,10 @@
                                     <p>{{ progress|safe }}</p>
                                 {% endif %}
                             {% endfor %}
-                        {% if course.is_done %}
-                            <p>Congratulations, you have completed {{ course.title }}, sit tight while we verify your final grade!</p>
-                        {% endif %}
+                            {% if course.is_done %}
+                                <p>Congratulations, you have completed {{ course.title }}, sit tight while we verify
+                                    your final grade!</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -205,6 +206,14 @@
         <div class="row text-center">
             You have no courses you can pledge for. Sign up for a course at <a href="https://coursera.org">Coursera</a>
             to get started.
+        </div>
+        <div class="row extra-top-margin">
+            {% if not wait %}
+                <a href="{% url 'users:index' %}">
+                    <button class="btn btn-large btn-primary">To Dashboard</button>
+                </a>
+            {% endif %}
+            <button class="btn btn-large btn-primary" id="refresh-from">Refresh from Coursera</button>
         </div>
     </div>
 {% endblock %}
