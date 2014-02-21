@@ -556,3 +556,7 @@ select.course {
     height: 50px;
     padding: 0.5em;
 }
+
+#section-foot a {
+    color: #87C844;
+}
