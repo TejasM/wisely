@@ -16,8 +16,11 @@ __author__ = 'tmehta'
 from users.models import CourseraProfile
 
 while True:
-    db.reset_queries()
-    for user in CourseraProfile.objects.filter(last_updated__lt=F('user__last_login')):
+    try:
+        db.reset_queries()
+        for user in CourseraProfile.objects.filter(last_updated__lt=F('user__last_login')):
             get_courses(user.user_id)
             user.last_updated = timezone.now()
             user.save()
+    except Exception:
+        pass
