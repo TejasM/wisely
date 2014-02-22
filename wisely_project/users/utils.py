@@ -11,6 +11,13 @@ def divide_timedelta(td, divisor):
     return datetime.timedelta(seconds=divided_seconds)
 
 
+def welcome_new_user(backend, details, uid, request, user=None, is_new=False, *args, **kwargs):
+    if is_new:
+        request.user = user
+        send_welcome_email(request)
+    return None
+
+
 def send_welcome_email(request):
     try:
         email_data = {

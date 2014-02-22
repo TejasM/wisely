@@ -16,14 +16,21 @@ from django.template import RequestContext
 from models import CourseraProfile, Progress, UserProfile
 from pledges.models import Pledge
 from forms import UserProfileForm, UserForm
+from users.utils import send_welcome_email
 
 
 def login_user(request):
     if request.method == "POST":
         user = authenticate(username=request.POST["email"], password=request.POST['password'])
-        login(request, user)
-        request.user.last_login = timezone.now()
-        request.user.save()
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                request.user.last_login = timezone.now()
+                request.user.save()
+            else:
+                return render(request, 'base.html')
+        else:
+            return render(request, 'base.html')
         return redirect(reverse('users:index'))
     return redirect('/')
 
@@ -83,6 +90,9 @@ def signup(request):
                 login(request, user)
                 user.last_login = timezone.now()
                 user.save()
+                send_welcome_email(request)
+            else:
+                return render(request, 'base.html')
         else:
             return render(request, 'base.html')
         return redirect(reverse('users:index'))
