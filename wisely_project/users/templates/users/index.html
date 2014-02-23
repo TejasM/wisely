@@ -96,17 +96,29 @@
                                             {% endif %}
                                             {{ forloop|break }}
                                         {% elif forloop.counter == pledges.count %}
+                                            {% if course.get_amount_progress <= 50 %}
+                                                <a href="{% url 'pledges:create' %}">
+                                                    <button class="btn btn-sm btn-primary">Create a Pledge <i
+                                                            class="fa fa-fw fa-arrow-right"></i></button>
+                                                </a>
+                                            {% else %}
+                                                <button class="btn btn-sm btn-primary" disabled="disabled">It's too late
+                                                    to pledge
+                                                </button>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if not pledges %}
+                                        {% if course.get_amount_progress <= 50 %}
                                             <a href="{% url 'pledges:create' %}">
                                                 <button class="btn btn-sm btn-primary">Create a Pledge <i
                                                         class="fa fa-fw fa-arrow-right"></i></button>
                                             </a>
+                                        {% else %}
+                                            <button class="btn btn-sm btn-primary" disabled="disabled">It's too late
+                                                to pledge
+                                            </button>
                                         {% endif %}
-                                    {% endfor %}
-                                    {% if not pledges %}
-                                        <a href="{% url 'pledges:create' %}">
-                                            <button class="btn btn-sm btn-primary">Create a Pledge <i
-                                                    class="fa fa-fw fa-arrow-right"></i></button>
-                                        </a>
                                     {% endif %}
                                 </div>
                             </div>
