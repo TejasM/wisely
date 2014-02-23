@@ -59,7 +59,8 @@
         <div id="sidebar-fusion-wrapper">
             <div id="brandWrapper">
                 <a href="/">
-                    <img alt="Wisely" src="{% static 'images/logo-new.svg' %}" height="60" width="190" style="border: none"/>
+                    <img alt="Wisely" src="{% static 'images/logo-new.svg' %}" height="60" width="190"
+                         style="border: none"/>
                 </a>
             </div>
             {% if user.is_authenticated %}
@@ -75,6 +76,53 @@
                                 class="fa fa-book"></i><span>More Coming Soon!</span></a>
                         </li>
                     {% endblock %}
+                    {% if question %}
+                        <div class="widget extra-top-margin">
+                            <!-- Widget heading -->
+                            <div class="widget-head">
+                                <h4 class="heading">Feedback</h4>
+                            </div>
+                            <!-- // Widget heading END -->
+
+                            <div class="widget-body innerAll inner-2x">
+                                <h5>{{ question }}</h5>
+
+                                <form action="{% url 'polls:anspoll' question.id %}" method="post">
+                                    {% csrf_token %}
+                                    {% for choice in question.choice_set.all %}
+                                        {% if choice.custom != True %}
+                                            {% if question.allow_multiple %}
+                                                <div class="checkbox">
+                                                    <label class="checkbox-custom">
+                                                        <input type="checkbox" name="choice" value="{{ choice.id }}">
+                                                        <i class="fa fa-fw fa-square-o"></i><span
+                                                            style="color: #0F0F0F">{{ choice }}</span>
+                                                    </label>
+                                                </div>
+                                            {% else %}
+                                                <div class="radio">
+                                                    <label class="radio-custom">
+                                                        <input type="radio" name="choice" value="{{ choice.id }}">
+                                                        <i class="fa fa-circle-o"></i> <span
+                                                            style="color: #0F0F0F">{{ choice }}</span>
+                                                    </label>
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if question.allow_custom %}
+                                        <textarea class="notebook border-none form-control" name="custom"
+                                                  placeholder="Other"></textarea>
+                                        <button type="submit" class="btn extra-top-margin btn-large btn-primary">
+                                            Submit
+                                        </button>
+                                    {% else %}
+                                        <button type="submit" class="btn btn-large btn-primary">Submit</button>
+                                    {% endif %}
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
                 </ul>
             {% endif %}
 
@@ -281,6 +329,8 @@
 <script src="{% static 'assets/components/core/js/animations.init.js' %}?v=v1.9.6"></script>
 <script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
 <script type='text/javascript' src='https://cdn.firebase.com/v0/firebase.js'></script>
+<script src="{% static 'assets/components/common/forms/elements/fuelux-radio/fuelux-radio.js' %}?v=v1.9.6&sv=v0.0.1"></script>
+<script src="{% static 'assets/components/common/forms/elements/fuelux-checkbox/fuelux-checkbox.js' %}?v=v1.9.6&sv=v0.0.1"></script>
 <script>
     {% if user.is_authenticated %}
         $(window).bind('enterBreakpoint768', function () {
@@ -320,7 +370,6 @@
         }
 
     });
-
 </script>
 {% block additionalScripts %}
 {% endblock %}

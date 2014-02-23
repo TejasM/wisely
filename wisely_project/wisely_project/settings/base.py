@@ -138,6 +138,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.tz',
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
+    'wisely_project.context_processor.survey_questions',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
@@ -203,6 +204,7 @@ THIRD_PARTY_APPS = (
 LOCAL_APPS = (
     'users',
     'pledges',
+    'polls',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
