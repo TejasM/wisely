@@ -209,6 +209,19 @@
         </div>
     {% endif %}
 
+    <div id="coursera-wait" class="light-box">
+        <div class="row text-center">
+            Getting your courses, give us a few minutes!
+        </div>
+        <div class="row extra-top-margin text-center">
+            <div class="large-12 columns large-centered">
+                <a href="/learn-more">
+                    <button class="btn btn-primary btn-large">Learn More</button>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <div id="no-courses-lightbox" class="light-box">
         <div class="row text-center">
             You have no courses you can pledge for. Sign up for a course at <a href="https://coursera.org">Coursera</a>
@@ -229,12 +242,31 @@
     <script src="{% static 'assets/components/modules/admin/calendar/assets/lib/js/gcal.js' %}?v=v1.9.6&sv=v0.0.1"></script>
     <script>
         $(function () {
-            {% if wait %}
-                $('#coursera-wait').lightbox_me({centered: true});
-                setTimeout("location.reload(true);", 30000);
-            {% endif %}
-            $('#update-coursera').click(function () {
-                $('#coursera-update').lightbox_me({centered: true});
+
+            $('#refresh-from').click(function () {
+                $.get("{% url 'users:force_update' %}", function (res) {
+                    $('#no-courses-lightbox').trigger('close');
+                    $('#coursera-wait').lightbox_me({centered: true, closeEsc: false, closeClick: false});
+
+                    var intervalUpdated = null;
+
+                    function checkIfUpdated() {
+                        $.get("{% url 'users:check_update' %}", function (res) {
+                            if (res['updated'] == true) {
+                                clearInterval(intervalUpdated);
+                                if (res['incorrect'] == true) {
+                                    location.href = '{% url 'users:index' %}?incorrect=true';
+                                } else {
+                                    $('#coursera-wait').trigger('close');
+                                    location.reload();
+                                }
+                            }
+                        });
+                    }
+
+                    intervalUpdated = setInterval(checkIfUpdated, 200);
+                });
+
             });
 
             {% for course in user.courseraprofile.courses.all %}
