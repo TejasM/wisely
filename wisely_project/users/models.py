@@ -5,6 +5,7 @@ import json
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+from polls.models import Question
 
 
 def convertDatetimeToString(o):
@@ -68,6 +69,7 @@ class UserProfile(BaseModel):
     user = models.OneToOneField(User)
     picture = models.ImageField(upload_to='profile_images', null=True)
     current_city = models.CharField(max_length=32, null=True)
+    questions_answered = models.ManyToManyField(Question)
 
     customer_id = models.CharField(max_length=1000, default="")
 
