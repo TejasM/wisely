@@ -506,7 +506,6 @@ h2.course-page-header {
     font-size: 14px;
 }
 
-
 button:hover, button:focus, button:active {
     border: none;
     outline: none;
@@ -559,4 +558,8 @@ select.course {
 
 #section-foot a {
     color: #87C844;
+}
+
+#google-id a {
+    color: #333333;
 }
