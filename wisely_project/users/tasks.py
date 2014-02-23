@@ -188,34 +188,39 @@ def get_courses(user_id):
             user.courseraprofile.incorrect_login = False
         print courses, image_links
         django_courses = []
-        for i, course in enumerate(courses):
-            try:
-                get_course = Course.objects.get(title=course)
-                django_courses.append(get_course)
-                get_course.course_link = course_links[i]
-                get_course.info_link = internal_links[i]
-                get_course.course_id = course_ids[i]
-                get_course.image_link = image_links[i]
-                get_course.start_date = datetime.strptime(
-                    start_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', ''),
-                    "%b %d %Y").date()
-                get_course.end_date = datetime.strptime(
-                    end_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', ''),
-                    "%b %d %Y").date()
-                get_course.save()
-                user.courseraprofile.courses.add(get_course)
-            except Course.DoesNotExist:
-                get_course = Course.objects.create(title=course, course_link=course_links[i], course_id=course_ids[i],
-                                                   info_link=internal_links[i], start_date=
-                    datetime.strptime(
-                        str(start_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', '')),
-                        '%b %d %Y').date(),
-                                                   end_date=datetime.strptime(str(
-                                                       end_dates[i].replace('th', '').replace('st', '').replace('nd',
-                                                                                                                '').replace(
-                                                           'rd', '')), '%b %d %Y').date(),
-                                                   image_link=image_links[i])
-                user.courseraprofile.courses.add(get_course)
+        try:
+            for i, course in enumerate(courses):
+                try:
+                    get_course = Course.objects.get(title=course)
+                    django_courses.append(get_course)
+                    get_course.course_link = course_links[i]
+                    get_course.info_link = internal_links[i]
+                    get_course.course_id = course_ids[i]
+                    get_course.image_link = image_links[i]
+                    get_course.start_date = datetime.strptime(
+                        start_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', ''),
+                        "%b %d %Y").date()
+                    get_course.end_date = datetime.strptime(
+                        end_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', ''),
+                        "%b %d %Y").date()
+                    get_course.save()
+                    user.courseraprofile.courses.add(get_course)
+                except Course.DoesNotExist:
+                    get_course = Course.objects.create(title=course, course_link=course_links[i], course_id=course_ids[i],
+                                                       info_link=internal_links[i], start_date=
+                        datetime.strptime(
+                            str(start_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', '')),
+                            '%b %d %Y').date(),
+                                                       end_date=datetime.strptime(str(
+                                                           end_dates[i].replace('th', '').replace('st', '').replace('nd',
+                                                                                                                    '').replace(
+                                                               'rd', '')), '%b %d %Y').date(),
+                                                       image_link=image_links[i])
+                    user.courseraprofile.courses.add(get_course)
+        except IndexError:
+            pass
+        except Exception as e:
+            print e, "Inside"
         user.courseraprofile.last_updated = timezone.now()
         user.courseraprofile.save()
         for i, course in enumerate(django_courses):

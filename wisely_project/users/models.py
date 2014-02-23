@@ -58,7 +58,7 @@ class Course(BaseModel):
 class CourseraProfile(BaseModel):
     user = models.OneToOneField(User)
     courses = models.ManyToManyField(Course)
-    username = models.CharField(max_length=100, default="", unique=True)
+    username = models.CharField(max_length=100, default="")
     password = models.CharField(max_length=100, default="")
     counted_as_completed = models.CommaSeparatedIntegerField(default='', blank=True, max_length=200)
     incorrect_login = models.BooleanField(default=False)
