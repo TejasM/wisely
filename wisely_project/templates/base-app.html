@@ -77,14 +77,14 @@
                         </li>
                     {% endblock %}
                     {% if question %}
-                        <div class="widget extra-top-margin">
+                        <div class="widget extra-top-margin widget-body-inverse">
                             <!-- Widget heading -->
                             <div class="widget-head">
                                 <h4 class="heading">Tell us what you think!</h4>
                             </div>
                             <!-- // Widget heading END -->
 
-                            <div class="widget-body-gray innerAll inner-2x">
+                            <div class="widget-body innerAll inner-2x">
                                 <h5>{{ question }}</h5>
 
                                 <form action="{% url 'polls:anspoll' question.id %}" method="post">
@@ -95,16 +95,14 @@
                                                 <div class="checkbox">
                                                     <label class="checkbox-custom">
                                                         <input type="checkbox" name="choice" value="{{ choice.id }}">
-                                                        <i class="fa fa-fw fa-square-o"></i><span
-                                                            style="color: #0F0F0F">{{ choice }}</span>
+                                                        <i class="fa fa-fw fa-square-o"></i><span>{{ choice }}</span>
                                                     </label>
                                                 </div>
                                             {% else %}
                                                 <div class="radio">
                                                     <label class="radio-custom">
                                                         <input type="radio" name="choice" value="{{ choice.id }}">
-                                                        <i class="fa fa-circle-o"></i> <span
-                                                            style="color: #0F0F0F">{{ choice }}</span>
+                                                        <i class="fa fa-circle-o"></i> <span>{{ choice }}</span>
                                                     </label>
                                                 </div>
                                             {% endif %}
