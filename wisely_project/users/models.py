@@ -68,6 +68,8 @@ class UserProfile(BaseModel):
     picture = models.ImageField(upload_to='profile_images', null=True)
     current_city = models.CharField(max_length=32, null=True)
 
+    customer_id = models.CharField(max_length=1000, default="")
+
     MALE = 'M'
     FEMALE = 'F'
     GENDER = (

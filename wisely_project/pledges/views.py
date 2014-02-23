@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.utils import timezone
 import stripe
 
-from users.models import Course
+from users.models import Course, UserProfile
 from users.utils import divide_timedelta
 
 __author__ = 'Cheng'
@@ -110,20 +110,25 @@ def calculate_bonus_rewards(pledge):
 def share(request, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
     if request.method == "POST":
-        token = request.POST.get('stripeToken', '')
-        stripe.api_key = settings.STRIPE_SECRET_KEY
-        try:
-            stripe.Charge.create(
-                amount=int(float(pledge.money)) * 100,  # amount in cents, again
-                currency="cad",
-                card=token,
-                description=request.user.username,
-            )
-            pledge.is_active = True
-            pledge.save()
-        except stripe.CardError, _:
-            messages.error(request, 'Credit Card Error')
-            return redirect(reverse('pledges:detail', args=(pledge.id,)))
+        userprofile = UserProfile.objects.get(user=request.user)
+        if userprofile.customer_id != "" and request.POST['existing'] == 'use-existing':
+            customer = stripe.Customer.retrieve(userprofile.customer_id)
+            if customer is None:
+                messages.error(request, 'Something went wrong, please use a new credit card')
+                return redirect(reverse('pledges:detail', args=(pledge.id,)))
+        else:
+            token = request.POST.get('stripeToken', '')
+            stripe.api_key = settings.STRIPE_SECRET_KEY
+            try:
+                stripe.Customer.create(
+                    description=request.user.username,
+                    card=token,
+                )
+                pledge.is_active = True
+                pledge.save()
+            except stripe.CardError, _:
+                messages.error(request, 'Credit Card Error')
+                return redirect(reverse('pledges:detail', args=(pledge.id,)))
         return redirect(reverse('pledges:share', args=(pledge.id,)))
     if request.session.get('onboarding', '') != '':
         request.session.pop('onboarding')
@@ -177,24 +182,6 @@ def create(request):
                                            money=int(float(request.POST['money'].replace(',', ''))), is_active=False,
                                            aim=float(request.POST['aim'].replace('%', '')) / 100)
             return redirect(reverse('pledges:detail', args=(pledge.id,)))
-        else:
-            token = request.POST.get('stripeToken', '')
-            stripe.api_key = settings.STRIPE_SECRET_KEY
-            try:
-                stripe.Charge.create(
-                    amount=int(float(request.POST['money'].replace(',', ''))) * 100,  # amount in cents, again
-                    currency="cad",
-                    card=token,
-                    description=request.user.username,
-                )
-                pledge = Pledge.objects.create(user=request.user.userprofile,
-                                               course=Course.objects.get(pk=int(request.POST['course'])),
-                                               money=int(float(request.POST['money'].replace(',', ''))), is_active=True,
-                                               aim=float(request.POST['aim'].replace('%', '')) / 100)
-            except stripe.CardError, _:
-                return redirect(reverse('pledges:create'))
-            return redirect(reverse('pledges:share', args=(pledge.id,)))
-
     other_pledgers_list = []
     projections = []
     pledged_courses = Pledge.objects.filter(user=request.user.userprofile).values_list('course_id')

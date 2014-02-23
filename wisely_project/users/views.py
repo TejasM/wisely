@@ -111,11 +111,11 @@ def index(request):
             try:
                 response = request2('GET', url, params={'type': 'large'})
                 response.raise_for_status()
+                user_profile.picture.save('{0}_social.jpg'.format(request.user.username),
+                                      ContentFile(response.content))
+                user_profile.save()
             except HTTPError:
                 pass
-            user_profile.picture.save('{0}_social.jpg'.format(request.user.username),
-                                      ContentFile(response.content))
-            user_profile.save()
     try:
         coursera_profile = CourseraProfile.objects.get(user=request.user)
     except CourseraProfile.DoesNotExist:
