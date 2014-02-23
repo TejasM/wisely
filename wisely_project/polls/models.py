@@ -8,6 +8,9 @@ class Question(models.Model):
     allow_custom = models.BooleanField(default=False)
     allow_multiple = models.BooleanField(default=False)
 
+    def only_custom(self):
+        return self.choice_set.filter(custom=False) == 0
+
     def __unicode__(self):
         return self.question_text
 

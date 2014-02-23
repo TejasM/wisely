@@ -80,7 +80,7 @@
                         <div class="widget extra-top-margin">
                             <!-- Widget heading -->
                             <div class="widget-head">
-                                <h4 class="heading">Feedback</h4>
+                                <h4 class="heading">Tell us what you think!</h4>
                             </div>
                             <!-- // Widget heading END -->
 
@@ -112,7 +112,7 @@
                                     {% endfor %}
                                     {% if question.allow_custom %}
                                         <textarea class="notebook border-none form-control" name="custom"
-                                                  placeholder="Other"></textarea>
+                                                  {% if question.only_custom %}placeholder="Other"{% endif %}></textarea>
                                         <button type="submit" class="btn extra-top-margin btn-large btn-primary">
                                             Submit
                                         </button>
