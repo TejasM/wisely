@@ -159,8 +159,9 @@ def check_updated(request):
 
 @login_required
 def force_updated(request):
-    request.user.last_login = timezone.now()
-    request.user.save()
+    user = request.user
+    user.last_login = timezone.now()
+    user.save()
     return HttpResponse(json.dumps({}),
                         content_type='application/json')
 
