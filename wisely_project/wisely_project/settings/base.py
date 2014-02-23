@@ -250,6 +250,9 @@ FACEBOOK_API_SECRET = '34f4d0473f43f1be09ff1833f63187bc'
 TWITTER_CONSUMER_KEY = 'Ujjstl4sd1lRurWgbpWxg'
 TWITTER_CONSUMER_SECRET = 'WxQmKgthTMZLcVI57dcfMkdM8lhtBMZ6akYvvR3UYQ'
 
+GOOGLE_OAUTH2_CLIENT_ID = '903133689077-e1qpbdlth8uq1tcm383vv2poo31h9dpi.apps.googleusercontent.com'
+GOOGLE_OAUTH2_CLIENT_SECRET = '2aWiA-1eEdxYIv8UXRXHclaD'
+
 FACEBOOK_EXTENDED_PERMISSIONS = ['email']
 
 GITHUB_APP_ID = '06f5134f1cc26effbef9'
@@ -259,6 +262,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'social_auth.backends.facebook.FacebookBackend',
     'social_auth.backends.twitter.TwitterBackend',
+    'social_auth.backends.google.GoogleOAuth2Backend'
 )
 
 STRIPE_PUBLIC_KEY = "pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb"
@@ -285,6 +289,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_auth.backends.pipeline.user.update_user_details',
     'users.utils.welcome_new_user'
 )
+
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 PREPEND_WWW = False

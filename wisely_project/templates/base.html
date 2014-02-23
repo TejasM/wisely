@@ -13,7 +13,7 @@
     <link href="{% static 'css/auth-buttons.css' %}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'css/style-home.css' %}"/>
     <script src="{% static 'js/vendor/modernizr.js' %}"></script>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <script src="{% static 'assets/components/library/jquery/jquery.min.js' %}?v=v1.9.6&sv=v0.0.1"></script>
     <script src="{% static 'js/vendor/fastclick.js' %}"></script>
     <meta property="og:title" content="Wisely - Learn Together">
@@ -135,16 +135,24 @@
                 </div>
             </div>
             <div class="row extra-top-margin">
-                <div class="small-2 push-4 text-center columns about-us margin-extra-bottom">
-                    <a href="https://www.facebook.com/projectwisely"><i class="fa fa-5x fa-facebook-square"></i></a>
+                <div class="small-8 columns small-centered">
+                    <div class="small-4 text-center columns about-us margin-extra-bottom">
+                        <a href="https://www.facebook.com/projectwisely"><i class="fa fa-5x fa-facebook-square"></i></a>
+                    </div>
+                    <div class="small-2 push-1 columns about-us margin-extra-bottom">
+                        <a href="http://www.linkedin.com/company/wisely-inc-?trk=company_name"><i
+                                class="fa fa-5x fa-linkedin-square"></i></a>
+                    </div>
+                    <div class="small-4 text-center columns about-us margin-extra-bottom">
+                        <a href="https://plus.google.com/118141899084917407239" rel="publisher"><i
+                                class="fa fa-5x fa-google-plus-square"></i></a>
+                    </div>
                 </div>
-                <div class="small-2 pull-4 text-center columns about-us margin-extra-bottom">
-                    <a href="http://www.linkedin.com/company/wisely-inc-?trk=company_name"><i
-                            class="fa fa-5x fa-linkedin-square"></i></a>
-                </div>
-            </div>
             </div>
         </footer>
+        <div style="color: #333333" id="google-id">
+            <a href="https://plus.google.com/118141899084917407239" rel="publisher">Google+</a>
+        </div>
     </section>
 
     <div id="login-up" class="light-box">
@@ -183,7 +191,7 @@
                 </a>
             </div>
             <div class="extra-top-small-margin">
-                <a class="btn-auth btn-google large" href="#">
+                <a class="btn-auth btn-google large" href="{% url 'socialauth_begin' 'google-oauth2' %}">
                     Sign Up with <b>Google</b>
                 </a>
             </div>

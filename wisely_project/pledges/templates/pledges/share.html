@@ -29,35 +29,20 @@
         </div>
         {% if not pledge.is_active %}
             <div class="innerLR row extra-top-margin">
-                <button class="btn btn-primary btn-lg" id="real-make" type="submit">Make It Real</button>
+                {% if user.userprofile.customer_id == "" %}
+                    <button class="btn btn-primary btn-lg" id="real-make" type="submit">Make It Real</button>
+                {% else %}
+                    <button class="btn btn-primary btn-lg" id="ask" type="submit">Make It Real</button>
+                {% endif %}
                 <form method="post" action="" id="pay-form">
                     {% csrf_token %}
+                    {% if user.userprofile.customer_id != "" %}
+                        <input type="hidden" name="existing" id="existing" value="use-existing">
+                    {% else %}
+                        <input type="hidden" name="existing" id="existing" value="use-new">
+                    {% endif %}
                 </form>
-                <script src="https://checkout.stripe.com/checkout.js"></script>
-                <script>
-                    var string = "#real-make";
-                    var string2 = "#pay-form";
-                    $(string).click(function () {
-                        var token = function (res) {
-                            var $input = $('<input type=hidden name=stripeToken />').val(res.id);
-                            $(string2).append($input).submit();
-                        };
-                        var money = parseInt("{{ pledge.money }}") * 100;
-                        if (!isNaN(money)) {
-                            StripeCheckout.open({
-                                key: 'pk_live_0RNa74C7R8WWln4sSxUhJPYT',
-                                address: false,
-                                amount: money,
-                                currency: 'cad',
-                                name: "Pledge",
-                                description: "For " + "{{ pledge.course }}",
-                                panelLabel: 'Pledge ',
-                                token: token
-                            });
-                        }
-                        return false;
-                    });
-                </script>
+
             </div>
         {% endif %}
         <div class="innerLR row extra-top-margin">
@@ -87,6 +72,42 @@
             </div>
         </div>
     </div>
+    <div class="lightbox" id="chose-existing">
+        <div class="row extra-top-margin">
+            <button class="btn btn-primary btn-lg">Use Existing Card</button>
+        </div>
+        <div class="row extra-top-margin">
+            <button class="btn btn-primary btn-lg" {% if user.userprofile.customer_id != "" %}id="real-make"{% endif %}>
+                New Card
+            </button>
+        </div>
+    </div>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+    <script>
+        var string = "#real-make";
+        var string2 = "#pay-form";
+        $(string).click(function () {
+            var token = function (res) {
+                var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                $('#existing').val('use-new');
+                $(string2).append($input).submit();
+            };
+            var money = parseInt("{{ pledge.money }}") * 100;
+            if (!isNaN(money)) {
+                StripeCheckout.open({
+                    key: 'pk_live_0RNa74C7R8WWln4sSxUhJPYT',
+                    address: false,
+                    amount: money,
+                    currency: 'cad',
+                    name: "Pledge",
+                    description: "For " + "{{ pledge.course }}",
+                    panelLabel: 'Pledge ',
+                    token: token
+                });
+            }
+            return false;
+        });
+    </script>
     <div id="fb-root"></div>
     <script>
         window.fbAsyncInit = function () {
@@ -152,7 +173,10 @@
     <script src="{% static 'js/jquery.number.js' %}"></script>
     <script>
         $(function () {
-            $('input.dollar').number(true, 2)
+            $('input.dollar').number(true, 2);
+            $('#ask').click(function () {
+                $('#chose-existing').lightbox_me({centered: true});
+            });
         });
     </script>
 {% endblock %}

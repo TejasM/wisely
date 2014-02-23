@@ -16,10 +16,12 @@
 
             <div class="right">
                 <a href="/faq">
-                    <i class="fa fa-question"></i><button class="login-button alt-learn">FAQ</button>
+                    <i class="fa fa-question"></i>
+                    <button class="login-button alt-learn">FAQ</button>
                 </a>
                 <a href="/learn-more">
-                    <i class="fa fa-star"></i><button class="login-button alt-learn">Learn More</button>
+                    <i class="fa fa-star"></i>
+                    <button class="login-button alt-learn">Learn More</button>
                 </a>
                 <a href="#" data-dropdown="drop"
                    class="login-button dropdown">Welcome {{ user.first_name }} {{ user.last_name }}! &nbsp; <i
@@ -49,16 +51,19 @@
 
             <div class="right">
                 <a href="/faq">
-                    <i class="fa fa-question"></i><button class="login-button alt-learn">FAQ</button>
+                    <i class="fa fa-question"></i>
+                    <button class="login-button alt-learn">FAQ</button>
                 </a>
                 <a href="/learn-more">
-                    <i class="fa fa-star"></i><button class="login-button alt-learn">Learn More</button>
+                    <i class="fa fa-star"></i>
+                    <button class="login-button alt-learn">Learn More</button>
                 </a>
                 <a href="#" data-dropdown="drop" class="login-button dropdown">Log In &nbsp; <i
                         class="fa fa-caret-down"></i></a><br>
                 <ul id="drop" data-dropdown-content class="f-dropdown">
                     <li><a href="{% url 'socialauth_begin' 'facebook' %}">Facebook</a></li>
                     <li><a href="{% url 'socialauth_begin' 'twitter' %}">Twitter</a></li>
+                    <li><a href="{% url 'socialauth_begin' 'google-oauth2' %}">Google</a></li>
                     <li><a id="login" href="#">Email</a></li>
                 </ul>
             </div>
