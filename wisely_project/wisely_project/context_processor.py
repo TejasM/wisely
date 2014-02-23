@@ -1,13 +1,19 @@
 from random import randint
 from django.db.models import Q
 from polls.models import Question
-from users.models import UserProfile
+from users.models import UserProfile, CourseraProfile
 
 __author__ = 'tmehta'
 
 
 def survey_questions(request):
     if request.user.is_authenticated():
+        try:
+            coursera_profile = CourseraProfile.objects.get(user=request.user)
+            if coursera_profile.username == "" or coursera_profile.incorrect_login:
+                return {}
+        except CourseraProfile.DoesNotExist:
+            return {}
         try:
             profile = UserProfile.objects.get(user=request.user)
         except UserProfile.DoesNotExist as _:
