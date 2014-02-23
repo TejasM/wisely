@@ -1,6 +1,7 @@
 from __future__ import division
 from datetime import date
 import json
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
@@ -41,7 +42,7 @@ class Course(BaseModel):
         if self.end_date is not None and self.start_date is not None:
             if self.end_date > timezone.now().date():
                 percentage = (timezone.now().date() - self.start_date).days / (
-                (self.end_date - self.start_date).days) * 100
+                    (self.end_date - self.start_date).days) * 100
             else:
                 percentage = 100
 
@@ -57,7 +58,7 @@ class Course(BaseModel):
 class CourseraProfile(BaseModel):
     user = models.OneToOneField(User)
     courses = models.ManyToManyField(Course)
-    username = models.CharField(max_length=100, default="")
+    username = models.CharField(max_length=100, default="", unique=True)
     password = models.CharField(max_length=100, default="")
     counted_as_completed = models.CommaSeparatedIntegerField(default='', blank=True, max_length=200)
     incorrect_login = models.BooleanField(default=False)

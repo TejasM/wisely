@@ -16,11 +16,18 @@
 {% endblock %}
 {% block content %}
     <!-- col -->
-    {% if form %}
+    {% if form or alreadyExist %}
         <div class="jumbotron margin-none center bg-white">
             <h1 class="separator bottom">To Get Started!</h1>
 
             <h2 class="heading">Add Your Coursera Account</h2>
+
+            {% if alreadyExist %}
+                <div class="row text-center">
+                    This Coursera account is already linked to a Wisely account. Please use a different Coursera
+                    account.
+                </div>
+            {% endif %}
 
             <div class="innerLR row">
                 <form class="form-horizontal col-sm-6 col-sm-offset-3" action="{% url 'users:index' %}" method="post">
@@ -200,8 +207,8 @@
                 Incorrect Coursera Login. Please confirm and try again.
             </div>
         </div>
-
     {% endif %}
+
     <div id="no-courses-lightbox" class="light-box">
         <div class="row text-center">
             You have no courses you can pledge for. Sign up for a course at <a href="https://coursera.org">Coursera</a>
@@ -229,6 +236,7 @@
             $('#update-coursera').click(function () {
                 $('#coursera-update').lightbox_me({centered: true});
             });
+
             {% for course in user.courseraprofile.courses.all %}
                 $('#calendar-{{ course.id }}').fullCalendar({
                     header: {
@@ -263,7 +271,7 @@
                     }, 3000);
                 }
             {% endif %}
-            {% if not form and user.courseraprofile.courses.all.count == 0 %}
+            {% if not form and user.courseraprofile.courses.all.count == 0 and not alreadyExist %}
                 $('#no-courses-lightbox').lightbox_me({centered: true, close_on_esc: false, close_on_background_click: false});
             {% endif %}
         });

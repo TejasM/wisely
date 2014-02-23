@@ -123,7 +123,12 @@ def index(request):
 
     if request.method == "POST":
         request.session['onboarding'] = coursera_profile.username == ""
-        request.user.courseraprofile.username = request.POST['username']
+
+        request.user.courseraprofile.username = request.POST['username'].strip()
+        already_exist = CourseraProfile.objects.filter(username=request.user.courseraprofile.username).count() > 0
+        if already_exist:
+            return render(request, 'users/index.html', {'alreadyExist': True})
+
         request.user.courseraprofile.password = request.POST['password']
         request.user.courseraprofile.save()
         request.user.last_login = timezone.now()
