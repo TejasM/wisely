@@ -433,6 +433,7 @@ span.dollar-detail {
     box-shadow: none;
     background-color: #87c844;
     color: #fff;
+    border: 1px solid #87c844;
 }
 
 .other-button:focus, .other-button:hover {
