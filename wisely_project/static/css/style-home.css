@@ -94,8 +94,19 @@ strong {
     background: #EBEFF2;
 }
 
-.middle-cover-white {
+.middle-cover-green {
     padding: 5% 4%;
+    background: #87C844;
+    color: #fff;
+}
+
+.middle-cover-green h2 {
+    font-size: 300%;
+    color: #fff;
+}
+
+.middle-cover-green p {
+    font-size: 20px;
 }
 
 .video-cover {
