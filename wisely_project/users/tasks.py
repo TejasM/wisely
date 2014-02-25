@@ -59,6 +59,25 @@ class CourseraScraper:
         except:
             return [], [], [], [], [], [], [], None
 
+    def get_upcoming_courses(self):
+        try:
+            soup = BeautifulSoup(self.driver.page_source)
+            users_courses = soup.select(
+                '#coursera-feed-tabs-future .coursera-dashboard-course-listing-box .coursera-dashboard-course-listing-box-name')
+            info_links = soup.select(
+                '#coursera-feed-tabs-future .coursera-dashboard-course-listing-box .coursera-dashboard-course-listing-box-links .internal-home')
+            course_ids = soup.select('#coursera-feed-tabs-current .coursera-dashboard-course-listing-box')
+            course_ids = map(lambda x: int(x.attrs['data-course-id']), course_ids)
+            image_links = soup.select(
+                '#coursera-feed-tabs-future .coursera-dashboard-course-listing-box .coursera-dashboard-course-listing-box-icon')
+            image_links = map(lambda x: x.attrs['src'], image_links)
+            return map(lambda x: x.contents[0].contents[0], users_courses), map(lambda x: x.contents[0].attrs['href'],
+                                                                                users_courses), map(
+                lambda x: x.attrs['href'],
+                info_links), course_ids, image_links
+        except:
+            return [], [], [], [], []
+
     def get_quiz_link(self, course, link):
         if course.info_link:
             self.driver.get('https://www.coursera.org/' + course.info_link)
@@ -164,7 +183,6 @@ class CourseraScraper:
 
         courseraprofile.save()
 
-
     def end(self):
         self.driver.close()
         self.display.stop()
@@ -194,31 +212,49 @@ def get_courses(user_id):
                 for i, course in enumerate(courses):
                     try:
                         get_course = Course.objects.get(title=course)
-                        django_courses.append(get_course)
-                        get_course.course_link = course_links[i]
-                        get_course.info_link = internal_links[i]
-                        get_course.course_id = course_ids[i]
-                        get_course.image_link = image_links[i]
-                        get_course.start_date = datetime.strptime(
-                            start_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', ''),
-                            "%b %d %Y").date()
-                        get_course.end_date = datetime.strptime(
-                            end_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', ''),
-                            "%b %d %Y").date()
-                        get_course.save()
-                        user.courseraprofile.courses.add(get_course)
+                        if get_course.start_date is None:
+                            get_course.course_link = course_links[i]
+                            get_course.info_link = internal_links[i]
+                            get_course.course_id = course_ids[i]
+                            get_course.image_link = image_links[i]
+                            get_course.start_date = datetime.strptime(
+                                start_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', ''),
+                                "%b %d %Y").date()
+                            get_course.end_date = datetime.strptime(
+                                end_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', ''),
+                                "%b %d %Y").date()
+                            get_course.save()
                     except Course.DoesNotExist:
-                        get_course = Course.objects.create(title=course, course_link=course_links[i], course_id=course_ids[i],
+                        get_course = Course.objects.create(title=course, course_link=course_links[i],
+                                                           course_id=course_ids[i],
                                                            info_link=internal_links[i], start_date=
                             datetime.strptime(
-                                str(start_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', '')),
+                                str(start_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd',
+                                                                                                                 '')),
                                 '%b %d %Y').date(),
                                                            end_date=datetime.strptime(str(
-                                                               end_dates[i].replace('th', '').replace('st', '').replace('nd',
-                                                                                                                        '').replace(
+                                                               end_dates[i].replace('th', '').replace('st', '').replace(
+                                                                   'nd',
+                                                                   '').replace(
                                                                    'rd', '')), '%b %d %Y').date(),
                                                            image_link=image_links[i])
-                        user.courseraprofile.courses.add(get_course)
+                    user.courseraprofile.courses.add(get_course)
+                    django_courses.append(get_course)
+            except IndexError:
+                pass
+            except Exception as e:
+                print e, "Inside"
+            f_courses, f_course_links, f_internal_links, f_course_ids, f_image_links = scraper.get_upcoming_courses()
+            print f_courses
+            try:
+                for i, course in enumerate(f_courses):
+                    try:
+                        get_course = Course.objects.get(title=course)
+                    except Course.DoesNotExist:
+                        get_course = Course.objects.create(title=course, course_link=f_course_links[i],
+                                                           course_id=f_course_ids[i],
+                                                           image_link=f_image_links[i])
+                    user.courseraprofile.courses.add(get_course)
             except IndexError:
                 pass
             except Exception as e:
