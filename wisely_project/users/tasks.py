@@ -233,8 +233,8 @@ def get_courses(user_id):
             scraper.get_course_completion(user.courseraprofile,
                                           Pledge.objects.filter(user=user.userprofile, is_complete=False))
 
-    except:
-        pass
+    except Exception as e:
+        print e
     finally:
         print "Done"
         scraper.end()

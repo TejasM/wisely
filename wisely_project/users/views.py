@@ -112,7 +112,7 @@ def index(request):
                 response = request2('GET', url, params={'type': 'large'})
                 response.raise_for_status()
                 user_profile.picture.save('{0}_social.jpg'.format(request.user.username),
-                                      ContentFile(response.content))
+                                          ContentFile(response.content))
                 user_profile.save()
             except HTTPError:
                 pass
@@ -159,9 +159,17 @@ def check_updated(request):
 
 @login_required
 def force_updated(request):
-    user = request.user
-    user.last_login = timezone.now()
-    user.save()
+    userprofile = request.user.userprofile
+    if userprofile.last_forced is None or (
+            userprofile.last_forced is not None and userprofile.last_forced.date() != timezone.now().date()):
+        userprofile.last_forced = timezone.now()
+        userprofile.save()
+        user = request.user
+        user.last_login = timezone.now()
+        user.save()
+    else:
+        return HttpResponse(json.dumps({'fail': True}),
+                            content_type='application/json')
     return HttpResponse(json.dumps({}),
                         content_type='application/json')
 

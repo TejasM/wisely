@@ -51,96 +51,99 @@
 <!-- Main Container Fluid -->
 <div class="container-fluid menu-hidden" id="menu-main">
 
-    <!-- Main Sidebar Menu -->
+<!-- Main Sidebar Menu -->
 
-    <div id="menu" class="hidden-print hidden-xs sidebar-blue sidebar-brand-primary">
+<div id="menu" class="hidden-print hidden-xs sidebar-blue sidebar-brand-primary">
 
 
-        <div id="sidebar-fusion-wrapper">
-            <div id="brandWrapper">
-                <a href="/">
-                    <img alt="Wisely" src="{% static 'images/logo-new.svg' %}" height="60" width="190"
-                         style="border: none"/>
-                </a>
-            </div>
-            {% if user.is_authenticated %}
-                <ul class="menu list-unstyled" id="navigation_current_page">
-                    {% block nav-bar %}
-                        <li class=""><a href="{% url 'users:index' %}"><i
-                                class="fa fa-book"></i><span>Dashboard</span></a>
-                        </li>
-                        <li class="active"><a href="{% url 'pledges:index' %}"><i
-                                class="fa fa-book"></i><span>Pledges</span></a>
-                        </li>
-                        <li class=""><a href="/more"><i
-                                class="fa fa-book"></i><span>More Coming Soon!</span></a>
-                        </li>
-                    {% endblock %}
-                    {% if question %}
-                        <div class="widget extra-top-margin widget-body-inverse">
-                            <!-- Widget heading -->
-                            <div class="widget-head">
-                                <h4 class="heading">Tell us what you think!</h4>
-                            </div>
-                            <!-- // Widget heading END -->
-
-                            <div class="widget-body innerAll inner-2x">
-                                <h5>{{ question }}</h5>
-
-                                <form action="{% url 'polls:anspoll' question.id %}" method="post">
-                                    {% csrf_token %}
-                                    {% for choice in question.choice_set.all %}
-                                        {% if choice.custom != True %}
-                                            {% if question.allow_multiple %}
-                                                <div class="checkbox">
-                                                    <label class="checkbox-custom">
-                                                        <input type="checkbox" name="choice" value="{{ choice.id }}">
-                                                        <i class="fa fa-fw fa-square-o"></i><span>{{ choice }}</span>
-                                                    </label>
-                                                </div>
-                                            {% else %}
-                                                <div class="radio">
-                                                    <label class="radio-custom">
-                                                        <input type="radio" name="choice" value="{{ choice.id }}">
-                                                        <i class="fa fa-circle-o"></i> <span>{{ choice }}</span>
-                                                    </label>
-                                                </div>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endfor %}
-                                    {% if question.allow_custom %}
-                                        <textarea class="notebook border-none form-control" name="custom"
-                                                  {% if question.only_custom %}placeholder="Other"{% endif %}></textarea>
-                                        <button type="submit" class="btn extra-top-margin btn-large btn-primary">
-                                            Submit
-                                        </button>
-                                    {% else %}
-                                        <button type="submit" class="btn btn-large btn-primary">Submit</button>
-                                    {% endif %}
-                                </form>
-                            </div>
-                        </div>
-                    {% endif %}
-                </ul>
-            {% endif %}
-
+    <div id="sidebar-fusion-wrapper">
+        <div id="brandWrapper">
+            <a href="/">
+                <img alt="Wisely" src="{% static 'images/logo-new.svg' %}" height="60" width="190"
+                     style="border: none"/>
+            </a>
         </div>
+        {% if user.is_authenticated %}
+            <ul class="menu list-unstyled" id="navigation_current_page">
+                {% block nav-bar %}
+                    <li class=""><a href="{% url 'users:index' %}"><i
+                            class="fa fa-book"></i><span>Dashboard</span></a>
+                    </li>
+                    <li class="active"><a href="{% url 'pledges:index' %}"><i
+                            class="fa fa-book"></i><span>Pledges</span></a>
+                    </li>
+                    <li class=""><a href="/more"><i
+                            class="fa fa-book"></i><span>More Coming Soon!</span></a>
+                    </li>
+                {% endblock %}
+                <div class="row extra-top-margin text-center">
+                    <button id="refresh-from-main" class="btn btn-primary">Refresh from Coursera</button>
+                </div>
+                {% if question %}
+                    <div class="widget extra-top-margin widget-body-inverse">
+                        <!-- Widget heading -->
+                        <div class="widget-head">
+                            <h4 class="heading">Tell us what you think!</h4>
+                        </div>
+                        <!-- // Widget heading END -->
 
+                        <div class="widget-body innerAll inner-2x">
+                            <h5>{{ question }}</h5>
+
+                            <form action="{% url 'polls:anspoll' question.id %}" method="post">
+                                {% csrf_token %}
+                                {% for choice in question.choice_set.all %}
+                                    {% if choice.custom != True %}
+                                        {% if question.allow_multiple %}
+                                            <div class="checkbox">
+                                                <label class="checkbox-custom">
+                                                    <input type="checkbox" name="choice" value="{{ choice.id }}">
+                                                    <i class="fa fa-fw fa-square-o"></i><span>{{ choice }}</span>
+                                                </label>
+                                            </div>
+                                        {% else %}
+                                            <div class="radio">
+                                                <label class="radio-custom">
+                                                    <input type="radio" name="choice" value="{{ choice.id }}">
+                                                    <i class="fa fa-circle-o"></i> <span>{{ choice }}</span>
+                                                </label>
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if question.allow_custom %}
+                                    <textarea class="notebook border-none form-control" name="custom"
+                                              {% if question.only_custom %}placeholder="Other"{% endif %}></textarea>
+                                    <button type="submit" class="btn extra-top-margin btn-large btn-primary">
+                                        Submit
+                                    </button>
+                                {% else %}
+                                    <button type="submit" class="btn btn-large btn-primary">Submit</button>
+                                {% endif %}
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+            </ul>
+        {% endif %}
 
     </div>
 
-    <!-- // Main Sidebar Menu END -->
 
-    <!-- Content -->
-    <div id="content">
+</div>
+
+<!-- // Main Sidebar Menu END -->
+
+<!-- Content -->
+<div id="content">
 
 
-        <div class="navbar hidden-print navbar-primary main" role="navigation">
-            <div class="user-action user-action-btn-navbar pull-left border-right">
-                <button class="btn btn-sm btn-navbar btn-primary btn-stroke"><i class="fa fa-bars fa-2x"></i></button>
-            </div>
-            <div class="col-md-6 padding-none visible-md visible-lg">
-                <div class="input-group innerLR">
+    <div class="navbar hidden-print navbar-primary main" role="navigation">
+        <div class="user-action user-action-btn-navbar pull-left border-right">
+            <button class="btn btn-sm btn-navbar btn-primary btn-stroke"><i class="fa fa-bars fa-2x"></i></button>
+        </div>
+        <div class="col-md-6 padding-none visible-md visible-lg">
+            <div class="input-group innerLR">
       		<span class="input-group-btn">
         		<a href="/">
                     <button class="btn btn-primary" type="button"><i class="fa fa-home"></i>&nbsp; Home</button>
@@ -157,13 +160,13 @@
                     <button class="btn btn-primary" type="button"><i class="fa fa-share"></i>&nbsp; Contact</button>
                 </a>
       		</span>
-                </div>
-                <!-- /input-group -->
             </div>
-            {% if user.is_authenticated %}
-                <div class="user-action pull-right menu-right-hidden-xs menu-left-hidden-xs">
-                    <div class="dropdown username hidden-xs pull-left">
-                        <a class="dropdown-toggle " data-toggle="dropdown" href="#">
+            <!-- /input-group -->
+        </div>
+        {% if user.is_authenticated %}
+            <div class="user-action pull-right menu-right-hidden-xs menu-left-hidden-xs">
+                <div class="dropdown username hidden-xs pull-left">
+                    <a class="dropdown-toggle " data-toggle="dropdown" href="#">
 				<span class="media margin-none">
 					<span class="pull-left"><img
                             {% if user.userprofile == None or not user.userprofile.picture %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% else %}
@@ -175,49 +178,48 @@
                             class="caret"></span>
 					</span>
 				</span>
-                        </a>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a href="{% url 'users:index' %}" class="glyphicons keys"><i></i> Dashboard</a></li>
-                            <li><a href="{% url 'users:profile' %}" class="glyphicons user"><i></i> Profile</a></li>
-                            {#                            <li><a href="#" class="glyphicons envelope"><i></i>Messages</a></li>#}
-                            <li><a href="{% url 'users:logout' %}">Logout</a></li>
-                        </ul>
-                    </div>
+                    </a>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a href="{% url 'users:index' %}" class="glyphicons keys"><i></i> Dashboard</a></li>
+                        <li><a href="{% url 'users:profile' %}" class="glyphicons user"><i></i> Profile</a></li>
+                        {#                            <li><a href="#" class="glyphicons envelope"><i></i>Messages</a></li>#}
+                        <li><a href="{% url 'users:logout' %}">Logout</a></li>
+                    </ul>
                 </div>
-            {% endif %}
-            <div class="clearfix"></div>
-        </div>
-        <!-- // END navbar -->
+            </div>
+        {% endif %}
+        <div class="clearfix"></div>
+    </div>
+    <!-- // END navbar -->
 
-        <div class="layout-app">
+    <div class="layout-app">
 
-            <!-- row-app -->
-            <div class="row row-app">
+        <!-- row-app -->
+        <div class="row row-app">
 
 
-                <!-- col -->
-                <div class="col-md-12">
+            <!-- col -->
+            <div class="col-md-12">
 
-                    <!-- col-separator.box -->
-                    <div class="col-separator col-unscrollable box col-separator-first">
+                <!-- col-separator.box -->
+                <div class="col-separator col-unscrollable box col-separator-first">
 
-                        <!-- col-table -->
-                        <div class="col-table">
-                            <div class="col-table-row">
+                    <!-- col-table -->
+                    <div class="col-table">
+                        <div class="col-table-row">
+
+                            <!-- col-app -->
+                            <div class="col-app col-unscrollable">
 
                                 <!-- col-app -->
-                                <div class="col-app col-unscrollable">
+                                <div class="col-app iscrollWrapper">
 
-                                    <!-- col-app -->
-                                    <div class="col-app iscrollWrapper">
+                                    <div class="innerAll inner-2x jscroll">
+                                        <div class="row">
+                                            {% block content %}
 
-                                        <div class="innerAll inner-2x jscroll">
-                                            <div class="row">
-                                                {% block content %}
-
-                                                    <!-- // END col -->
-                                                {% endblock %}
-                                            </div>
+                                                <!-- // END col -->
+                                            {% endblock %}
                                         </div>
                                     </div>
                                 </div>
@@ -228,27 +230,30 @@
             </div>
         </div>
     </div>
-    <!-- // Content END -->
+</div>
+<!-- // Content END -->
 
-    <div class="clearfix"></div>
-    <!-- // Sidebar menu & content wrapper END -->
+<div class="clearfix"></div>
+<!-- // Sidebar menu & content wrapper END -->
 
-    <!-- Footer -->
-    <div id="footer" class="hidden-print">
+<!-- Footer -->
+<div id="footer" class="hidden-print">
 
-        <!--  Copyright Line -->
-        <div class="copy">&copy; 2014 - <a href="http://www.projectwisely.com">Project Wisely</a> - All
-            Rights
-            Reserved.
-        </div>
-        <!--  End Copyright Line -->
-
+    <!--  Copyright Line -->
+    <div class="copy">&copy; 2014 - <a href="http://www.projectwisely.com">Project Wisely</a> - All
+        Rights
+        Reserved.
     </div>
-    <!-- // Footer END -->
+    <!--  End Copyright Line -->
+
+</div>
+<!-- // Footer END -->
 
 
 </div>
 <div id="messages" class="light-box">
+    <i class="fa fa-times-circle-o close" style="margin-top: -25px; margin-right: -30px; float: right"></i>
+
     <div class="row text-center">
         {% for message in messages %}
             {{ message }}
@@ -335,6 +340,21 @@
             $('.container-fluid').removeClass('menu-hidden');
             enableNavbarMenusHover();
             disableResponsiveNavbarSubmenus();
+        });
+        $('#refresh-from-main').click(function () {
+            $.get("{% url 'users:force_update' %}", function (res) {
+                var $messages = $('#messages');
+                if (res['fail']) {
+                    $messages.find('.row').text('Can only force update once per day');
+                    $messages.lightbox_me({centered: true});
+                } else {
+                    $messages.find('.row').text('Getting updates now, give us a few seconds');
+                    $messages.lightbox_me({centered: true});
+                    setTimeout(function () {
+                        location.reload();
+                    }, 10000);
+                }
+            });
         });
     {% else %}
         $(window).bind('enterBreakpoint768', function () {
