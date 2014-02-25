@@ -172,63 +172,69 @@ class CourseraScraper:
 
 def get_courses(user_id):
     scraper = CourseraScraper()
-    user = User.objects.get(pk=user_id)
-    print user
-    if str(user.courseraprofile.username) != '':
-        scraper.driver.implicitly_wait(5)
-        scraper.login(str(user.courseraprofile.username), str(user.courseraprofile.password))
-        time.sleep(3)
-        courses, course_links, internal_links, start_dates, end_dates, course_ids, image_links, error = scraper.get_courses()
-        if error is not None:
-            user.courseraprofile.incorrect_login = True
+    try:
+        user = User.objects.get(pk=user_id)
+        print user
+        if str(user.courseraprofile.username) != '':
+            scraper.driver.implicitly_wait(5)
+            scraper.login(str(user.courseraprofile.username), str(user.courseraprofile.password))
+            time.sleep(3)
+            courses, course_links, internal_links, start_dates, end_dates, course_ids, image_links, error = scraper.get_courses()
+            if error is not None:
+                user.courseraprofile.incorrect_login = True
+                user.courseraprofile.last_updated = timezone.now()
+                user.courseraprofile.save()
+                scraper.end()
+                return
+            else:
+                user.courseraprofile.incorrect_login = False
+            print courses, image_links
+            django_courses = []
+            try:
+                for i, course in enumerate(courses):
+                    try:
+                        get_course = Course.objects.get(title=course)
+                        django_courses.append(get_course)
+                        get_course.course_link = course_links[i]
+                        get_course.info_link = internal_links[i]
+                        get_course.course_id = course_ids[i]
+                        get_course.image_link = image_links[i]
+                        get_course.start_date = datetime.strptime(
+                            start_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', ''),
+                            "%b %d %Y").date()
+                        get_course.end_date = datetime.strptime(
+                            end_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', ''),
+                            "%b %d %Y").date()
+                        get_course.save()
+                        user.courseraprofile.courses.add(get_course)
+                    except Course.DoesNotExist:
+                        get_course = Course.objects.create(title=course, course_link=course_links[i], course_id=course_ids[i],
+                                                           info_link=internal_links[i], start_date=
+                            datetime.strptime(
+                                str(start_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', '')),
+                                '%b %d %Y').date(),
+                                                           end_date=datetime.strptime(str(
+                                                               end_dates[i].replace('th', '').replace('st', '').replace('nd',
+                                                                                                                        '').replace(
+                                                                   'rd', '')), '%b %d %Y').date(),
+                                                           image_link=image_links[i])
+                        user.courseraprofile.courses.add(get_course)
+            except IndexError:
+                pass
+            except Exception as e:
+                print e, "Inside"
             user.courseraprofile.last_updated = timezone.now()
             user.courseraprofile.save()
-            return
-        else:
-            user.courseraprofile.incorrect_login = False
-        print courses, image_links
-        django_courses = []
-        try:
-            for i, course in enumerate(courses):
-                try:
-                    get_course = Course.objects.get(title=course)
-                    django_courses.append(get_course)
-                    get_course.course_link = course_links[i]
-                    get_course.info_link = internal_links[i]
-                    get_course.course_id = course_ids[i]
-                    get_course.image_link = image_links[i]
-                    get_course.start_date = datetime.strptime(
-                        start_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', ''),
-                        "%b %d %Y").date()
-                    get_course.end_date = datetime.strptime(
-                        end_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', ''),
-                        "%b %d %Y").date()
-                    get_course.save()
-                    user.courseraprofile.courses.add(get_course)
-                except Course.DoesNotExist:
-                    get_course = Course.objects.create(title=course, course_link=course_links[i], course_id=course_ids[i],
-                                                       info_link=internal_links[i], start_date=
-                        datetime.strptime(
-                            str(start_dates[i].replace('th', '').replace('st', '').replace('nd', '').replace('rd', '')),
-                            '%b %d %Y').date(),
-                                                       end_date=datetime.strptime(str(
-                                                           end_dates[i].replace('th', '').replace('st', '').replace('nd',
-                                                                                                                    '').replace(
-                                                               'rd', '')), '%b %d %Y').date(),
-                                                       image_link=image_links[i])
-                    user.courseraprofile.courses.add(get_course)
-        except IndexError:
-            pass
-        except Exception as e:
-            print e, "Inside"
-        user.courseraprofile.last_updated = timezone.now()
-        user.courseraprofile.save()
-        for i, course in enumerate(django_courses):
-            get_course = course
-            if get_course.end_date >= timezone.now().date():
-                scraper.get_quiz_link(get_course, course_links[i])
-                scraper.get_course_progress(user, get_course)
-        scraper.get_course_completion(user.courseraprofile,
-                                      Pledge.objects.filter(user=user.userprofile, is_complete=False))
+            for i, course in enumerate(django_courses):
+                get_course = course
+                if get_course.end_date >= timezone.now().date():
+                    scraper.get_quiz_link(get_course, course_links[i])
+                    scraper.get_course_progress(user, get_course)
+            scraper.get_course_completion(user.courseraprofile,
+                                          Pledge.objects.filter(user=user.userprofile, is_complete=False))
+
+    except:
+        pass
+    finally:
         print "Done"
-    scraper.end()
+        scraper.end()
