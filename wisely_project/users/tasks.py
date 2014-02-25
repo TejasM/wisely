@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 from django.contrib.auth.models import User
 import dateutil.parser
 from django.utils import timezone
+import stripe
 from pledges.models import Pledge
 
 from users.models import Course, Quiz, Progress
@@ -156,6 +157,10 @@ class CourseraScraper:
                         pledge.actual_mark = float(mark[0]) / 100
                         pledge.is_complete = True
                         pledge.complete_date = timezone.now()
+                        if pledge.is_active and pledge.charge != "":
+                            if pledge.actual_mark > pledge.aim:
+                                charge = stripe.Charge.retrive(pledge.charge)
+                                charge.refund()
                         pledge.save()
                 if str(courseraprofile.counted_as_completed) != '':
                     courseraprofile.counted_as_completed += ',' + str(course_ids[i])
@@ -163,7 +168,6 @@ class CourseraScraper:
                     courseraprofile.counted_as_completed += str(course_ids[i])
 
         courseraprofile.save()
-
 
     def end(self):
         self.driver.close()
