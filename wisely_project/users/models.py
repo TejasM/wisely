@@ -39,7 +39,7 @@ class Course(BaseModel):
         return self.title
 
     def get_amount_progress(self):
-        percentage = 50
+        percentage = 0
         if self.end_date is not None and self.start_date is not None:
             if self.end_date > timezone.now().date():
                 percentage = (timezone.now().date() - self.start_date).days / (
@@ -51,8 +51,9 @@ class Course(BaseModel):
 
     @property
     def is_done(self):
-        if date.today() > self.end_date:
-            return True
+        if self.end_date is not None:
+            if date.today() > self.end_date:
+                return True
         return False
 
 
