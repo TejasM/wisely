@@ -191,6 +191,9 @@ def create(request):
         courses_available = request.user.courseraprofile.courses.all()
     to_keep = []
     for course_available in courses_available:
+        if course_available.start_date is None:
+            to_keep.append(course_available)
+            continue
         total_time = course_available.end_date - course_available.start_date
         if course_available.start_date + divide_timedelta(total_time, 2) > timezone.now().date():
             to_keep.append(course_available.id)
