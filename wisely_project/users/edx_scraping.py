@@ -59,25 +59,41 @@ def scrape_for_user(edxprofile):
                 course.course_link = course_links[i]
                 course.quiz_link = progress_links[i]
             if course.start_date is None and 'Course Started' in dates[i]:
-                course.start_date = datetime.strptime(dates[i].replace('Course Started - ', ''),
-                                                      '%b %d, %Y').date()
+                try:
+                    course.start_date = datetime.strptime(dates[i].replace('Course Started - ', ''),
+                                                          '%b %d, %Y').date()
+                except:
+                    pass
             if course.end_date is None and 'Course Completed' in dates[i]:
-                course.end_date = datetime.strptime(dates[i].replace('Course Started - ', ''),
-                                                    '%b %d, %Y').date()
+                try:
+                    course.end_date = datetime.strptime(dates[i].replace('Course Started - ', ''),
+                                                        '%b %d, %Y').date()
+                except:
+                    pass
             course.save()
         except Course.DoesNotExist:
             if 'Course Completed' in dates[i]:
+                date_real = None
+                try:
+                    date_real = datetime.strptime(dates[i].replace('Course Completed - ', ''),
+                                                  '%b %d, %Y').date()
+                except:
+                    pass
                 course = Course.objects.create(course_id=course_ids[i], title=current_course,
-                                      course_link=course_links[i], quiz_link=progress_links[i],
-                                      image_link=image_links[i],
-                                      end_date=datetime.strptime(dates[i].replace('Course Completed - ', ''),
-                                                                 '%b %d, %Y').date())
+                                               course_link=course_links[i], quiz_link=progress_links[i],
+                                               image_link=image_links[i],
+                                               end_date=date_real)
             elif 'Course Started' in dates[i]:
+                date_real = None
+                try:
+                    date_real = datetime.strptime(dates[i].replace('Course Started - ', ''),
+                                                  '%b %d, %Y').date()
+                except:
+                    pass
                 course = Course.objects.create(course_id=course_ids[i], title=current_course,
-                                      course_link=course_links[i], quiz_link=progress_links[i],
-                                      image_link=image_links[i],
-                                      start_date=datetime.strptime(dates[i].replace('Course Started - ', ''),
-                                                                   '%b %d, %Y').date())
+                                               course_link=course_links[i], quiz_link=progress_links[i],
+                                               image_link=image_links[i],
+                                               start_date=date_real)
         if course is not None:
             edxprofile.courses.add(course)
 
@@ -86,10 +102,15 @@ def scrape_for_user(edxprofile):
         try:
             Course.objects.get(course_id=course_ids[i])
         except Course.DoesNotExist:
+            date_real = None
+            try:
+                date_real = datetime.strptime(dates[i].replace('Course Starts - ', ''),
+                                                               '%b %d, %Y').date()
+            except:
+                pass
             Course.objects.create(course_id=course_ids[i], title=current_course,
                                   image_link=image_links[i],
-                                  start_date=datetime.strptime(dates[i].replace('Course Starts - ', ''),
-                                                               '%b %d, %Y').date())
+                                  start_date=date_real)
 
     edxprofile.last_updated = timezone.now()
     edxprofile.save()
