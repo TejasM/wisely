@@ -46,7 +46,8 @@ class Course(BaseModel):
                     (self.end_date - self.start_date).days) * 100
             else:
                 percentage = 100
-
+        elif self.start_date is None and self.end_date is not None:
+            percentage = 100
         return percentage
 
     @property
