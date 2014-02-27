@@ -13,7 +13,7 @@ from django.utils import timezone
 from requests import request as request2, HTTPError
 from django.template import RequestContext
 
-from models import CourseraProfile, Progress, UserProfile
+from models import CourseraProfile, Progress, UserProfile, EdxProfile
 from pledges.models import Pledge
 from forms import UserProfileForm, UserForm
 from users.utils import send_welcome_email
@@ -120,34 +120,68 @@ def index(request):
         coursera_profile = CourseraProfile.objects.get(user=request.user)
     except CourseraProfile.DoesNotExist:
         coursera_profile = CourseraProfile.objects.create(user=request.user)
+    try:
+        edx_profile = EdxProfile.objects.get(user=request.user)
+    except EdxProfile.DoesNotExist:
+        edx_profile = EdxProfile.objects.create(user=request.user)
 
     if request.method == "POST":
-        request.session['onboarding'] = coursera_profile.username == ""
+        request.session['onboarding'] = coursera_profile.username == "" and edx_profile.email == ""
+        if request.POST['platform'] == "coursera":
+            request.user.courseraprofile.username = request.POST['username'].strip()
+            already_exist = CourseraProfile.objects.filter(username=request.user.courseraprofile.username).count() > 0
+            if already_exist:
+                if not request.session['onboarding']:
+                    messages.success(request, 'Someone else is already using that Coursera account')
+                    return redirect(reverse('users:index'))
+                return render(request, 'users/index.html', {'alreadyExistCoursera': True})
 
-        request.user.courseraprofile.username = request.POST['username'].strip()
-        already_exist = CourseraProfile.objects.filter(username=request.user.courseraprofile.username).count() > 0
-        if already_exist:
-            return render(request, 'users/index.html', {'alreadyExist': True})
+            request.user.courseraprofile.password = request.POST['password']
+            request.user.courseraprofile.save()
+            request.user.last_login = timezone.now()
+            request.user.save()
+            if not request.session['onboarding']:
+                messages.success(request, 'Added your Coursera account refresh in a few minutes to see your courses')
+                return redirect(reverse('users:index'))
+            else:
+                return redirect(reverse('pledges:create'))
+        elif request.POST['platform'] == "edx":
+            request.user.edxprofile.email = request.POST['username'].strip()
+            already_exist = EdxProfile.objects.filter(email=request.user.edxprofile.email).count() > 0
+            if already_exist:
+                if not request.session['onboarding']:
+                    messages.success(request, 'Someone else is already using that Edx account')
+                    return redirect(reverse('users:index'))
+                return render(request, 'users/index.html', {'alreadyExistEdx': True})
 
-        request.user.courseraprofile.password = request.POST['password']
-        request.user.courseraprofile.save()
-        request.user.last_login = timezone.now()
-        request.user.save()
-        if not request.session['onboarding']:
-            return render(request, 'users/index.html', {'wait': True})
+            request.user.edxprofile.password = request.POST['password']
+            request.user.edxprofile.save()
+            request.user.last_login = timezone.now()
+            request.user.save()
+            if not request.session['onboarding']:
+                messages.success(request, 'Added your Edx account refresh in a few minutes to see your courses')
+                return redirect(reverse('users:index'))
+            else:
+                return redirect(reverse('pledges:create'))
         else:
-            return redirect(reverse('pledges:create'))
+            messages.error(request, "Something really went wrong, please try again or contact us")
+            return redirect(reverse('user:index'))
 
-    if coursera_profile.username == "" or coursera_profile.incorrect_login:
+    if (coursera_profile.username == "" or coursera_profile.incorrect_login) and (
+                    edx_profile.email == "" or edx_profile.incorrect_login):
         return render(request, 'users/index.html', {'form': True})
     else:
         pledges = Pledge.objects.filter(user=request.user.userprofile)
         progresses = Progress.objects.filter(user=request.user.userprofile)
-        other_pledgers_list = []
+        other_pledgers_coursera = []
+        other_pledgers_edx = []
         for course in coursera_profile.courses.all():
-            other_pledgers_list.append(Pledge.objects.filter(course=course).order_by('?')[:5])
+            other_pledgers_coursera.append(Pledge.objects.filter(course=course).order_by('?')[:5])
+        for course in edx_profile.courses.all():
+            other_pledgers_edx.append(Pledge.objects.filter(course=course).order_by('?')[:5])
         return render(request, 'users/index.html', {'pledges': pledges, 'progresses': progresses, 'form': False,
-                                                    'others': other_pledgers_list})
+                                                    'others_coursera': other_pledgers_coursera,
+                                                    'others_edx': other_pledgers_edx})
 
 
 @login_required
@@ -161,7 +195,7 @@ def check_updated(request):
 def force_updated(request):
     userprofile = request.user.userprofile
     if userprofile.last_forced is None or (
-            userprofile.last_forced is not None and userprofile.last_forced.date() != timezone.now().date()):
+                    userprofile.last_forced is not None and userprofile.last_forced.date() != timezone.now().date()):
         userprofile.last_forced = timezone.now()
         userprofile.save()
         user = request.user

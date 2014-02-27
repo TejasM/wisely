@@ -25,7 +25,7 @@ class BaseModel(models.Model):
 
 class Course(BaseModel):
     title = models.CharField(max_length=400)
-    course_id = models.IntegerField(default=None, null=True, blank=True)
+    course_id = models.CharField(default=None, null=True, blank=True, max_length=100)
     course_link = models.CharField(max_length=1000, default="")
     quiz_link = models.CharField(max_length=1000, default="")
     calender_link = models.CharField(max_length=1000, default="")
@@ -61,6 +61,15 @@ class CourseraProfile(BaseModel):
     user = models.OneToOneField(User)
     courses = models.ManyToManyField(Course)
     username = models.CharField(max_length=100, default="")
+    password = models.CharField(max_length=100, default="")
+    counted_as_completed = models.CommaSeparatedIntegerField(default='', blank=True, max_length=200)
+    incorrect_login = models.BooleanField(default=False)
+
+
+class EdxProfile(BaseModel):
+    user = models.OneToOneField(User)
+    courses = models.ManyToManyField(Course)
+    email = models.CharField(max_length=100, default="")
     password = models.CharField(max_length=100, default="")
     counted_as_completed = models.CommaSeparatedIntegerField(default='', blank=True, max_length=200)
     incorrect_login = models.BooleanField(default=False)

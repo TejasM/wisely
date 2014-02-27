@@ -20,36 +20,106 @@
         <div class="jumbotron margin-none center bg-white">
             <h1 class="separator bottom">To Get Started!</h1>
 
-            <h2 class="heading">Add Your Coursera Account</h2>
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <div class="tabsbar">
+                        <ul>
+                            <li class="{% if not alreadyExistEdx %}active{% endif %}"><a href="#tab1-3"
+                                                                                         data-toggle="tab"><i></i> Add
+                                Coursera
+                                Account</a></li>
+                            <li class="{% if alreadyExistEdx %}active{% endif %}"><a href="#tab2-3"
+                                                                                     data-toggle="tab"><i></i> Add edX
+                                Account</a></li>
+                            <li><a href="#tab3-3" data-toggle="tab"><i></i> More Coming Soon </a></li>
+                        </ul>
+                    </div>
+                    <div class="tab-content">
 
-            {% if alreadyExist %}
-                <div class="row text-center">
-                    This Coursera account is already linked to a Wisely account. Please use a different Coursera
-                    account.
+                        <!-- Tab content -->
+                        <div class="tab-pane active" id="tab1-3">
+                            {% if alreadyExistCoursera %}
+                                <div class="row text-center">
+                                    This Coursera account is already linked to a Wisely account. Please use a different
+                                    Coursera
+                                    account.
+                                </div>
+                            {% endif %}
+
+                            <div class="innerLR row">
+                                <form class="form-horizontal col-sm-12" action="{% url 'users:index' %}"
+                                      method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="coursera" name="platform"/>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <input type="text" name="username" class="form-control"
+                                                   placeholder="Coursera Username">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+
+                                        <div class="col-sm-12">
+                                            <input type="password" name="password" class="form-control"
+                                                   placeholder="Coursera Password">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <button type="submit" class="btn btn-primary btn-lg">Add Account</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                        <!-- // Tab content END -->
+
+                        <!-- Tab content -->
+                        <div class="tab-pane" id="tab2-3">
+                            <div class="innerLR row">
+                                {% if alreadyExistEdx %}
+                                    <div class="row text-center">
+                                        This edX account is already linked to a Wisely account. Please use a
+                                        different
+                                        edX
+                                        account.
+                                    </div>
+                                {% endif %}
+                                <form class="form-horizontal col-sm-12" action="{% url 'users:index' %}"
+                                      method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="edx" name="platform"/>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <input type="text" name="username" class="form-control"
+                                                   placeholder="edX Email">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+
+                                        <div class="col-sm-12">
+                                            <input type="password" name="password" class="form-control"
+                                                   placeholder="edX Password">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <button type="submit" class="btn btn-primary btn-lg">Add Account</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                        <!-- // Tab content END -->
+                        <div class="tab-pane" id="tab3-3">
+                            Stay Tuned We Are Working On Adding More Online Course Platforms
+                        </div>
+                    </div>
                 </div>
-            {% endif %}
-
-            <div class="innerLR row">
-                <form class="form-horizontal col-sm-6 col-sm-offset-3" action="{% url 'users:index' %}" method="post">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <input type="text" name="username" class="form-control" placeholder="Coursera Username">
-                        </div>
-                    </div>
-                    <div class="form-group">
-
-                        <div class="col-sm-12">
-                            <input type="password" name="password" class="form-control" placeholder="Coursera Password">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <button type="submit" class="btn btn-primary btn-lg">Add Account</button>
-                        </div>
-                    </div>
-                </form>
-
             </div>
         </div>
     {% else %}
@@ -66,6 +136,65 @@
             <div class="innerAll bg-white">
                 <div class="row">
                     {% for course in user.courseraprofile.courses.all %}
+                        <div class="col-lg-6" id="course-{{ course.id }}-div">
+                            <div class="box-generic bg-primary-light text-center main-selections">
+                                <div class="innerTB">
+                                    <div class="innerAll"><img src="{{ course.image_link }}"/>
+                                    </div>
+                                    <h5 class="strong">{{ course.title }}</h5>
+
+                                    <p>{{ course.description }}</p>
+
+                                    <div class="innerAll">
+                                        <div class="progress bg-white progress-mini">
+                                            <div class="progress-bar progress-bar-primary"
+                                                 style="width: {{ course.get_amount_progress }}%"></div>
+                                        </div>
+                                    </div>
+                                    {% for pledge in pledges %}
+                                        {% if pledge.course == course %}
+                                            {% if pledge.is_complete %}
+                                                <a href="{% url 'pledges:congrats' pledge.id %}">
+                                                    <button class="btn btn-sm btn-primary">Collect Your Rewards <i
+                                                            class="fa fa-fw fa-arrow-right"></i></button>
+                                                </a>
+                                            {% else %}
+                                                <a href="{% url 'pledges:share' pledge.id %}">
+                                                    <button class="btn btn-sm btn-primary">View Pledge <i
+                                                            class="fa fa-fw fa-arrow-right"></i></button>
+                                                </a>
+                                            {% endif %}
+                                            {{ forloop|break }}
+                                        {% elif forloop.counter == pledges.count %}
+                                            {% if course.get_amount_progress <= 50 %}
+                                                <a href="{% url 'pledges:create' %}">
+                                                    <button class="btn btn-sm btn-primary">Create a Pledge <i
+                                                            class="fa fa-fw fa-arrow-right"></i></button>
+                                                </a>
+                                            {% else %}
+                                                <button class="btn btn-sm btn-primary">It's too late
+                                                    to pledge
+                                                </button>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if not pledges %}
+                                        {% if course.get_amount_progress <= 50 %}
+                                            <a href="{% url 'pledges:create' %}">
+                                                <button class="btn btn-sm btn-primary">Create a Pledge <i
+                                                        class="fa fa-fw fa-arrow-right"></i></button>
+                                            </a>
+                                        {% else %}
+                                            <button class="btn btn-sm btn-primary">It's too late
+                                                to pledge
+                                            </button>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% for course in user.edxprofile.courses.all %}
                         <div class="col-lg-6" id="course-{{ course.id }}-div">
                             <div class="box-generic bg-primary-light text-center main-selections">
                                 <div class="innerTB">
@@ -161,7 +290,7 @@
                 </div>
             </div>
             <!-- Widget -->
-            {% for ps in others %}
+            {% for ps in others_coursera %}
                 {% if forloop.parentloop.counter == forloop.counter %}
                     {% if ps or pledge.follower_set.all.count > 0 %}
                         {% if pledge.follower_set.all.count <= 0 %}
@@ -207,11 +336,92 @@
                             </div>
                         </div>
                     {% endif %}
+                </div>
                 {% endif %}
             {% endfor %}
-        <!-- col-table-row -->
-        </div>
+            <!-- col-table-row -->
         {% endfor %}
+        {% for course in user.edxprofile.courses.all %}
+            <div class="col-lg-4 col-md-5 col-sm-12 sides {% if  user.courseraprofile.courses.all.count == 0 and forloop.first %}sides-first{% endif %}"
+                 id="side-{{ course.id }}">
+
+
+            <div class="widget widget-body-white">
+                <!-- Widget Heading -->
+                <div class="widget-head">
+                    <h4 class="heading glyphicons calendar"><i></i>{{ course.title }}</h4>
+                </div>
+                <!-- // Widget Heading END -->
+
+                <div class="widget-body innerAll inner-2x">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <h3>Current Progress</h3>
+                            {% for progress in progresses %}
+                                {% if progress.quiz.course == course %}
+                                    <p>{{ progress|safe }}</p>
+                                {% endif %}
+                            {% endfor %}
+                            {% if course.is_done %}
+                                <p>Congratulations, you have completed {{ course.title }}, sit tight while we verify
+                                    your final grade!</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Widget -->
+            {% for ps in others_edx %}
+                {% if forloop.parentloop.counter == forloop.counter %}
+                    {% if ps or pledge.follower_set.all.count > 0 %}
+                        {% if pledge.follower_set.all.count <= 0 %}
+                            <div class="col-sm-12">
+                        {% else %}
+                            <div class="col-sm-6">
+                        {% endif %}
+                    <h5 class="innerAll bg-primary margin-bottom-none">Other Pledges</h5>
+
+                    <ul class="list-group list-group-1 margin-none borders-none">
+                        {% for pledge in ps %}
+                            <li class="list-group-item animated fadeInUp"><a
+                                    href="{% url 'pledges:follow' pledge.id %}">{{ pledge.user.user.first_name }} {{ pledge.user.user.last_name }}
+                                is pledging ${{ pledge.money }} to get {{ pledge.get_aim }}%</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    </div>
+                        {% if pledge.follower_set.all.count > 0 %}
+                            <div class="col-sm-6">
+                                <div class="lead margin-none strong">{{ pledge.follower_set.all.count }}</div>
+                                <p class="margin-none">followers</p>
+                                <ul class="list-group list-group-1 margin-none borders-none">
+                                    {% for follower in pledge.follower_set.all %}
+                                        <li class="list-group-item animated fadeInUp">{{ follower.email }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="widget widget-body-gray">
+                            <!-- Widget Heading -->
+                            <div class="widget-head">
+                                <h4 class="heading glyphicons calendar"><i></i>Calendar</h4>
+                            </div>
+                            <!-- // Widget Heading END -->
+
+                            <div class="widget-body innerAll inner-2x">
+                                <div data-component>
+                                    <div id="calendar-{{ course.id }}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </div>
     {% endif %}
     {% if form %}
         <div id="incorrect-lightbox" class="light-box">
@@ -280,7 +490,8 @@
                 });
 
             });
-
+            if (!window.location.origin)
+                window.location.origin = window.location.protocol + "//" + window.location.host;
             {% for course in user.courseraprofile.courses.all %}
                 $('#calendar-{{ course.id }}').fullCalendar({
                     header: {
@@ -302,8 +513,29 @@
                     $('.main-selections').attr('style', "");
                     $('#course-{{ course.id }}-div > div').attr('style', "background : #D2FFA3 !important");
                 });
-                if (!window.location.origin)
-                    window.location.origin = window.location.protocol + "//" + window.location.host;
+
+            {% endfor %}
+            {% for course in user.edxprofile.courses.all %}
+                $('#calendar-{{ course.id }}').fullCalendar({
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: ''
+                    },
+                    editable: false,
+                    droppable: false,
+                    events: {
+                    }
+                });
+                {% if forloop.first %}
+                    $('#course-{{ course.id }}-div > div').attr('style', "background : #D2FFA3 !important");
+                {% endif %}
+                $('#course-{{ course.id }}-div').click(function () {
+                    $('.sides').hide();
+                    $('#side-{{ course.id }}').show();
+                    $('.main-selections').attr('style', "");
+                    $('#course-{{ course.id }}-div > div').attr('style', "background : #D2FFA3 !important");
+                });
             {% endfor %}
             $('.sides').hide();
             $('.sides-first').show();
@@ -315,7 +547,7 @@
                     }, 3000);
                 }
             {% endif %}
-            {% if not form and user.courseraprofile.courses.all.count == 0 and not alreadyExist %}
+            {% if not form and user.courseraprofile.courses.all.count == 0 and user.edxprofile.courses.all.count == 0 and not alreadyExistCoursera and not alreadyExistEdx %}
                 $('#no-courses-lightbox').lightbox_me({centered: true, close_on_esc: false, close_on_background_click: false});
             {% endif %}
         });

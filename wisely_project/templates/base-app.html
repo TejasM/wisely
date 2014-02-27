@@ -76,9 +76,21 @@
                             class="fa fa-book"></i><span>More Coming Soon!</span></a>
                     </li>
                 {% endblock %}
-                <div class="row extra-top-margin text-center">
-                    <button id="refresh-from-main" class="btn btn-primary">Refresh from Coursera</button>
-                </div>
+                {% if user.courseraprofile.username != '' or user.edxprofile.email != '' %}
+                    <div class="row extra-top-margin text-center">
+                        <button id="refresh-from-main" class="btn btn-primary">Refresh from MOOC Platforms</button>
+                    </div>
+                {% endif %}
+                {% if  user.courseraprofile.username == '' %}
+                    <div class="row extra-top-margin text-center">
+                        <button id="add-coursera" class="btn btn-primary">Add Coursera Account</button>
+                    </div>
+                {% endif %}
+                {% if  user.courseraprofile.email == '' %}
+                    <div class="row extra-top-margin text-center">
+                        <button id="add-edx" class="btn btn-primary">Add edX Account</button>
+                    </div>
+                {% endif %}
                 {% if question %}
                     <div class="widget extra-top-margin widget-body-inverse">
                         <!-- Widget heading -->
@@ -112,7 +124,8 @@
                                     {% endif %}
                                 {% endfor %}
                                 {% if question.allow_custom %}
-                                    <textarea class="notebook border-none form-control" name="custom" style="color: #2e3132"
+                                    <textarea class="notebook border-none form-control" name="custom"
+                                              style="color: #2e3132"
                                               {% if question.only_custom %}placeholder="Other"{% endif %}></textarea>
                                     <button type="submit" class="btn extra-top-margin btn-large btn-primary">
                                         Submit
@@ -296,7 +309,74 @@
     </div>
 </div>
 <!-- // Main Container Fluid END -->
+{% if  user.courseraprofile.username == '' %}
+    <div class="light-box" id="coursera-form">
+        <div class="innerLR row">
+            <form class="form-horizontal col-sm-12" action="{% url 'users:index' %}"
+                  method="post">
+                {% csrf_token %}
+                <input type="hidden" value="coursera" name="platform"/>
 
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input type="text" name="username" class="form-control"
+                               placeholder="Coursera Username">
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <div class="col-sm-12">
+                        <input type="password" name="password" class="form-control"
+                               placeholder="Coursera Password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-primary btn-lg">Add Account</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endif %}
+{% if  user.courseraprofile.email == '' %}
+    <div class="light-box" id="edx-form">
+        <div class="innerLR row">
+            {% if alreadyExistEdx %}
+                <div class="row text-center">
+                    This edX account is already linked to a Wisely account. Please use a
+                    different
+                    edX
+                    account.
+                </div>
+            {% endif %}
+            <form class="form-horizontal col-sm-12" action="{% url 'users:index' %}"
+                  method="post">
+                {% csrf_token %}
+                <input type="hidden" value="edx" name="platform"/>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input type="text" name="username" class="form-control"
+                               placeholder="edX Email">
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <div class="col-sm-12">
+                        <input type="password" name="password" class="form-control"
+                               placeholder="edX Password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-primary btn-lg">Add Account</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endif %}
 <!-- Global -->
 <script data-id="App.Config">
     var basePath = '',
@@ -342,7 +422,7 @@
             disableResponsiveNavbarSubmenus();
         });
         $('#refresh-from-main').click(function () {
-            $.get("{% url 'users:force_update' %}", function (res) {
+            $.get("{% url 'users:force_update' %}", {'platform': 'coursera'}, function (res) {
                 var $messages = $('#messages');
                 if (res['fail']) {
                     $messages.find('.row').text('Can only force update once per day');
@@ -356,6 +436,16 @@
                 }
             });
         });
+        {% if  user.courseraprofile.username == '' %}
+            $('#add-coursera').click(function () {
+                $('#coursera-form').lightbox_me({centered: true});
+            });
+        {% endif %}
+        {% if  user.courseraprofile.email == '' %}
+            $('#add-edx').click(function () {
+                $('#edx-form').lightbox_me({centered: true});
+            });
+        {% endif %}
     {% else %}
         $(window).bind('enterBreakpoint768', function () {
             enableNavbarMenusHover();

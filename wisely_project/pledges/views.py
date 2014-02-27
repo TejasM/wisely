@@ -1,4 +1,6 @@
 from __future__ import division
+from datetime import timedelta
+from dateutil.relativedelta import relativedelta
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -7,7 +9,7 @@ from django.db.models import Q
 from django.utils import timezone
 import stripe
 
-from users.models import Course, UserProfile
+from users.models import Course, UserProfile, EdxProfile
 from users.utils import divide_timedelta
 
 __author__ = 'Cheng'
@@ -189,10 +191,21 @@ def create(request):
         courses_available = request.user.courseraprofile.courses.filter(~Q(pk__in=pledged_courses))
     else:
         courses_available = request.user.courseraprofile.courses.all()
+    try:
+        if pledged_courses:
+            courses_available = courses_available | request.user.edxprofile.courses.filter(~Q(pk__in=pledged_courses))
+        else:
+            courses_available = courses_available | request.user.edxprofile.courses.all()
+    except EdxProfile.DoesNotExist:
+        pass
     to_keep = []
+
     for course_available in courses_available:
-        if course_available.start_date is None:
-            to_keep.append(course_available.id)
+        if course_available.start_date is None or course_available.end_date is None:
+            if course_available.end_date is None:
+                to_keep.append(course_available.id)
+            elif course_available.end_date > timezone.now().date() + relativedelta(months=2):
+                to_keep.append(course_available.id)
             continue
         total_time = course_available.end_date - course_available.start_date
         if course_available.start_date + divide_timedelta(total_time, 2) > timezone.now().date():
