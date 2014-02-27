@@ -86,7 +86,7 @@
                         <button id="add-coursera" class="btn btn-primary">Add Coursera Account</button>
                     </div>
                 {% endif %}
-                {% if  user.courseraprofile.email == '' %}
+                {% if  user.edxprofile.email == '' %}
                     <div class="row extra-top-margin text-center">
                         <button id="add-edx" class="btn btn-primary">Add edX Account</button>
                     </div>
@@ -339,7 +339,7 @@
         </div>
     </div>
 {% endif %}
-{% if  user.courseraprofile.email == '' %}
+{% if  user.edxprofile.email == '' %}
     <div class="light-box" id="edx-form">
         <div class="innerLR row">
             {% if alreadyExistEdx %}
@@ -441,7 +441,7 @@
                 $('#coursera-form').lightbox_me({centered: true});
             });
         {% endif %}
-        {% if  user.courseraprofile.email == '' %}
+        {% if  user.edxprofile.email == '' %}
             $('#add-edx').click(function () {
                 $('#edx-form').lightbox_me({centered: true});
             });
