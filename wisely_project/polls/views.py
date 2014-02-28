@@ -12,6 +12,9 @@ def answer_question(request, question_id):
         question = Question.objects.get(pk=question_id)
         choice = request.POST.get('choice', '')
         profile = UserProfile.objects.get(user=request.user)
+        if request.POST['ans-type'] == 'skip':
+            profile.questions_answered.add(question)
+            return redirect(request.POST.get('next', '/'))
         if choice != '':
             choice = Choice.objects.get(pk=choice)
             choice.votes += 1

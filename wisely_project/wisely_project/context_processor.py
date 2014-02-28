@@ -1,7 +1,7 @@
 from random import randint
 from django.db.models import Q
 from polls.models import Question
-from users.models import UserProfile, CourseraProfile
+from users.models import UserProfile, CourseraProfile, EdxProfile
 
 __author__ = 'tmehta'
 
@@ -11,9 +11,19 @@ def survey_questions(request):
         try:
             coursera_profile = CourseraProfile.objects.get(user=request.user)
             if coursera_profile.username == "" or coursera_profile.incorrect_login:
-                return {}
+                try:
+                    edxprofile = EdxProfile.objects.get(user=request.user)
+                    if edxprofile.email == "" or edxprofile.incorrect_login:
+                        return {}
+                except EdxProfile.DoesNotExist:
+                    return {}
         except CourseraProfile.DoesNotExist:
-            return {}
+            try:
+                edxprofile = EdxProfile.objects.get(user=request.user)
+                if edxprofile.email == "" or edxprofile.incorrect_login:
+                    return {}
+            except EdxProfile.DoesNotExist:
+                return {}
         try:
             profile = UserProfile.objects.get(user=request.user)
         except UserProfile.DoesNotExist as _:

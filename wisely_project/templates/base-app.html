@@ -102,7 +102,9 @@
                         <div class="widget-body innerAll inner-2x">
                             <h5>{{ question }}</h5>
 
-                            <form action="{% url 'polls:anspoll' question.id %}" method="post">
+                            <form action="{% url 'polls:anspoll' question.id %}" method="post" id="survey">
+                                <input type="hidden" value="answer" id="ans-type" name="ans-type"/>
+                                <input type="hidden" value="{{ request.path }}" name="next"/>
                                 {% csrf_token %}
                                 {% for choice in question.choice_set.all %}
                                     {% if choice.custom != True %}
@@ -130,10 +132,15 @@
                                     <button type="submit" class="btn extra-top-margin btn-large btn-primary">
                                         Submit
                                     </button>
+
                                 {% else %}
                                     <button type="submit" class="btn btn-large btn-primary">Submit</button>
                                 {% endif %}
                             </form>
+                            <button class="btn extra-top-margin btn-large btn-primary"
+                                    onclick="$('#ans-type').val('skip');$('#survey').submit();">
+                                Skip
+                            </button>
                         </div>
                     </div>
                 {% endif %}
