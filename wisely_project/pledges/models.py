@@ -15,6 +15,7 @@ class Pledge(BaseModel):
     aim = models.FloatField(default=0.50)
     reward = models.FloatField(default=0)
     actual_mark = models.FloatField(default=None, null=True, blank=True)
+    charge = models.CharField(default="", max_length=1000)
 
     def get_aim(self):
         return self.aim*100

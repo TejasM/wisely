@@ -33,12 +33,13 @@ def index(request):
         token = request.POST.get('stripeToken', '')
         stripe.api_key = settings.STRIPE_SECRET_KEY
         try:
-            stripe.Charge.create(
+            charge = stripe.Charge.create(
                 amount=int(float(pledge.money)) * 100,  # amount in cents, again
                 currency="cad",
                 card=token,
                 description=request.user.username,
             )
+            pledge.charge = charge.id
             pledge.is_active = True
             pledge.save()
         except stripe.CardError, _:
@@ -65,12 +66,13 @@ def detail(request, pledge_id):
             token = request.POST.get('stripeToken', '')
             stripe.api_key = settings.STRIPE_SECRET_KEY
             try:
-                stripe.Charge.create(
+                charge = stripe.Charge.create(
                     amount=int(float(pledge.money)) * 100,  # amount in cents, again
                     currency="cad",
                     card=token,
                     description=request.user.username,
                 )
+                pledge.charge = charge.id
                 pledge.is_active = True
                 pledge.save()
             except stripe.CardError, _:
@@ -118,6 +120,15 @@ def share(request, pledge_id):
             if customer is None:
                 messages.error(request, 'Something went wrong, please use a new credit card')
                 return redirect(reverse('pledges:detail', args=(pledge.id,)))
+            charge = stripe.Charge.create(
+                amount=int(float(pledge.money)) * 100,  # amount in cents, again
+                currency="cad",
+                customer=customer,
+                description=request.user.username,
+            )
+            pledge.charge = charge.id
+            pledge.is_active = True
+            pledge.save()
         else:
             token = request.POST.get('stripeToken', '')
             stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -126,6 +137,13 @@ def share(request, pledge_id):
                     description=request.user.username,
                     card=token,
                 )
+                charge = stripe.Charge.create(
+                    amount=int(float(pledge.money)) * 100,  # amount in cents, again
+                    currency="cad",
+                    card=token,
+                    description=request.user.username,
+                )
+                pledge.charge = charge.id
                 pledge.is_active = True
                 pledge.save()
             except stripe.CardError, _:
