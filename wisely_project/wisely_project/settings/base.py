@@ -268,8 +268,7 @@ AUTHENTICATION_BACKENDS = (
     'social_auth.backends.google.GoogleOAuth2Backend'
 )
 
-STRIPE_PUBLIC_KEY = "pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb"
-STRIPE_SECRET_KEY = "sk_test_auCbY9IpyQ0hMHMcfvgjumxU"
+
 
 PAYMENTS_PLANS = {}
 

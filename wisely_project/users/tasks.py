@@ -160,33 +160,34 @@ class CourseraScraper:
         self.driver.get('https://www.coursera.org/account/records')
         btn = self.driver.find_element_by_xpath(
             '//*[@id="origami"]/div/div/div[1]/div[3]/div[1]/div/div[2]/div[1]/div/a')
-        btn.click()
-        soup = BeautifulSoup(self.driver.page_source)
-        course_ids = soup.select('.coursera-records-course-listing-box')
-        course_ids = map(lambda x: int(x.attrs['data-course-id']), course_ids)
-        grades = soup.select(
-            '.coursera-course-records-listings-without .coursera-course-listing-grade-section div[class~=hide] span')[
-                 ::2]
-        for i, grade in enumerate(grades):
-            if str(course_ids[i]) not in courseraprofile.counted_as_completed.split(','):
-                your_pledges = pledges.filter(course__course_id=course_ids[i])
-                for pledge in your_pledges:
-                    mark = re.findall("\d+.\d+", grade.contents[0])
-                    if mark:
-                        pledge.actual_mark = float(mark[0]) / 100
-                        pledge.is_complete = True
-                        pledge.complete_date = timezone.now()
-                        if pledge.is_active and pledge.charge != "":
-                            if pledge.actual_mark > pledge.aim:
-                                charge = stripe.Charge.retrive(pledge.charge)
-                                charge.refund()
-                        pledge.save()
-                if str(courseraprofile.counted_as_completed) != '':
-                    courseraprofile.counted_as_completed += ',' + str(course_ids[i])
-                else:
-                    courseraprofile.counted_as_completed += str(course_ids[i])
+        if btn.is_displayed():
+            btn.click()
+            soup = BeautifulSoup(self.driver.page_source)
+            course_ids = soup.select('.coursera-records-course-listing-box')
+            course_ids = map(lambda x: int(x.attrs['data-course-id']), course_ids)
+            grades = soup.select(
+                '.coursera-course-records-listings-without .coursera-course-listing-grade-section div[class~=hide] span')[
+                     ::2]
+            for i, grade in enumerate(grades):
+                if str(course_ids[i]) not in courseraprofile.counted_as_completed.split(','):
+                    your_pledges = pledges.filter(course__course_id=course_ids[i])
+                    for pledge in your_pledges:
+                        mark = re.findall("\d+.\d+", grade.contents[0])
+                        if mark:
+                            pledge.actual_mark = float(mark[0]) / 100
+                            pledge.is_complete = True
+                            pledge.complete_date = timezone.now()
+                            if pledge.is_active and pledge.charge != "":
+                                if pledge.actual_mark > pledge.aim:
+                                    charge = stripe.Charge.retrive(pledge.charge)
+                                    charge.refund()
+                            pledge.save()
+                    if str(courseraprofile.counted_as_completed) != '':
+                        courseraprofile.counted_as_completed += ',' + str(course_ids[i])
+                    else:
+                        courseraprofile.counted_as_completed += str(course_ids[i])
 
-        courseraprofile.save()
+            courseraprofile.save()
 
     def end(self):
         self.driver.close()
@@ -200,6 +201,8 @@ def get_coursera_courses(profile):
             print profile.username
             scraper.driver.implicitly_wait(5)
             scraper.login(str(profile.username), str(profile.password))
+            scraper.driver.set_page_load_timeout(3)
+            scraper.driver.set_script_timeout(5)
             time.sleep(3)
             courses, course_links, internal_links, start_dates, end_dates, course_ids, image_links, error = scraper.get_courses()
             if error is not None:
