@@ -33,6 +33,30 @@ strong {
     margin-top: 5px;
 }
 
+.top-bar-inner ul {
+    list-style: none;
+}
+
+.top-bar-inner {
+    height: 65px;
+}
+
+.top-bar-inner .title-area {
+    display: inline;
+}
+
+.top-bar-inner .title-area .name {
+    display: inline;
+}
+
+.top-bar-inner .title-area .name h1 {
+    display: inline;
+}
+
+.top-bar-inner .title-area .name h1 a img {
+    margin-top: -40px;
+}
+
 .login-button {
     background: #87C844;
     font-family: "Questrial" sans-serif;
@@ -66,10 +90,16 @@ strong {
     border-radius: 3px;
     z-index: 999;
     top: 30px;
-    right: 0;
+    left: -99999px;
     width: 95px;
     -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.f-dropdown li a, .f-dropdown li a:hover, .f-dropdown li a:focus {
+    color: #222;
+    font-family: "Questrial" sans-serif;
+    font-size: 13px;
 }
 
 .f-dropdown li {
@@ -82,7 +112,7 @@ strong {
 
 .top-bar .right {
     font-weight: 600;
-    margin-top: 10px;
+    margin-top: 17px;
 }
 
 #background-image {

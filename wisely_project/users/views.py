@@ -1,4 +1,6 @@
 import json
+from datetime import timedelta
+import urllib
 
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
@@ -10,13 +12,18 @@ from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.utils import timezone
+import facebook
+import oauth2
 from requests import request as request2, HTTPError
 from django.template import RequestContext
+from social_auth.db.django_models import UserSocialAuth
+import twitter
 
-from models import CourseraProfile, Progress, UserProfile, EdxProfile
+from models import CourseraProfile, Progress, UserProfile, EdxProfile, Invitees
 from pledges.models import Pledge
 from forms import UserProfileForm, UserForm
 from users.utils import send_welcome_email
+from wisely_project.settings import base
 
 
 def login_user(request):
@@ -99,23 +106,87 @@ def signup(request):
     return render(request, 'base.html')
 
 
+def sync_up_user(user, social_users):
+    try:
+        inner_profile = UserProfile.objects.get(user=user)
+    except UserProfile.DoesNotExist as _:
+        inner_profile = UserProfile.objects.create(user=user)
+    for social_user in social_users:
+        if social_user.provider == 'facebook':
+            if inner_profile.last_updated < timezone.now() - timedelta(weeks=2) or inner_profile.never_updated:
+                graph = facebook.GraphAPI(social_user.extra_data["access_token"])
+                friends = graph.get_connections("me", "friends")
+                inner_profile.num_connections = len(friends['data'])
+                for friend in friends['data']:
+                    try:
+                        connect = UserSocialAuth.objects.get(uid=friend["id"])
+                        if connect.user not in inner_profile.connections.all():
+                            inner_profile.connections.add(connect.user)
+                        try:
+                            connect = UserProfile.objects.get(user=connect.user)
+                        except UserProfile.DoesNotExist as _:
+                            connect = UserProfile.objects.create(user=connect.user)
+                        connect.connections.add(user)
+                        connect.save()
+                    except UserSocialAuth.DoesNotExist as _:
+                        try:
+                            Invitees.objects.get(uid=friend["id"], user_from=inner_profile)
+                        except Invitees.DoesNotExist as _:
+                            Invitees.objects.create(uid=friend["id"], user_from=inner_profile,
+                                                    name=friend['name'], social_media='facebook')
+                inner_profile.last_updated = timezone.now()
+                inner_profile.never_updated = False
+                inner_profile.save()
+
+        elif social_user.provider == 'twitter':
+            if inner_profile.last_updated < timezone.now() - timedelta(weeks=2) or inner_profile.never_updated:
+                api = twitter.Api(consumer_key=base.TWITTER_CONSUMER_KEY,
+                                  consumer_secret=base.TWITTER_CONSUMER_SECRET,
+                                  access_token_key=social_user.tokens['oauth_token'],
+                                  access_token_secret=social_user.tokens['oauth_token_secret'])
+                friends = api.GetFollowers()
+                inner_profile.num_connections = len(friends)
+                for friend in friends:
+                    try:
+                        connect = UserSocialAuth.objects.get(uid=friend.id)
+                        if connect.user not in inner_profile.connections.all():
+                            inner_profile.connections.add(connect.user)
+                        try:
+                            connect = UserProfile.objects.get(user=connect.user)
+                        except UserProfile.DoesNotExist as _:
+                            connect = UserProfile.objects.create(user=connect.user)
+                        connect.connections.add(user)
+                        connect.save()
+                    except UserSocialAuth.DoesNotExist as _:
+                        try:
+                            Invitees.objects.get(uid=friend.id, user_from=inner_profile)
+                        except Invitees.DoesNotExist as _:
+                            Invitees.objects.create(uid=friend.id, user_from=inner_profile,
+                                                    name=friend.name, social_media='twitter')
+                inner_profile.last_updated = timezone.now()
+                inner_profile.never_updated = False
+                inner_profile.save()
+
+
 @login_required
 def index(request):
     try:
         user_profile = UserProfile.objects.get(user=request.user)
     except UserProfile.DoesNotExist:
         user_profile = UserProfile.objects.create(user=request.user)
-    if user_profile.picture._file is None:
-        if request.user.social_auth.all().count() > 0 and request.user.social_auth.all()[0].provider == 'facebook':
-            url = 'http://graph.facebook.com/{0}/picture'.format(request.user.social_auth.all()[0].uid)
-            try:
-                response = request2('GET', url, params={'type': 'large'})
-                response.raise_for_status()
-                user_profile.picture.save('{0}_social.jpg'.format(request.user.username),
-                                          ContentFile(response.content))
-                user_profile.save()
-            except HTTPError:
-                pass
+    social_users = UserSocialAuth.objects.filter(user=request.user)
+    sync_up_user(request.user, social_users)
+    if user_profile.picture._file is None and request.user.social_auth.all().count() > 0 and \
+                    request.user.social_auth.all()[0].provider == 'facebook':
+        url = 'http://graph.facebook.com/{0}/picture'.format(request.user.social_auth.all()[0].uid)
+        try:
+            response = request2('GET', url, params={'type': 'large'})
+            response.raise_for_status()
+            user_profile.picture.save('{0}_social.jpg'.format(request.user.username),
+                                      ContentFile(response.content))
+            user_profile.save()
+        except HTTPError:
+            pass
     try:
         coursera_profile = CourseraProfile.objects.get(user=request.user)
     except CourseraProfile.DoesNotExist:

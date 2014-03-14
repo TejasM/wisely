@@ -82,7 +82,8 @@ class UserProfile(BaseModel):
     current_city = models.CharField(max_length=32, null=True)
     questions_answered = models.ManyToManyField(Question)
     last_forced = models.DateTimeField(default=None, null=True, blank=True)
-
+    connections = models.ManyToManyField(User, related_name="connections")
+    never_updated = models.BooleanField(default=True)
     customer_id = models.CharField(max_length=1000, default="")
 
     MALE = 'M'
@@ -107,6 +108,14 @@ class Quiz(BaseModel):
 
     def __unicode__(self):
         return self.heading
+
+
+class Invitees(models.Model):
+    email_address = models.EmailField(default="")
+    name = models.CharField(max_length=500, default="")
+    uid = models.CharField(default='', max_length=500)
+    social_media = models.CharField(default='facebook', max_length=100)
+    user_from = models.ForeignKey(UserProfile, default=None, null=True)
 
 
 class Progress(BaseModel):

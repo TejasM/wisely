@@ -11,3 +11,5 @@ beautifulsoup4==4.3.2
 selenium==2.39.0
 django-stripe-payments==2.0b23
 python-dateutil==2.2
+facebook-sdk==0.4.0
+python-twitter==1.0
