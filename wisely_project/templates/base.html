@@ -38,7 +38,8 @@
                 <div class="title"><h1>Motivate your learning</h1><br>
 
                     <div class="subtitle"><h2>
-                        Wisely helps you to meet your personal learning goals on <a href="https://www.coursera.org/">&nbsp;Coursera</a>
+                        Wisely helps you to meet your personal learning goals on <a href="https://www.coursera.org/">
+                        &nbsp;Coursera</a>
                         and <a href="https://www.edx.org/">edX</a>.
                         Stay on track and earn
                         rewards for your hard work.</h2><br><br>
@@ -79,10 +80,11 @@
                         allowfullscreen></iframe>
             </div>
         </div>
-
-        <div id="dis" class="subtitle extra-top-margin">
-            <button id="sign2" class="other-button">Get Started</button>
-        </div>
+        {% if not user.is_authenticated %}
+            <div id="dis" class="subtitle extra-top-margin">
+                <button id="sign2" class="other-button">Get Started</button>
+            </div>
+        {% endif %}
     </div>
 
     <div class="middle-cover">
@@ -138,7 +140,7 @@
                 <div class="column">
                     <i class="fa fa-lock fa-3x"></i><br><br>
 
-                    <p>Pledges are not charged upfront – Wisely will only collects your money if you do not achieve your
+                    <p>Wisely will only collects your money if you do not achieve your
                         goal.</p>
                 </div>
             </div>
