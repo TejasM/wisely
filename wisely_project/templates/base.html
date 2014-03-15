@@ -46,23 +46,15 @@
 
                         <p>Wisely is in Beta. Be one of the exclusive users to get a sneak peek-- sign up with
                             Coursera and edX now!</p>
-                        {% if not user.is_authenticated %}
-                            <div id="dis" class="subtitle extra-top-margin">
-                                {% comment %}<div class="row">
-                                <div class="large-6 large-offset-2 columns"><input type="text" style="height: 57px; font-size: 20px"
-                                                                                   placeholder="Email" id="email"></div>
-                                <div class="large-4 columns">
-                                    <button id="sign" class="other-button left">Sign Up</button>
-                                </div>
-                            </div>
-                            <div id="validation" class="validation" style="color: red;"></div>
-                            <p style="color: #000;"><strong>Wisely is currently under construction. Sign Up for the
-                                early
-                                preview.</strong>
-                            </p>{% endcomment %}
+
+                        <div id="dis" class="subtitle extra-top-margin">
+                            {% if not user.is_authenticated %}
                                 <button id="sign" class="other-button">Get Started</button>
-                            </div>
-                        {% endif %}
+                            {% else %}
+                                <a href="{% url 'users:index' %}"><button class="other-button">To Dashboard</button></a>
+                            {% endif %}
+                        </div>
+
                     </div>
                 </div>
             </div>
