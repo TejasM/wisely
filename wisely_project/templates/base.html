@@ -46,9 +46,9 @@
 
                         <p>Wisely is in Beta. Be one of the exclusive users to get a sneak peek-- sign up with
                             Coursera and edX now!</p>
-
-                        <div id="dis" class="subtitle extra-top-margin">
-                            {% comment %}<div class="row">
+                        {% if not user.is_authenticated %}
+                            <div id="dis" class="subtitle extra-top-margin">
+                                {% comment %}<div class="row">
                                 <div class="large-6 large-offset-2 columns"><input type="text" style="height: 57px; font-size: 20px"
                                                                                    placeholder="Email" id="email"></div>
                                 <div class="large-4 columns">
@@ -60,8 +60,9 @@
                                 early
                                 preview.</strong>
                             </p>{% endcomment %}
-                            <button id="sign" class="other-button">Get Started</button>
-                        </div>
+                                <button id="sign" class="other-button">Get Started</button>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
