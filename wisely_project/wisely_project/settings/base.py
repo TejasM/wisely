@@ -66,6 +66,10 @@ LANGUAGE_CODE = 'en-us'
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
 SITE_ID = 1
 
+LANGUAGES = [
+    ('en', 'English'),
+    ('ru', 'Russian'),
+]
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
 USE_I18N = True
 
@@ -133,13 +137,15 @@ FIXTURE_DIRS = (
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
+    #'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.core.context_processors.static',
     'django.core.context_processors.tz',
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
     'wisely_project.context_processor.survey_questions',
+    'cms.context_processors.media',
+    'sekizai.context_processors.sekizai',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
@@ -151,6 +157,11 @@ TEMPLATE_LOADERS = (
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
 TEMPLATE_DIRS = (
     normpath(join(SITE_ROOT, 'templates')),
+)
+
+CMS_TEMPLATES = (
+    ('template_1.html', 'Template One'),
+    ('template_2.html', 'Template Two'),
 )
 ########## END TEMPLATE CONFIGURATION
 
@@ -166,6 +177,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_auth.middleware.SocialAuthExceptionMiddleware',
+    'cms.middleware.page.CurrentPageMiddleware',
+    'cms.middleware.user.CurrentUserMiddleware',
+    'cms.middleware.toolbar.ToolbarMiddleware',
+    'cms.middleware.language.LanguageCookieMiddleware',
 )
 ########## END MIDDLEWARE CONFIGURATION
 
@@ -193,6 +208,19 @@ DJANGO_APPS = (
     'django.contrib.admin',
     # 'django.contrib.admindocs',
     'social_auth',
+    'cms',  #django CMS itself
+    'mptt',  #utilities for implementing a modified pre-order traversal tree
+    'menus',  #helper for model independent hierarchical website navigation
+    'south',  #intelligent schema and data migrations
+    'sekizai',  #for javascript and css management
+    'cms.plugins.file',
+    'cms.plugins.link',
+    'cms.plugins.picture',
+    'cms.plugins.snippet',
+    'cms.plugins.teaser',
+    'cms.plugins.text',
+    'cms.plugins.video',
+    'cms.plugins.twitter',
 )
 
 THIRD_PARTY_APPS = (
@@ -268,8 +296,6 @@ AUTHENTICATION_BACKENDS = (
     'social_auth.backends.google.GoogleOAuth2Backend'
 )
 
-
-
 PAYMENTS_PLANS = {}
 
 LOGIN_URL = '/'
@@ -291,7 +317,6 @@ SOCIAL_AUTH_PIPELINE = (
     'social_auth.backends.pipeline.user.update_user_details',
     'users.utils.welcome_new_user'
 )
-
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 PREPEND_WWW = False
