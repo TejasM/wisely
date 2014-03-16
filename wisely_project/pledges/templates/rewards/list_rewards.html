@@ -1,0 +1,84 @@
+{% extends 'base-app.html' %}
+{% load staticfiles %}
+{% block additionalHeaders %}
+    <script src="{% static 'assets/components/library/jquery-ui/js/jquery-ui.min.js' %}?v=v1.9.6&sv=v0.0.1"></script>
+    <link href='http://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style-app.css' %}"/>
+{% endblock %}
+{% block nav-bar %}
+    <li class=""><a href="{% url 'users:index' %}"><i class="fa fa-book"></i><span>Dashboard</span></a>
+    </li>
+    <li class=""><a href="{% url 'pledges:index' %}"><i
+            class="fa fa-book"></i><span>Pledges</span></a>
+    </li>
+    <li class="active"><a href="{% url 'pledges:list_rewards' %}"><i
+            class="fa fa-money"></i><span>Rewards</span></a>
+    </li>
+    <li class=""><a href="#"><i
+            class="fa fa-book"></i><span>More Coming Soon!</span></a>
+    </li>
+{% endblock %}
+{% block content %}
+    <div class="jumbotron margin-none center bg-white">
+
+        <h1 class="separator bottom">Your Hard Earned Rewards</h1>
+        {% if rewards %}
+            {% for reward in rewards %}
+                <div class="row extra-top-margin col-separator" style="position: static;">
+                    {% if forloop.first %}
+                        <div class="col-separator-h"></div>
+                    {% endif %}
+                    <div class="media margin-none">
+                        <div class="media-body innerAll">
+                            {% if reward.pledge %}
+                                <h4 class="media-heading innerT"><a href=""
+                                                                    class="text-inverse">{{ reward.pledge.course }}</a> <span
+                                        class="text-small"><i
+                                        class="fa fa-fw fa-clock-o"></i>&nbsp; {{ reward.pledge.created }}</span>
+                                </h4>
+                            {% endif %}
+
+                            <div class="row extra-top-margin">
+                                <div class="col-sm-6">
+                                    Your reward &nbsp;<h3 style="display: inline" class="cursive">
+                                    $ {{ reward.money|floatformat:2 }}</h3>{% if reward.pledge %} &nbsp; for achieving your goal of
+                                    get {{ reward.pledge.get_aim|floatformat:0 }}%{% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if not reward.collected %}
+                        <div class="widget" style="margin-bottom: 0" data-toggle="collapse-widget"
+                             data-collapse-closed="true">
+                            <div class="widget-head"><h4 class="heading">Collect Your Rewards</h4><span
+                                    class="collapse-toggle"></span></div>
+                            <div class="widget-body collapse" style="height: 20px;">
+                                <div class="innerLR row extra-top-margin">
+                                    <div class="centered">
+                                        <div class="row centered">
+                                            <form action="{% url 'pledges:collect_reward' %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" value="{{ reward.id }}" name="reward_id">
+                                                <input type="text" placeholder="Your PayPal Email Address" name="email" class="form-control">
+                                                <button type="submit" class="btn btn-primary btn-lg extra-top-margin">Collect</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <h2 class="heading">Looks like you have no rewards</h2>
+            <h3>Create A Pledge Now to Start Earning Rewards</h3>
+            <a href="{% url 'pledges:create' %}">
+                <button class="btn btn-primary btn-lg">Create Pledge</button>
+            </a>
+        {% endif %}
+    </div>
+{% endblock %}
+{% block additionalScripts %}
+    <script src="{% static 'assets/components/modules/admin/widgets/widget-collapsible/assets/widget-collapsible.init.js' %}?v=v1.9.6&sv=v0.0.1"></script>
+{% endblock %}

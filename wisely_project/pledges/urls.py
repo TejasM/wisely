@@ -8,6 +8,8 @@ urlpatterns = patterns('',
                        # /pledges/
                        url(r'^$', views.index, name='index'),
                        url(r'^create/$', views.create, name='create'),
+                       url(r'^reward/list/$', views.list_rewards, name='list_rewards'),
+                       url(r'^reward/collect/$', views.collect_reward, name='collect_reward'),
                        # /pledges/23
                        url(r'^(?P<pledge_id>\d+)/$', views.detail, name='detail'),
                        url(r'^follow/(?P<pledge_id>\d+)/$', views.follow, name='follow'),

@@ -11,6 +11,9 @@
     <li class=""><a href="{% url 'pledges:index' %}"><i
             class="fa fa-book"></i><span>Pledges</span></a>
     </li>
+    <li class=""><a href="{% url 'pledges:list_rewards' %}"><i
+            class="fa fa-money"></i><span>Rewards</span></a>
+    </li>
     <li class=""><a href="#"><i
             class="fa fa-book"></i><span>More Coming Soon!</span></a>
     </li>
@@ -33,7 +36,8 @@
                         {% csrf_token %}
                         <div class="col-sm-12">
                             <div class="col-sm-6 col-sm-offset-3">
-                                <input type="email" name="email" placeholder="Email" class="form-control" value="{% if user.is_authenticated %}{{ user.email }}{% endif %}">
+                                <input type="email" name="email" placeholder="Email" class="form-control"
+                                       value="{% if user.is_authenticated %}{{ user.email }}{% endif %}">
                             </div>
                         </div>
                         <button type="submit" class="btn extra-top-margin btn-primary btn-lg">Follow</button>

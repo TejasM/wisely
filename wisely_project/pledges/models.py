@@ -13,7 +13,6 @@ class Pledge(BaseModel):
     is_active = models.BooleanField(default=True)
     is_complete = models.BooleanField(default=False)
     aim = models.FloatField(default=0.50)
-    reward = models.FloatField(default=0)
     actual_mark = models.FloatField(default=None, null=True, blank=True)
     charge = models.CharField(default="", max_length=1000)
 
@@ -22,6 +21,13 @@ class Pledge(BaseModel):
 
     def get_actual_mark(self):
         return self.actual_mark*100
+
+
+class Reward(BaseModel):
+    money = models.DecimalField(max_digits=8, decimal_places=2)
+    user = models.ForeignKey(UserProfile)
+    pledge = models.ForeignKey(Pledge, default=None, null=True, blank=True)
+    collected = models.BooleanField(default=False)
 
 
 class Follower(BaseModel):

@@ -198,6 +198,7 @@ def index(request):
 
     if request.method == "POST":
         request.session['onboarding'] = coursera_profile.username == "" and edx_profile.email == ""
+        request.session.save()
         if request.POST['platform'] == "coursera":
             request.user.courseraprofile.username = request.POST['username'].strip()
             already_exist = CourseraProfile.objects.filter(username=request.user.courseraprofile.username).count() > 0

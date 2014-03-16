@@ -1,5 +1,6 @@
 from __future__ import division
 from datetime import timedelta
+import urllib
 from dateutil.relativedelta import relativedelta
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -9,15 +10,39 @@ from django.db.models import Q
 from django.utils import timezone
 import stripe
 
-from users.models import Course, UserProfile, EdxProfile
+from users.models import Course, UserProfile, EdxProfile, CourseraProfile
 from users.utils import divide_timedelta
 
 __author__ = 'Cheng'
 
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from models import Pledge, Follower
+from models import Pledge, Follower, Reward
 import wisely_project.settings.base as settings
+
+
+def mass_pay(email, amt):
+    params = {
+        'USER': 'tejasmehtatest_api1.projectwisely.com',
+        'PWD': '1394994327',
+        'SIGNATURE': 'Az.9JkUAMofy8yM1zL94cEmaVbLMA8tUu9rejHB4saZiWpJdwNQw1aVz',
+        'VERSION': '2.3',
+        'EMAILSUBJECT': 'Here is your reward',
+        'METHOD': "MassPay",
+        'RECEIVERTYPE': "EmailAddress",
+        'L_AMT0': amt,
+        'CURRENCYCODE': 'CAD',
+        'L_EMAIL0': email,
+    }
+    params_string = urllib.urlencode(params)
+    response = urllib.urlopen("https://api-3t.sandbox.paypal.com/nvp", params_string).read()
+    print response
+    response_tokens = {}
+    for token in response.split('&'):
+        response_tokens[token.split("=")[0]] = token.split("=")[1]
+    for key in response_tokens.keys():
+        response_tokens[key] = urllib.unquote(response_tokens[key])
+    return response_tokens
 
 
 @login_required
@@ -159,7 +184,7 @@ def share(request, pledge_id):
 def follow(request, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
     if (
-        request.user.is_authenticated() and request.user.userprofile != pledge.user) or not request.user.is_authenticated():
+                request.user.is_authenticated() and request.user.userprofile != pledge.user) or not request.user.is_authenticated():
         if request.method == "POST":
             email = request.POST.get('email', '')
             if email != '':
@@ -202,6 +227,19 @@ def create(request):
                                            money=int(float(request.POST['money'].replace(',', ''))), is_active=False,
                                            aim=float(request.POST['aim'].replace('%', '')) / 100)
             return redirect(reverse('pledges:detail', args=(pledge.id,)))
+    try:
+        coursera_profile = CourseraProfile.objects.get(user=request.user)
+    except CourseraProfile.DoesNotExist:
+        coursera_profile = CourseraProfile.objects.create(user=request.user)
+    try:
+        edx_profile = EdxProfile.objects.get(user=request.user)
+    except EdxProfile.DoesNotExist:
+        edx_profile = EdxProfile.objects.create(user=request.user)
+
+    if coursera_profile.username == '' and edx_profile.email == '':
+        request.session['onboarding'] = True
+        request.session.save()
+        return redirect(reverse('users:index'))
     other_pledgers_list = []
     projections = []
     pledged_courses = Pledge.objects.filter(user=request.user.userprofile).values_list('course_id')
@@ -241,3 +279,28 @@ def create(request):
     else:
         return render(request, 'pledges/create.html', {'others': other_pledgers_list, 'courses': courses_available,
                                                        'projections': projections})
+
+
+def list_rewards(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    rewards = Reward.objects.filter(user=user_profile)
+    return render(request, 'rewards/list_rewards.html', {'rewards': rewards})
+
+
+def collect_reward(request):
+    if request.method == "POST":
+        user_profile = UserProfile.objects.get(user=request.user)
+        reward = get_object_or_404(Reward, user=user_profile, pk=request.POST.get('reward_id', ''))
+        email = request.POST.get('email', '')
+        if email == '':
+            messages.error(request, 'Bad paypal email address, try again')
+        else:
+            response = mass_pay(email, float(reward.money))
+            if str(response["ACK"]) != "Failure":
+                reward.collected = True
+                reward.save()
+            else:
+                messages.error(request, "Failed to transfer money please try again later!")
+        return redirect(reverse('pledges:collect_reward'))
+    else:
+        return redirect(reverse('pledges:list_rewards'))
