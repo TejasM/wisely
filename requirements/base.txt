@@ -13,4 +13,3 @@ django-stripe-payments==2.0b23
 python-dateutil==2.2
 facebook-sdk==0.4.0
 python-twitter==1.0
-django-cms==2.4.2

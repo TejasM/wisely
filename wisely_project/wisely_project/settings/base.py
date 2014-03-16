@@ -66,10 +66,6 @@ LANGUAGE_CODE = 'en-us'
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
 SITE_ID = 1
 
-LANGUAGES = [
-    ('en', 'English'),
-    ('ru', 'Russian'),
-]
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
 USE_I18N = True
 
@@ -159,10 +155,6 @@ TEMPLATE_DIRS = (
     normpath(join(SITE_ROOT, 'templates')),
 )
 
-CMS_TEMPLATES = (
-    ('template_1.html', 'Template One'),
-    ('template_2.html', 'Template Two'),
-)
 ########## END TEMPLATE CONFIGURATION
 
 
@@ -177,10 +169,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_auth.middleware.SocialAuthExceptionMiddleware',
-    'cms.middleware.page.CurrentPageMiddleware',
-    'cms.middleware.user.CurrentUserMiddleware',
-    'cms.middleware.toolbar.ToolbarMiddleware',
-    'cms.middleware.language.LanguageCookieMiddleware',
 )
 ########## END MIDDLEWARE CONFIGURATION
 
@@ -208,19 +196,6 @@ DJANGO_APPS = (
     'django.contrib.admin',
     # 'django.contrib.admindocs',
     'social_auth',
-    'cms',  #django CMS itself
-    'mptt',  #utilities for implementing a modified pre-order traversal tree
-    'menus',  #helper for model independent hierarchical website navigation
-    'south',  #intelligent schema and data migrations
-    'sekizai',  #for javascript and css management
-    'cms.plugins.file',
-    'cms.plugins.link',
-    'cms.plugins.picture',
-    'cms.plugins.snippet',
-    'cms.plugins.teaser',
-    'cms.plugins.text',
-    'cms.plugins.video',
-    'cms.plugins.twitter',
 )
 
 THIRD_PARTY_APPS = (
