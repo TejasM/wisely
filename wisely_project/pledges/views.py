@@ -1,6 +1,9 @@
 from __future__ import division
-from datetime import timedelta
+from datetime import timedelta, datetime
+import hashlib
+import md5
 import urllib
+import urllib2
 from dateutil.relativedelta import relativedelta
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -22,26 +25,28 @@ import wisely_project.settings.base as settings
 
 
 def mass_pay(email, amt):
+    unique_id = str(md5.new(str(datetime.now())).hexdigest())
     params = {
-        'USER': 'tejasmehtatest_api1.projectwisely.com',
-        'PWD': '1394994327',
-        'SIGNATURE': 'Az.9JkUAMofy8yM1zL94cEmaVbLMA8tUu9rejHB4saZiWpJdwNQw1aVz',
+        'USER': 'business1_api1.projectwisely.com',
+        'PWD': '1395005281',
+        'SIGNATURE': 'An5ns1Kso7MWUdW4ErQKJJJ4qi4-AMAr6-lmKHkZgOtMWnRRPehMl81N',
         'VERSION': '2.3',
         'EMAILSUBJECT': 'Here is your reward',
         'METHOD': "MassPay",
         'RECEIVERTYPE': "EmailAddress",
         'L_AMT0': amt,
-        'CURRENCYCODE': 'CAD',
+        'CURRENCYCODE': 'USD',
+        'L_UNIQUE0': unique_id,
+        'L_NOTE0': 'Here is your reward',
         'L_EMAIL0': email,
     }
     params_string = urllib.urlencode(params)
-    response = urllib.urlopen("https://api-3t.sandbox.paypal.com/nvp", params_string).read()
-    print response
+    response = urllib2.urlopen("https://api-3t.sandbox.paypal.com/nvp", params_string).read()
     response_tokens = {}
     for token in response.split('&'):
         response_tokens[token.split("=")[0]] = token.split("=")[1]
     for key in response_tokens.keys():
-        response_tokens[key] = urllib.unquote(response_tokens[key])
+        response_tokens[key] = urllib2.unquote(response_tokens[key])
     return response_tokens
 
 

@@ -41,8 +41,16 @@
                             <div class="row extra-top-margin">
                                 <div class="col-sm-6">
                                     Your reward &nbsp;<h3 style="display: inline" class="cursive">
-                                    $ {{ reward.money|floatformat:2 }}</h3>{% if reward.pledge %} &nbsp; for achieving your goal of
+                                    $ {{ reward.money|floatformat:2 }}</h3>{% if reward.pledge %} &nbsp; for achieving
+                                    your goal of
                                     get {{ reward.pledge.get_aim|floatformat:0 }}%{% endif %}
+                                </div>
+                                <div class="col-sm-6">
+                                    {% if reward.collected %}
+                                        <button class="btn btn-primary btn-lg" disabled>Already
+                                            Collected
+                                        </button>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -59,8 +67,11 @@
                                             <form action="{% url 'pledges:collect_reward' %}" method="post">
                                                 {% csrf_token %}
                                                 <input type="hidden" value="{{ reward.id }}" name="reward_id">
-                                                <input type="text" placeholder="Your PayPal Email Address" name="email" class="form-control">
-                                                <button type="submit" class="btn btn-primary btn-lg extra-top-margin">Collect</button>
+                                                <input type="text" placeholder="Your PayPal Email Address" name="email"
+                                                       class="form-control">
+                                                <button type="submit" class="btn btn-primary btn-lg extra-top-margin">
+                                                    Collect
+                                                </button>
                                             </form>
                                         </div>
                                     </div>
@@ -70,6 +81,7 @@
                     {% endif %}
                 </div>
             {% endfor %}
+            <div class="col-separator-h"></div>
         {% else %}
             <h2 class="heading">Looks like you have no rewards</h2>
             <h3>Create A Pledge Now to Start Earning Rewards</h3>
