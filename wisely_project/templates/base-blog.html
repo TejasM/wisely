@@ -1,0 +1,493 @@
+{% load staticfiles %}
+{% load cms_tags sekizai_tags %}
+
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="ie lt-ie9 lt-ie8 lt-ie7 app sidebar sidebar-fusion sidebar-kis footer-sticky navbar-sticky"> <![endif]-->
+<!--[if IE 7]>    <html class="ie lt-ie9 lt-ie8 app sidebar sidebar-fusion sidebar-kis footer-sticky navbar-sticky"> <![endif]-->
+<!--[if IE 8]>    <html class="ie lt-ie9 app sidebar sidebar-fusion sidebar-kis footer-sticky navbar-sticky"> <![endif]-->
+<!--[if gt IE 8]> <html class="ie app sidebar sidebar-fusion sidebar-kis footer-sticky navbar-sticky"> <![endif]-->
+<!--[if !IE]><!-->
+<html class="app sidebar sidebar-fusion sidebar-kis footer-sticky navbar-sticky"><!-- <![endif]-->
+<head>
+    <title>Project Wisely</title>
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <!--
+    **********************************************************
+    In development, use the LESS files and the less.js compiler
+    instead of the minified CSS loaded by default.
+    ********************************************************** -->
+    <!--<link rel="stylesheet/less"
+          href="{% static 'assets/less/admin/module.admin.stylesheet-complete.sidebar_type.fusion.less' %}"/>-->
+
+    <!--[if lt IE 9]><link rel="stylesheet" href="{% static 'assets/components/library/bootstrap/css/bootstrap.min.css' %}" />
+    <![endif]-->
+    <link rel="stylesheet"
+          href="{% static 'assets/css/admin/module.admin.stylesheet-complete.sidebar_type.fusion.min.css' %}"/>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="{% static 'assets/components/library/jquery/jquery.min.js' %}?v=v1.9.6&sv=v0.0.1"></script>
+    <script src="{% static 'assets/components/library/jquery/jquery-migrate.min.js' %}?v=v1.9.6&sv=v0.0.1"></script>
+    <script src="{% static 'assets/components/library/modernizr/modernizr.js' %}?v=v1.9.6&sv=v0.0.1"></script>
+    <!--<script src="{% static 'assets/components/plugins/less-js/less.min.js' %}?v=v1.9.6&sv=v0.0.1"></script>-->
+    {#    <script src="{% static 'assets/components/modules/admin/charts/flot/assets/lib/excanvas.js' %}?v=v1.9.6&sv=v0.0.1"></script>#}
+    {#    <script src="{% static 'assets/components/plugins/browser/ie/ie.prototype.polyfill.js' %}?v=v1.9.6&sv=v0.0.1"></script>#}
+    <script>if (/*@cc_on!@*/false && document.documentMode === 10) {
+        document.documentElement.className += ' ie ie10';
+    }</script>
+    {% render_block "css" %}
+</head>
+<body class="scripts-async menu-right-hidden">
+{% cms_toolbar %}
+<!-- Main Container Fluid -->
+<div class="container-fluid menu-hidden" id="menu-main">
+
+<!-- Main Sidebar Menu -->
+
+<div id="menu" class="hidden-print hidden-xs sidebar-blue sidebar-brand-primary">
+
+
+    <div id="sidebar-fusion-wrapper">
+        <div id="brandWrapper">
+            <a href="/">
+                <img alt="Wisely" src="{% static 'images/logo.png' %}" height="60" width="190"
+                     style="border: none"/>
+            </a>
+        </div>
+        {% if user.is_authenticated %}
+            <ul class="menu list-unstyled" id="navigation_current_page">
+                {% block nav-bar %}
+                    <li class=""><a href="{% url 'users:index' %}"><i
+                            class="fa fa-book"></i><span>Dashboard</span></a>
+                    </li>
+                    <li class="active"><a href="{% url 'pledges:index' %}"><i
+                            class="fa fa-book"></i><span>Pledges</span></a>
+                    </li>
+                    <li class=""><a href="/more"><i
+                            class="fa fa-book"></i><span>More Coming Soon!</span></a>
+                    </li>
+                {% endblock %}
+                {% if user.courseraprofile.username != '' or user.edxprofile.email != '' %}
+                    <div class="row extra-top-margin text-center">
+                        <button id="refresh-from-main" class="btn btn-primary">Refresh from MOOC Platforms</button>
+                    </div>
+                {% endif %}
+                {% if  user.courseraprofile.username == '' %}
+                    <div class="row extra-top-margin text-center">
+                        <button id="add-coursera" class="btn btn-primary">Add Coursera Account</button>
+                    </div>
+                {% endif %}
+                {% if  user.edxprofile.email == '' %}
+                    <div class="row text-center" style="margin-top: 10px">
+                        <button id="add-edx" class="btn btn-primary">Add edX Account</button>
+                    </div>
+                {% endif %}
+                {% if question %}
+                    <div class="widget extra-top-margin widget-body-inverse">
+                        <!-- Widget heading -->
+                        <div class="widget-head">
+                            <h4 class="heading">Tell us what you think!</h4>
+                        </div>
+                        <!-- // Widget heading END -->
+
+                        <div class="widget-body innerAll inner-2x">
+                            <h5>{{ question }}</h5>
+
+                            <form action="{% url 'polls:anspoll' question.id %}" method="post" id="survey">
+                                <input type="hidden" value="answer" id="ans-type" name="ans-type"/>
+                                <input type="hidden" value="{{ request.path }}" name="next"/>
+                                {% csrf_token %}
+                                {% for choice in question.choice_set.all %}
+                                    {% if choice.custom != True %}
+                                        {% if question.allow_multiple %}
+                                            <div class="checkbox">
+                                                <label class="checkbox-custom">
+                                                    <input type="checkbox" name="choice" value="{{ choice.id }}">
+                                                    <i class="fa fa-fw fa-square-o"></i><span>{{ choice }}</span>
+                                                </label>
+                                            </div>
+                                        {% else %}
+                                            <div class="radio">
+                                                <label class="radio-custom">
+                                                    <input type="radio" name="choice" value="{{ choice.id }}">
+                                                    <i class="fa fa-circle-o"></i> <span>{{ choice }}</span>
+                                                </label>
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if question.allow_custom %}
+                                    <textarea class="notebook border-none form-control" name="custom"
+                                              style="color: #2e3132"
+                                              {% if question.only_custom %}placeholder="Other"{% endif %}></textarea>
+                                    <button type="submit" class="btn extra-top-margin btn-large btn-primary">
+                                        Submit
+                                    </button>
+
+                                {% else %}
+                                    <button type="submit" class="btn btn-large btn-primary">Submit</button>
+                                {% endif %}
+                            </form>
+                            <button class="btn extra-top-margin btn-large btn-primary"
+                                    onclick="$('#ans-type').val('skip');$('#survey').submit();">
+                                Skip
+                            </button>
+                        </div>
+                    </div>
+                {% endif %}
+            </ul>
+        {% endif %}
+
+    </div>
+
+
+</div>
+
+<!-- // Main Sidebar Menu END -->
+
+<!-- Content -->
+<div id="content">
+
+
+    <div class="navbar hidden-print navbar-primary main" role="navigation">
+        <div class="user-action user-action-btn-navbar pull-left border-right">
+            <button class="btn btn-sm btn-navbar btn-primary btn-stroke"><i class="fa fa-bars fa-2x"></i></button>
+        </div>
+        <div class="col-md-6 padding-none visible-md visible-lg">
+            <div class="input-group innerLR">
+      		<span class="input-group-btn">
+        		<a href="/">
+                    <button class="btn btn-primary" type="button"><i class="fa fa-home"></i>&nbsp; Home</button>
+                </a>&nbsp;&nbsp;
+        		<a href="/learn-more">
+                    <button class="btn btn-primary" type="button"><i class="fa fa-star"></i>&nbsp; Learn More</button>
+                </a>
+                &nbsp;&nbsp;
+                <a href="/faq">
+                    <button class="btn btn-primary" type="button"><i class="fa fa-question"></i>&nbsp; FAQ</button>
+                </a>
+                &nbsp;&nbsp;
+                <a href="#" id="contact">
+                    <button class="btn btn-primary" type="button"><i class="fa fa-share"></i>&nbsp; Contact</button>
+                </a>
+      		</span>
+            </div>
+            <!-- /input-group -->
+        </div>
+        {% if user.is_authenticated %}
+            <div class="user-action pull-right menu-right-hidden-xs menu-left-hidden-xs">
+                <div class="dropdown username hidden-xs pull-left">
+                    <a class="dropdown-toggle " data-toggle="dropdown" href="#">
+				<span class="media margin-none">
+					<span class="pull-left"><img
+                            {% if user.userprofile == None or not user.userprofile.picture %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% else %}
+                            src="/media/{{ user.userprofile.picture }}"
+                            {% endif %}
+                            alt="user" class="img-circle"></span>
+					<span class=" media-body">
+						{{ request.user.first_name|upper }} {{ request.user.last_name|upper }}<span
+                            class="caret"></span>
+					</span>
+				</span>
+                    </a>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a href="{% url 'users:index' %}" class="glyphicons keys"><i></i> Dashboard</a></li>
+                        <li><a href="{% url 'users:profile' %}" class="glyphicons user"><i></i> Profile</a></li>
+                        {#                            <li><a href="#" class="glyphicons envelope"><i></i>Messages</a></li>#}
+                        <li><a href="{% url 'users:logout' %}">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+        <div class="clearfix"></div>
+    </div>
+    <!-- // END navbar -->
+
+    <div class="layout-app">
+
+        <!-- row-app -->
+        <div class="row row-app">
+
+
+            <!-- col -->
+            <div class="col-md-12">
+
+                <!-- col-separator.box -->
+                <div class="col-separator col-unscrollable box col-separator-first">
+
+                    <!-- col-table -->
+                    <div class="col-table">
+                        <div class="col-table-row">
+
+                            <!-- col-app -->
+                            <div class="col-app col-unscrollable">
+
+                                <!-- col-app -->
+                                <div class="col-app iscrollWrapper">
+
+                                    <div class="innerAll inner-2x jscroll">
+                                        <div class="row">
+                                            {% placeholder base_content %}
+                                            {% block base_content %}{% endblock %}
+                                            {% render_block "js" %}
+                                            <!-- // END col -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- // Content END -->
+
+<div class="clearfix"></div>
+<!-- // Sidebar menu & content wrapper END -->
+
+<!-- Footer -->
+<div id="footer" class="hidden-print">
+
+    <!--  Copyright Line -->
+    <div class="copy">&copy; 2014 - <a href="http://www.projectwisely.com">Project Wisely</a> - All
+        Rights
+        Reserved.
+    </div>
+    <!--  End Copyright Line -->
+
+</div>
+<!-- // Footer END -->
+
+
+</div>
+<div id="messages" class="light-box">
+    <i class="fa fa-times-circle-o close" style="margin-top: -25px; margin-right: -30px; float: right"></i>
+
+    <div class="row text-center">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
+</div>
+
+<div id="contact-us" class="light-box">
+    <div class="row text-center" id="contact-body">
+        <h2>Contact Us</h2>
+
+        <div class="row extra-top-margin text-center">
+            We're always looking looking to connect. Shoot us a message!
+        </div>
+
+        <div class="row extra-top-margin">
+            <input type="email" name="email" id='contact-email' placeholder="Your Email Address" class="form-control">
+        </div>
+        <div class="row extra-top-margin">
+            <textarea id="contact-mail" placeholder="Your Message" class="form-control"></textarea>
+        </div>
+        <div class="row extra-top-margin">
+            <div id="validation-contact" class="validation" style="color: red;"></div>
+        </div>
+        <div class="centered extra-top-margin">
+            <button id="contact-send" class="btn btn-primary btn-lg">Send</button>
+        </div>
+    </div>
+</div>
+<div id="thank-us" class="light-box">
+    <div class="row text-center">
+        <h2>Thank You!</h2>
+
+        <div class="row extra-top-margin text-center">
+            We will try and get back as soon as possible!
+        </div>
+        <div class="row extra-top-margin">
+            <button class="btn btn-primary btn-lg close">Close</button>
+        </div>
+    </div>
+</div>
+<!-- // Main Container Fluid END -->
+{% if  user.courseraprofile.username == '' %}
+    <div class="light-box" id="coursera-form">
+        <div class="innerLR row">
+            <form class="form-horizontal col-sm-12" action="{% url 'users:index' %}"
+                  method="post">
+                {% csrf_token %}
+                <input type="hidden" value="coursera" name="platform"/>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input type="text" name="username" class="form-control"
+                               placeholder="Coursera Username">
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <div class="col-sm-12">
+                        <input type="password" name="password" class="form-control"
+                               placeholder="Coursera Password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-primary btn-lg">Add Account</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endif %}
+{% if  user.edxprofile.email == '' %}
+    <div class="light-box" id="edx-form">
+        <div class="innerLR row">
+            {% if alreadyExistEdx %}
+                <div class="row text-center">
+                    This edX account is already linked to a Wisely account. Please use a
+                    different
+                    edX
+                    account.
+                </div>
+            {% endif %}
+            <form class="form-horizontal col-sm-12" action="{% url 'users:index' %}"
+                  method="post">
+                {% csrf_token %}
+                <input type="hidden" value="edx" name="platform"/>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input type="text" name="username" class="form-control"
+                               placeholder="edX Email">
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <div class="col-sm-12">
+                        <input type="password" name="password" class="form-control"
+                               placeholder="edX Password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-primary btn-lg">Add Account</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endif %}
+<!-- Global -->
+<script data-id="App.Config">
+    var basePath = '',
+            commonPath = '{% static 'assets' %}',
+            rootPath = '{% static ''%}',
+            DEV = false,
+            componentsPath = '{% static 'assets/components' %}',
+            layoutApp = true,
+            module = 'admin';
+
+    var primaryColor = '#87c844',
+            dangerColor = '#b55151',
+            successColor = '#609450',
+            infoColor = '#4a8bc2',
+            warningColor = '#ab7a4b',
+            inverseColor = '#45484d';
+
+    var themerPrimaryColor = primaryColor;
+
+</script>
+<!-- Global -->
+<script src="{% static 'assets/components/library/bootstrap/js/bootstrap.min.js' %}?v=v1.9.6&sv=v0.0.1"></script>
+<script src="{% static 'assets/components/plugins/nicescroll/jquery.nicescroll.min.js' %}?v=v1.9.6&sv=v0.0.1"></script>
+<script src="{% static 'assets/components/plugins/breakpoints/breakpoints.js' %}?v=v1.9.6&sv=v0.0.1"></script>
+<script src="{% static 'assets/components/plugins/preload/pace/pace.min.js' %}?v=v1.9.6&sv=v0.0.1"></script>
+<script src="{% static 'assets/components/core/js/preload.pace.init.js' %}?v=v1.9.6"></script>
+<script src="{% static 'assets/components/core/js/sidebar.main.init.js' %}?v=v1.9.6"></script>
+<script src="{% static 'assets/components/core/js/sidebar.collapse.init.js' %}?v=v1.9.6"></script>
+<script src="{% static 'assets/components/common/forms/elements/bootstrap-select/assets/lib/js/bootstrap-select.js' %}?v=v1.9.6&sv=v0.0.1"></script>
+<script src="{% static 'assets/components/common/forms/elements/bootstrap-select/assets/custom/js/bootstrap-select.init.js' %}?v=v1.9.6&sv=v0.0.1"></script>
+<script src="{% static 'assets/components/core/js/sidebar.kis.init.js' %}?v=v1.9.6"></script>
+<script src="{% static 'assets/components/core/js/core.init.js' %}?v=v1.9.6"></script>
+<script src="{% static 'assets/components/core/js/animations.init.js' %}?v=v1.9.6"></script>
+<script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
+<script type='text/javascript' src='https://cdn.firebase.com/v0/firebase.js'></script>
+<script src="{% static 'assets/components/common/forms/elements/fuelux-radio/fuelux-radio.js' %}?v=v1.9.6&sv=v0.0.1"></script>
+<script src="{% static 'assets/components/common/forms/elements/fuelux-checkbox/fuelux-checkbox.js' %}?v=v1.9.6&sv=v0.0.1"></script>
+<script>
+    {% if user.is_authenticated %}
+        $(window).bind('enterBreakpoint768', function () {
+            $('.container-fluid').removeClass('menu-hidden');
+            enableNavbarMenusHover();
+            disableResponsiveNavbarSubmenus();
+        });
+        $('#refresh-from-main').click(function () {
+            $.get("{% url 'users:force_update' %}", {'platform': 'coursera'}, function (res) {
+                var $messages = $('#messages');
+                if (res['fail']) {
+                    $messages.find('.row').text('Can only force update once per day');
+                    $messages.lightbox_me({centered: true});
+                } else {
+                    $messages.find('.row').text('Getting updates now, give us a few seconds');
+                    $messages.lightbox_me({centered: true});
+                    setTimeout(function () {
+                        location.reload();
+                    }, 10000);
+                }
+            });
+        });
+        {% if  user.courseraprofile.username == '' %}
+            $('#add-coursera').click(function () {
+                $('#coursera-form').lightbox_me({centered: true});
+            });
+        {% endif %}
+        {% if  user.edxprofile.email == '' %}
+            $('#add-edx').click(function () {
+                $('#edx-form').lightbox_me({centered: true});
+            });
+        {% endif %}
+    {% else %}
+        $(window).bind('enterBreakpoint768', function () {
+            enableNavbarMenusHover();
+            disableResponsiveNavbarSubmenus();
+        });
+    {% endif %}
+    $(function () {
+        {% if messages %}
+            $('#messages').lightbox_me({centered: true});
+        {% endif %}
+        $('#contact').click(function () {
+            $('#contact-us').lightbox_me({centered: true});
+        });
+
+        $('#contact-send').click(function () {
+            var myRootRef = new Firebase('https://wisely.firebaseIO.com/');
+
+            if (validateEmail($('#contact-email').val())) {
+                myRootRef.push({name: $('#contact-email').val().split('@')[0], msg: $('#contact-mail').val()});
+                $('#contact-body').text('Thank You! We will keep you updated!');
+                $('#contact-us').trigger('close');
+                $('#thank-us').lightbox_me({centered: true});
+            } else {
+                $('#validation-contact').text('That doesn\'t look like a valid email address. Please try again.');
+            }
+        });
+        function validateEmail(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        }
+
+    });
+</script>
+{% block additionalScripts %}
+{% endblock %}
+</body>
+</html>
