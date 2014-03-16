@@ -27,7 +27,7 @@ urlpatterns = patterns('',
                        url(r'^polls/', include('polls.urls', namespace="polls")),
                        url(r'', include('social_auth.urls')),
                        url(r'^pledges/', include('pledges.urls', namespace="pledges")),
-                       url(r'^', include('cms.urls')),
+                       url(r'^blog/', include('cms.urls')),
 )
 
 if not production.DEBUG:
