@@ -1,0 +1,59 @@
+{% extends 'base-app.html' %}
+{% load breaktag %}
+{% load staticfiles %}
+{% load humanize %}
+{% block additionalHeaders %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style-app.css' %}"/>
+{% endblock %}
+{% block nav-bar %}
+    <li class="active"><a href="{% url 'users:index' %}"><i class="fa fa-book"></i><span>Dashboard</span></a>
+    </li>
+    <li class=""><a href="{% url 'pledges:index' %}"><i
+            class="fa fa-book"></i><span>Pledges</span></a>
+    </li>
+    <li class=""><a href="{% url 'pledges:list_rewards' %}"><i
+            class="fa fa-money"></i><span>Rewards</span></a>
+    </li>
+    <li class=""><a href="/more"><i
+            class="fa fa-book"></i><span>More Coming Soon!</span></a>
+    </li>
+{% endblock %}
+{% block content %}
+
+    <div class="col-lg-8 col-sm-12 col-md-7">
+
+        <div class="heading-buttons innerLR border-bottom">
+            <h3 class="margin-none innerTB pull-left">News</h3>
+
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="innerAll bg-white">
+            <div class="row">
+                {% if feeds %}
+                    {% for feed in feeds %}
+                        {% if feed.actor_content_type.name == "user" and feed.actor.first_name %}
+                            <p>
+                                <a href="/users/profile/{{ feed.actor_object_id }}">
+                                    {{ feed.actor.first_name }} {{ feed.actor.last_name }}
+                                </a>
+                                {{ feed.verb }}
+                                {% if feed.target %}
+                                    {{ feed.target }}
+                                {% endif %}
+                            </p>
+                            <p>{{ feed.timestamp|naturaltime }}</p>
+                            <hr>
+                        {% endif %}
+
+                        {#                        {{ feed }}#}
+                        {#                        {{ feed.actor_content_type }}#}
+                        {#                        {{ feed.actor }}#}
+                    {% endfor %}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

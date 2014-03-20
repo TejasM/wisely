@@ -1,7 +1,7 @@
 import json
 from datetime import timedelta
-import urllib
 
+from actstream.models import Action
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -13,11 +13,11 @@ from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.utils import timezone
 import facebook
-import oauth2
 from requests import request as request2, HTTPError
 from django.template import RequestContext
 from social_auth.db.django_models import UserSocialAuth
 import twitter
+from actstream import action
 
 from models import CourseraProfile, Progress, UserProfile, EdxProfile, Invitees
 from pledges.models import Pledge
@@ -47,6 +47,11 @@ def logout_user(request):
     return HttpResponseRedirect('/')
 
 
+def news(request):
+    feed_list = Action.objects.order_by('-timestamp')[:20]
+    return render(request, 'users/news.html', {'feeds': feed_list})
+
+
 @login_required
 def profile(request):
     try:
@@ -68,7 +73,7 @@ def profile(request):
 def public_profile(request, user_id):
     try:
         viewed_user = User.objects.get(id=user_id)
-        user_profile = UserProfile.objects.get(user=viewed_user)
+        user_profile = UserProfile.objects.get(id=viewed_user.userprofile.id)
     except (User.DoesNotExist, UserProfile.DoesNotExist) as _:
         return HttpResponseRedirect('/')
 
@@ -90,7 +95,8 @@ def signup(request):
                                    last_name=request.POST["last_name"], is_active=True)
         user.set_password(request.POST["password"])
         user.save()
-        UserProfile.objects.create(user=user)
+        user_profile = UserProfile.objects.create(user=user)
+        action.send(user_profile, verb='joined Wisely!')
         user = authenticate(username=request.POST["email"], password=request.POST['password'])
         if user is not None:
             if user.is_active:

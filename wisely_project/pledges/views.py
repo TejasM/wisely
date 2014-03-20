@@ -1,13 +1,12 @@
 from __future__ import division
-from datetime import timedelta, datetime
-import hashlib
+from datetime import datetime
 import md5
 import urllib
 import urllib2
+
 from dateutil.relativedelta import relativedelta
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.utils import timezone
@@ -16,11 +15,13 @@ import stripe
 from users.models import Course, UserProfile, EdxProfile, CourseraProfile
 from users.utils import divide_timedelta
 
+
 __author__ = 'Cheng'
 
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from models import Pledge, Follower, Reward
+from actstream import action
 import wisely_project.settings.base as settings
 
 
@@ -227,10 +228,12 @@ def results(request, poll_id):
 def create(request):
     if request.method == "POST":
         if request.POST.get('onboarding', '') != '':
+            course = Course.objects.get(pk=int(request.POST['course']))
             pledge = Pledge.objects.create(user=request.user.userprofile,
-                                           course=Course.objects.get(pk=int(request.POST['course'])),
+                                           course=course,
                                            money=int(float(request.POST['money'].replace(',', ''))), is_active=False,
                                            aim=float(request.POST['aim'].replace('%', '')) / 100)
+            action.send(request.user, verb="pledged for", action_object=pledge, target=course)
             return redirect(reverse('pledges:detail', args=(pledge.id,)))
     try:
         coursera_profile = CourseraProfile.objects.get(user=request.user)

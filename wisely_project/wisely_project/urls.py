@@ -28,6 +28,7 @@ urlpatterns = patterns('',
                        url(r'', include('social_auth.urls')),
                        url(r'^pledges/', include('pledges.urls', namespace="pledges")),
                        url(r'^blog/', include('cms.urls')),
+                       url('activity/', include('actstream.urls')),
 )
 
 if not production.DEBUG:

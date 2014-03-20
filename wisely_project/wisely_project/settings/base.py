@@ -199,6 +199,7 @@ DJANGO_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 
     # Useful template tags:
     # 'django.contrib.humanize',
@@ -235,6 +236,7 @@ LOCAL_APPS = (
     'users',
     'pledges',
     'polls',
+    'actstream',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -321,3 +323,12 @@ SOCIAL_AUTH_PIPELINE = (
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 PREPEND_WWW = False
+
+ACTSTREAM_SETTINGS = {
+    'MODELS': ('auth.user', 'pledges.pledge', 'users.userprofile'),
+    'MANAGER': 'actstream.managers.ActionManager',
+    'FETCH_RELATIONS': True,
+    'USE_PREFETCH': True,
+    'USE_JSONFIELD': True,
+    'GFK_FETCH_DEPTH': 1,
+}
