@@ -1,5 +1,5 @@
 {% extends 'base-app.html' %}
-{% load type %}
+{% load breaktag %}
 {% load staticfiles %}
 {% load humanize %}
 {% block additionalHeaders %}
@@ -38,7 +38,7 @@
                                     {{ feed.actor.first_name }} {{ feed.actor.last_name }}
                                 </a>
                                 {{ feed.verb }}
-                                {% if feed.action_object|pledgeType %}
+                                {% if feed.actions_with_pledges_pledge_as_action_object %}
                                     <a href="/pledges/share/{{ feed.action_object_object_id }}">
                                         {{ feed.action_object }}
                                     </a>

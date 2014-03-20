@@ -11,4 +11,4 @@ register = template.Library()
 def pledgeType(obj):
     if not obj:
         return False
-    return ContentType.objects.get_for_model(obj) is Pledge
+    return obj is Pledge
