@@ -1,5 +1,5 @@
 {% extends 'base-app.html' %}
-{% load breaktag %}
+{% load type %}
 {% load staticfiles %}
 {% load humanize %}
 {% block additionalHeaders %}
@@ -38,18 +38,14 @@
                                     {{ feed.actor.first_name }} {{ feed.actor.last_name }}
                                 </a>
                                 {{ feed.verb }}
-                                {% if feed.actions_with_pledges_pledge_as_action_object %}
+                                {% if feed.action_object|pledgeType %}
                                     <a href="/pledges/share/{{ feed.action_object_object_id }}">
                                         {{ feed.action_object }}
                                     </a>
                                     for
                                 {% endif %}
                                 {% if feed.target %}
-                                    {% if feed.actions_with_pledges_pledge_as_action_object %}
-                                        <a href="{{ feed.target.info_link }}">{{ feed.target }}</a>
-                                    {% else %}
-                                        {{ feed.target }}
-                                    {% endif %}
+                                    {{ feed.target }}
                                 {% endif %}
                             </p>
                             <p>{{ feed.timestamp|naturaltime }}</p>
