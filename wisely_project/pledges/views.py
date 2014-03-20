@@ -144,6 +144,8 @@ def calculate_bonus_rewards(pledge):
 @login_required
 def share(request, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
+    if pledge.user != request.user.userprofile:
+        return redirect(reverse('users:index'))
     if request.method == "POST":
         userprofile = UserProfile.objects.get(user=request.user)
         if userprofile.customer_id != "" and request.POST['existing'] == 'use-existing':
