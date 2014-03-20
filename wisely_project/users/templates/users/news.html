@@ -45,7 +45,11 @@
                                     for
                                 {% endif %}
                                 {% if feed.target %}
-                                    {{ feed.target }}
+                                    {% if feed.actions_with_pledges_pledge_as_action_object %}
+                                        <a href="{{ feed.target.info_link }}">{{ feed.target }}</a>
+                                    {% else %}
+                                        {{ feed.target }}
+                                    {% endif %}
                                 {% endif %}
                             </p>
                             <p>{{ feed.timestamp|naturaltime }}</p>
