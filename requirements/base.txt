@@ -13,3 +13,4 @@ django-stripe-payments==2.0b23
 python-dateutil==2.2
 facebook-sdk==0.4.0
 python-twitter==1.0
+django-activity-stream==0.4.5beta1
