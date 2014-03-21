@@ -37,7 +37,7 @@
                                     {{ feed.actor.first_name }} {{ feed.actor.last_name }}
                                 </a>
                                 {{ feed.verb }}
-                                {% if feed.actions_with_pledges_pledge_as_action_object %}
+                                {% if feed.actions_with_pledges_pledge_as_action_object == None %}
                                     <a href="/pledges/share/{{ feed.action_object_object_id }}">
                                         {{ feed.action_object }}
                                     </a>
