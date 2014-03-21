@@ -36,15 +36,19 @@
                                 <a href="/users/profile/{{ feed.actor_object_id }}">
                                     {{ feed.actor.first_name }} {{ feed.actor.last_name }}
                                 </a>
-                                {{ feed.verb }}
                                 {% if feed.actions_with_pledges_pledge_as_action_object == None %}
                                     <a href="/pledges/share/{{ feed.action_object_object_id }}">
-                                        {{ feed.action_object }}
+                                {% endif %}
+                                {{ feed.verb }}
+                                {% if feed.actions_with_pledges_pledge_as_action_object == None %}
                                     </a>
-                                    for
                                 {% endif %}
                                 {% if feed.target %}
-                                    {{ feed.target }}
+                                    {% if feed.actions_with_users_course_as_target == None %}
+                                        <a href="{{ feed.target.info_link }}">{{ feed.target }}</a>
+                                    {% else %}
+                                        {{ feed.target }}
+                                    {% endif %}
                                 {% endif %}
                             </p>
                             <p>{{ feed.timestamp|naturaltime }}</p>
