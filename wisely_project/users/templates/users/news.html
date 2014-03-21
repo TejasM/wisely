@@ -45,7 +45,7 @@
                                 {% endif %}
                                 {% if feed.target %}
                                     {% if feed.actions_with_users_course_as_target == None %}
-                                        <a href="{{ feed.target.info_link }}">{{ feed.target }}</a>
+                                        <a href="{{ feed.target.course_link }}">{{ feed.target }}</a>
                                     {% else %}
                                         {{ feed.target }}
                                     {% endif %}
