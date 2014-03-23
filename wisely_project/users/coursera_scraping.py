@@ -1,6 +1,10 @@
 from datetime import date, timedelta
 import re
-
+from time import timezone
+from bs4 import BeautifulSoup
+from lxml import html
+from lxml.cssselect import CSSSelector
+import dateutil.parser
 __author__ = 'tmehta'
 import json
 import requests
@@ -144,8 +148,8 @@ class CourseraDownloader(object):
                             course_id = enrollment['course_id']
                             topic = topics[unicode(topic_id)]
                             name = topic['name']
-                            course_link = self.HOME_URL, topic['short_name']
-                            quiz_link = self.QUIZ_URL, topic['short_name']
+                            course_link = self.HOME_URL % topic['short_name']
+                            quiz_link = self.QUIZ_URL % topic['short_name']
                             image_link = topic['small_icon']
                             description = topic['short_description']
                             start_date = None
@@ -162,6 +166,49 @@ class CourseraDownloader(object):
                                                            start_date=start_date, end_date=end_date, image_link=image_link,
                                                            description=description, course_id=topic_id)
                             user.courses.add(course)
+                        res = self.session.get(quiz_link)
+                        soup = BeautifulSoup(res.text)
+                        quiz_list = soup.select('div.course-item-list .course-item-list-header')
+                        quiz_details = soup.select('ul.course-item-list-section-list')
+                        for i, quiz_coursera in enumerate(quiz_list):
+                            heading = quiz_coursera.select('h3')[0].find(text=True, recursive=False)
+                            try:
+                                quiz = Quiz.objects.get(heading=heading, course=course)
+                            except Quiz.DoesNotExist:
+                                deadline = None
+                                try:
+                                    deadline = dateutil.parser.parse(str(
+                                        quiz_details[i].select('.course-quiz-item-softdeadline .course-assignment-deadline')[
+                                            0].contents[
+                                            0].replace('\n', '')))
+                                except IndexError:
+                                    pass
+                                hard_deadline = None
+                                try:
+                                    hard_deadline = dateutil.parser.parse(quiz_details[i].select(
+                                        '.course-quiz-item-harddeadline .course-assignment-deadline')[0].contents[
+                                                                              0].replace('\n', ''))
+                                except IndexError:
+                                    pass
+                                if hard_deadline is None:
+                                    hard_deadline = timezone.now()
+
+                                if deadline is None:
+                                    deadline = hard_deadline
+                                quiz = Quiz.objects.create(heading=heading,
+                                                    deadline=deadline,
+                                                    hard_deadline=hard_deadline,
+                                                    course=course)
+
+                                try:
+                                    progress = Progress.objects.get(quiz=quiz, user=user.userprofile)
+                                except Progress.DoesNotExist:
+                                    progress = Progress.objects.create(quiz=quiz, user=user.userprofile)
+                                progress.score = quiz_details[i].select(
+                                    '.course-quiz-item-score td span')[0].contents[0]
+                                progress.save()
+
+
                     user.save()
                 else:
                     for i, enrollment in enumerate(enrollments):
@@ -169,14 +216,16 @@ class CourseraDownloader(object):
                         course_id = enrollment['course_id']
                         topic = topics[unicode(topic_id)]
                         name = topic['name']
-                        course_link = self.HOME_URL, topic['short_name']
-                        quiz_link = self.QUIZ_URL, topic['short_name']
+                        course_link = None
+                        quiz_link = None
                         image_link = topic['small_icon']
                         description = topic['short_description']
                         start_date = None
                         end_date = None
                         for coursera_course in courses:
                             if coursera_course['id'] == course_id:
+                                course_link = coursera_course['home_link']
+                                quiz_link = coursera_course['home_link'] + "quiz"
                                 start_date = date(coursera_course['start_year'], coursera_course['start_month'],
                                                   coursera_course['start_day'])
                                 if "weeks" in coursera_course['duration_string']:
@@ -191,7 +240,13 @@ class CourseraDownloader(object):
                         print end_date
                         print image_link
                         print description
-                        print topic_id
+                        res.close()
+                        res = self.session.get(quiz_link)
+                        soup = BeautifulSoup(res.text)
+                        quiz_list = soup.select('div.course-item-list .course-item-list-header')
+                        quiz_details = soup.select('ul.course-item-list-section-list')
+                        for i, quiz_coursera in enumerate(quiz_list):
+                            print quiz_coursera.select('h3')[0].find(text=True, recursive=False)
             res.close()
 
     def course_name_from_url(self, course_url):
@@ -267,8 +322,6 @@ def main():
     coursera = CourseraDownloader('tejasmehta0@gmail.com', 'gitajay')
     coursera.login('gamification-003', None)
     coursera.get_enrollments(None)
-    print "Coursera Done"
-
 
 if __name__ == '__main__':
     main()
