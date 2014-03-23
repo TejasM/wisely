@@ -1,20 +1,13 @@
-__author__ = 'tmehta'
-import argparse
-import getpass
-import json
-import netrc
-import os
-import platform
+from datetime import date, timedelta
 import re
+
+__author__ = 'tmehta'
+import json
 import requests
-import shutil
-import sys
-import tarfile
-import time
-import math
-from bs4 import BeautifulSoup
-from os import path
 from six import print_
+from pledges.models import Pledge
+
+from users.models import Course, Quiz, Progress
 
 
 class CourseraDownloader(object):
@@ -71,7 +64,7 @@ class CourseraDownloader(object):
             print_("Invalid week filter, should be a comma separated list of integers", e)
             exit()
 
-    def login(self, className):
+    def login(self, className, user):
         """
         Login into coursera and obtain the necessary session cookies.
         """
@@ -105,6 +98,100 @@ class CourseraDownloader(object):
             raise Exception("Failed to authenticate as %s" % self.username)
 
         self.session = s
+
+    def get_enrollments(self, user):
+        if self.session:
+            url = 'https://www.coursera.org/maestro/api/topic/list2_combined'
+            res = self.session.get(url)
+            if res.status_code == 401:
+                print "Err"
+            else:
+                data = json.loads(res.text)
+                enrollments = data['enrollments']
+                enrollments = sorted(enrollments, key=lambda x: int(x['course__topic_id']))
+                topics = data['list2']['topics']
+                courses = data['list2']['courses']
+                if user:
+                    for i, enrollment in enumerate(enrollments):
+                        try:
+                            course = Course.objects.get(course_id=enrollment['course__topic_id'], user=user)
+                            course_id = enrollment['course_id']
+                            for coursera_course in courses:
+                                if coursera_course['id'] == course_id:
+                                    start_date = date(coursera_course['start_year'], coursera_course['start_month'],
+                                                      coursera_course['start_day'])
+                                    end_date = None
+                                    if "weeks" in coursera_course['duration_string']:
+                                        delta = timedelta(weeks=int(re.findall(r'\d+',
+                                                                               coursera_course['duration_string'])[0]))
+                                        end_date = start_date + delta
+                                    if course.start_date != start_date:
+                                        course.start_date = start_date
+                                    if course.end_date != end_date:
+                                        course.end_date = end_date
+                                    course.save()
+                            user.courses.add(course)
+                            try:
+                                pledge = Pledge.objects.get(course=course, user=user)
+                                if enrollment['grade_normal'] != 'null':
+                                    pledge.actual_mark = int(enrollment['grade_normal'])
+
+                            except Pledge.DoesNotExist:
+                                pass
+                        except Course.DoesNotExist:
+                            topic_id = enrollment['course__topic_id']
+                            course_id = enrollment['course_id']
+                            topic = topics[unicode(topic_id)]
+                            name = topic['name']
+                            course_link = self.HOME_URL, topic['short_name']
+                            quiz_link = self.QUIZ_URL, topic['short_name']
+                            image_link = topic['small_icon']
+                            description = topic['short_description']
+                            start_date = None
+                            end_date = None
+                            for coursera_course in courses:
+                                if coursera_course['id'] == course_id:
+                                    start_date = date(coursera_course['start_year'], coursera_course['start_month'],
+                                                      coursera_course['start_day'])
+                                    if "weeks" in coursera_course['duration_string']:
+                                        delta = timedelta(weeks=int(re.findall(r'\d+',
+                                                                               coursera_course['duration_string'])[0]))
+                                        end_date = start_date + delta
+                            course = Course.objects.create(title=name, course_link=course_link, quiz_link=quiz_link,
+                                                           start_date=start_date, end_date=end_date, image_link=image_link,
+                                                           description=description, course_id=topic_id)
+                            user.courses.add(course)
+                    user.save()
+                else:
+                    for i, enrollment in enumerate(enrollments):
+                        topic_id = enrollment['course__topic_id']
+                        course_id = enrollment['course_id']
+                        topic = topics[unicode(topic_id)]
+                        name = topic['name']
+                        course_link = self.HOME_URL, topic['short_name']
+                        quiz_link = self.QUIZ_URL, topic['short_name']
+                        image_link = topic['small_icon']
+                        description = topic['short_description']
+                        start_date = None
+                        end_date = None
+                        for coursera_course in courses:
+                            if coursera_course['id'] == course_id:
+                                start_date = date(coursera_course['start_year'], coursera_course['start_month'],
+                                                  coursera_course['start_day'])
+                                if "weeks" in coursera_course['duration_string']:
+                                    delta = timedelta(weeks=int(re.findall(r'\d+',
+                                                                           coursera_course['duration_string'])[0]))
+                                    end_date = start_date + delta
+
+                        print name
+                        print course_link
+                        print quiz_link
+                        print start_date
+                        print end_date
+                        print image_link
+                        print description
+                        print topic_id
+            res.close()
 
     def course_name_from_url(self, course_url):
         """Given the course URL, return the name, e.g., algo2012-p2"""
@@ -177,8 +264,8 @@ class CourseraDownloader(object):
 
 def main():
     coursera = CourseraDownloader('tejasmehta0@gmail.com', 'gitajay')
-    coursera.login('gamification-003')
-    print coursera.get_page(coursera.lecture_url_from_name('gamification-003'))
+    coursera.login('gamification-003', None)
+    coursera.get_enrollments(None)
 
 
 if __name__ == '__main__':
