@@ -122,13 +122,15 @@ class CourseraDownloader(object):
                         course_id = enrollment['course_id']
                         topic = topics[unicode(topic_id)]
                         name = topic['name']
-                        course_link = self.HOME_URL % topic['short_name']
-                        quiz_link = self.QUIZ_URL % topic['short_name']
+                        course_link = None
+                        quiz_link = None
                         try:
                             course = Course.objects.get(course_id=enrollment['course__topic_id'])
                             course_id = enrollment['course_id']
                             for coursera_course in courses:
                                 if coursera_course['id'] == course_id:
+                                    course_link = coursera_course['home_link']
+                                    quiz_link = coursera_course['home_link'] + "quiz"
                                     start_date = date(coursera_course['start_year'], coursera_course['start_month'],
                                                       coursera_course['start_day'])
                                     end_date = None
@@ -157,6 +159,8 @@ class CourseraDownloader(object):
                             end_date = None
                             for coursera_course in courses:
                                 if coursera_course['id'] == course_id:
+                                    course_link = coursera_course['home_link']
+                                    quiz_link = coursera_course['home_link'] + "quiz"
                                     start_date = date(coursera_course['start_year'], coursera_course['start_month'],
                                                       coursera_course['start_day'])
                                     if "weeks" in coursera_course['duration_string']:
