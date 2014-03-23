@@ -267,6 +267,7 @@ def main():
     coursera = CourseraDownloader('tejasmehta0@gmail.com', 'gitajay')
     coursera.login('gamification-003', None)
     coursera.get_enrollments(None)
+    print "Coursera Done"
 
 
 if __name__ == '__main__':
