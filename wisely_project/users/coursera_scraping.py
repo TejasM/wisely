@@ -118,6 +118,12 @@ class CourseraDownloader(object):
                 if user:
                     print user.user.email
                     for i, enrollment in enumerate(enrollments):
+                        topic_id = enrollment['course__topic_id']
+                        course_id = enrollment['course_id']
+                        topic = topics[unicode(topic_id)]
+                        name = topic['name']
+                        course_link = self.HOME_URL % topic['short_name']
+                        quiz_link = self.QUIZ_URL % topic['short_name']
                         try:
                             course = Course.objects.get(course_id=enrollment['course__topic_id'])
                             course_id = enrollment['course_id']
@@ -144,12 +150,7 @@ class CourseraDownloader(object):
                             except Pledge.DoesNotExist:
                                 pass
                         except Course.DoesNotExist:
-                            topic_id = enrollment['course__topic_id']
-                            course_id = enrollment['course_id']
-                            topic = topics[unicode(topic_id)]
-                            name = topic['name']
-                            course_link = self.HOME_URL % topic['short_name']
-                            quiz_link = self.QUIZ_URL % topic['short_name']
+
                             image_link = topic['small_icon']
                             description = topic['short_description']
                             start_date = None
@@ -200,13 +201,13 @@ class CourseraDownloader(object):
                                                     hard_deadline=hard_deadline,
                                                     course=course)
 
-                                try:
-                                    progress = Progress.objects.get(quiz=quiz, user=user.userprofile)
-                                except Progress.DoesNotExist:
-                                    progress = Progress.objects.create(quiz=quiz, user=user.userprofile)
-                                progress.score = quiz_details[i].select(
-                                    '.course-quiz-item-score td span')[0].contents[0]
-                                progress.save()
+                            try:
+                                progress = Progress.objects.get(quiz=quiz, user=user.userprofile)
+                            except Progress.DoesNotExist:
+                                progress = Progress.objects.create(quiz=quiz, user=user.userprofile)
+                            progress.score = quiz_details[i].select(
+                                '.course-quiz-item-score td span')[0].contents[0]
+                            progress.save()
 
 
                     user.save()
