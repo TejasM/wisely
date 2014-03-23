@@ -112,9 +112,10 @@ class CourseraDownloader(object):
                 topics = data['list2']['topics']
                 courses = data['list2']['courses']
                 if user:
+                    print user.user.email
                     for i, enrollment in enumerate(enrollments):
                         try:
-                            course = Course.objects.get(course_id=enrollment['course__topic_id'], user=user)
+                            course = Course.objects.get(course_id=enrollment['course__topic_id'])
                             course_id = enrollment['course_id']
                             for coursera_course in courses:
                                 if coursera_course['id'] == course_id:

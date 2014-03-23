@@ -18,7 +18,9 @@ from users.models import CourseraProfile, EdxProfile
 
 while True:
     try:
-        db.reset_queries()
+        for connection in db.connections.all():
+            if len(connection.queries) > 100:
+                db.reset_queries()
         for user in CourseraProfile.objects.filter(last_updated__lt=F('user__last_login')):
             get_coursera_courses(user)
             user.last_updated = timezone.now()
