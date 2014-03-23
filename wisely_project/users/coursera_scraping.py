@@ -206,9 +206,9 @@ class CourseraDownloader(object):
                                                     course=course)
 
                             try:
-                                progress = Progress.objects.get(quiz=quiz, user=user.userprofile)
+                                progress = Progress.objects.get(quiz=quiz, user=user.user.userprofile)
                             except Progress.DoesNotExist:
-                                progress = Progress.objects.create(quiz=quiz, user=user.userprofile)
+                                progress = Progress.objects.create(quiz=quiz, user=user.user.userprofile)
                             progress.score = quiz_details[i].select(
                                 '.course-quiz-item-score td span')[0].contents[0]
                             progress.save()
