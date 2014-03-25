@@ -1,7 +1,9 @@
 import datetime
+from actstream import action
 from django.core.mail import EmailMessage
 from django.template import RequestContext
 from django.template.loader import get_template
+from users.models import UserProfile
 
 __author__ = 'tmehta'
 
@@ -14,7 +16,12 @@ def divide_timedelta(td, divisor):
 def welcome_new_user(backend, details, uid, request, user=None, is_new=False, *args, **kwargs):
     if is_new:
         request.user = user
+        try:
+            user_profile = UserProfile.objects.get(user=request.user)
+        except UserProfile.DoesNotExist:
+            user_profile = UserProfile.objects.create(user=request.user)
         send_welcome_email(request)
+        action.send(user_profile, verb='joined Wisely!')
     return None
 
 
