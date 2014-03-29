@@ -51,7 +51,9 @@
                             {% if not user.is_authenticated %}
                                 <button id="sign" class="other-button">Get Started</button>
                             {% else %}
-                                <a href="{% url 'users:index' %}"><button class="other-button">To Dashboard</button></a>
+                                <a href="{% url 'users:index' %}">
+                                    <button class="other-button">To Dashboard</button>
+                                </a>
                             {% endif %}
                         </div>
 
@@ -140,14 +142,16 @@
                 <div class="column">
                     <i class="fa fa-lock fa-3x"></i><br><br>
 
-                    <p>Once you complete your course, you will receive full refund of your pledge along with a reward for your hard work.</p>
+                    <p>Once you complete your course, you will receive full refund of your pledge along with a reward
+                        for your hard work.</p>
                 </div>
             </div>
             <div class="large-3 columns text-center">
                 <div class="column">
                     <i class="fa fa-signal fa-3x"></i><br><br>
 
-                    <p>Rewards are paid from money collected from users in your course who do not reach their goal. The higher you set your goal, the higher your reward.</p>
+                    <p>Rewards are paid from money collected from users in your course who do not reach their goal. The
+                        higher you set your goal, the higher your reward.</p>
                 </div>
             </div>
             <div class="large-3 columns text-center">
@@ -207,6 +211,7 @@
         </div>
     </div>
     <div id="sign-up" class="light-box">
+        <div id="fb_pixel" class="fb_pixel_e"></div>
         <div class="row text-center">
             <p><strong>Welcome to Wisely!</strong><br>
 
@@ -216,17 +221,20 @@
         </div>
         <div class="row text-center">
             <div>
-                <a class="btn-auth btn-facebook large" href="{% url 'socialauth_begin' 'facebook' %}">
+                <a class="btn-auth btn-facebook large" href="{% url 'socialauth_begin' 'facebook' %}"
+                        onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
                     Sign Up with <b>Facebook</b>
                 </a>
             </div>
             <div class="extra-top-small-margin">
-                <a class="btn-auth btn-twitter large" href="{% url 'socialauth_begin' 'twitter' %}">
+                <a class="btn-auth btn-twitter large" href="{% url 'socialauth_begin' 'twitter' %}"
+                        onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
                     Sign Up with <b>Twitter</b>
                 </a>
             </div>
             <div class="extra-top-small-margin">
-                <a class="btn-auth btn-google large" href="{% url 'socialauth_begin' 'google-oauth2' %}">
+                <a class="btn-auth btn-google large" href="{% url 'socialauth_begin' 'google-oauth2' %}"
+                        onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
                     Sign Up with <b>Google</b>
                 </a>
             </div>
@@ -248,7 +256,10 @@
                     <input type="password" name="password" placeholder="Password">
                 </div>
                 <div class="centered extra-margin-top">
-                    <button type="submit" class="other-button">Sign Up</button>
+                    <button type="submit" class="other-button"
+                            onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">Sign
+                        Up
+                    </button>
                 </div>
             </form>
         </div>
