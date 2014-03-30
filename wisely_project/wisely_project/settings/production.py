@@ -21,7 +21,7 @@ def get_env_setting(setting):
 
 ########## HOST CONFIGURATION
 # See: https://docs.djangoproject.com/en/1.5/releases/1.5/#allowed-hosts-required-in-production
-ALLOWED_HOSTS = ['projectwisely.com', 'www.projectwisely.com']
+ALLOWED_HOSTS = ['projectwisely.com', 'www.projectwisely.com', '162.242.228.217']
 ########## END HOST CONFIGURATION
 
 ########## EMAIL CONFIGURATION
