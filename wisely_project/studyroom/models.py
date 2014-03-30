@@ -2,7 +2,7 @@ import urllib
 import urllib2
 from django.contrib.auth.models import User
 from django.db import models
-import wisely_project.wisely_project.settings.base as settings
+import wisely_project.settings.base as settings
 
 
 def send_event(event_type, event_data):

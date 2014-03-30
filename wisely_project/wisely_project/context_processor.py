@@ -2,7 +2,7 @@ from random import randint
 from django.db.models import Q
 from polls.models import Question
 from users.models import UserProfile, CourseraProfile, EdxProfile
-from wisely_project.wisely_project.settings import base as settings
+from wisely_project.settings import base as settings
 __author__ = 'tmehta'
 
 
