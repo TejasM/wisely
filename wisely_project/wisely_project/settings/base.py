@@ -3,6 +3,7 @@
 from os.path import abspath, basename, dirname, join, normpath
 from sys import path
 
+ASYNC_BACKEND_URL = 'http://projectwisely.com:5000'
 
 ########## PATH CONFIGURATION
 # Absolute filesystem path to the Django project directory:
@@ -58,7 +59,7 @@ DATABASES = {
 
 ########## GENERAL CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#time-zone
-TIME_ZONE = 'America/Los_Angeles'
+TIME_ZONE = 'America/New_York'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
 LANGUAGE_CODE = 'en-us'
@@ -143,6 +144,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
     'wisely_project.context_processor.survey_questions',
+    'wisely_project.context_processor.async_url',
     'cms.context_processors.cms_settings',
     'sekizai.context_processors.sekizai',
 )
@@ -236,6 +238,7 @@ LOCAL_APPS = (
     'users',
     'pledges',
     'polls',
+    'studyroom',
     'actstream',
 )
 

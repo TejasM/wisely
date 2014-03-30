@@ -21,7 +21,7 @@ def get_env_setting(setting):
 
 ########## HOST CONFIGURATION
 # See: https://docs.djangoproject.com/en/1.5/releases/1.5/#allowed-hosts-required-in-production
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['projectwisely.com', 'www.projectwisely.com']
 ########## END HOST CONFIGURATION
 
 ########## EMAIL CONFIGURATION
@@ -93,8 +93,6 @@ INSTALLED_APPS += PRODCUTION_APPS
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Allow all host headers
-ALLOWED_HOSTS = ['*']
-
 # Static asset configuration
 import os
 

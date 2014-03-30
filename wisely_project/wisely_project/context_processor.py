@@ -2,8 +2,12 @@ from random import randint
 from django.db.models import Q
 from polls.models import Question
 from users.models import UserProfile, CourseraProfile, EdxProfile
-
+from wisely_project.wisely_project.settings import base as settings
 __author__ = 'tmehta'
+
+
+def async_url(request):
+    return {'async_url': settings.ASYNC_BACKEND_URL}
 
 
 def survey_questions(request):
