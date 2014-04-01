@@ -10,6 +10,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
                        url(r'^$', view.index),
+                       url(r'^main$', view.index),
                        url(r'^learn-more$', TemplateView.as_view(template_name='learn-more.html')),
                        url(r'^faq$', TemplateView.as_view(template_name='faq.html')),
                        url(r'^more$', TemplateView.as_view(template_name='more-coming.html')),
