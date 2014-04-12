@@ -1,0 +1,38 @@
+{% extends 'base-app.html' %}
+{% block content %}
+    <div id="open-new-session"></div>
+{% endblock %}
+{% block additionalScripts %}
+    <script src="http://www.rtcmulticonnection.org/latest.js"></script>
+    <script>
+        // www.RTCMultiConnection.org/latest.js
+
+        var connection = new RTCMultiConnection();
+
+        // easiest way to customize what you need!
+        connection.session = {
+            audio: true,
+            video: true
+        };
+
+        // on getting local or remote media stream
+        connection.onstream = function (e) {
+            document.body.appendChild(e.mediaElement);
+        };
+
+        // remove video if someone leaves
+        connection.onstreamended = function (e) {
+            if (e.mediaElement.parentNode) {
+                e.mediaElement.parentNode.removeChild(e.mediaElement);
+            }
+        };
+
+        // check existing sessions
+        connection.connect();
+
+        // open new session
+        document.getElementById('open-new-session').onclick = function () {
+            connection.open();
+        };
+    </script>
+{% endblock %}

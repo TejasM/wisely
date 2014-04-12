@@ -1,0 +1,433 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="description"
+          content="Wisely connects you with a knowledgeable community of tutors and peers online to motivate each other and learn together. For coursera and edx courses."/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Wisely</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/foundation.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}"/>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="{% static 'css/auth-buttons.css' %}" rel="stylesheet">
+    <script src="{% static 'js/vendor/modernizr.js' %}"></script>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="{% static 'js/vendor/fastclick.js' %}"></script>
+    <meta property="og:title" content="Wisely - Learn Together">
+    <meta property="og:description"
+          content="Wisely incentivizes you to meet your personal learning goals on Stay on track and get rewarded for your hard work.">
+    <meta property="og:url" content="http://projectwisely.com/"/>
+    <meta property="og:image" content="http://projectwisely.com/static/images/logo.png"/>
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    {% block headers_css %}
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js"></script>
+    {% endblock %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style-anim.css' %}" cache="false"/>
+</head>
+<body>
+{% block content %}
+    <!-- Navigation -->
+
+    {% include 'nav-bar.html' %}
+    <!-- End Top Bar -->
+
+    <!-- Header -->
+    <section id="background-image">
+        <div class="row">
+            <div class="large-10 large-centered small-12 columns">
+                <div class="title">
+
+                    <div id="slider-parent">
+                        <div id="goal-name" class="anim-circle">Goal</div>
+                        <div id="goal" class="anim-circle">0%</div>
+                        <div id="slider"></div>
+                        <div id="holder" class="anim-circle"></div>
+                        <div id="reward" class="anim-circle">$0</div>
+                        <div id="reward-name" class="anim-circle">Reward</div>
+                    </div>
+
+
+                    <div class="subtitle"><h2>
+                        Wisely helps you to meet your personal learning goals on <a href="https://www.coursera.org/">
+                        &nbsp;Coursera</a>
+                        and <a href="https://www.edx.org/">edX</a>.
+                        Stay on track and earn
+                        rewards for your hard work.</h2><br><br>
+
+                        <p>Wisely is in Beta. Be one of the exclusive users to get a sneak peek-- sign up with
+                            Coursera and edX now!</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="after-scroll">
+        <div class="other-nav-bar">
+            <div class="row">
+                <div class="right">
+                    <a href="/faq">
+                        <i class="fa fa-question"></i>
+                        <button class="login-button alt-learn">FAQ</button>
+                    </a>
+                    <a href="/learn-more">
+                        <i class="fa fa-star"></i>
+                        <button class="login-button alt-learn">Learn More</button>
+                    </a>
+                    <a href="#" data-dropdown="drop"
+                       class="login-button dropdown">Welcome {{ user.first_name }} {{ user.last_name }}! &nbsp; <i
+                            class="fa fa-caret-down"></i></a><br>
+                    <ul id="drop" data-dropdown-content class="f-dropdown f-dropdown-logged">
+                        <li><a href="{% url 'users:index' %}">Main Page</a></li>
+                        <li><a href="{% url 'users:profile' %}">Profile</a></li>
+                        <li><a href="{% url 'users:logout' %}">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="one-place">
+            <div class="row">
+                <h1>ONE PLACE FOR ALL YOUR ONLINE COURSES</h1>
+            </div>
+        </div>
+        <div class="pledge-sec">
+            <div class="row">
+                <h1>PLEDGE</h1>
+            </div>
+        </div>
+        <div class="track-sec">
+            <div class="row">
+                <h1>TRACK</h1>
+            </div>
+        </div>
+        <div class="share-sec">
+            <div class="row">
+                <h1>SHARE</h1>
+            </div>
+        </div>
+        <div class="acheive-sec">
+            <div class="row">
+                <h1>ACHEIVE</h1>
+            </div>
+        </div>
+    </section>
+
+    <div id="login-up" class="light-box">
+        <div class="row text-center">
+            <form action="{% url 'users:login' %}" method="post">
+                {% csrf_token %}
+                <div>
+                    <input type="email" name="email" placeholder="Email">
+                </div>
+                <div class="extra-margin-top">
+                    <input type="password" name="password" placeholder="Password">
+                </div>
+                <div class="centered extra-margin-top">
+                    <button type="submit">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="sign-up" class="light-box">
+        <div id="fb_pixel" class="fb_pixel_e"></div>
+        <div class="row text-center">
+            <p><strong>Welcome to Wisely!</strong><br>
+
+                We are currently in Beta. Take a look around!<br>
+
+                We would love to hear your feedback.</p>
+        </div>
+        <div class="row text-center">
+            <div>
+                <a class="btn-auth btn-facebook large" href="{% url 'socialauth_begin' 'facebook' %}"
+                   onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
+                    Sign Up with <b>Facebook</b>
+                </a>
+            </div>
+            <div class="extra-top-small-margin">
+                <a class="btn-auth btn-twitter large" href="{% url 'socialauth_begin' 'twitter' %}"
+                   onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
+                    Sign Up with <b>Twitter</b>
+                </a>
+            </div>
+            <div class="extra-top-small-margin">
+                <a class="btn-auth btn-google large" href="{% url 'socialauth_begin' 'google-oauth2' %}"
+                   onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
+                    Sign Up with <b>Google</b>
+                </a>
+            </div>
+        </div>
+        <hr/>
+        <div class="row text-center">
+            <form action="{% url 'users:sign-up' %}" method="post">
+                {% csrf_token %}
+                <div>
+                    <input type="text" name="first_name" placeholder="First Name">
+                </div>
+                <div class="extra-margin-top">
+                    <input type="text" name="last_name" placeholder="Last Name">
+                </div>
+                <div class="extra-margin-top">
+                    <input type="email" name="email" placeholder="Email">
+                </div>
+                <div class="extra-margin-top">
+                    <input type="password" name="password" placeholder="Password">
+                </div>
+                <div class="centered extra-margin-top">
+                    <button type="submit" class="other-button"
+                            onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">Sign
+                        Up
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="contact-us" class="light-box">
+        <div class="row text-center" id="contact-body">
+            <h2>Contact Us</h2>
+
+            <div class="extra-top-margin">
+                <input type="email" name="email" id='contact-email' placeholder="Your Email Address">
+            </div>
+            <div class="extra-margin-top">
+                <textarea id="contact-mail" placeholder="Your Message"></textarea>
+            </div>
+            <div class="row">
+                <div id="validation-contact" class="validation" style="color: red;"></div>
+            </div>
+            <div class="centered extra-top-margin">
+                <button id="contact-send" class="other-button">Send</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+</body>
+<script src="{% static 'js/foundation.min.js' %}"></script>
+<script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
+<script type='text/javascript' src='https://cdn.firebase.com/v0/firebase.js'></script>
+<script src="{% static 'js/raph.js' %}"></script>
+<script src="{% static 'js/raph-plugin.js' %}"></script>
+<script>
+    var archtype = Raphael("holder", 500, 500);
+    archtype.defineLinearGradient("grad1", [
+        {
+            "id": "s1",
+            "offset": "0",
+            "style": "stop-color:#F15D28;stop-opacity:1;"},
+        {
+            "id": "s2",
+            "offset": "1",
+            "style": "stop-color:#F2CD03;stop-opacity:1;"}
+    ]);
+
+    var center = 250;
+
+    archtype.defineLinearGradient("grad2", [
+        {
+            "id": "s1",
+            "offset": "0",
+            "style": "stop-color:#52ADA8;stop-opacity:1;"},
+        {
+            "id": "s2",
+            "offset": "1",
+            "style": "stop-color:#7EAA84;stop-opacity:1;"}
+    ]);
+    archtype.customAttributes.arc = function (xloc, yloc, value, total, R) {
+        var alpha = 360 / total * value,
+                a = (90 - alpha) * Math.PI / 180,
+                x = xloc + R * Math.cos(a),
+                y = yloc - R * Math.sin(a),
+                path;
+        if (total == value) {
+            path = [
+                ["M", xloc, yloc - R],
+                ["A", R, R, 0, 1, 1, xloc - 0.01, yloc - R]
+            ];
+        } else {
+            path = [
+                ["M", xloc, yloc - R],
+                ["A", R, R, 0, +(alpha > 180), 1, x, y]
+            ];
+        }
+        return {
+            path: path
+        };
+    };
+
+    archtype.customAttributes.arc2 = function (xloc, yloc, value, total, R) {
+        var alpha = 360 / total * value,
+                a = (90 - alpha) * Math.PI / 180,
+                x = xloc - R * Math.cos(a),
+                y = yloc - R * Math.sin(a),
+                path;
+        if (total == value) {
+            path = [
+                ["M", xloc, yloc - R],
+                ["A", R, R, 0, 1, 1, xloc - 0.01, yloc - R]
+            ];
+        } else {
+            path = [
+                ["M", xloc, yloc - R],
+                ["A", R, R, 0, +(alpha > 180), 0, x, y]
+            ];
+        }
+        return {
+            path: path
+        };
+    };
+
+    //make an arc at 50,50 with a radius of 30 that grows from 0 to 40 of 100 with a bounce
+    var goal_arc = archtype.path().attr({
+        "stroke": "#f00",
+        "stroke-width": 15,
+        arc: [center, center, 0, 100, 200]
+    });
+    goal_arc.strokeLinearGradient("grad1", 15);
+    goal_arc.rotate(-87, center, center);
+
+    var top_grey_arc = archtype.path().attr({
+        "stroke": "#836D65",
+        "stroke-width": 15,
+        "stroke-opacity": 0.6,
+        arc: [center, center, 48.5, 100, 215]
+    });
+    top_grey_arc.rotate(-87, center, center);
+
+    var bottom_grey_arc = archtype.path().attr({
+        "stroke": "#836D65",
+        "stroke-width": 15,
+        "stroke-opacity": 0.6,
+        arc: [center, center, 49.5, 100, 215]
+    });
+    bottom_grey_arc.rotate(-270, center, center);
+
+    var money_arc = archtype.path().attr({
+        "stroke": "#f00",
+        "stroke-width": 15,
+        arc2: [center, center, 0, 100, 200]
+    });
+    money_arc.strokeLinearGradient("grad2", 15);
+    money_arc.rotate(-91, center, center);
+
+    var circle = archtype.circle(250, 250, 192);
+    circle.attr("fill", "#fff");
+    circle.attr("fill-opacity", 0.2);
+
+    // Sets the stroke attribute of the circle to white
+    circle.attr("stroke", "#fff");
+    var counter = 0;
+    var counter_goal = 0;
+    var counter_reward = 0;
+    function updateTime() {
+        counter++;
+        counter_goal = parseInt(counter);
+        if (counter_goal > 75) {
+            counter_goal = 75;
+        }
+        counter_reward = parseInt(counter_goal / 2) - 7;
+        if (counter_reward < 0){
+            counter_reward = 3;
+        }
+        $('#goal').text(counter_goal.toString() + "%");
+        $('#reward').text("$" + counter_reward.toString());
+    }
+    var other_int = null;
+    function start_anim() {
+        // Custom Arc Attribute, position x&y, value portion of total, total value, Radius
+
+        goal_arc.animate({
+            arc: [center, center, 37, 100, 200]
+        }, 3000, "bounce", function () {
+
+        });
+
+
+        money_arc.animate({
+            arc2: [center, center, 19, 100, 200]
+        }, 3000, "bounce", function () {
+
+        });
+        other_int = setInterval(updateTime, 3000 / 75);
+    }
+</script>
+<script>
+    $(function () {
+        var int_func = null;
+        var completed = false;
+        var started = false;
+        $("#slider").slider({
+            value: 250,
+            range: "min",
+            min: 1,
+            max: 1000,
+            create: function (event, ui) {
+                setSliderTicks(event.target);
+                $('.under-slide').css({width: '39px'})
+            },
+            slide: function (event, ui) {
+                if (completed) {
+                    return false;
+                }
+                if (ui.value > 400 && started == false) {
+                    $('.anim-circle').fadeIn(100, function () {
+                        start_anim();
+                    });
+                    started = true;
+                }
+                if (ui.value == 1000) {
+                    completed = true;
+                    int_func = setInterval(finishanim, 10);
+                }
+
+            }
+        });
+
+        function finishanim() {
+            if ($('#goal').text() == "75%") {
+                $('.anim-circle').fadeOut(100, function () {
+                    $('#after-scroll').show();
+                });
+                clearInterval(int_func);
+                clearInterval(other_int);
+            }
+        }
+
+        function setSliderTicks(el) {
+            var $slider = $(el);
+            var max = $slider.slider("option", "max");
+            var min = $slider.slider("option", "min");
+            var spacing = 25;
+
+            $slider.find('.ui-slider-tick-mark').remove();
+            for (var i = 1; i < max - min; i++) {
+                if (spacing * i < 100) {
+                    $('<span class="ui-slider-tick-mark"></span>').css('left', (spacing * i) + '%').appendTo($slider);
+                }
+            }
+        }
+
+        $('.ui-slider-handle').append("<img src='{% static 'images/scene2.png' %}' class='under-slide'>")
+    });
+</script>
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-41719357-2', 'projectwisely.com');
+    ga('send', 'pageview');
+</script>
+{% block additionalScripts %}
+{% endblock %}
+</html>
