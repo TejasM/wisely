@@ -716,11 +716,13 @@ select.course {
 
 #goal {
     padding-bottom: 50px;
-    font-size: 60px;
+    font-size: 50px;
+    font-family: 'Lovelo', serif;
 }
 
 #reward {
-    font-size: 60px;
+    font-size: 50px;
+    font-family: 'Lovelo', serif;
 }
 
 .subtitle {
@@ -729,10 +731,12 @@ select.course {
 
 #goal-name {
     padding-bottom: 10px;
+    font-family: 'Lovelo', serif;
 }
 
 #reward-name {
     padding-top: 10px;
+    font-family: 'Lovelo', serif;
 }
 
 .anim-circle {
@@ -752,6 +756,10 @@ select.course {
     margin: 0 auto;
     text-align: center;
     padding: 10% 0;
+}
+
+.one-place img {
+    height: 67px;
 }
 
 .one-place h1 {

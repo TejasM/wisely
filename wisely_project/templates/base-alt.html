@@ -11,7 +11,6 @@
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link href="{% static 'css/auth-buttons.css' %}" rel="stylesheet">
     <script src="{% static 'js/vendor/modernizr.js' %}"></script>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="{% static 'js/vendor/fastclick.js' %}"></script>
     <meta property="og:title" content="Wisely - Learn Together">
@@ -30,11 +29,15 @@
 <body>
 {% block content %}
     <!-- Navigation -->
+    <div id="main-nav-wrapper" style="margin-top: -87px; display: block; position: fixed;z-index: 100;top: 0; padding-top: 0.5%;
+         left: 0;right: 0;width: 100%;background: #3c3f50;">
+        {% include 'nav-bar-alt.html' %}
+    </div>
 
     <!-- Header -->
     <section id="background-image">
         <div id="inner">
-            <div style="padding-top: 3%">
+            <div style="padding-top: 3%" id="other-menu">
                 {% include 'nav-bar-alt.html' %}
             </div>
 
@@ -71,9 +74,6 @@
         </div>
     </section>
     <section id="after-scroll" style="display: none">
-        <div class="other-nav-bar">
-            {% include 'nav-bar-alt.html' %}
-        </div>
         <div class="one-place">
             <div class="row">
                 <div class="large-12 columns">
@@ -84,8 +84,8 @@
             </div>
             <div class="row" style="margin-top: 80px">
                 <div class="large-3 columns">
-                    <a href="#pledge-sec">
-                        <img src="{% static 'images/pledge-icon.png' %}">
+                    <a href="#pledge-sec" id="one-pledge">
+                        <img src="{% static 'images/pledge-blue.png' %}">
 
                         <div class="row pledge-color" style="margin-top: 10px;">
                             <strong>PLEDGE</strong>
@@ -93,8 +93,8 @@
                     </a>
                 </div>
                 <div class="large-3 columns">
-                    <a href="#track-sec">
-                        <img src="{% static 'images/track-icon.png' %}">
+                    <a href="#track-sec" id="one-track">
+                        <img src="{% static 'images/track-orange.png' %}">
 
                         <div class="row track-color" style="margin-top: 10px">
                             <strong>TRACK</strong>
@@ -102,8 +102,8 @@
                     </a>
                 </div>
                 <div class="large-3 columns">
-                    <a href="#share-sec">
-                        <img src="{% static 'images/connect-icon.png' %}">
+                    <a href="#share-sec" id="one-connect">
+                        <img src="{% static 'images/connect-grey.png' %}">
 
                         <div class="row connect-color" style="margin-top: 10px">
                             <strong>CONNECT</strong>
@@ -111,8 +111,8 @@
                     </a>
                 </div>
                 <div class="large-3 columns">
-                    <a href="#achieve-sec">
-                        <img src="{% static 'images/acheive-icon.png' %}">
+                    <a href="#achieve-sec" id="one-achieve">
+                        <img src="{% static 'images/achieve-green.png' %}">
 
                         <div class="row achieve-color" style="margin-top: 10px">
                             <strong>ACHIEVE</strong>
@@ -123,7 +123,7 @@
         </div>
         <div class="pledge-sec alt-back" id="pledge-sec">
             <div class="row">
-                <img src="{% static 'images/pledge-trans.png' %}" style="margin-top: -210px" id="pledge-ic">
+                <img src="{% static 'images/pledge-icon.png' %}" style="margin-top: -210px" id="pledge-ic">
 
                 <h1 class="pledge-color" style="margin-top: -60px"><strong>PLEDGE</strong></h1>
 
@@ -135,7 +135,7 @@
         </div>
         <div class="track-sec" id="track-sec">
             <div class="row">
-                <img src="{% static 'images/track-trans.png' %}" style="margin-top: -210px" id="track-ic">
+                <img src="{% static 'images/track-icon.png' %}" style="margin-top: -210px" id="track-ic">
 
                 <h1 class="track-color" style="margin-top: -60px"><strong>TRACK</strong></h1>
 
@@ -147,7 +147,7 @@
         </div>
         <div class="share-sec alt-back" id="share-sec">
             <div class="row">
-                <img src="{% static 'images/connect-trans.png' %}" style="margin-top: -210px" id="share-ic">
+                <img src="{% static 'images/connect-icon.png' %}" style="margin-top: -210px" id="share-ic">
 
                 <h1 class="connect-color" style="margin-top: -60px"><strong>CONNECT</strong></h1>
 
@@ -159,7 +159,7 @@
         </div>
         <div class="achieve-sec" id="achieve-sec">
             <div class="row">
-                <img src="{% static 'images/achieve-trans.png' %}" style="margin-top: -210px" id="achieve-ic">
+                <img src="{% static 'images/acheive-icon.png' %}" style="margin-top: -210px" id="achieve-ic">
 
                 <h1 class="achieve-color" style="margin-top: -60px"><strong>ACHIEVE</strong></h1>
 
@@ -507,29 +507,47 @@
 
         $('.ui-slider-handle').append("<img src='{% static 'images/scene2.png' %}' class='under-slide'>");
 
-
-        $('#pledge-sec').hover(function () {
-            $('#pledge-ic').attr('src', '{% static 'images/pledge-icon.png' %}');
+        $('#one-pledge').hover(function () {
+            $(this).find('img').attr('src', '{% static 'images/pledge-icon.png' %}');
         }, function () {
-            $('#pledge-ic').attr('src', '{% static 'images/pledge-trans.png' %}');
+            $(this).find('img').attr('src', '{% static 'images/pledge-blue.png' %}');
         });
 
-        $('#track-sec').hover(function () {
-            $('#track-ic').attr('src', '{% static 'images/track-icon.png' %}');
+        $('#one-track').hover(function () {
+            $(this).find('img').attr('src', '{% static 'images/track-icon.png' %}');
         }, function () {
-            $('#track-ic').attr('src', '{% static 'images/track-trans.png' %}');
+            $(this).find('img').attr('src', '{% static 'images/track-orange.png' %}');
         });
 
-        $('#share-sec').hover(function () {
-            $('#share-ic').attr('src', '{% static 'images/connect-icon.png' %}');
+        $('#one-connect').hover(function () {
+            $(this).find('img').attr('src', '{% static 'images/connect-icon.png' %}');
         }, function () {
-            $('#share-ic').attr('src', '{% static 'images/connect-trans.png' %}');
+            $(this).find('img').attr('src', '{% static 'images/connect-grey.png' %}');
         });
 
-        $('#achieve-sec').hover(function () {
-            $('#achieve-ic').attr('src', '{% static 'images/acheive-icon.png' %}');
+        $('#one-achieve').hover(function () {
+            $(this).find('img').attr('src', '{% static 'images/acheive-icon.png' %}');
         }, function () {
-            $('#achieve-ic').attr('src', '{% static 'images/achieve-trans.png' %}');
+            $(this).find('img').attr('src', '{% static 'images/achieve-green.png' %}');
+        });
+        var mustSlideDown = true;
+        var mustSlideUp = false;
+        $(window).scroll(function () {
+
+            var verschil = ($(window).scrollTop() / 5);
+
+            if (verschil > 40 && mustSlideDown) {
+                $('#other-menu').fadeOut(500);
+                $('#main-nav-wrapper').animate({'margin-top': '0px' }, {duration: 500, queue: false});
+                mustSlideDown = false;
+                mustSlideUp = true;
+            }
+            else if (verschil < 40 && mustSlideUp) {
+                $('#other-menu').fadeIn(500);
+                $('#main-nav-wrapper').animate({'margin-top': '-87px' }, {duration: 500, queue: false});
+                mustSlideUp = false;
+                mustSlideDown = true;
+            }
         });
     });
 </script>
