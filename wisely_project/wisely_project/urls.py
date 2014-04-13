@@ -11,7 +11,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
                        url(r'^$', view.index),
-                       url(r'^google46c8e47a069f43cd.html$',
+                       url(r'^google46c8e47a069f43cd\.html$',
                            lambda r: HttpResponse("google-site-verification: google46c8e47a069f43cd.html",
                                                   mimetype="text/plain")),
                        url(r'^alt$', TemplateView.as_view(template_name='base-alt.html')),
