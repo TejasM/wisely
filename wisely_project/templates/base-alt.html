@@ -26,94 +26,164 @@
         <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js"></script>
     {% endblock %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/style-anim.css' %}" cache="false"/>
+    <link href='http://fonts.googleapis.com/css?family=Bitter:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 </head>
 <body>
 {% block content %}
     <!-- Navigation -->
 
-    {% include 'nav-bar.html' %}
-    <!-- End Top Bar -->
-
     <!-- Header -->
     <section id="background-image">
+        <div style="padding-top: 3%">
+            {% include 'nav-bar-alt.html' %}
+        </div>
+
         <div class="row">
-            <div class="large-10 large-centered small-12 columns">
+            <div class="large-12 large-centered small-12 columns">
                 <div class="title">
 
-                    <div id="slider-parent">
+                    <div id="slider-parent" style="position: relative; max-height: 500px">
                         <div id="goal-name" class="anim-circle">Goal</div>
                         <div id="goal" class="anim-circle">0%</div>
+                        <div id="above-slider" style="position: absolute; top: 140px; left: 50px"><h1
+                                style="font-size: 3.5em">CROWD-SOURCED MOTIVATION</h1>
+                        </div>
                         <div id="slider"></div>
+                        <div id="below-slider" style="position: absolute; top: 400px; left: 50px"><h2
+                                style="font-size: 1.6em; color: #fff; text-align: left">Wisely helps you meet your
+                            personal learning goals on Coursera, EdX, Udemy. <br>
+                            Keep track of your progress and earn rewards for your achievements.</h2>
+                        </div>
                         <div id="holder" class="anim-circle"></div>
                         <div id="reward" class="anim-circle">$0</div>
-                        <div id="reward-name" class="anim-circle">Reward</div>
+                        <div id="reward-name" class="anim-circle">Pledged</div>
                     </div>
 
-
-                    <div class="subtitle"><h2>
-                        Wisely helps you to meet your personal learning goals on <a href="https://www.coursera.org/">
-                        &nbsp;Coursera</a>
-                        and <a href="https://www.edx.org/">edX</a>.
-                        Stay on track and earn
-                        rewards for your hard work.</h2><br><br>
-
-                        <p>Wisely is in Beta. Be one of the exclusive users to get a sneak peek-- sign up with
-                            Coursera and edX now!</p>
-
-                    </div>
+                </div>
+                <div class="row" style="display: block">
+                    <a href="#after-scroll">
+                        <img src="{% static 'images/down-orange.png' %}" class="finish-anim"
+                             style="margin: 0 auto; text-align: center; display: none"></a>
                 </div>
             </div>
         </div>
     </section>
     <section id="after-scroll">
         <div class="other-nav-bar">
-            <div class="row">
-                <div class="right">
-                    <a href="/faq">
-                        <i class="fa fa-question"></i>
-                        <button class="login-button alt-learn">FAQ</button>
-                    </a>
-                    <a href="/learn-more">
-                        <i class="fa fa-star"></i>
-                        <button class="login-button alt-learn">Learn More</button>
-                    </a>
-                    <a href="#" data-dropdown="drop"
-                       class="login-button dropdown">Welcome {{ user.first_name }} {{ user.last_name }}! &nbsp; <i
-                            class="fa fa-caret-down"></i></a><br>
-                    <ul id="drop" data-dropdown-content class="f-dropdown f-dropdown-logged">
-                        <li><a href="{% url 'users:index' %}">Main Page</a></li>
-                        <li><a href="{% url 'users:profile' %}">Profile</a></li>
-                        <li><a href="{% url 'users:logout' %}">Logout</a></li>
-                    </ul>
-                </div>
-            </div>
+            {% include 'nav-bar-alt.html' %}
         </div>
         <div class="one-place">
             <div class="row">
-                <h1>ONE PLACE FOR ALL YOUR ONLINE COURSES</h1>
+                <div class="large-12 columns">
+                    <h1>ONE PLACE FOR ALL YOUR ONLINE COURSES</h1>
+
+                    <h2>Wisely is the new centralized social platform for all your online education needs.</h2>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 80px">
+                <div class="large-3 columns">
+                    <a href="#pledge-sec">
+                        <img src="{% static 'images/pledge-icon.png' %}">
+
+                        <div class="row pledge-color" style="margin-top: 10px;">
+                            <strong>PLEDGE</strong>
+                        </div>
+                    </a>
+                </div>
+                <div class="large-3 columns">
+                    <a href="#track-sec">
+                        <img src="{% static 'images/track-icon.png' %}">
+
+                        <div class="row track-color" style="margin-top: 10px">
+                            <strong>TRACK</strong>
+                        </div>
+                    </a>
+                </div>
+                <div class="large-3 columns">
+                    <a href="#connect-sec">
+                        <img src="{% static 'images/connect-icon.png' %}">
+
+                        <div class="row connect-color" style="margin-top: 10px">
+                            <strong>CONNECT</strong>
+                        </div>
+                    </a>
+                </div>
+                <div class="large-3 columns">
+                    <a href="#achieve-sec">
+                        <img src="{% static 'images/acheive-icon.png' %}">
+
+                        <div class="row achieve-color" style="margin-top: 10px">
+                            <strong>ACHIEVE</strong>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
-        <div class="pledge-sec">
+        <div class="pledge-sec alt-back" id="pledge-sec">
             <div class="row">
-                <h1>PLEDGE</h1>
+                <img src="{% static 'images/pledge-icon.png' %}" style="margin-top: -200px">
+
+                <h1 class="pledge-color" style="margin-top: -75px"><strong>PLEDGE</strong></h1>
+
+                <h2 style="text-align: left">Set your goal and make a pledge to commit to your learning. Get rewards for
+                    completing assignments and reaching your goals, paid for by member who don't.</h2>
+
+                <img src="{% static 'images/pledge-image.png' %}">
             </div>
         </div>
-        <div class="track-sec">
+        <div class="track-sec" id="track-sec">
             <div class="row">
-                <h1>TRACK</h1>
+                <img src="{% static 'images/track-icon.png' %}" style="margin-top: -200px">
+
+                <h1 class="track-color" style="margin-top: -75px"><strong>TRACK</strong></h1>
+
+                <h2 style="text-align: left">Wisely helps you monitor your progress across all of your online courses in
+                    one easy-to-use dashboard. Get notified of announcements, updates, and upcoming deadlines.</h2>
+
+                <img src="{% static 'images/track-image.png' %}">
             </div>
         </div>
-        <div class="share-sec">
+        <div class="share-sec alt-back" id="share-sec">
             <div class="row">
-                <h1>SHARE</h1>
+                <img src="{% static 'images/connect-icon.png' %}" style="margin-top: -200px">
+
+                <h1 class="connect-color" style="margin-top: -75px"><strong>CONNECT</strong></h1>
+
+                <h2 style="text-align: left">Meet your online classmates through Wisely and collabrate through live
+                    study rooms. Share your progress with your followers and social networks.</h2>
+
+                <img src="{% static 'images/connect-image.png' %}" style="margin-bottom: -80px">
             </div>
         </div>
-        <div class="acheive-sec">
+        <div class="achieve-sec" id="achieve-sec">
             <div class="row">
-                <h1>ACHEIVE</h1>
+                <img src="{% static 'images/acheive-icon.png' %}" style="margin-top: -200px">
+
+                <h1 class="achieve-color" style="margin-top: -75px"><strong>ACHIEVE</strong></h1>
+
+                <h2 style="text-align: left">Stay motivated, stay on track, and achieve your goals with Wisely.</h2>
+
+                <img src="{% static 'images/achieve-image.png' %}" style="margin-bottom: -80px">
             </div>
         </div>
+
+        <div class="people-sec alt-back">
+            <div class="row">
+                <img src="{% static 'images/logo-blue.png' %}" style="margin-top: -200px">
+
+                <h1>WHAT PEOPLE SAY ABOUT US</h1>
+
+                <h2>Wisely is the new centralized social platform for all your online education needs.</h2>
+            </div>
+            <div class="wide-row" style="margin-top: 20px">
+                <img src="{% static 'images/people-image.png' %}" width="1200">
+            </div>
+        </div>
+
     </section>
+    <div class="last-sec blue-back">
+    </div>
 
     <div id="login-up" class="light-box">
         <div class="row text-center">
@@ -314,7 +384,7 @@
 
     var circle = archtype.circle(250, 250, 192);
     circle.attr("fill", "#fff");
-    circle.attr("fill-opacity", 0.2);
+    circle.attr("fill-opacity", 0.5);
 
     // Sets the stroke attribute of the circle to white
     circle.attr("stroke", "#fff");
@@ -328,7 +398,7 @@
             counter_goal = 75;
         }
         counter_reward = parseInt(counter_goal / 2) - 7;
-        if (counter_reward < 0){
+        if (counter_reward < 0) {
             counter_reward = 3;
         }
         $('#goal').text(counter_goal.toString() + "%");
@@ -372,7 +442,10 @@
                     return false;
                 }
                 if (ui.value > 400 && started == false) {
-                    $('.anim-circle').fadeIn(100, function () {
+                    $('#above-slider').fadeOut(300);
+                    $('#below-slider').fadeOut(300);
+                    $('.anim-circle').css({visibility: 'visible'});
+                    $('.anim-circle').fadeIn(1000, function () {
                         start_anim();
                     });
                     started = true;
@@ -387,11 +460,18 @@
 
         function finishanim() {
             if ($('#goal').text() == "75%") {
-                $('.anim-circle').fadeOut(100, function () {
-                    $('#after-scroll').show();
+                $('.anim-circle').fadeOut(1000, function () {
+                    $('.anim-circle').css({visibility: 'hidden'});
+                    $('.anim-circle').show();
+                    $('#after-scroll').fadeIn(500);
+                    $('.finish-anim').fadeIn(500);
                 });
                 clearInterval(int_func);
                 clearInterval(other_int);
+
+                $('#above-slider').fadeIn(100);
+                $('#below-slider').fadeIn(100);
+                $('.under-slide').attr({src: "{% static 'images/check-mark-green.png' %}"});
             }
         }
 

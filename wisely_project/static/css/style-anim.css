@@ -1,7 +1,5 @@
-@import url(http://fonts.googleapis.com/css?family=Questrial);
-
 #background-image {
-    background: url('../images/background-1.jpg') no-repeat center center fixed;
+    background: url('../images/shutterstock_133805588.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -11,18 +9,25 @@
 
 html {
     color: #ffffff;
+    font-family: 'Bitter', serif;
 }
 
-html, h1, h2, h3, input, button, select, textarea, optgroup, option, p {
-    font-family: 'Questrial', "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+html, h1, h2, h3, input, button, select, textarea, optgroup, option {
+    font-family: 'Bitter', serif;
+}
+
+h2, p, div {
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 strong {
-    font-family: 'Open Sans', 'Questrial', sans-serif;
+    font-family: 'Bitter', serif;
+    font-weight: 700;
+    font-size: 1.2em;
 }
 
 .top-bar {
-    background: #87C844;
+    background: transparent;
 }
 
 .top-bar-inner {
@@ -48,10 +53,19 @@ strong {
 
 .top-bar-inner {
     height: 65px;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+
+.wide-row {
+    width: 1200px;
+    margin: 0 auto;
 }
 
 .top-bar-inner .title-area {
-    display: inline;
+    display: inline-block;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .top-bar-inner .title-area .name {
@@ -612,8 +626,10 @@ select.course {
 }
 
 #slider-parent {
-    margin-top: 150px;
+    padding-top: 150px;
+    height: 500px;
 }
+
 #slider {
     background: transparent;
     text-align: center;
@@ -678,8 +694,8 @@ select.course {
 
 #holder {
     position: absolute;
-    top: -105px;
-    left: 150px;
+    top: 45px;
+    left: 235px;
 }
 
 #goal {
@@ -704,27 +720,40 @@ select.course {
 }
 
 .anim-circle {
-    display: none;
+    visibility: hidden;
 }
 
-#after-scroll{
+#after-scroll {
     color: #000000;
     display: none;
 }
 
 .other-nav-bar {
-    background: darkgray;
+    background: #3c3f50;
     padding: 1% 0.5% 0.5%;
 }
 
 .one-place {
     margin: 0 auto;
     text-align: center;
-    padding: 5% 0;
+    padding: 10% 0;
 }
 
 .one-place h1 {
     color: #000000;
+    font-size: 2.5em;
+    font-weight: 700;
+}
+
+img.finish-anim {
+    display: block;
+}
+
+.one-place h2 {
+    color: #314250;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 1.65em;
+    font-weight: 400;
 }
 
 .pledge-sec {
@@ -733,7 +762,13 @@ select.course {
 }
 
 .pledge-sec h1 {
-    color: lightblue;
+    font-size: 1.5em;
+}
+
+.pledge-sec h2 {
+    color: #9c9d9e;
+    margin-top: 3em;
+    margin-bottom: 3em;
 }
 
 .track-sec {
@@ -742,7 +777,13 @@ select.course {
 }
 
 .track-sec h1 {
-    color: orangered;
+    font-size: 1.5em;
+}
+
+.track-sec h2 {
+    color: #9c9d9e;
+    margin-top: 3em;
+    margin-bottom: 3em;
 }
 
 .share-sec {
@@ -750,15 +791,82 @@ select.course {
     padding: 5% 0;
 }
 
-.share-sec h1 {
-    color: lightgreen;
+.share-sec h2 {
+    color: #9c9d9e;
+    margin-top: 3em;
+    margin-bottom: 3em;
 }
 
-.acheive-sec {
+.share-sec h1 {
+    font-size: 1.5em;
+}
+
+.share-sec h2 {
+    color: #9c9d9e;
+    margin-top: 3em;
+    margin-bottom: 3em;
+}
+
+.achieve-sec {
     text-align: center;
     padding: 5% 0;
 }
 
-.share-sec h1 {
-    color: #006400;
+.achieve-sec h1 {
+    font-size: 1.5em;
+}
+
+.people-sec {
+    text-align: center;
+    padding: 5% 0;
+}
+
+.people-sec h1 {
+    color: #3c3f50;
+    font-size: 3.5em;
+    font-weight: 700;
+}
+
+.people-sec h2 {
+    color: #9c9d9e;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 1.55em;
+    font-weight: 400;
+}
+
+.last-sec {
+    background: #3c3f50;
+    min-height: 150px;
+}
+
+.right-nav a, .right-nav a:hover {
+    margin: 0 3%;
+    display: inline;
+    color: #fff;
+}
+
+.left-nav a, .left-nav a:hover {
+    margin: 0 3%;
+    display: inline;
+    color: #fff;
+}
+
+.pledge-color {
+    color: #79cdeb;
+}
+
+.track-color {
+    color: #f66b00;
+}
+
+.connect-color {
+    color: #4faca9;
+}
+
+.achieve-color {
+    color: #05a551;
+}
+
+.alt-back {
+    background: #f7f9fa;
 }

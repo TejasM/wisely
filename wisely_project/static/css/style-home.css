@@ -42,7 +42,9 @@ strong {
 }
 
 .top-bar-inner .title-area {
-    display: inline;
+    text-align: center;
+    display: inline-block;
+    margin: 0 auto;
 }
 
 .top-bar-inner .title-area .name {

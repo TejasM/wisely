@@ -1,0 +1,60 @@
+{% load staticfiles %}
+<div class="row wide-row">
+    <div class="top-bar-inner">
+        <div class="large-4 columns">
+            <div class="left-nav">
+                <div class="row" style="text-align: center">
+                    <div class="large-4 columns">
+                        <a href="/faq">
+                            <img src="{% static 'images/me-icon.png' %}" height="38px">
+
+                            <div class="row" style="margin-top: 5px">
+                                ME
+                            </div>
+                        </a>
+                    </div>
+                    <div class="large-4 columns">
+                        <a href="/learn-more">
+                            <img src="{% static 'images/book-icon-trans.png' %}" height="38px">
+
+                            <div class="row" style="margin-top: 5px">
+                                COURSES
+                            </div>
+                        </a>
+                    </div>
+                    <div class="large-4 columns">
+                        <a href="#">
+                            <img src="{% static 'images/activities-icon-trans.png' %}" width="34px">
+
+                            <div class="row" style="margin-top: 5px">
+                                ACTIVITIES
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="large-4 columns" style="text-align: center">
+            <a href="{% url 'users:index' %}" class="title-area">
+                <img alt="Wisely" src="{% static 'images/white-logo.png' %}" height="60" width="60"/>
+            </a>
+        </div>
+
+        <div class="large-4 columns">
+            <div class="right-nav">
+                <div class="row" style="text-align: center">
+                    <a href="/faq">
+                        FAQ
+                    </a>
+                    <a href="/learn-more">
+                        FEATURES
+                    </a>
+                    <a href="#">
+                        <img src="{% static 'images/power-icon.png' %}">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
