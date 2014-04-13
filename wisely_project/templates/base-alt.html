@@ -26,8 +26,6 @@
         <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js"></script>
     {% endblock %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/style-anim.css' %}" cache="false"/>
-    <link href='http://fonts.googleapis.com/css?family=Bitter:400,700' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 </head>
 <body>
 {% block content %}
@@ -47,8 +45,9 @@
                         <div id="slider-parent" style="position: relative; max-height: 500px">
                             <div id="goal-name" class="anim-circle">Goal</div>
                             <div id="goal" class="anim-circle">0%</div>
-                            <div id="above-slider" style="position: absolute; top: 140px; left: 125px"><h1 id="inner-above"
-                                    style="font-size: 3.5em">COLLABORATE EDUCATION</h1>
+                            <div id="above-slider" style="position: absolute; top: 140px; left: 50px"><h1
+                                    id="inner-above"
+                                    style="font-size: 3.5em">CROWD-SOURCED MOTIVATION</h1>
                             </div>
                             <div id="slider"></div>
                             <div id="below-slider" style="position: absolute; top: 400px; left: 50px"><h2
@@ -71,7 +70,7 @@
             </div>
         </div>
     </section>
-    <section id="after-scroll">
+    <section id="after-scroll" style="display: none">
         <div class="other-nav-bar">
             {% include 'nav-bar-alt.html' %}
         </div>
@@ -103,7 +102,7 @@
                     </a>
                 </div>
                 <div class="large-3 columns">
-                    <a href="#connect-sec">
+                    <a href="#share-sec">
                         <img src="{% static 'images/connect-icon.png' %}">
 
                         <div class="row connect-color" style="margin-top: 10px">
@@ -124,9 +123,9 @@
         </div>
         <div class="pledge-sec alt-back" id="pledge-sec">
             <div class="row">
-                <img src="{% static 'images/pledge-icon.png' %}" style="margin-top: -200px">
+                <img src="{% static 'images/pledge-trans.png' %}" style="margin-top: -210px" id="pledge-ic">
 
-                <h1 class="pledge-color" style="margin-top: -75px"><strong>PLEDGE</strong></h1>
+                <h1 class="pledge-color" style="margin-top: -60px"><strong>PLEDGE</strong></h1>
 
                 <h2 style="text-align: left">Set your goal and make a pledge to commit to your learning. Get rewards for
                     completing assignments and reaching your goals, paid for by member who don't.</h2>
@@ -136,9 +135,9 @@
         </div>
         <div class="track-sec" id="track-sec">
             <div class="row">
-                <img src="{% static 'images/track-icon.png' %}" style="margin-top: -200px">
+                <img src="{% static 'images/track-trans.png' %}" style="margin-top: -210px" id="track-ic">
 
-                <h1 class="track-color" style="margin-top: -75px"><strong>TRACK</strong></h1>
+                <h1 class="track-color" style="margin-top: -60px"><strong>TRACK</strong></h1>
 
                 <h2 style="text-align: left">Wisely helps you monitor your progress across all of your online courses in
                     one easy-to-use dashboard. Get notified of announcements, updates, and upcoming deadlines.</h2>
@@ -148,9 +147,9 @@
         </div>
         <div class="share-sec alt-back" id="share-sec">
             <div class="row">
-                <img src="{% static 'images/connect-icon.png' %}" style="margin-top: -200px">
+                <img src="{% static 'images/connect-trans.png' %}" style="margin-top: -210px" id="share-ic">
 
-                <h1 class="connect-color" style="margin-top: -75px"><strong>CONNECT</strong></h1>
+                <h1 class="connect-color" style="margin-top: -60px"><strong>CONNECT</strong></h1>
 
                 <h2 style="text-align: left">Meet your online classmates through Wisely and collabrate through live
                     study rooms. Share your progress with your followers and social networks.</h2>
@@ -160,11 +159,11 @@
         </div>
         <div class="achieve-sec" id="achieve-sec">
             <div class="row">
-                <img src="{% static 'images/acheive-icon.png' %}" style="margin-top: -200px">
+                <img src="{% static 'images/achieve-trans.png' %}" style="margin-top: -210px" id="achieve-ic">
 
-                <h1 class="achieve-color" style="margin-top: -75px"><strong>ACHIEVE</strong></h1>
+                <h1 class="achieve-color" style="margin-top: -60px"><strong>ACHIEVE</strong></h1>
 
-                <h2 style="text-align: left">Stay motivated, stay on track, and achieve your goals with Wisely.</h2>
+                <h2 style="text-align: center">Stay motivated, stay on track, and achieve your goals with Wisely.</h2>
 
                 <img src="{% static 'images/achieve-image.png' %}" style="margin-bottom: -80px">
             </div>
@@ -172,7 +171,7 @@
 
         <div class="people-sec alt-back">
             <div class="row">
-                <img src="{% static 'images/logo-blue.png' %}" style="margin-top: -200px">
+                <img src="{% static 'images/logo-blue.png' %}" style="margin-top: -210px">
 
                 <h1>WHAT PEOPLE SAY ABOUT US</h1>
 
@@ -412,17 +411,17 @@
 
         goal_arc.animate({
             arc: [center, center, 37, 100, 200]
-        }, 3000, "bounce", function () {
+        }, 5000, "bounce", function () {
 
         });
 
 
         money_arc.animate({
             arc2: [center, center, 19, 100, 200]
-        }, 3000, "bounce", function () {
+        }, 5000, "bounce", function () {
 
         });
-        other_int = setInterval(updateTime, 3000 / 75);
+        other_int = setInterval(updateTime, 10000 / 75);
     }
 </script>
 <script>
@@ -484,8 +483,8 @@
                 image.css("background-size", "cover");
                 image.fadeIn(100, function () {
                 });
-                $('#inner-above').text('CROWD-SOURCED MOTIVATION');
-                $('#above-slider').css('left', '50px');
+                $('#inner-above').text('COLLABRATE EDUCATION');
+                $('#above-slider').css('left', '125px');
                 $('#above-slider').fadeIn(100);
                 $('#below-slider').fadeIn(100);
                 $('.under-slide').attr({src: "{% static 'images/check-mark-green.png' %}"});
@@ -506,7 +505,32 @@
             }
         }
 
-        $('.ui-slider-handle').append("<img src='{% static 'images/scene2.png' %}' class='under-slide'>")
+        $('.ui-slider-handle').append("<img src='{% static 'images/scene2.png' %}' class='under-slide'>");
+
+
+        $('#pledge-sec').hover(function () {
+            $('#pledge-ic').attr('src', '{% static 'images/pledge-icon.png' %}');
+        }, function () {
+            $('#pledge-ic').attr('src', '{% static 'images/pledge-trans.png' %}');
+        });
+
+        $('#track-sec').hover(function () {
+            $('#track-ic').attr('src', '{% static 'images/track-icon.png' %}');
+        }, function () {
+            $('#track-ic').attr('src', '{% static 'images/track-trans.png' %}');
+        });
+
+        $('#share-sec').hover(function () {
+            $('#share-ic').attr('src', '{% static 'images/connect-icon.png' %}');
+        }, function () {
+            $('#share-ic').attr('src', '{% static 'images/connect-trans.png' %}');
+        });
+
+        $('#achieve-sec').hover(function () {
+            $('#achieve-ic').attr('src', '{% static 'images/acheive-icon.png' %}');
+        }, function () {
+            $('#achieve-ic').attr('src', '{% static 'images/achieve-trans.png' %}');
+        });
     });
 </script>
 <script>

@@ -7,21 +7,42 @@
     min-height: 800px;
 }
 
+@font-face {
+  font-family: 'Lovelo';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Lovelo'), url('../fonts/Lovelo%20Black.otf') format('truetype');
+}
+
+@font-face {
+  font-family: 'bebas';
+  font-style: normal;
+  font-weight: bold;
+  src: local('bebas'), url('../fonts/LiberationSans-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Dist-light';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Dist-light'), url('../fonts/DistProTh.otf') format('truetype');
+}
+
 html {
     color: #ffffff;
-    font-family: 'Bitter', serif;
+    font-family: 'Lovelo', serif;
 }
 
 html, h1, h2, h3, input, button, select, textarea, optgroup, option {
-    font-family: 'Bitter', serif;
+    font-family: 'Lovelo', serif;
 }
 
 h2, p, div {
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'Dist-light', sans-serif;
 }
 
 strong {
-    font-family: 'Bitter', serif;
+    font-family: 'Lovelo', serif;
     font-weight: 700;
     font-size: 1.2em;
 }
@@ -81,7 +102,6 @@ strong {
 
 .login-button {
     background: #87C844;
-    font-family: "Questrial" sans-serif;
     font-weight: 600;
     font-size: 13px;
     text-decoration: none;
@@ -120,7 +140,6 @@ strong {
 
 .f-dropdown li a, .f-dropdown li a:hover, .f-dropdown li a:focus {
     color: #222;
-    font-family: "Questrial" sans-serif;
     font-size: 13px;
 }
 
@@ -299,7 +318,6 @@ h1 {
 
 h2 {
     font-size: 1.3rem;
-    font-family: 'Questrial', sans-serif;
     font-weight: 100;
     -webkit-margin-before: 0em;
     -webkit-margin-after: 0em;
@@ -332,7 +350,6 @@ h2 {
 .about-us h3 {
     font-size: 2rem;
     color: #fff;
-    font-family: 'Questrial', Helvetica, serif;
 }
 
 .light-box {
@@ -561,7 +578,6 @@ h2.course-page-header {
 .alt-faq, .alt-faq:hover, .alt-faq:focus {
     color: #222;
     font-weight: 600 !important;
-    font-family: "Questrial", serif;
     background: none;
     padding: 0 10px 0 5px;
     font-size: 14px;
@@ -725,7 +741,6 @@ select.course {
 
 #after-scroll {
     color: #000000;
-    display: none;
 }
 
 .other-nav-bar {
@@ -777,7 +792,7 @@ img.finish-anim {
 }
 
 .track-sec h1 {
-    font-size: 1.5em;
+    font-size: 1.2em;
 }
 
 .track-sec h2 {
@@ -798,7 +813,7 @@ img.finish-anim {
 }
 
 .share-sec h1 {
-    font-size: 1.5em;
+    font-size: 1.2em;
 }
 
 .share-sec h2 {
@@ -813,7 +828,13 @@ img.finish-anim {
 }
 
 .achieve-sec h1 {
-    font-size: 1.5em;
+    font-size: 1.2em;
+}
+
+.achieve-sec h2 {
+    color: #9c9d9e;
+    margin-top: 3em;
+    margin-bottom: 3em;
 }
 
 .people-sec {
@@ -822,7 +843,7 @@ img.finish-anim {
 }
 
 .people-sec h1 {
-    color: #3c3f50;
+    color: #0F486D;
     font-size: 3.5em;
     font-weight: 700;
 }
