@@ -1,6 +1,10 @@
 {% extends 'base-app.html' %}
 {% load staticfiles %}
 {% block additionalHeaders %}
+    <title>Wisely - Learn more about Wisely</title>
+    <meta name="description"
+          content="Wish to learn more about Wisely? Take a tour of how Wisely can help achieve your learning goals on coursera and edX."/>
+
     <link href="{% static 'css/auth-buttons.css' %}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'css/style-app.css' %}"/>
 {% endblock %}
@@ -11,8 +15,8 @@
             class="fa fa-book"></i><span>Pledges</span></a>
     </li>
     <li class=""><a href="{% url 'pledges:list_rewards' %}"><i
-                            class="fa fa-money"></i><span>Rewards</span></a>
-                    </li>
+            class="fa fa-money"></i><span>Rewards</span></a>
+    </li>
     <li class=""><a href="/more"><i
             class="fa fa-book"></i><span>More Coming Soon!</span></a>
     </li>
@@ -21,7 +25,7 @@
     <div class="col-md-8 col-md-offset-2">
         <h1 class="separator bottom">What is Wisely?</h1>
 
-        <h2 class="heading">Wisely helps you to meet your personal learning goals on Coursera. Stay on track and
+        <h2 class="heading">Wisely helps you to meet your personal learning goals on Coursera and edX. Stay on track and
             get rewards for your hard work.</h2>
 
         <div class="row extra-top-margin">
@@ -39,7 +43,8 @@
                         <div class="innerAll"><i class="fa fa-globe fa-4x text-faded"></i></div>
                         <h5 class="strong">Connect.</h5>
 
-                        <p>Sign In with your <a href="https://www.coursera.org/">Coursera</a> account - we will connect
+                        <p>Sign In with your <a href="https://www.coursera.org/">Coursera</a> or <a
+                                href="https://www.edx.org/">edX</a> account - we will connect
                             all of your active courses for you.</p>
                     </div>
                 </div>

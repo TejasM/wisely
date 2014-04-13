@@ -3,9 +3,9 @@
 <html>
 <head>
     <meta name="description"
-          content="Wisely connects you with a knowledgeable community of tutors and peers online to motivate each other and learn together. For coursera and edx courses."/>
+          content="Wisely connects you with yours peers in your coursera and edX courses. Learn in a social collaborative environment, peer tutoring each other, and motivate each other on Wisely."/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Wisely</title>
+    <title>Wisely - Motivate your learning on Coursera and edX</title>
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/foundation.min.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}"/>
@@ -222,19 +222,19 @@
         <div class="row text-center">
             <div>
                 <a class="btn-auth btn-facebook large" href="{% url 'socialauth_begin' 'facebook' %}"
-                        onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
+                   onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
                     Sign Up with <b>Facebook</b>
                 </a>
             </div>
             <div class="extra-top-small-margin">
                 <a class="btn-auth btn-twitter large" href="{% url 'socialauth_begin' 'twitter' %}"
-                        onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
+                   onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
                     Sign Up with <b>Twitter</b>
                 </a>
             </div>
             <div class="extra-top-small-margin">
                 <a class="btn-auth btn-google large" href="{% url 'socialauth_begin' 'google-oauth2' %}"
-                        onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
+                   onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
                     Sign Up with <b>Google</b>
                 </a>
             </div>
