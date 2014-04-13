@@ -35,36 +35,38 @@
 
     <!-- Header -->
     <section id="background-image">
-        <div style="padding-top: 3%">
-            {% include 'nav-bar-alt.html' %}
-        </div>
+        <div id="inner">
+            <div style="padding-top: 3%">
+                {% include 'nav-bar-alt.html' %}
+            </div>
 
-        <div class="row">
-            <div class="large-12 large-centered small-12 columns">
-                <div class="title">
+            <div class="row">
+                <div class="large-12 large-centered small-12 columns">
+                    <div class="title">
 
-                    <div id="slider-parent" style="position: relative; max-height: 500px">
-                        <div id="goal-name" class="anim-circle">Goal</div>
-                        <div id="goal" class="anim-circle">0%</div>
-                        <div id="above-slider" style="position: absolute; top: 140px; left: 50px"><h1
-                                style="font-size: 3.5em">CROWD-SOURCED MOTIVATION</h1>
+                        <div id="slider-parent" style="position: relative; max-height: 500px">
+                            <div id="goal-name" class="anim-circle">Goal</div>
+                            <div id="goal" class="anim-circle">0%</div>
+                            <div id="above-slider" style="position: absolute; top: 140px; left: 125px"><h1 id="inner-above"
+                                    style="font-size: 3.5em">COLLABORATE EDUCATION</h1>
+                            </div>
+                            <div id="slider"></div>
+                            <div id="below-slider" style="position: absolute; top: 400px; left: 50px"><h2
+                                    style="font-size: 1.6em; color: #fff; text-align: left">Wisely helps you meet your
+                                personal learning goals on Coursera, EdX, Udemy. <br>
+                                Keep track of your progress and earn rewards for your achievements.</h2>
+                            </div>
+                            <div id="holder" class="anim-circle"></div>
+                            <div id="reward" class="anim-circle">$0</div>
+                            <div id="reward-name" class="anim-circle">Pledged</div>
                         </div>
-                        <div id="slider"></div>
-                        <div id="below-slider" style="position: absolute; top: 400px; left: 50px"><h2
-                                style="font-size: 1.6em; color: #fff; text-align: left">Wisely helps you meet your
-                            personal learning goals on Coursera, EdX, Udemy. <br>
-                            Keep track of your progress and earn rewards for your achievements.</h2>
-                        </div>
-                        <div id="holder" class="anim-circle"></div>
-                        <div id="reward" class="anim-circle">$0</div>
-                        <div id="reward-name" class="anim-circle">Pledged</div>
+
                     </div>
-
-                </div>
-                <div class="row" style="display: block">
-                    <a href="#after-scroll">
-                        <img src="{% static 'images/down-orange.png' %}" class="finish-anim"
-                             style="margin: 0 auto; text-align: center; display: none"></a>
+                    <div class="row" style="display: block">
+                        <a href="#after-scroll">
+                            <img src="{% static 'images/down-orange.png' %}" class="finish-anim"
+                                 style="margin: 0 auto; text-align: center; display: none"></a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -444,6 +446,13 @@
                 if (ui.value > 400 && started == false) {
                     $('#above-slider').fadeOut(300);
                     $('#below-slider').fadeOut(300);
+                    var image = $('#background-image');
+                    image.hide();
+                    $("#inner").fadeTo(10, 1);
+                    image.css("background", "url('{% static 'images/shutterstock_125165846.jpg' %}') no-repeat center center fixed");
+                    image.css("background-size", "cover");
+                    image.fadeIn(100, function () {
+                    });
                     $('.anim-circle').css({visibility: 'visible'});
                     $('.anim-circle').fadeIn(1000, function () {
                         start_anim();
@@ -468,7 +477,15 @@
                 });
                 clearInterval(int_func);
                 clearInterval(other_int);
-
+                var image = $('#background-image');
+                image.hide();
+                $("#inner").fadeTo(10, 1);
+                image.css("background", "url('{% static 'images/shutterstock_153034898.jpg' %}') no-repeat center center fixed");
+                image.css("background-size", "cover");
+                image.fadeIn(100, function () {
+                });
+                $('#inner-above').text('CROWD-SOURCED MOTIVATION');
+                $('#above-slider').css('left', '50px');
                 $('#above-slider').fadeIn(100);
                 $('#below-slider').fadeIn(100);
                 $('.under-slide').attr({src: "{% static 'images/check-mark-green.png' %}"});
