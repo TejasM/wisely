@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.http.response import HttpResponse
 from django.views.generic import TemplateView
 
 # Uncomment the next two lines to enable the admin:
@@ -10,6 +11,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
                        url(r'^$', view.index),
+                       url(r'^google46c8e47a069f43cd.html$',
+                           lambda r: HttpResponse("google-site-verification: google46c8e47a069f43cd.html",
+                                                  mimetype="text/plain")),
                        url(r'^alt$', TemplateView.as_view(template_name='base-alt.html')),
                        url(r'^main$', view.index),
                        url(r'^learn-more$', TemplateView.as_view(template_name='learn-more.html')),
