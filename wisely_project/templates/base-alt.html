@@ -415,6 +415,8 @@
         $('#reward').text("$" + counter_reward.toString());
     }
     var other_int = null;
+
+
     function start_anim() {
         // Custom Arc Attribute, position x&y, value portion of total, total value, Radius
 
@@ -435,6 +437,20 @@
 </script>
 <script>
     $(function () {
+        function preload(arrayOfImages) {
+            $(arrayOfImages).each(function () {
+                $('<img/>')[0].src = this;
+                // Alternatively you could use:
+                // (new Image()).src = this;
+            });
+        }
+
+        // Usage:
+
+        preload([
+            '{% static 'images/shutterstock_125165846.jpg' %}',
+            '{% static 'images/shutterstock_153034898.jpg' %}',
+        ]);
         var int_func = null;
         var completed = false;
         var started = false;
@@ -455,12 +471,12 @@
                     $('#above-slider').fadeOut(300);
                     $('#below-slider').fadeOut(300);
                     var image = $('#background-image');
-                    image.hide();
-                    $("#inner").fadeTo(10, 1);
+                    {#                    image.hide();#}
+                    {#                    $("#inner").fadeTo(10, 1);#}
                     image.css("background", "url('{% static 'images/shutterstock_125165846.jpg' %}') no-repeat center center fixed");
                     image.css("background-size", "cover");
-                    image.fadeIn(100, function () {
-                    });
+                    {#                    image.fadeIn(100, function () {#}
+                    {#                    });#}
                     $('.anim-circle').css({visibility: 'visible'});
                     $('.anim-circle').fadeIn(1000, function () {
                         start_anim();
@@ -486,12 +502,12 @@
                 clearInterval(int_func);
                 clearInterval(other_int);
                 var image = $('#background-image');
-                image.hide();
-                $("#inner").fadeTo(10, 1);
+                {#                image.hide();#}
+                {#                $("#inner").fadeTo(10, 1);#}
                 image.css("background", "url('{% static 'images/shutterstock_153034898.jpg' %}') no-repeat center center fixed");
                 image.css("background-size", "cover");
-                image.fadeIn(100, function () {
-                });
+                {#                image.fadeIn(100, function () {#}
+                {#                });#}
                 $('#inner-above').text('COLLABRATE EDUCATION');
                 $('#above-slider').fadeIn(100);
                 $('#below-slider').fadeIn(100);

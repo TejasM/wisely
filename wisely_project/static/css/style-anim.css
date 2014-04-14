@@ -9,6 +9,10 @@
     height: 100%;
     position: relative;
     overflow: hidden;
+    transition: background 3s linear;
+    -webkit-transition: background 3s linear;
+    -moz-transition: background 3s linear;
+    -o-transition: background 3s linear;
 }
 
 @font-face {
