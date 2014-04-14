@@ -1,6 +1,6 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<html>
+<html style="height: 100%">
 <head>
     <meta name="description"
           content="Wisely connects you with a knowledgeable community of tutors and peers online to motivate each other and learn together. For coursera and edx courses."/>
@@ -11,7 +11,6 @@
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link href="{% static 'css/auth-buttons.css' %}" rel="stylesheet">
     <script src="{% static 'js/vendor/modernizr.js' %}"></script>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="{% static 'js/vendor/fastclick.js' %}"></script>
     <meta property="og:title" content="Wisely - Learn Together">
@@ -20,104 +19,25 @@
     <meta property="og:url" content="http://projectwisely.com/"/>
     <meta property="og:image" content="http://projectwisely.com/static/images/logo.png"/>
     <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    {% block headers_css %}
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-        <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js"></script>
-    {% endblock %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/style-anim.css' %}" cache="false"/>
-    <link href='http://fonts.googleapis.com/css?family=Bitter:400,700' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+    {% block headers_css %}
+    {% endblock %}
 </head>
-<body onload="window.location.hash='after-scroll'">
-<!-- Navigation -->
-
-<!-- Header -->
-<section id="background-image">
-    <div id="inner">
-        <div style="padding-top: 3%">
-            {% include 'nav-bar-alt.html' %}
-        </div>
-
-        <div class="row">
-            <div class="large-12 large-centered small-12 columns">
-                <div class="title">
-
-                    <div id="slider-parent" style="position: relative; max-height: 500px">
-                        <div id="goal-name" class="anim-circle">Goal</div>
-                        <div id="goal" class="anim-circle">0%</div>
-                        <div id="above-slider" style="position: absolute; top: 140px; left: 125px"><h1 id="inner-above" style="font-size: 3.5em">
-                            COLLABORATE EDUCATION</h1>
-                        </div>
-                        <div id="slider"></div>
-                        <div id="below-slider" style="position: absolute; top: 400px; left: 50px"><h2
-                                style="font-size: 1.6em; color: #fff; text-align: left">Wisely helps you meet your
-                            personal learning goals on Coursera, EdX, Udemy. <br>
-                            Keep track of your progress and earn rewards for your achievements.</h2>
-                        </div>
-                        <div id="holder" class="anim-circle"></div>
-                        <div id="reward" class="anim-circle">$0</div>
-                        <div id="reward-name" class="anim-circle">Pledged</div>
-                    </div>
-
-                </div>
-                <div class="row" style="display: block">
-                    <a href="#after-scroll">
-                        <img src="{% static 'images/down-orange.png' %}" class="finish-anim"
-                             style="margin: 0 auto; text-align: center;"></a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+<body style="height: 100%; background: #F0F1F4">
 <section id="after-scroll">
-    <div class="other-nav-bar">
+    <div id="main-nav-wrapper" style="display: block; position: fixed; z-index: 100;top: 0; padding-top: 0.5%;
+         left: 0;right: 0;width: 100%;background: #3c3f50;">
         {% include 'nav-bar-alt.html' %}
     </div>
-    {% block content %}
-    {% endblock %}
+    <div style="margin-top: 87px;">
+        {% block content %}
+        {% endblock %}
+    </div>
 </section>
 </body>
 <script src="{% static 'js/foundation.min.js' %}"></script>
 <script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
 <script type='text/javascript' src='https://cdn.firebase.com/v0/firebase.js'></script>
-<script>
-    $(function () {
-        var int_func = null;
-        var completed = true;
-        $("#slider").slider({
-            value: 1000,
-            range: "min",
-            min: 1,
-            max: 1000,
-            create: function (event, ui) {
-                setSliderTicks(event.target);
-                $('.under-slide').css({width: '39px'})
-            },
-            slide: function (event, ui) {
-                if (completed) {
-                    return false;
-                }
-            }
-        });
-
-        function setSliderTicks(el) {
-            var $slider = $(el);
-            var max = $slider.slider("option", "max");
-            var min = $slider.slider("option", "min");
-            var spacing = 25;
-
-            $slider.find('.ui-slider-tick-mark').remove();
-            for (var i = 1; i < max - min; i++) {
-                if (spacing * i < 100) {
-                    $('<span class="ui-slider-tick-mark"></span>').css('left', (spacing * i) + '%').appendTo($slider);
-                }
-            }
-        }
-
-        $('.ui-slider-handle').append("<img src='{% static 'images/check-mark-green.png' %}' class='under-slide'>")
-    });
-</script>
 <script>
     (function (i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r;

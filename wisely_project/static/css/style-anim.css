@@ -84,6 +84,7 @@ strong {
 
 .wide-row {
     width: 1200px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -242,19 +243,6 @@ strong {
     color: #999;
     font-size: 150%;
     line-height: 1.3em;
-}
-
-span.circle {
-    display: block;
-    height: 60px;
-    width: 60px;
-    line-height: 60px;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
-    border: 2px solid #199AD6;
-    text-align: center;
-    margin: 0 auto 20px;
-    font-size: 1.5rem;
 }
 
 .margin-extra-bottom {
