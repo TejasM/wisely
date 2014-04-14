@@ -52,15 +52,16 @@
                     {% if feeds %}
                         <ul id='timeline'>
                             {% for feed in feeds %}
-                                <li class='work'>
-                                    <input class='radio' type='radio' checked>
+                                {% if feed.actor_content_type.name == "user" and feed.actor.first_name %}
+                                    <li class='work'>
+                                        <input class='radio' type='radio' checked>
 
-                                    <div class="relative">
+                                        <div class="relative">
                                     <span class='circle'><img src="{% static 'images/me-icon.png' %}" width="40"
-                                                      style="margin-left: 2px"></span>
-                                    </div>
-                                    <div class='content'>
-                                        {% if feed.actor_content_type.name == "user" and feed.actor.first_name %}
+                                                              style="margin-left: 2px"></span>
+                                        </div>
+                                        <div class='content'>
+
                                             <p>
                                                 <a href="/users/profile/{{ feed.actor_object_id }}">
                                                     {{ feed.actor.first_name }} {{ feed.actor.last_name }}
@@ -80,11 +81,12 @@
                                                     {% endif %}
                                                 {% endif %}
                                             </p>
+
                                             <p>{{ feed.timestamp|naturaltime }}</p>
                                             <hr>
-                                        {% endif %}
-                                    </div>
-                                </li>
+                                        </div>
+                                    </li>
+                                {% endif %}
                             {% endfor %}
                         </ul>
                     {% endif %}
