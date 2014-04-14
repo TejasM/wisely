@@ -49,73 +49,47 @@
         <div class="large-8 columns">
             <div class="row">
                 <div class="large-12 columns">
-                    <ul id='timeline'>
-                        <li class='work'>
-                            <input class='radio' type='radio' checked>
-
-                            <div class="relative">
-                            <span class='circle'><img src="{% static 'images/me-icon.png' %}" width="40"
-                                                      style="margin-left: 2px"></span>
-                            </div>
-                            <div class='content'>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio ea necessitatibus quo
-                                    velit natus cupiditate qui alias possimus ab praesentium nostrum quidem obcaecati
-                                    nesciunt! Molestiae officiis voluptate excepturi rem veritatis eum aliquam qui
-                                    laborum
-                                    non ipsam ullam tempore reprehenderit illum eligendi cumque mollitia temporibus!
-                                    Natus
-                                    dicta qui est optio rerum.
-                                </p>
-                            </div>
-                        </li>
-                        <li class='work'>
-                            <input class='radio' type='radio' checked>
-
-                            <div class="relative">
-                            <span class='circle'><img src="{% static 'images/me-icon.png' %}" width="40"
-                                                      style="margin-left: 2px"></span>
-                            </div>
-                            <div class='content'>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio ea necessitatibus quo
-                                    velit natus cupiditate qui alias possimus ab praesentium nostrum quidem obcaecati
-                                    nesciunt! Molestiae officiis voluptate excepturi rem veritatis eum aliquam qui
-                                    laborum
-                                    non ipsam ullam tempore reprehenderit illum eligendi cumque mollitia temporibus!
-                                    Natus
-                                    dicta qui est optio rerum.
-                                </p>
-                            </div>
-                        </li>
-                    </ul>
                     {% if feeds %}
-                        {% for feed in feeds %}
-                            {% if feed.actor_content_type.name == "user" and feed.actor.first_name %}
-                                <p>
-                                    <a href="/users/profile/{{ feed.actor_object_id }}">
-                                        {{ feed.actor.first_name }} {{ feed.actor.last_name }}
-                                    </a>
-                                    {% if feed.actions_with_pledges_pledge_as_action_object == None %}
-                                        <a href="/pledges/share/{{ feed.action_object_object_id }}">
-                                    {% endif %}
-                                    {{ feed.verb }}
-                                    {% if feed.actions_with_pledges_pledge_as_action_object == None %}
-                                        </a>
-                                    {% endif %}
-                                    {% if feed.target %}
-                                        {% if feed.actions_with_users_course_as_target == None %}
-                                            <a href="{{ feed.target.course_link }}">{{ feed.target }}</a>
-                                        {% else %}
-                                            {{ feed.target }}
+                        <ul id='timeline'>
+                            {% for feed in feeds %}
+                                <li class='work'>
+                                    <input class='radio' type='radio' checked>
+
+                                    <div class="relative">
+                                    <span class='circle'><img src="{% static 'images/me-icon.png' %}" width="40"
+                                                      style="margin-left: 2px"></span>
+                                    </div>
+                                    <div class='content'>
+                                        {% if feed.actor_content_type.name == "user" and feed.actor.first_name %}
+                                            <p>
+                                                <a href="/users/profile/{{ feed.actor_object_id }}">
+                                                    {{ feed.actor.first_name }} {{ feed.actor.last_name }}
+                                                </a>
+                                                {% if feed.actions_with_pledges_pledge_as_action_object == None %}
+                                                    <a href="/pledges/share/{{ feed.action_object_object_id }}">
+                                                {% endif %}
+                                                {{ feed.verb }}
+                                                {% if feed.actions_with_pledges_pledge_as_action_object == None %}
+                                                    </a>
+                                                {% endif %}
+                                                {% if feed.target %}
+                                                    {% if feed.actions_with_users_course_as_target == None %}
+                                                        <a href="{{ feed.target.course_link }}">{{ feed.target }}</a>
+                                                    {% else %}
+                                                        {{ feed.target }}
+                                                    {% endif %}
+                                                {% endif %}
+                                            </p>
+                                            <p>{{ feed.timestamp|naturaltime }}</p>
+                                            <hr>
                                         {% endif %}
-                                    {% endif %}
-                                </p>
-                                <p>{{ feed.timestamp|naturaltime }}</p>
-                                <hr>
-                            {% endif %}
-                        {% endfor %}
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
                     {% endif %}
+
+
                 </div>
             </div>
         </div>
