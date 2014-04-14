@@ -29,7 +29,7 @@
 <body style="height: 100%">
 {% block content %}
     <!-- Navigation -->
-    <div id="main-nav-wrapper" style="margin-top: -87px; display: block; position: fixed;z-index: 100;top: 0; padding-top: 0.5%;
+    <div id="main-nav-wrapper" style="margin-top: -87px; display: block; position: fixed;z-index: 200;top: 0; padding-top: 0.5%;
          left: 0;right: 0;width: 100%;background: #0F486D;">
         {% include 'nav-bar-alt.html' %}
     </div>
@@ -74,7 +74,7 @@
         </div>
     </section>
     <section id="after-scroll" style="display: none">
-        <div class="one-place">
+        <div class="one-place" style="position: relative">
             <div class="row">
                 <div class="large-12 columns">
                     <h1>ONE PLACE FOR ALL YOUR ONLINE COURSES</h1>
@@ -120,58 +120,67 @@
                     </a>
                 </div>
             </div>
+            <div style="position: absolute; bottom: -33px; width: 64px; left: 50%; margin-left: -32px; margin-top: 33px; z-index: 100">
+                <img src="{% static 'images/pledge-icon.png' %}" id="pledge-ic">
+            </div>
         </div>
-        <div class="pledge-sec alt-back" id="pledge-sec">
+        <div class="pledge-sec alt-back" id="pledge-sec" style="position: relative">
             <div class="row">
-                <img src="{% static 'images/pledge-icon.png' %}" style="margin-top: -210px" id="pledge-ic">
 
-                <h1 class="pledge-color" style="margin-top: -60px"><strong>PLEDGE</strong></h1>
+                <h1 class="pledge-color"><strong>PLEDGE</strong></h1>
 
                 <h2 style="text-align: left">Set your goal and make a pledge to commit to your learning. Get rewards for
                     completing assignments and reaching your goals, paid for by member who don't.</h2>
 
                 <img src="{% static 'images/pledge-image.png' %}">
             </div>
+            <div style="position: absolute; bottom: -33px; width: 64px; left: 50%; margin-left: -32px; margin-top: 33px; z-index: 100">
+                <img src="{% static 'images/track-icon.png' %}" id="track-ic">
+            </div>
         </div>
-        <div class="track-sec" id="track-sec">
+        <div class="track-sec" id="track-sec" style="position: relative">
             <div class="row">
-                <img src="{% static 'images/track-icon.png' %}" style="margin-top: -210px" id="track-ic">
 
-                <h1 class="track-color" style="margin-top: -60px"><strong>TRACK</strong></h1>
+                <h1 class="track-color"><strong>TRACK</strong></h1>
 
                 <h2 style="text-align: left">Wisely helps you monitor your progress across all of your online courses in
                     one easy-to-use dashboard. Get notified of announcements, updates, and upcoming deadlines.</h2>
 
                 <img src="{% static 'images/track-image.png' %}">
             </div>
+            <div style="position: absolute; bottom: -33px; width: 64px; left: 50%; margin-left: -32px; margin-top: 33px; z-index: 100">
+                <img src="{% static 'images/connect-icon.png' %}" id="share-ic">
+            </div>
         </div>
-        <div class="share-sec alt-back" id="share-sec">
+        <div class="share-sec alt-back" id="share-sec" style="position: relative">
             <div class="row">
-                <img src="{% static 'images/connect-icon.png' %}" style="margin-top: -210px" id="share-ic">
-
-                <h1 class="connect-color" style="margin-top: -60px"><strong>CONNECT</strong></h1>
+                <h1 class="connect-color"><strong>CONNECT</strong></h1>
 
                 <h2 style="text-align: left">Meet your online classmates through Wisely and collabrate through live
                     study rooms. Share your progress with your followers and social networks.</h2>
 
                 <img src="{% static 'images/connect-image.png' %}" style="margin-bottom: -80px">
             </div>
+            <div style="position: absolute; bottom: -33px; width: 64px; left: 50%; margin-left: -32px; margin-top: 33px; z-index: 100">
+                <img src="{% static 'images/acheive-icon.png' %}" id="achieve-ic">
+            </div>
         </div>
-        <div class="achieve-sec" id="achieve-sec">
+        <div class="achieve-sec" id="achieve-sec" style="position: relative">
             <div class="row">
-                <img src="{% static 'images/acheive-icon.png' %}" style="margin-top: -210px" id="achieve-ic">
 
-                <h1 class="achieve-color" style="margin-top: -60px"><strong>ACHIEVE</strong></h1>
+                <h1 class="achieve-color"><strong>ACHIEVE</strong></h1>
 
                 <h2 style="text-align: center">Stay motivated, stay on track, and achieve your goals with Wisely.</h2>
 
                 <img src="{% static 'images/achieve-image.png' %}" style="margin-bottom: -80px">
             </div>
+            <div style="position: absolute; bottom: -33px; width: 64px; left: 50%; margin-left: -32px; margin-top: 33px; z-index: 100">
+                <img src="{% static 'images/logo-blue.png' %}">
+            </div>
         </div>
 
         <div class="people-sec alt-back">
             <div class="row">
-                <img src="{% static 'images/logo-blue.png' %}" style="margin-top: -210px">
 
                 <h1>WHAT PEOPLE SAY ABOUT US</h1>
 

@@ -702,7 +702,7 @@ select.course {
 
 #holder {
     position: absolute;
-    top: 45px;
+    top: 37px;
     left: 235px;
 }
 
@@ -773,7 +773,7 @@ img.finish-anim {
 
 .pledge-sec {
     text-align: center;
-    padding: 5% 0;
+    padding: 2.5% 0;
 }
 
 .pledge-sec h1 {
@@ -788,7 +788,7 @@ img.finish-anim {
 
 .track-sec {
     text-align: center;
-    padding: 5% 0;
+    padding: 2.5% 0;
 }
 
 .track-sec h1 {
@@ -803,7 +803,7 @@ img.finish-anim {
 
 .share-sec {
     text-align: center;
-    padding: 5% 0;
+    padding: 2.5% 0 7%;
 }
 
 .share-sec h2 {
@@ -824,7 +824,7 @@ img.finish-anim {
 
 .achieve-sec {
     text-align: center;
-    padding: 5% 0;
+    padding: 2.5% 0;
 }
 
 .achieve-sec h1 {
@@ -839,7 +839,7 @@ img.finish-anim {
 
 .people-sec {
     text-align: center;
-    padding: 5% 0;
+    padding: 2.5% 0;
 }
 
 .people-sec h1 {
