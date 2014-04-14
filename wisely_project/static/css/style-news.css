@@ -21,6 +21,7 @@ span.circle {
     border-radius: 50%;
     display: block;
     position: absolute;
+    overflow: hidden;
 }
 
 .content-news {
