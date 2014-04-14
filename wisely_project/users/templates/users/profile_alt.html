@@ -1,0 +1,237 @@
+{% extends 'base-app-alt.html' %}
+{% load staticfiles %}
+{% block headers_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style-news.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style-profile.css' %}"/>
+{% endblock %}
+{% load humanize %}
+{% block content %}
+    <div class="row wide-row">
+    <div class="large-4 columns" style="border-right: solid #D2D4D5 1px;  padding-top: 80px">
+        <div class="row">
+            <dl class="tabs vertical" style="width: 100%; height: 450px" data-tab>
+                <dd class="active"><a href="#panel1a"><i class="fa fa-bolt"></i>Recent Activities</a></dd>
+                <dd><a href="#panel2a"><i class="fa fa-envelope"></i>Inbox</a></dd>
+
+                <dd><a href="#panel3a"><i class="fa fa-list"></i>Tasks</a>
+                </dd>
+                <dd><a href="#panel4a"><i class="fa fa-certificate"></i>Achievements</a></dd>
+                <dd><a href="#panel4a"><i class="fa fa-users"></i>Followers</a></dd>
+                <dd><a href="#panel4a"><i class="fa fa-user"></i>Following</a></dd>
+            </dl>
+        </div>
+        <div class="row" style="margin-top: 30px;">
+            <div class="large-3 columns">
+                <img src="{% static 'images/plus-icon.png' %}" style="width: 100%">
+            </div>
+            <div class="large-9 columns">
+                <div style="margin-top: 15px; margin-left: -10px">
+                    <p style="color: #1E5376; font-size: 1.6em; font-weight: 700">Who To Follow</p>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 30px;">
+            <ul class="follow-list">
+                <li>
+                    <div class="row" style="margin: 3% 5%;">
+                        <div class="large-3 columns" style="padding: 0 4%;">
+                            <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
+                                 {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
+                                 class="pull-left img-circle">
+                        </div>
+                        <div class="large-6 columns">
+                            <div>
+                                <h3 style="font-size: 16px">Tejas Mehta</h3>
+
+                                <p>Programmer</p>
+                            </div>
+                        </div>
+                        <div class="large-3 columns plus-i" style="text-align: center">
+                            +
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="row" style="margin: 3% 5%;">
+                        <div class="large-3 columns" style="padding: 0 4%;">
+                            <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
+                                 {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
+                                 class="pull-left img-circle">
+                        </div>
+                        <div class="large-6 columns">
+                            <div>
+                                <h3 style="font-size: 16px">Tejas Mehta</h3>
+
+                                <p>Programmer</p>
+                            </div>
+                        </div>
+                        <div class="large-3 columns plus-i" style="text-align: center">
+                            +
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="row" style="margin: 3% 5%;">
+                        <div class="large-3 columns" style="padding: 0 4%;">
+                            <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
+                                 {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
+                                 class="pull-left img-circle">
+                        </div>
+                        <div class="large-6 columns">
+                            <div>
+                                <h3 style="font-size: 16px">Tejas Mehta</h3>
+
+                                <p>Programmer</p>
+                            </div>
+                        </div>
+                        <div class="large-3 columns plus-i" style="text-align: center">
+                            +
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="large-8 columns" style="padding-top: 80px">
+        <div class="row profile-area"
+             style="position:relative;
+                     height: 450px; background: url('{% static 'images/shutterstock_153034898.jpg' %}') no-repeat center center; background-size: cover">
+            <div class="large-3 columns">
+            </div>
+            <div class="large-6 push-3 columns" style="text-align: center;">
+                <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
+                     {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
+                     class="img-circle" style="display: block; margin: 20px auto; height: 150px">
+
+                <div>
+                    <h3>Tejas Mehta</h3>
+
+                    <p>Programmer</p>
+                    <hr>
+                    <div class="info">
+                        <img src="{% static 'images/map-icon.png' %}">
+                        {% if user_profile.current_city %}{{ user_profile.current_city }}{% else %}
+                            Toronto{% endif %}
+                        <br>
+                        <img src="{% static 'images/envelope-icon.png' %}"> {% if user.email %}
+                        {{ user.email }}{% else %}email@email.com{% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="large-3 push-3 columns">
+                <div style="text-align: right; float: right">
+                    <i class="fa fa-gear icon-remove-sign"></i>
+                </div>
+            </div>
+            <div style="position: absolute; bottom: 10px; right: 10px; z-index: 199">
+                <img src="{% static 'images/message-icon.png' %}">
+                <br>
+                <img src="{% static 'images/follow-button.png' %}" style="margin-top: 10px">
+            </div>
+        </div>
+        <div class="row">
+            <div class="large-12 columns">
+                <div class="tabs-content vertical" style="width: 100%">
+                    <div class="content active" id="panel1a">
+                        <div style="margin-top: 50px; margin-left: 90px;">
+                            <span class="today-button">Today</span>
+                        </div>
+                        <ul id='timeline-profile'>
+                            <li class='work-profile'>
+                                <input class='radio' type='radio' checked>
+
+                                <div class="relative">
+                                    <span class='date-profile'>12 May 2013</span>
+                                    <span class='circle-profile'></span>
+                                </div>
+                                <div class='content-profile'>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                                        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                    </p>
+                                </div>
+                            </li>
+                            <li class='work-profile'>
+                                <input class='radio' type='radio' checked>
+
+                                <div class="relative">
+                                    <span class='date-profile'>12 May 2013</span>
+                                    <span class='circle-profile'></span>
+                                </div>
+                                <div class='content-profile'>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                                        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                    </p>
+                                </div>
+                            </li>
+                            <li class='work-profile'>
+                                <input class='radio' type='radio' checked>
+
+                                <div class="relative">
+                                    <span class='date-profile'>12 May 2013</span>
+                                    <span class='circle-profile'></span>
+                                </div>
+                                <div class='content-profile'>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+                                        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                                        culpa qui officia deserunt mollit anim id est laborum.
+                                    </p>
+                                </div>
+                            </li>
+                            <li class='work-profile'>
+                                <input class='radio' type='radio' checked>
+
+                                <div class="relative">
+                                    <span class='date-profile'>12 May 2013</span>
+                                    <span class='circle-profile'></span>
+                                </div>
+                                <div class='content-profile'>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+                                        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                                        culpa qui officia deserunt mollit anim id est laborum.
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="content" id="panel2a">
+                        <p>Panel 2 content goes here.</p>
+                    </div>
+                    <div class="content" id="panel3a">
+                        <p>Panel 3 content goes here.</p>
+                    </div>
+                    <div class="content" id="panel4a">
+                        <p>Panel 4 content goes here.</p>
+                    </div>
+                    <div class="content" id="panel5a">
+                        <p>Panel 4 content goes here.</p>
+                    </div>
+                    <div class="content" id="panel6a">
+                        <p>Panel 4 content goes here.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+{% block additionalScripts %}
+    <script src="{% static 'js/foundation/foundation.tab.js' %}"></script>
+{% endblock %}

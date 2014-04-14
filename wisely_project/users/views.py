@@ -65,9 +65,9 @@ def profile(request):
     completed_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=True)
     current_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=False)
 
-    context_dict = {'user': request.user, 'user_profile': user_profile, 'user_profile_form': user_profile_form,
+    context_dict = {'user_current': request.user, 'user_profile': user_profile, 'user_profile_form': user_profile_form,
                     'user_form': user_form, 'completed_pledges': completed_pledges, 'current_pledges': current_pledges}
-    return render(request, 'users/profile.html', context_dict)
+    return render(request, 'users/profile_alt.html', context_dict)
 
 
 def public_profile(request, user_id):
@@ -82,7 +82,7 @@ def public_profile(request, user_id):
 
     context_dict = {'viewed_user': viewed_user, 'user_profile': user_profile, 'completed_pledges': completed_pledges,
                     'current_pledges': current_pledges, 'public': True}
-    return render(request, 'users/profile.html', context_dict)
+    return render(request, 'users/profile_alt.html', context_dict)
 
 
 def signup(request):
