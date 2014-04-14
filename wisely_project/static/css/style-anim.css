@@ -12,24 +12,24 @@
 }
 
 @font-face {
-  font-family: 'Lovelo';
-  font-style: normal;
-  font-weight: normal;
-  src: local('Lovelo'), url('../fonts/Lovelo%20Black.otf') format('truetype');
+    font-family: 'Lovelo';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Lovelo'), url('../fonts/Lovelo%20Black.otf') format('truetype');
 }
 
 @font-face {
-  font-family: 'bebas';
-  font-style: normal;
-  font-weight: bold;
-  src: local('bebas'), url('../fonts/LiberationSans-Bold.ttf') format('truetype');
+    font-family: 'bebas';
+    font-style: normal;
+    font-weight: bold;
+    src: local('bebas'), url('../fonts/LiberationSans-Bold.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: 'Dist-light';
-  font-style: normal;
-  font-weight: normal;
-  src: local('Dist-light'), url('../fonts/DistProTh.otf') format('truetype');
+    font-family: 'Dist-light';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Dist-light'), url('../fonts/DistProTh.otf') format('truetype');
 }
 
 html {
@@ -890,4 +890,56 @@ img.finish-anim {
 
 .alt-back {
     background: #f7f9fa;
+}
+
+.tabs dd > a {
+    font-size: 25px;
+    background: #fff;
+    color: #58595B;
+}
+
+.tabs dd.active > a {
+    font-size: 25px;
+    background: #fff;
+    color: #fff;
+}
+
+.tabs dd > a:after {
+    margin-top: 10px;
+}
+
+.tabs dd > a i {
+    margin-right: 15px;
+}
+
+.tabs dd.active > a {
+    background: #0F486D;
+}
+
+ul.follow-list {
+    list-style: none;
+    margin-left: 0;
+}
+
+ul.follow-list li {
+    background: #fff;
+    border: solid #9c9d9e 1px;
+    font-size: 30px;
+}
+
+ul.follow-list p {
+    margin-bottom: 0;
+}
+
+ul.follow-list h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+ul.follow-list li {
+    margin-top: 10px;
+}
+
+ul.follow-list .plus-i {
+    border: solid #9c9d9e 1px;
 }
