@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django_messages.models import Message
@@ -48,6 +48,7 @@ def logout_user(request):
     return HttpResponseRedirect('/')
 
 
+@login_required
 def news(request):
     feed_list = Action.objects.order_by('-timestamp')[:20]
     message_list = Message.objects.inbox_for(request.user)
@@ -334,6 +335,7 @@ def edit_profile(request):
     return HttpResponseRedirect(reverse('users:profile'))
 
 
+@login_required
 def compose(request):
     if request.method == "POST":
         sender = request.user
@@ -352,6 +354,7 @@ def compose(request):
         return HttpResponseRedirect(reverse('users:profile'))
 
 
+@login_required
 def reply(request):
     if request.method == "POST":
         sender = request.user
@@ -369,3 +372,16 @@ def reply(request):
         return HttpResponseRedirect(success_url)
     else:
         return HttpResponseRedirect(reverse('users:profile'))
+
+
+@login_required
+def follow(request):
+    if request.method == "POST" and request.is_ajax():
+        to_follow = get_object_or_404(UserProfile, pk=request.POST['user_id'])
+        profile = request.user.userprofile
+        profile.follows.add(to_follow)
+        profile.save()
+        json_data = json.dumps({"HTTPRESPONSE": 1})
+    else:
+        json_data = json.dumps({"HTTPRESPONSE": -1})
+    return HttpResponse(json_data, mimetype="application/json")

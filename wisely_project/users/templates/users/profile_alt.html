@@ -95,7 +95,9 @@
                 <div style="position: absolute; bottom: 10px; right: 10px; z-index: 199">
                     <img src="{% static 'images/message-icon.png' %}" onclick="$('#compose-message').lightbox_me({centered: true});">
                     <br>
-                    <img src="{% static 'images/follow-button.png' %}" style="margin-top: 10px">
+                    {% if viewed_user.userprofile not in user.userprofile.follows %}
+                        <img src="{% static 'images/follow-button.png' %}" style="margin-top: 10px" id='follow-button'>
+                    {% endif %}
                 </div>
             {% endif %}
         </div>
@@ -152,9 +154,27 @@
     {% if public and viewed_user != request.user %}
         {% include 'django_messages/reply.html' with path=request.get_full_path %}
     {% endif %}
-
+    <div id="other-messages" class="light-box">
+        <i class="fa fa-times-circle-o close" style="margin-top: -25px; margin-right: -30px; float: right"></i>
+        <div class="row text-center" id="other-message">
+        </div>
+    </div>
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'js/foundation/foundation.tab.js' %}"></script>
     <script src="{% static 'js/foundation/foundation.accordion.js' %}"></script>
+    <script>
+        $('#follow-button').click(function(){
+            $.post('{% url 'users:follow' %}', {user_id: {{ viewed_user.id }} }).done(function( data ) {
+                if(data['HTTPRESPONSE'] == "1"){
+                    $('#other-message').text('Now following {{ viewed_user.first_name }} {{ viewed_user.last_name }}');
+                    $('#other-messages').show();
+                    $('#follow-button').hide();
+                } else {
+                    $('#other-message').text('Something went wrong try again later');
+                    $('#other-messages').show();
+                }
+                });
+        });
+    </script>
 {% endblock %}
