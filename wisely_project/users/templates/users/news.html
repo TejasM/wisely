@@ -172,7 +172,7 @@
                         <div class="content" id="panel3a">
                             <p>Panel 3 content goes here.</p>
                         </div>
-                        <div class="content" id="panel4a">
+                        <div class="content" id="panel4a" style="width: 100%">
                             {% include 'django_messages/inbox.html' %}
                         </div>
                     </div>
@@ -184,4 +184,5 @@
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'js/foundation/foundation.tab.js' %}"></script>
+    <script src="{% static 'js/foundation/foundation.accordion.js' %}"></script>
 {% endblock %}

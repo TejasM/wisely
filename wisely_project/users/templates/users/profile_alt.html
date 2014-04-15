@@ -128,8 +128,8 @@
                         </ul>
                     </div>
                     {% if viewed_user == request.user %}
-                        <div class="content" id="panel2a">
-                            <p>Panel 2 content goes here.</p>
+                        <div class="content" id="panel2a" style="width: 100%">
+                            {% include 'django_messages/inbox.html' %}
                         </div>
                         <div class="content" id="panel3a">
                             <p>Panel 3 content goes here.</p>
@@ -150,10 +150,11 @@
         </div>
     </div>
     {% if public and viewed_user != request.user %}
-        {% include 'django_messages/compose.html' with username=viewed_user.username path=request.get_full_path %}
+        {% include 'django_messages/reply.html' with path=request.get_full_path %}
     {% endif %}
 
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'js/foundation/foundation.tab.js' %}"></script>
+    <script src="{% static 'js/foundation/foundation.accordion.js' %}"></script>
 {% endblock %}
