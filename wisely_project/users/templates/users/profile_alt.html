@@ -67,7 +67,7 @@
             <div class="large-6 push-3 columns" style="text-align: center;">
                 <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
                      {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
-                     class="img-circle" style="display: block; margin: 20px auto; height: 150px; width: 150px">
+                     class="img-circle" style="display: block; margin: 20px auto; height: 200px;">
 
                 <div>
                     <h3>{{ viewed_user.first_name }} {{ viewed_user.last_name }}</h3>
@@ -85,7 +85,7 @@
                 </div>
             </div>
             {% if viewed_user == request.user %}
-                <div class="large-3 push-3 columns">
+                <div class="large-3 {% if public and viewed_user != user %}push-3{% endif %} columns">
                     <div style="text-align: right; float: right">
                         <i class="fa fa-gear icon-remove-sign"></i>
                     </div>
