@@ -49,6 +49,10 @@ h2, p, div {
     font-family: 'Dist-light', sans-serif;
 }
 
+p {
+    font-size: 1.2em;
+}
+
 strong {
     font-family: 'Lovelo', serif;
     font-weight: 700;
