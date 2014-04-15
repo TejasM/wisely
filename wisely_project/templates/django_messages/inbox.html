@@ -10,7 +10,7 @@
                         class="right">From: {{ message.sender.first_name }} {{ message.sender.last_name }}</span>
                 {% if message.new %}</strong>{% endif %}</a>
 
-                <div id="panel1" class="content">
+                <div id="panel1" class="content" style="overflow: hidden">
                     <p>{{ message.body|linebreaksbr }}</p>
                     <div style="float: right">
                         <button class="main-button"
