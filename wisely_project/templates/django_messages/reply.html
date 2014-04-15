@@ -3,8 +3,8 @@
         {% csrf_token %}
         <input type="hidden" name="successful_url" value="{{ path }}">
         <input type="hidden" name='message_id' value="" id="message_reply_id">
-        <input type="text" value="" placeholder="Subject" name="subject">
-        <textarea name="body" placeholder="Message"></textarea>
+        <input type="text" value="" placeholder="Subject" name="subject" style="font-family: Lovelo, serif">
+        <textarea name="body" placeholder="Message" style="font-family: Dist-light, sans-serif"></textarea>
         <button type="submit" style="float: right; margin-top: 20px">SEND</button>
     </form>
 </div>
