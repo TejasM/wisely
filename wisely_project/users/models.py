@@ -93,7 +93,7 @@ class UserProfile(BaseModel):
         (FEMALE, 'Female'),
     )
     gender = models.CharField(max_length=1, choices=GENDER, null=True)
-    follows = models.ManyToManyField('self', related_name='follows', symmetrical=False)
+    follows = models.ManyToManyField('self', related_name='following', symmetrical=False)
     birthday = models.DateField(null=True, blank=True)
     headline = models.TextField(null=True, blank=True, max_length=64)
     about_me = models.TextField(null=True, blank=True, max_length=500)
