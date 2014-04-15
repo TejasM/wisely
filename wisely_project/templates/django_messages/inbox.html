@@ -5,13 +5,13 @@
     <dl class="accordion" data-accordion>
         {% for message in message_list %}
             <dd>
-                {% if message.new %}<strong>{% endif %}<a href="#panel1">
+                <a href="#panel1">{% if message.new %}<strong>{% endif %}
                 Subject: {{ message.subject }} <span
-                        class="right">From: {{ message.sender.first_name }} {{ message.sender.last_name }}</span></a>
-                {% if message.new %}</strong>{% endif %}
+                        class="right">From: {{ message.sender.first_name }} {{ message.sender.last_name }}</span>
+                {% if message.new %}</strong>{% endif %}</a>
 
                 <div id="panel1" class="content">
-                    {{ message.body|linebreaksbr }}
+                    <p>{{ message.body|linebreaksbr }}</p>
                     <div style="float: right">
                         <button class="main-button"
                                 onclick="$('#message_reply_id').val('{{ message.id }}');$('#compose-message').lightbox_me({centered: true});">
