@@ -341,7 +341,7 @@ def compose(request):
         subject = request.POST['subject']
         body = request.POST['body']
         Message.objects.create(subject=subject, body=body, recipient=User.objects.get(username=recipient),
-                               sender=User.objects.get(sender=sender))
+                               sender=User.objects.get(username=sender))
         messages.info(request, "Message successfully sent.")
         if 'successful_url' in request.POST:
             success_url = request.POST['successful_url']
@@ -360,7 +360,7 @@ def reply(request):
         parent_msg = Message.objects.get(request.POST['message_id'])
         recipient = parent_msg.sender
         Message.objects.create(subject=subject, body=body, recipient=recipient,
-                               sender=User.objects.get(sender=sender), parent_msg=parent_msg)
+                               sender=User.objects.get(username=sender), parent_msg=parent_msg)
         messages.info(request, "Message successfully sent.")
         if 'successful_url' in request.POST:
             success_url = request.POST['successful_url']
