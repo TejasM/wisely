@@ -1,15 +1,22 @@
 {% load i18n %}
 {% load url from future %}
-<h1>{% trans "Inbox" %}</h1>
+<h3>{% trans "Inbox" %}</h3>
 {% if message_list %}
     <dl class="accordion" data-accordion>
         {% for message in message_list %}
             <dd>
-                {% if message.new %}<strong>{% endif %}<a href="#panel1">From: {{ message.sender }}
+                {% if message.new %}<strong>{% endif %}<a href="#panel1">
+                From: {{ message.sender.first_name }} {{ message.sender.last_name }}
                 Subject: {{ message.subject }}</a>{% if message.new %}</strong>{% endif %}
 
                 <div id="panel1" class="content active">
-                    {{ message.body }}
+                    {{ message.body|linebreaksbr }}
+                    <div style="float: right">
+                        <button class="main-button"
+                                onclick="$('#message_reply_id').val('{{ message.id }}');$('#compose-message').lightbox_me({centered: true});">
+                            REPLY
+                        </button>
+                    </div>
                 </div>
             </dd>
         {% endfor %}

@@ -7,62 +7,62 @@
 {% load humanize %}
 {% block content %}
     <div class="row wide-row">
-        {% if viewed_user == request.user %}
-            <div class="large-4 columns" style="border-right: solid #D2D4D5 1px;  padding-top: 80px">
-                <div class="row">
-                    <dl class="tabs vertical" style="width: 100%; height: 450px" data-tab>
-                        <dd class="active"><a href="#panel1a"><i class="fa fa-bolt"></i>Recent Activities</a></dd>
-                        <dd><a href="#panel2a"><i class="fa fa-envelope"></i>Inbox</a></dd>
+    {% if viewed_user == request.user %}
+        <div class="large-4 columns" style="border-right: solid #D2D4D5 1px;  padding-top: 80px">
+            <div class="row">
+                <dl class="tabs vertical" style="width: 100%; height: 28em" data-tab>
+                    <dd class="active"><a href="#panel1a"><i class="fa fa-bolt"></i>Recent Activities</a></dd>
+                    <dd><a href="#panel2a"><i class="fa fa-envelope"></i>Inbox</a></dd>
 
-                        <dd><a href="#panel3a"><i class="fa fa-list"></i>Tasks</a>
-                        </dd>
-                        <dd><a href="#panel4a"><i class="fa fa-certificate"></i>Achievements</a></dd>
-                        <dd><a href="#panel4a"><i class="fa fa-users"></i>Followers</a></dd>
-                        <dd><a href="#panel4a"><i class="fa fa-user"></i>Following</a></dd>
-                    </dl>
+                    <dd><a href="#panel3a"><i class="fa fa-list"></i>Tasks</a>
+                    </dd>
+                    <dd><a href="#panel4a"><i class="fa fa-certificate"></i>Achievements</a></dd>
+                    <dd><a href="#panel4a"><i class="fa fa-users"></i>Followers</a></dd>
+                    <dd><a href="#panel4a"><i class="fa fa-user"></i>Following</a></dd>
+                </dl>
+            </div>
+            <div class="row" style="margin-top: 30px;">
+                <div class="large-3 columns">
+                    <img src="{% static 'images/plus-icon.png' %}" style="width: 100%">
                 </div>
-                <div class="row" style="margin-top: 30px;">
-                    <div class="large-3 columns">
-                        <img src="{% static 'images/plus-icon.png' %}" style="width: 100%">
+                <div class="large-9 columns">
+                    <div style="margin-top: 15px; margin-left: -10px">
+                        <p style="color: #1E5376; font-size: 1.6em; font-weight: 700">Who To Follow</p>
                     </div>
-                    <div class="large-9 columns">
-                        <div style="margin-top: 15px; margin-left: -10px">
-                            <p style="color: #1E5376; font-size: 1.6em; font-weight: 700">Who To Follow</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="margin-top: 30px;">
-                    <ul class="follow-list">
-                        <li>
-                            <div class="row" style="margin: 3% 5%;">
-                                <div class="large-3 columns" style="padding: 0 4%;">
-                                    <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
-                                         {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
-                                         class="pull-left img-circle">
-                                </div>
-                                <div class="large-6 columns">
-                                    <div>
-                                        <h3 style="font-size: 16px">Tejas Mehta</h3>
-
-                                        <p>Programmer</p>
-                                    </div>
-                                </div>
-                                <div class="large-3 columns plus-i" style="text-align: center">
-                                    +
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
                 </div>
             </div>
-            <div class="large-8 columns" style="padding-top: 80px">
-        {% else %}
-            <div class="large-12 columns" style="padding-top: 80px">
-        {% endif %}
-        <div class="row profile-area"
+            <div class="row" style="margin-top: 30px;">
+                <ul class="follow-list">
+                    <li>
+                        <div class="row" style="margin: 3% 5%;">
+                            <div class="large-3 columns" style="padding: 0 4%;">
+                                <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
+                                     {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
+                                     class="pull-left img-circle">
+                            </div>
+                            <div class="large-6 columns">
+                                <div>
+                                    <h3 style="font-size: 16px">Tejas Mehta</h3>
+
+                                    <p>Programmer</p>
+                                </div>
+                            </div>
+                            <div class="large-3 columns plus-i" style="text-align: center">
+                                +
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="large-8 columns" style="padding-top: 80px">
+    {% else %}
+        <div class="large-12 columns" style="padding-top: 80px">
+    {% endif %}
+            <div class="row profile-area"
              style="position:relative;
-                     height: 450px; background: url('{% static 'images/shutterstock_153034898.jpg' %}') no-repeat center center; background-size: cover">
-            <div class="large-3 columns">
+                     height: 28em; background: url('{% static 'images/shutterstock_153034898.jpg' %}') no-repeat center center; background-size: cover">
+                <div class="large-3 columns">
             </div>
             <div class="large-6 push-3 columns" style="text-align: center;">
                 <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
@@ -72,15 +72,15 @@
                 <div>
                     <h3>{{ viewed_user.first_name }} {{ viewed_user.last_name }}</h3>
 
-                    <p>{{ user_profile.headline }}</p>
+                    <p>{% if user_profile.headline %}{{ user_profile.headline }}{% endif %}</p>
                     <hr>
                     <div class="info">
                         <img src="{% static 'images/map-icon.png' %}">
                         {% if user_profile.current_city %}{{ user_profile.current_city }}{% else %}
                             Toronto{% endif %}
                         <br>
-                        <img src="{% static 'images/envelope-icon.png' %}"> {% if user.email %}
-                        {{ user.email }}{% else %}email@email.com{% endif %}
+                        <img src="{% static 'images/envelope-icon.png' %}"> {% if viewed_user.email %}
+                        {{ viewed_user.email }}{% else %}email@email.com{% endif %}
                     </div>
                 </div>
             </div>
@@ -127,26 +127,32 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="content" id="panel2a">
-                        <p>Panel 2 content goes here.</p>
-                    </div>
-                    <div class="content" id="panel3a">
-                        <p>Panel 3 content goes here.</p>
-                    </div>
-                    <div class="content" id="panel4a">
-                        <p>Panel 4 content goes here.</p>
-                    </div>
-                    <div class="content" id="panel5a">
-                        <p>Panel 4 content goes here.</p>
-                    </div>
-                    <div class="content" id="panel6a">
-                        <p>Panel 4 content goes here.</p>
-                    </div>
+                    {% if viewed_user == request.user %}
+                        <div class="content" id="panel2a">
+                            <p>Panel 2 content goes here.</p>
+                        </div>
+                        <div class="content" id="panel3a">
+                            <p>Panel 3 content goes here.</p>
+                        </div>
+                        <div class="content" id="panel4a">
+                            <p>Panel 4 content goes here.</p>
+                        </div>
+                        <div class="content" id="panel5a">
+                            <p>Panel 4 content goes here.</p>
+                        </div>
+                        <div class="content" id="panel6a">
+                            <p>Panel 4 content goes here.</p>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
         </div>
     </div>
+    {% if public and viewed_user != request.user %}
+        {% include 'django_messages/compose.html' with username=viewed_user.username path=request.get_full_path %}
+    {% endif %}
+
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'js/foundation/foundation.tab.js' %}"></script>

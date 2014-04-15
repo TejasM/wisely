@@ -1,8 +1,8 @@
 <div class="light-box" id="compose-message">
-    <form action="{% url 'users:compose' %}" method="post" class="send-message">
+    <form action="{% url 'users:reply' %}" method="post" class="send-message">
         {% csrf_token %}
         <input type="hidden" name="successful_url" value="{{ path }}">
-        <input type="hidden" name='recipient' value="{{ username }}" id="recipient-message">
+        <input type="hidden" name='message_id' value="" id="message_reply_id">
         <input type="text" value="" placeholder="Subject" name="subject">
         <textarea name="send_message" placeholder="Message"></textarea>
         <input type="submit" value="SEND">

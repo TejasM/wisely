@@ -897,13 +897,13 @@ img.finish-anim {
 }
 
 .tabs dd > a {
-    font-size: 25px;
+    font-size: 1.2em;
     background: #fff;
     color: #58595B;
 }
 
 .tabs dd.active > a {
-    font-size: 25px;
+    font-size: 1.2em;
     background: #fff;
     color: #fff;
 }
@@ -928,7 +928,7 @@ ul.follow-list {
 ul.follow-list li {
     background: #fff;
     border: solid #9c9d9e 1px;
-    font-size: 30px;
+    font-size: 1.3em;
 }
 
 ul.follow-list p {
