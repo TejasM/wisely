@@ -12,6 +12,7 @@ from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django_messages.models import Message
 import facebook
 from requests import request as request2, HTTPError
 from django.template import RequestContext
@@ -49,7 +50,8 @@ def logout_user(request):
 
 def news(request):
     feed_list = Action.objects.order_by('-timestamp')[:20]
-    return render(request, 'users/news.html', {'feeds': feed_list})
+    message_list = Message.objects.inbox_for(request.user)
+    return render(request, 'users/news.html', {'feeds': feed_list, 'message_list': message_list})
 
 
 @login_required
@@ -64,9 +66,11 @@ def profile(request):
 
     completed_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=True)
     current_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=False)
+    message_list = Message.objects.inbox_for(request.user)
 
-    context_dict = {'user_current': request.user, 'user_profile': user_profile, 'user_profile_form': user_profile_form,
-                    'user_form': user_form, 'completed_pledges': completed_pledges, 'current_pledges': current_pledges}
+    context_dict = {'viewed_user': request.user, 'user_profile': user_profile, 'user_profile_form': user_profile_form,
+                    'user_form': user_form, 'completed_pledges': completed_pledges, 'current_pledges': current_pledges,
+                    'message_list': message_list}
     return render(request, 'users/profile_alt.html', context_dict)
 
 

@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 from settings import production
 from wisely_project import view
+import django_messages
 
 admin.autodiscover()
 
