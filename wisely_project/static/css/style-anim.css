@@ -673,10 +673,11 @@ select.course {
 }
 
 #slider .ui-slider-range {
-    -moz-box-shadow: 0 0 10px #fff;
-    -webkit-box-shadow: 0 0 10px #fff;
-    box-shadow: 0 0 10px #fff;
-    background: #fff;
+    background-image: linear-gradient(to right, #F15D29, #F7921C);
+    transition: background 1s linear;
+    -webkit-transition: background 1s linear;
+    -moz-transition: background 1s linear;
+    -o-transition: background 1s linear;
 }
 
 .under-slide {
