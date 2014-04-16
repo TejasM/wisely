@@ -4,6 +4,7 @@
 {% block headers_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/style-news.css' %}" cache="false"/>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style-index.css' %}" cache="false"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.hoverscroll.css' %}"/>
 {% endblock %}
 {% block content %}
     <div class="row wide-row" style="border-bottom: solid #D2D4D5 1px">
@@ -48,28 +49,23 @@
         </div>
         <div class="large-8 columns">
             <div class="row summary-courses" data-equalizer-watch>
-                <div style="width: 19%; display: inline-block">
-                    <p class="number-bold">5</p>
+                <div class="large-3 columns">
+                    <p class="number-bold">{{ current_courses }}</p>
 
                     <p>CURRENT</p>
                 </div>
-                <div style="width: 19%; display: inline-block">
-                    <p class="number-bold">14</p>
+                <div class="large-3 columns">
+                    <p class="number-bold">{{ past_courses }}</p>
 
                     <p>COMPLETED</p>
                 </div>
-                <div style="width: 19%; display: inline-block">
-                    <p class="number-bold">200</p>
+                <div class="large-3 columns">
+                    <p class="number-bold">{{ user.userprofile.follows.count }}</p>
 
                     <p>FRIENDS</p>
                 </div>
-                <div style="width: 19%; display: inline-block">
-                    <p class="number-bold">73<sup>%</sup></p>
-
-                    <p>AVERAGE</p>
-                </div>
-                <div style="width: 19%; display: inline-block">
-                    <p class="number-bold">$ 100</p>
+                <div class="large-3 columns">
+                    <p class="number-bold">$ 0</p>
 
                     <p>EARNED</p>
                 </div>
@@ -141,15 +137,18 @@
         </div>
     </div>
     {% for course in user.courseraprofile.courses.all %}
-        <div class="class-progress row wide-row" id="course_graph_{{ course.id }}" style="display: none">
+        <div class="class-progress row wide-row" id="course_graph_{{ course.id }}"
+             style="display: none; max-height: 400px">
             <div class="large-4 columns">
-                <dl class="tabs vertical" style="width: 100%" data-tab>
-                    {% for progress in progresses %}
-                        {% if progress.quiz.course == course %}
-                            <dd><a href="#"><p style="font-size: 1rem">{{ progress|safe }}</p></a></dd>
-                        {% endif %}
-                    {% endfor %}
-                </dl>
+                <div class="row">
+                    <dl class="tabs vertical" style="width: 100%" data-tab>
+                        {% for progress in progresses %}
+                            {% if progress.quiz.course == course %}
+                                <dd><a href="#"><p style="font-size: 1rem">{{ progress|safe }}</p></a></dd>
+                            {% endif %}
+                        {% endfor %}
+                    </dl>
+                </div>
             </div>
             <div class="large-8 columns">
                 <p>Graph Coming Soon</p>
@@ -157,15 +156,18 @@
         </div>
     {% endfor %}
     {% for course in user.edxprofile.courses.all %}
-        <div class="row wide-row" id="course_graph_{{ course.id }}" style="display: none">
+        <div class="class-progress row wide-row" id="course_graph_{{ course.id }}"
+             style="display: none; max-height: 400px">
             <div class="large-4 columns">
-                <dl class="tabs vertical" style="width: 100%" data-tab>
-                    {% for progress in progresses %}
-                        {% if progress.quiz.course == course %}
-                            <dd><a href="#"><p>{{ progress|safe }}</p></a></dd>
-                        {% endif %}
-                    {% endfor %}
-                </dl>
+                <div class="row">
+                    <dl class="tabs vertical" style="width: 100%" data-tab>
+                        {% for progress in progresses %}
+                            {% if progress.quiz.course == course %}
+                                <dd><a href="#"><p style="font-size: 1rem">{{ progress|safe }}</p></a></dd>
+                            {% endif %}
+                        {% endfor %}
+                    </dl>
+                </div>
             </div>
             <div class="large-8 columns">
                 <p>Graph Coming Soon</p>
@@ -175,6 +177,7 @@
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'js/foundation/foundation.equalizer.js' %}"></script>
+    <script src="{% static 'js/jquery.hoverscroll.js' %}"></script>
     <script>
         $(function () {
             $('.past').hide();
@@ -214,6 +217,13 @@
                     $(this).removeClass('active');
                 }
             });
+            $('.class-progress').hoverscroll({
+                        vertical: true,
+                        height: 400,
+                        arrows: true,
+                        arrowsOpacity: 0.3,
+                    }
+            );
         });
     </script>
 {% endblock %}

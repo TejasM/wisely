@@ -134,3 +134,11 @@ dd div {
 .class-progress strong {
     font-size: 1rem;
 }
+
+.class-progress dd a {
+    border-left: solid #80BC62 1rem;
+}
+
+.course.active {
+    background-color: #80BC62;
+}

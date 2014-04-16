@@ -126,10 +126,10 @@ class Progress(BaseModel):
     def __unicode__(self):
         if str(self.score) == 'N/A':
             if self.quiz.hard_deadline.date() < timezone.now().date():
-                return "<strong style='font-size=1rem'>" + self.quiz.heading + "</strong>: Past Due Date"
-            return "<strong style='font-size=1rem'>" + self.quiz.heading + "</strong> Due Date: " + convertDatetimeToString(
+                return "<strong style='font-size=1rem'>" + self.quiz.heading + "</strong>:<br> Past Due Date"
+            return "<strong style='font-size=1rem'>" + self.quiz.heading + "</strong><br> Due Date: " + convertDatetimeToString(
                 self.quiz.deadline)
-        return "<strong style='font-size=1rem'>" + self.quiz.heading + "</strong>: " + self.score
+        return "<strong style='font-size=1rem'>" + self.quiz.heading + "</strong>:<br> " + self.score
 
     def get_date(self):
         return json.dumps({'date': self.quiz.deadline.date(), 'title': self.quiz.heading})

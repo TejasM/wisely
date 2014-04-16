@@ -363,13 +363,24 @@ def index_alt(request):
         progresses = Progress.objects.filter(user=request.user.userprofile)
         other_pledgers_coursera = []
         other_pledgers_edx = []
+        current_courses = 0
+        past_courses = 0
         for course in coursera_profile.courses.all():
             other_pledgers_coursera.append(Pledge.objects.filter(course=course).order_by('?')[:5])
+            if course.get_amount_progress >= 100:
+                past_courses += 1
+            else:
+                current_courses += 1
         for course in edx_profile.courses.all():
             other_pledgers_edx.append(Pledge.objects.filter(course=course).order_by('?')[:5])
+            if course.get_amount_progress >= 100:
+                past_courses += 1
+            else:
+                current_courses += 1
         return render(request, 'users/index-alt.html', {'pledges': pledges, 'progresses': progresses, 'form': False,
                                                     'others_coursera': other_pledgers_coursera,
-                                                    'others_edx': other_pledgers_edx})
+                                                    'others_edx': other_pledgers_edx, 'current_courses': current_courses,
+                                                    'past_courses': past_courses})
 
 
 @login_required
