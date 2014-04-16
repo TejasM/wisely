@@ -14,6 +14,7 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 from django_messages.models import Message
 import facebook
+from notifications import notify
 from requests import request as request2, HTTPError
 from django.template import RequestContext
 from social_auth.db.django_models import UserSocialAuth
@@ -52,7 +53,9 @@ def logout_user(request):
 def news(request):
     feed_list = Action.objects.order_by('-timestamp')[:20]
     message_list = Message.objects.inbox_for(request.user)
-    return render(request, 'users/news.html', {'feeds': feed_list, 'message_list': message_list})
+    notification_list = request.user.notifications.all()
+    return render(request, 'users/news.html',
+                  {'feeds': feed_list, 'message_list': message_list, 'notification_list': notification_list})
 
 
 @login_required
@@ -133,6 +136,7 @@ def sync_up_user(user, social_users):
                         connect = UserSocialAuth.objects.get(uid=friend["id"])
                         if connect.user not in inner_profile.connections.all():
                             inner_profile.connections.add(connect.user)
+                            notify.send(sender=inner_profile, recipient=connect.user, verb='has joined Wisely')
                         try:
                             connect = UserProfile.objects.get(user=connect.user)
                         except UserProfile.DoesNotExist as _:
@@ -162,6 +166,8 @@ def sync_up_user(user, social_users):
                         connect = UserSocialAuth.objects.get(uid=friend.id)
                         if connect.user not in inner_profile.connections.all():
                             inner_profile.connections.add(connect.user)
+                            notify.send(sender=inner_profile, recipient=connect.user, verb='has joined Wisely',
+                                        target=connect.user)
                         try:
                             connect = UserProfile.objects.get(user=connect.user)
                         except UserProfile.DoesNotExist as _:
@@ -381,6 +387,7 @@ def follow(request):
         profile = request.user.userprofile
         profile.follows.add(to_follow)
         profile.save()
+        notify.send(sender=profile, recipient=to_follow, verb='is now following you')
         json_data = json.dumps({"HTTPRESPONSE": 1})
     else:
         json_data = json.dumps({"HTTPRESPONSE": -1})

@@ -225,7 +225,7 @@ DJANGO_APPS = (
     'djangocms_video',
     'djangocms_link',
     'djangocms_snippet',
-    'notification',
+    'notifications',
     'django_messages',
 )
 
