@@ -22,7 +22,7 @@
                 </dl>
             </div>
             {% if who_to_follow %}
-                {% include 'users/who_to_follow.html' %}
+                {% include 'users/who_to_follow.html' with who_to_follow=who_to_follow %}
             {% endif %}
         </div>
         <div class="large-8 columns" style="padding-top: 80px">
