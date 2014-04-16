@@ -139,6 +139,6 @@ dd div {
     border-left: solid #80BC62 1rem;
 }
 
-.course.active {
+.course.active a {
     background-color: #80BC62;
 }
