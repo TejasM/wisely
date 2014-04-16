@@ -54,8 +54,10 @@ def news(request):
     feed_list = Action.objects.order_by('-timestamp')[:20]
     message_list = Message.objects.inbox_for(request.user)
     notification_list = request.user.notifications.all()
+    followers = UserProfile.objects.filter(follows__in=[request.user.userprofile.id])
     return render(request, 'users/news.html',
-                  {'feeds': feed_list, 'message_list': message_list, 'notification_list': notification_list})
+                  {'feeds': feed_list, 'message_list': message_list, 'notification_list': notification_list,
+                   'followers': followers})
 
 
 @login_required
@@ -71,10 +73,10 @@ def profile(request):
     completed_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=True)
     current_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=False)
     message_list = Message.objects.inbox_for(request.user)
-
+    followers = UserProfile.objects.filter(follows__in=[user_profile.id])
     context_dict = {'viewed_user': request.user, 'user_profile': user_profile, 'user_profile_form': user_profile_form,
                     'user_form': user_form, 'completed_pledges': completed_pledges, 'current_pledges': current_pledges,
-                    'message_list': message_list}
+                    'message_list': message_list, 'followers': followers}
     return render(request, 'users/profile_alt.html', context_dict)
 
 

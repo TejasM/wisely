@@ -26,207 +26,246 @@
             </div>
         </div>
         <div class="large-8 columns" style="margin-top: 50px; text-align: center" id="filters">
-            <div class="row">
-                <div class="large-2 push-1 columns"><p class="selected-news">Following</p></div>
-                <div class="large-2 push-1 columns"><p>Followers</p></div>
-                <div class="large-2 push-1 columns"><p>Trend</p></div>
-                <div class="large-2 push-1 columns"><p>Everyone</p></div>
-                <div class="large-2 pull-1 columns"><p>Subject</p></div>
+            <div class="row" id="filters">
+                <div class="large-2 push-1 columns"><p class="selected-news" id="everyone-filt">Everyone</p></div>
+                <div class="large-2 push-1 columns"><p id="following-filt">Following</p></div>
+                <div class="large-2 push-1 columns"><p id="followers-filt">Followers</p></div>
             </div>
         </div>
     </div>
     <div class="row wide-row">
-        <div class="large-4 columns">
-            <div class="row">
-                <dl class="tabs vertical" style="width: 100%" data-tab>
-                    <dd class="active"><a href="#panel1a" onclick="$('#filters').show();"><i class="fa fa-desktop"></i>Newsfeed</a>
-                    </dd>
-                    <dd><a href="#panel2a" onclick="$('#filters').hide();"><i class="fa fa-bell"></i> Notifications</a>
-                    </dd>
-                    <dd><a href="#panel3a" onclick="$('#filters').hide();"><i class="fa fa-users"></i>Friends</a></dd>
-                    <dd><a href="#panel4a" onclick="$('#filters').hide();"><i class="fa fa-envelope"></i>Inbox</a></dd>
-                </dl>
+    <div class="large-4 columns">
+        <div class="row">
+            <dl class="tabs vertical" style="width: 100%" data-tab>
+                <dd class="active"><a href="#panel1a" onclick="$('#filters').show();"><i class="fa fa-desktop"></i>Newsfeed</a>
+                </dd>
+                <dd><a href="#panel2a" onclick="$('#filters').hide();"><i class="fa fa-bell"></i> Notifications</a>
+                </dd>
+                <dd><a href="#panel3a" onclick="$('#filters').hide();"><i class="fa fa-users"></i>Friends</a></dd>
+                <dd><a href="#panel4a" onclick="$('#filters').hide();"><i class="fa fa-envelope"></i>Inbox</a></dd>
+            </dl>
+        </div>
+        <div class="row" style="margin-top: 30px;">
+            <div class="large-3 columns">
+                <img src="{% static 'images/plus-icon.png' %}" style="width: 100%">
             </div>
-            <div class="row" style="margin-top: 30px;">
-                <div class="large-3 columns">
-                    <img src="{% static 'images/plus-icon.png' %}" style="width: 100%">
+            <div class="large-9 columns">
+                <div style="margin-top: 15px; margin-left: -10px">
+                    <p style="color: #1E5376; font-size: 1.6em; font-weight: 700">Who To Follow</p>
                 </div>
-                <div class="large-9 columns">
-                    <div style="margin-top: 15px; margin-left: -10px">
-                        <p style="color: #1E5376; font-size: 1.6em; font-weight: 700">Who To Follow</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 30px;">
-                <ul class="follow-list">
-                    <li>
-                        <div class="row" style="margin: 3% 5%;">
-                            <div class="large-3 columns" style="padding: 0 4%;">
-                                <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
-                                     {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
-                                     class="pull-left img-circle">
-                            </div>
-                            <div class="large-6 columns">
-                                <div>
-                                    <h3 style="font-size: 16px">Tejas Mehta</h3>
-
-                                    <p>Programmer</p>
-                                </div>
-                            </div>
-                            <div class="large-3 columns plus-i" style="text-align: center">
-                                +
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="row" style="margin: 3% 5%;">
-                            <div class="large-3 columns" style="padding: 0 4%;">
-                                <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
-                                     {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
-                                     class="pull-left img-circle">
-                            </div>
-                            <div class="large-6 columns">
-                                <div>
-                                    <h3 style="font-size: 16px">Tejas Mehta</h3>
-
-                                    <p>Programmer</p>
-                                </div>
-                            </div>
-                            <div class="large-3 columns plus-i" style="text-align: center">
-                                +
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="row" style="margin: 3% 5%;">
-                            <div class="large-3 columns" style="padding: 0 4%;">
-                                <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
-                                     {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
-                                     class="pull-left img-circle">
-                            </div>
-                            <div class="large-6 columns">
-                                <div>
-                                    <h3 style="font-size: 16px">Tejas Mehta</h3>
-
-                                    <p>Programmer</p>
-                                </div>
-                            </div>
-                            <div class="large-3 columns plus-i" style="text-align: center">
-                                +
-                            </div>
-                        </div>
-                    </li>
-                </ul>
             </div>
         </div>
-        <div class="large-8 columns" style="padding-top: 1%;">
-            <div class="row">
-                <div class="large-12 columns">
-                    <div class="tabs-content vertical" style="width: 100%">
-                        <div class="content active" id="panel1a">
-                            {% if feeds %}
-                                <ul id='timeline'>
-                                    {% for feed in feeds %}
-                                        {% if feed.actor_content_type.name == "user" and feed.actor.first_name %}
-                                            <li class='work'>
-                                                <input class='radio' type='radio' checked>
+        <div class="row" style="margin-top: 30px;">
+            <ul class="follow-list">
+                <li>
+                    <div class="row" style="margin: 3% 5%;">
+                        <div class="large-3 columns" style="padding: 0 4%;">
+                            <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
+                                 {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
+                                 class="pull-left img-circle">
+                        </div>
+                        <div class="large-6 columns">
+                            <div>
+                                <h3 style="font-size: 16px">Tejas Mehta</h3>
 
-                                                <div class="relative">
+                                <p>Programmer</p>
+                            </div>
+                        </div>
+                        <div class="large-3 columns plus-i" style="text-align: center">
+                            +
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="row" style="margin: 3% 5%;">
+                        <div class="large-3 columns" style="padding: 0 4%;">
+                            <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
+                                 {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
+                                 class="pull-left img-circle">
+                        </div>
+                        <div class="large-6 columns">
+                            <div>
+                                <h3 style="font-size: 16px">Tejas Mehta</h3>
+
+                                <p>Programmer</p>
+                            </div>
+                        </div>
+                        <div class="large-3 columns plus-i" style="text-align: center">
+                            +
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="row" style="margin: 3% 5%;">
+                        <div class="large-3 columns" style="padding: 0 4%;">
+                            <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
+                                 {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
+                                 class="pull-left img-circle">
+                        </div>
+                        <div class="large-6 columns">
+                            <div>
+                                <h3 style="font-size: 16px">Tejas Mehta</h3>
+
+                                <p>Programmer</p>
+                            </div>
+                        </div>
+                        <div class="large-3 columns plus-i" style="text-align: center">
+                            +
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="large-8 columns" style="padding-top: 1%;">
+        <div class="row">
+            <div class="large-12 columns">
+                <div class="tabs-content vertical" style="width: 100%">
+                    <div class="content active" id="panel1a">
+                        {% if feeds %}
+                            <ul class='timeline feed'>
+                                {% for feed in feeds %}
+                                    {% if feed.actor_content_type.name == "user" and feed.actor.first_name %}
+                                        <li class='work {% if feed.actor.userprofile in followers %}followers{% endif %} {% if feed.actor.userprofile in user_profile.follows %}following{% endif %}'>
+                                            <input class='radio' type='radio' checked>
+
+                                            <div class="relative">
                                         <span class='circle img-circle'><img
-                                                src="{% if feed.actor.user_profile.picture %}/media/{{ feed.actor.user_profile.picture }}
+                                                src="{% if feed.actor.userprofile.picture %}/media/{{ feed.actor.userprofile.picture }}
                                                      {% else %}http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png{% endif %}"
                                                 width="40"
                                                 style="margin-left: 2px"></span>
-                                                </div>
-                                                <div class='content-news'>
-                                                    <p>
-                                                        <a href="/users/profile/{{ feed.actor_object_id }}">
-                                                            {{ feed.actor.first_name }} {{ feed.actor.last_name }}
+                                            </div>
+                                            <div class='content-news'>
+                                                <p>
+                                                    <a href="/users/profile/{{ feed.actor_object_id }}">
+                                                        {{ feed.actor.first_name }} {{ feed.actor.last_name }}
+                                                    </a>
+                                                    {% if feed.actions_with_pledges_pledge_as_action_object == None %}
+                                                        <a href="/pledges/share/{{ feed.action_object_object_id }}">
+                                                    {% endif %}
+                                                    {{ feed.verb }}
+                                                    {% if feed.actions_with_pledges_pledge_as_action_object == None %}
                                                         </a>
-                                                        {% if feed.actions_with_pledges_pledge_as_action_object == None %}
-                                                            <a href="/pledges/share/{{ feed.action_object_object_id }}">
+                                                    {% endif %}
+                                                    {% if feed.target %}
+                                                        {% if feed.actions_with_users_course_as_target == None %}
+                                                            <a href="{{ feed.target.course_link }}">{{ feed.target }}</a>
+                                                        {% else %}
+                                                            {{ feed.target }}
                                                         {% endif %}
-                                                        {{ feed.verb }}
-                                                        {% if feed.actions_with_pledges_pledge_as_action_object == None %}
-                                                            </a>
-                                                        {% endif %}
-                                                        {% if feed.target %}
-                                                            {% if feed.actions_with_users_course_as_target == None %}
-                                                                <a href="{{ feed.target.course_link }}">{{ feed.target }}</a>
-                                                            {% else %}
-                                                                {{ feed.target }}
-                                                            {% endif %}
-                                                        {% endif %}
-                                                    </p>
+                                                    {% endif %}
+                                                </p>
 
-                                                    <p>{{ feed.timestamp|naturaltime }}</p>
-                                                </div>
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-                        </div>
-                        <div class="content" id="panel2a">
-                            {% if notification_list %}
-                                <ul id='timeline'>
-                                    {% for notification in notification_list %}
-                                        {% if notification.actor_content_type.name == "user" and notification.actor.first_name %}
-                                            <li class='work'>
-                                                <input class='radio' type='radio' checked>
+                                                <p>{{ feed.timestamp|naturaltime }}</p>
+                                            </div>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    <div class="content" id="panel2a">
+                        {% if notification_list %}
+                            <ul class='timeline'>
+                                {% for notification in notification_list %}
+                                    {% if notification.actor_content_type.name == "user" and notification.actor.first_name %}
+                                        <li class='work'>
+                                            <input class='radio' type='radio' checked>
 
-                                                <div class="relative">
+                                            <div class="relative">
                                         <span class='circle img-circle'><img
                                                 src="{% if notification.actor.user_profile.picture %}/media/{{ notification.actor.user_profile.picture }}
                                                      {% else %}http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png{% endif %}"
                                                 width="40"
                                                 style="margin-left: 2px"></span>
-                                                </div>
-                                                <div class='content-news'>
-                                                    <p>
-                                                        <a href="/users/profile/{{ notification.actor_object_id }}">
-                                                            {{ notification.actor.first_name }} {{ notification.actor.last_name }}
+                                            </div>
+                                            <div class='content-news'>
+                                                <p>
+                                                    <a href="/users/profile/{{ notification.actor_object_id }}">
+                                                        {{ notification.actor.first_name }} {{ notification.actor.last_name }}
+                                                    </a>
+                                                    {% if notification.actions_with_pledges_pledge_as_action_object == None %}
+                                                        <a href="/pledges/share/{{ notification.action_object_object_id }}">
+                                                    {% endif %}
+                                                    {{ notification.verb }}
+                                                    {% if notification.actions_with_pledges_pledge_as_action_object == None %}
                                                         </a>
-                                                        {% if notification.actions_with_pledges_pledge_as_action_object == None %}
-                                                            <a href="/pledges/share/{{ notification.action_object_object_id }}">
+                                                    {% endif %}
+                                                    {% if notification.target %}
+                                                        {% if notification.actions_with_users_course_as_target == None %}
+                                                            <a href="{{ notification.target.course_link }}">{{ notification.target }}</a>
+                                                        {% else %}
+                                                            {{ notification.target }}
                                                         {% endif %}
-                                                        {{ notification.verb }}
-                                                        {% if notification.actions_with_pledges_pledge_as_action_object == None %}
-                                                            </a>
-                                                        {% endif %}
-                                                        {% if notification.target %}
-                                                            {% if notification.actions_with_users_course_as_target == None %}
-                                                                <a href="{{ notification.target.course_link }}">{{ notification.target }}</a>
-                                                            {% else %}
-                                                                {{ notification.target }}
-                                                            {% endif %}
-                                                        {% endif %}
-                                                    </p>
+                                                    {% endif %}
+                                                </p>
 
-                                                    <p>{{ notification.timestamp|naturaltime }}</p>
+                                                <p>{{ notification.timestamp|naturaltime }}</p>
+                                            </div>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            You have no notifications.
+                        {% endif %}
+                    </div>
+                    <div class="content" id="panel3a">
+                        {% if user_profile.follows %}
+                            <ul class="follower-list">
+                                {% for following in user_profile.follows.all %}
+                                    <li>
+                                        <div class="row" style="margin: 3% 5%;">
+                                            <div class="large-3 columns" style="padding: 0 4%;">
+                                                <img {% if following.picture %}src="/media/{{ following.picture }}"
+                                                     {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
+                                                     class="pull-left img-circle">
+                                            </div>
+                                            <div class="large-9 columns">
+                                                <div>
+                                                    <h3 style="font-size: 16px">{{ following.user.first_name }} {{ following.user.last_name }}</h3>
+                                                    {% if following.headline %}
+                                                        <p>{{ following.headline }}</p>
+                                                    {% endif %}
                                                 </div>
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            {% else %}
-                                You have no notifications.
-                            {% endif %}
-                        </div>
-                        <div class="content" id="panel3a">
-                            <p>Panel 3 content goes here.</p>
-                        </div>
-                        <div class="content" id="panel4a" style="width: 100%">
-                            {% include 'django_messages/inbox.html' %}
-                        </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            You are not following anyone yet!
+                        {% endif %}
+                    </div>
+                    <div class="content" id="panel4a" style="width: 100%">
+                        {% include 'django_messages/inbox.html' %}
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     {% include 'django_messages/reply.html' with path=request.get_full_path %}
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'js/foundation/foundation.tab.js' %}"></script>
     <script src="{% static 'js/foundation/foundation.accordion.js' %}"></script>
+    <script>
+        $(function () {
+            $('#everyone-filt').click(function() {
+                $('.feed').find('li').show();
+            });
+            $('#followers-filt').click(function() {
+                var $feed = $('.feed');
+                $feed.find('li.followers').show();
+                $feed.find('li:not(.followers)').hide();
+            });
+            $('#following-filt').click(function() {
+                var $feed = $('.feed');
+                $feed.find('li.following').show();
+                $feed.find('li:not(.following)').hide();
+            });
+        });
+    </script>
 {% endblock %}

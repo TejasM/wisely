@@ -1,16 +1,16 @@
-#timeline {
+.timeline {
     list-style: none;
     margin: 50px 0 30px 50px;
     padding-left: 50px;
     border-left: 3px solid #D2D4D5;
 }
 
-#timeline li {
+.timeline li {
     margin: 40px 0;
     position: relative;
 }
 
-#timeline p {
+.timeline p {
     margin: 0 0 15px;
 }
 
@@ -113,13 +113,13 @@ label {
  * mobile phones (vertical version only)
  * ------------------------------------- */
 @media screen and (max-width: 767px) {
-    #timeline {
+    .timeline {
         margin-left: 0;
         padding-left: 0;
         border-left: none;
     }
 
-    #timeline li {
+    .timeline li {
         margin: 50px 0;
     }
 
