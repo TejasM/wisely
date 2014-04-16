@@ -25,7 +25,7 @@
                 </div>
             </div>
         </div>
-        <div class="large-8 columns" style="margin-top: 50px; text-align: center" id="filters">
+        <div class="large-8 columns" style="margin-top: 50px; text-align: center">
             <div class="row" id="filters">
                 <div class="large-2 push-1 columns"><p class="selected-news" id="everyone-filt">Everyone</p></div>
                 <div class="large-2 push-1 columns"><p id="following-filt">Following</p></div>
@@ -253,18 +253,24 @@
     <script src="{% static 'js/foundation/foundation.accordion.js' %}"></script>
     <script>
         $(function () {
-            $('#everyone-filt').click(function() {
+            $('#everyone-filt').click(function () {
                 $('.feed').find('li').show();
+                $('#filters').find('div p').removeClass('selected-news');
+                $(this).addClass('selected-news');
             });
-            $('#followers-filt').click(function() {
+            $('#followers-filt').click(function () {
                 var $feed = $('.feed');
                 $feed.find('li.followers').show();
                 $feed.find('li:not(.followers)').hide();
+                $('#filters').find('div p').removeClass('selected-news');
+                $(this).addClass('selected-news');
             });
-            $('#following-filt').click(function() {
+            $('#following-filt').click(function () {
                 var $feed = $('.feed');
                 $feed.find('li.following').show();
                 $feed.find('li:not(.following)').hide();
+                $('#filters').find('div p').removeClass('selected-news');
+                $(this).addClass('selected-news');
             });
         });
     </script>
