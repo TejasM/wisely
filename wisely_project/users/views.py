@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
@@ -49,15 +50,20 @@ def logout_user(request):
     return HttpResponseRedirect('/')
 
 
+def get_suggested_followers(user):
+    return UserProfile.objects.filter(~Q(pk_in=[user.follows])).order_by('?')[:2]
+
 @login_required
 def news(request):
     feed_list = Action.objects.order_by('-timestamp')[:20]
     message_list = Message.objects.inbox_for(request.user)
     notification_list = request.user.notifications.all()
+    user_profile = UserProfile.objects.get(user=request.user)
     followers = UserProfile.objects.filter(follows__in=[request.user.userprofile.id])
+    who_to_follow = get_suggested_followers(user_profile)
     return render(request, 'users/news.html',
                   {'feeds': feed_list, 'message_list': message_list, 'notification_list': notification_list,
-                   'followers': followers})
+                   'followers': followers, 'user_profile': user_profile, 'who_to_follow': who_to_follow})
 
 
 @login_required
