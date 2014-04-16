@@ -41,13 +41,22 @@
     display: inline-block;
 }
 
-.score {
+.metrics.score {
     background-color: #F15A29;
+    top: 0;
+    position: absolute;
 }
 
-.goal {
+.metrics.goal {
     background-color: #3C3F50;
+    top: 0;
+    position: absolute;
+    left: 33%;
 }
+.metrics.goal img {
+    margin-top: 7px;
+}
+
 
 .metrics {
     width: 33%;
@@ -64,8 +73,11 @@
     font-size: 1.2rem;
 }
 
-.pledge {
+.metrics.pledge {
     background-color: #80BC62;
+    top: 0;
+    position: absolute;
+    left: 66%;
 }
 
 dd div {
