@@ -51,7 +51,7 @@ def logout_user(request):
 
 
 def get_suggested_followers(user):
-    return UserProfile.objects.filter(~Q(pk_in=[user.follows])).order_by('?')[:2]
+    return UserProfile.objects.filter(~Q(id__in=[user.follows])).order_by('?')[:2]
 
 @login_required
 def news(request):
