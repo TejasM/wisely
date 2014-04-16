@@ -13,6 +13,7 @@ from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 from django_messages.models import Message
 import facebook
 from notifications import notify
@@ -51,7 +52,7 @@ def logout_user(request):
 
 
 def get_suggested_followers(user):
-    return UserProfile.objects.filter(~Q(id__in=[user.follows])).order_by('?')[:2]
+    return UserProfile.objects.filter(~Q(pk=user.id)).filter(~Q(id__in=user.follows.all().values_list('id', flat=True))).order_by('?')[:2]
 
 @login_required
 def news(request):
@@ -388,14 +389,15 @@ def reply(request):
         return HttpResponseRedirect(reverse('users:profile'))
 
 
+@csrf_exempt
 @login_required
 def follow(request):
     if request.method == "POST" and request.is_ajax():
         to_follow = get_object_or_404(UserProfile, pk=request.POST['user_id'])
-        profile = request.user.userprofile
-        profile.follows.add(to_follow)
-        profile.save()
-        notify.send(sender=profile, recipient=to_follow, verb='is now following you')
+        current_profile = request.user.userprofile
+        current_profile.follows.add(to_follow)
+        current_profile.save()
+        notify.send(sender=request.user, recipient=to_follow.user, verb='is now following you')
         json_data = json.dumps({"HTTPRESPONSE": 1})
     else:
         json_data = json.dumps({"HTTPRESPONSE": -1})
