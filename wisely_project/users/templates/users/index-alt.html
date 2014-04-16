@@ -1,8 +1,219 @@
 {% extends 'base-app-alt.html' %}
 {% load breaktag %}
 {% load staticfiles %}
+{% block headers_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style-news.css' %}" cache="false"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style-index.css' %}" cache="false"/>
+{% endblock %}
 {% block content %}
-    <div class="row" style="height: 1000px">
+    <div class="row wide-row" style="border-bottom: solid #D2D4D5 1px">
+        <div class="large-4 columns" style="border-right: solid #D2D4D5 1px; padding-top: 40px; padding-bottom: 1%;">
+            <div class="row">
+                <div class="large-3 columns">
+                    <img {% if user.userprofile.picture %}src="/media/{{ user.userprofile.picture }}"
+                         {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
+                         class="pull-left img-circle">
+                </div>
+                <div class="large-6 columns">
+                    <div style="margin-top: 10px">
+                        <h3>{{ user.first_name }} {{ user.last_name }}</h3>
 
+                        {% if user.userprofile.headline %}
+                            <p>{{ user.userprofile.headline }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="large-3 columns">
+                    <img src="{% static 'images/settings-icon.png' %}" style="width: 80%; margin-top: 10px">
+                </div>
+            </div>
+        </div>
+        <div class="large-8 columns" style="margin-top: 50px; text-align: center">
+            <div class="row" id="filters">
+                <div class="large-4 columns"><a href="#"><p class="selected-news" id="current-filt">Current Courses</p>
+                </a></div>
+                <div class="large-4 columns"><a href="#"><p id="past-filt">Past Courses</p></a></div>
+                <div class="large-4 columns"><a href="#"><p id="all-filt">All Courses</p></a></div>
+            </div>
+        </div>
     </div>
+    <div class="row wide-row" data-equalizer>
+        <div class="large-4 columns">
+            <div class="row">
+                <div style="background: #0F486D; font-size: 1.2em; color: #fff; padding: 5%;" data-equalizer-watch>
+                    <img
+                            src="{% static 'images/book-icon-trans.png' %}" style="margin-right: 10px">My Courses
+                </div>
+            </div>
+        </div>
+        <div class="large-8 columns">
+            <div class="row summary-courses" data-equalizer-watch>
+                <div style="width: 19%; display: inline-block">
+                    <p class="number-bold">5</p>
+
+                    <p>CURRENT</p>
+                </div>
+                <div style="width: 19%; display: inline-block">
+                    <p class="number-bold">14</p>
+
+                    <p>COMPLETED</p>
+                </div>
+                <div style="width: 19%; display: inline-block">
+                    <p class="number-bold">200</p>
+
+                    <p>FRIENDS</p>
+                </div>
+                <div style="width: 19%; display: inline-block">
+                    <p class="number-bold">73<sup>%</sup></p>
+
+                    <p>AVERAGE</p>
+                </div>
+                <div style="width: 19%; display: inline-block">
+                    <p class="number-bold">$ 100</p>
+
+                    <p>EARNED</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row wide-row">
+        <div class="large-12 columns">
+            <div class="row">
+                <dl class="tabs vertical" style="width: 100%" data-tab>
+                    {% for course in user.courseraprofile.courses.all %}
+                        <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+                            class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}"><a
+                                href="#panel{{ course.id }}a"
+                                onclick="$('#filters').toggle();"
+                                style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}</a>
+
+                            <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
+                                <div class="meter">
+                                    <span style="width: {{ course.get_amount_progress }}%"></span>
+                                </div>
+                                <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
+                                    <div class="metrics score">
+                                        <p>SCORE<br>
+                                            <span class="overall-mark">50<sup>%</sup></span></p>
+                                    </div>
+                                    <div class="metrics goal">
+                                        <p>GOAL<br>
+                                            <span class="overall-mark">50<sup>%</sup></span></p>
+                                    </div>
+                                    <div class="metrics pledge">
+                                        <p>PLEDGE<br>
+                                            <span class="overall-mark">$50</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </dd>
+                    {% endfor %}
+                    {% for course in user.edxprofile.courses.all %}
+                        <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+                            class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}"><a
+                                href="#panel{{ course.id }}a"
+                                onclick="$('#filters').toggle();"
+                                style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}</a>
+
+                            <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
+                                <div class="meter">
+                                    <span style="width: {{ course.get_amount_progress }}%"></span>
+                                </div>
+                                <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
+                                    <div class="metrics score">
+                                        <p>SCORE<br>
+                                            <span class="overall-mark">50<sup>%</sup></span></p>
+                                    </div>
+                                    <div class="metrics goal">
+                                        <p>GOAL<br>
+                                            <span class="overall-mark">50<sup>%</sup></span></p>
+                                    </div>
+                                    <div class="metrics pledge">
+                                        <p>PLEDGE<br>
+                                            <span class="overall-mark">$50</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </dd>
+                    {% endfor %}
+                </dl>
+            </div>
+        </div>
+    </div>
+    {% for course in user.courseraprofile.courses.all %}
+        <div class="row wide-row" id="course_graph_{{ course.id }}" style="display: none">
+            <div class="large-4 columns">
+                <dl class="tabs vertical" style="width: 100%" data-tab>
+                    {% for progress in progresses %}
+                        {% if progress.quiz.course == course %}
+                            <dd><a href="#"><p>{{ progress|safe }}</p></a></dd>
+                        {% endif %}
+                    {% endfor %}
+                </dl>
+            </div>
+            <div class="large-8 columns">
+                <p>Graph Coming Soon</p>
+            </div>
+        </div>
+    {% endfor %}
+    {% for course in user.edxprofile.courses.all %}
+        <div class="row wide-row" id="course_graph_{{ course.id }}" style="display: none">
+            <div class="large-4 columns">
+                <dl class="tabs vertical" style="width: 100%" data-tab>
+                    {% for progress in progresses %}
+                        {% if progress.quiz.course == course %}
+                            <dd><a href="#"><p>{{ progress|safe }}</p></a></dd>
+                        {% endif %}
+                    {% endfor %}
+                </dl>
+            </div>
+            <div class="large-8 columns">
+                <p>Graph Coming Soon</p>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+{% block additionalScripts %}
+    <script src="{% static 'js/foundation/foundation.equalizer.js' %}"></script>
+    <script>
+        $(function () {
+            $('.past').hide();
+            $('.current').show();
+            $('#past-filt').click(function () {
+                $('.past').show();
+                $('.current').hide();
+                $('#filters').find('p').removeClass('selected-news');
+                $(this).addClass('selected-news');
+            });
+
+            $('#current-filt').click(function () {
+                $('.past').hide();
+                $('.current').show();
+                $('#filters').find('p').removeClass('selected-news');
+                $(this).addClass('selected-news');
+            });
+
+            $('#all-filt').click(function () {
+                $('.past').show();
+                $('.current').show();
+                $('#filters').find('p').removeClass('selected-news');
+                $(this).addClass('selected-news');
+            });
+            var full = true;
+            $('.course').click(function () {
+                if (full) {
+                    $('.course').hide();
+                    $(this).show();
+                    $(this).addClass('active');
+                    $('#course_graph_' + $(this).data('id')).show();
+                    full = false;
+                } else {
+                    full = true;
+                    $('.course').show();
+                    $('#course_graph_' + $(this).data('id')).hide();
+                    $(this).removeClass('active');
+                }
+            });
+        });
+    </script>
 {% endblock %}

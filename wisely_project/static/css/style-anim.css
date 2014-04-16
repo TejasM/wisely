@@ -956,3 +956,16 @@ ul.follow-list .plus-i {
 .accordion dd > a {
     background: #0F486D;
 }
+
+ul.follower-list {
+    list-style: none;
+    margin-left: 0;
+}
+
+ul.follower-list li {
+    background: #fff;
+    border: solid #9c9d9e 1px;
+    font-size: 1.3em;
+    width: 49%;
+    display: inline-block;
+}

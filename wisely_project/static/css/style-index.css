@@ -1,0 +1,132 @@
+.tabs dd:hover {
+    background: #fff;
+}
+
+.tabs dd:hover > a {
+    background: #fff;
+    border-left: solid #80BC62 1rem;
+}
+
+.tabs dd > a {
+    background: #F0F1F4;
+    border: none;
+    padding: 2rem 2rem 2rem 3rem;
+}
+
+.tabs dd.active > a {
+    background: #fff;
+    border-left: solid #80BC62 1rem;
+    color: #565557;
+}
+
+.tabs dd {
+    background: #F0F1F4;
+}
+
+.tabs dd.active {
+    background: #fff;
+}
+
+.meter {
+    width: 30%;
+    height: 20px; /* Can be anything */
+    position: relative;
+    background: #fff;
+    -moz-border-radius: 25px;
+    -webkit-border-radius: 25px;
+    border-radius: 25px;
+    -webkit-box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.3);
+    -moz-box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.3);
+    box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.3);
+    display: inline-block;
+}
+
+.score {
+    background-color: #F15A29;
+}
+
+.goal {
+    background-color: #3C3F50;
+}
+
+.metrics {
+    width: 33%;
+    padding: 2%;
+    text-align: center;
+    height: 100%;
+    color: #fff;
+    border: solid #EBECED 1px;
+    font-size: 0;
+}
+
+.metrics p {
+    margin-bottom: 0;
+    font-size: 1.2rem;
+}
+
+.pledge {
+    background-color: #80BC62;
+}
+
+dd div {
+    display: inline-block !important;
+}
+
+.meter > span {
+    display: inline-block;
+    height: 100%;
+    border-radius: 25px;
+    background-color: rgb(128, 188, 98);
+    position: relative;
+    overflow: hidden;
+}
+
+.green {
+    color: rgb(128, 188, 98);
+}
+
+.overall-mark {
+    font-size: 2rem;
+    font-family: "Lovelo", serif;
+}
+
+.orange {
+    color: #F7941E;
+}
+
+.red {
+    color: #f0a3a3;
+}
+
+.tabs dd.active .meter {
+    background: #F0F1F4;
+}
+
+.orange > span {
+    background-color: #F7941E;
+}
+
+.red > span {
+    background-color: #f0a3a3;
+}
+
+.gray > span {
+    background-color: #CACACA;
+}
+
+.summary-courses {
+    background-color: #F0F1F4;
+    color: #0E486D;
+    padding: 1%;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.summary-courses p {
+    margin-bottom: 0;
+}
+
+.number-bold {
+    font-family: 'Lovelo', serif;
+    font-size: 1.5rem;
+}

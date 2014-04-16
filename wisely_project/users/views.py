@@ -285,6 +285,94 @@ def index(request):
 
 
 @login_required
+def index_alt(request):
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist:
+        user_profile = UserProfile.objects.create(user=request.user)
+    social_users = UserSocialAuth.objects.filter(user=request.user)
+    sync_up_user(request.user, social_users)
+    if user_profile.picture._file is None and request.user.social_auth.all().count() > 0 and \
+                    request.user.social_auth.all()[0].provider == 'facebook':
+        url = 'http://graph.facebook.com/{0}/picture'.format(request.user.social_auth.all()[0].uid)
+        try:
+            response = request2('GET', url, params={'type': 'large'})
+            response.raise_for_status()
+            user_profile.picture.save('{0}_social.jpg'.format(request.user.username),
+                                      ContentFile(response.content))
+            user_profile.save()
+        except HTTPError:
+            pass
+    try:
+        coursera_profile = CourseraProfile.objects.get(user=request.user)
+    except CourseraProfile.DoesNotExist:
+        coursera_profile = CourseraProfile.objects.create(user=request.user)
+    try:
+        edx_profile = EdxProfile.objects.get(user=request.user)
+    except EdxProfile.DoesNotExist:
+        edx_profile = EdxProfile.objects.create(user=request.user)
+
+    if request.method == "POST":
+        request.session['onboarding'] = coursera_profile.username == "" and edx_profile.email == ""
+        request.session.save()
+        if request.POST['platform'] == "coursera":
+            request.user.courseraprofile.username = request.POST['username'].strip()
+            already_exist = CourseraProfile.objects.filter(username=request.user.courseraprofile.username).count() > 0
+            if already_exist:
+                if not request.session['onboarding']:
+                    messages.success(request, 'Someone else is already using that Coursera account')
+                    return redirect(reverse('users:index'))
+                return render(request, 'users/index-alt.html', {'alreadyExistCoursera': True})
+
+            request.user.courseraprofile.password = request.POST['password']
+            request.user.courseraprofile.save()
+            request.user.last_login = timezone.now()
+            request.user.save()
+            if not request.session['onboarding']:
+                messages.success(request, 'Added your Coursera account refresh in a few minutes to see your courses')
+                return redirect(reverse('users:index'))
+            else:
+                return redirect(reverse('pledges:create'))
+        elif request.POST['platform'] == "edx":
+            request.user.edxprofile.email = request.POST['username'].strip()
+            already_exist = EdxProfile.objects.filter(email=request.user.edxprofile.email).count() > 0
+            if already_exist:
+                if not request.session['onboarding']:
+                    messages.success(request, 'Someone else is already using that Edx account')
+                    return redirect(reverse('users:index'))
+                return render(request, 'users/index-alt.html', {'alreadyExistEdx': True})
+
+            request.user.edxprofile.password = request.POST['password']
+            request.user.edxprofile.save()
+            request.user.last_login = timezone.now()
+            request.user.save()
+            if not request.session['onboarding']:
+                messages.success(request, 'Added your Edx account refresh in a few minutes to see your courses')
+                return redirect(reverse('users:index'))
+            else:
+                return redirect(reverse('pledges:create'))
+        else:
+            messages.error(request, "Something really went wrong, please try again or contact us")
+            return redirect(reverse('user:index'))
+
+    if (coursera_profile.username == "" or coursera_profile.incorrect_login) and (
+                    edx_profile.email == "" or edx_profile.incorrect_login):
+        return render(request, 'users/index-alt.html', {'form': True})
+    else:
+        pledges = Pledge.objects.filter(user=request.user.userprofile)
+        progresses = Progress.objects.filter(user=request.user.userprofile)
+        other_pledgers_coursera = []
+        other_pledgers_edx = []
+        for course in coursera_profile.courses.all():
+            other_pledgers_coursera.append(Pledge.objects.filter(course=course).order_by('?')[:5])
+        for course in edx_profile.courses.all():
+            other_pledgers_edx.append(Pledge.objects.filter(course=course).order_by('?')[:5])
+        return render(request, 'users/index-alt.html', {'pledges': pledges, 'progresses': progresses, 'form': False,
+                                                    'others_coursera': other_pledgers_coursera,
+                                                    'others_edx': other_pledgers_edx})
+
+
+@login_required
 def check_updated(request):
     return HttpResponse(json.dumps({'updated': request.user.last_login <= request.user.courseraprofile.last_updated,
                                     'incorrect': request.user.courseraprofile.incorrect_login}),
@@ -377,7 +465,7 @@ def reply(request):
         sender = request.user
         subject = request.POST['subject']
         body = request.POST['body']
-        parent_msg = Message.objects.get(request.POST['message_id'])
+        parent_msg = Message.objects.get(pk=int(request.POST['message_id']))
         recipient = parent_msg.sender
         Message.objects.create(subject=subject, body=body, recipient=recipient,
                                sender=User.objects.get(username=sender), parent_msg=parent_msg)
