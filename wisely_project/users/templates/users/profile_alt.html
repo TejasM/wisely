@@ -21,39 +21,9 @@
                     <dd><a href="#panel6a"><i class="fa fa-user"></i>Following</a></dd>
                 </dl>
             </div>
-            <div class="row" style="margin-top: 30px;">
-                <div class="large-3 columns">
-                    <img src="{% static 'images/plus-icon.png' %}" style="width: 100%">
-                </div>
-                <div class="large-9 columns">
-                    <div style="margin-top: 15px; margin-left: -10px">
-                        <p style="color: #1E5376; font-size: 1.6em; font-weight: 700">Who To Follow</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 30px;">
-                <ul class="follow-list">
-                    <li>
-                        <div class="row" style="margin: 3% 5%;">
-                            <div class="large-3 columns" style="padding: 0 4%;">
-                                <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
-                                     {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
-                                     class="pull-left img-circle">
-                            </div>
-                            <div class="large-6 columns">
-                                <div>
-                                    <h3 style="font-size: 16px">Tejas Mehta</h3>
-
-                                    <p>Programmer</p>
-                                </div>
-                            </div>
-                            <div class="large-3 columns plus-i" style="text-align: center">
-                                +
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            {% if who_to_follow %}
+                {% include 'users/who_to_follow.html' %}
+            {% endif %}
         </div>
         <div class="large-8 columns" style="padding-top: 80px">
     {% else %}
@@ -226,5 +196,17 @@
                 }
             });
         });
+        function follow_add(id) {
+            $.post('{% url 'users:follow' %}', {user_id: id }).done(function (data) {
+                if (data['HTTPRESPONSE'] == "1") {
+                    $('#other-message').text('Now following {{ viewed_user.first_name }} {{ viewed_user.last_name }}');
+                    $('#other-messages').show();
+                    $('#follow_' + id.toString()).hide();
+                } else {
+                    $('#other-message').text('Something went wrong try again later');
+                    $('#other-messages').show();
+                }
+            });
+        }
     </script>
 {% endblock %}

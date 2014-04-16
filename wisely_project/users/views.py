@@ -52,7 +52,7 @@ def logout_user(request):
 
 
 def get_suggested_followers(user):
-    return UserProfile.objects.filter(~Q(pk=user.id)).filter(~Q(id__in=user.follows.all().values_list('id', flat=True))).order_by('?')[:2]
+    return UserProfile.objects.filter(~Q(pk=user.id)).filter(~Q(id__in=user.follows.all().values_list('id', flat=True))).order_by('?')[:3]
 
 @login_required
 def news(request):
@@ -76,6 +76,7 @@ def profile(request):
 
     user_profile_form = UserProfileForm(instance=user_profile)
     user_form = UserForm(instance=request.user)
+    who_to_follow = get_suggested_followers(user_profile)
 
     completed_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=True)
     current_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=False)
@@ -83,7 +84,7 @@ def profile(request):
     followers = UserProfile.objects.filter(follows__in=[user_profile.id])
     context_dict = {'viewed_user': request.user, 'user_profile': user_profile, 'user_profile_form': user_profile_form,
                     'user_form': user_form, 'completed_pledges': completed_pledges, 'current_pledges': current_pledges,
-                    'message_list': message_list, 'followers': followers}
+                    'message_list': message_list, 'followers': followers, 'who_to_follow': who_to_follow}
     return render(request, 'users/profile_alt.html', context_dict)
 
 
@@ -96,9 +97,10 @@ def public_profile(request, user_id):
 
     completed_pledges = Pledge.objects.filter(user=viewed_user.userprofile, is_complete=True)
     current_pledges = Pledge.objects.filter(user=viewed_user.userprofile, is_complete=False)
+    who_to_follow = get_suggested_followers(user_profile)
 
     context_dict = {'viewed_user': viewed_user, 'user_profile': user_profile, 'completed_pledges': completed_pledges,
-                    'current_pledges': current_pledges, 'public': True}
+                    'current_pledges': current_pledges, 'public': True, 'who_to_follow': who_to_follow}
     return render(request, 'users/profile_alt.html', context_dict)
 
 
