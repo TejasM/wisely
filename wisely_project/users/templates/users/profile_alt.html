@@ -234,11 +234,11 @@
             $.post('{% url 'users:follow' %}', {user_id: id }).done(function (data) {
                 if (data['HTTPRESPONSE'] == "1") {
                     $('#other-message').text('Now following {{ viewed_user.first_name }} {{ viewed_user.last_name }}');
-                    $('#other-messages').show();
+                    $('#other-messages').lightbox_me({centered: true});
                     $('#follow_' + id.toString()).hide();
                 } else {
                     $('#other-message').text('Something went wrong try again later');
-                    $('#other-messages').show();
+                    $('#other-messages').lightbox_me({centered: true});
                 }
             });
         }
