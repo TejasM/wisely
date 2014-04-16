@@ -130,3 +130,7 @@ dd div {
     font-family: 'Lovelo', serif;
     font-size: 1.5rem;
 }
+
+.class-progress strong {
+    font-size: 1rem;
+}
