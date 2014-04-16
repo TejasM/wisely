@@ -168,7 +168,7 @@
                     {% endif %}
                 </div>
                 <div class="content" id="panel6a">
-                    {% if user_profile.follows %}
+                    {% if user_profile.follows.count != 0 %}
                         <ul class="follower-list">
                             {% for following in user_profile.follows.all %}
                                 <li>
