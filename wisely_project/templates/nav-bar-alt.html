@@ -50,8 +50,8 @@
                     <a href="/learn-more">
                         FEATURES
                     </a>
-                    <a href="/users/profile">
-                        <img src="{% static 'images/power-icon.png' %}">
+                    <a {% if user.is_authenticated %}href="/users/profile"{% else %}href="#"{% endif %}>
+                        <img src="{% static 'images/power-icon.png' %}" {% if not user.is_authenticated %}class="login"{% endif %}>
                     </a>
                 </div>
             </div>

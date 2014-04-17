@@ -867,6 +867,9 @@ img.finish-anim {
 .last-sec {
     background: #3c3f50;
     min-height: 150px;
+    text-align: center;
+    padding: 3%;
+    margin: 0 auto;
 }
 
 .right-nav a, .right-nav a:hover {

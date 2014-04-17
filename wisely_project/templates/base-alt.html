@@ -191,12 +191,34 @@
             </div>
         </div>
         <div class="last-sec blue-back">
+            <button id="sign">GET STARTED</button>
         </div>
     </section>
 
 
     <div id="login-up" class="light-box">
         <div class="row text-center">
+            <div>
+                <a class="btn-auth btn-facebook large" href="{% url 'socialauth_begin' 'facebook' %}"
+                   onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
+                    Login with <b>Facebook</b>
+                </a>
+            </div>
+            <div class="extra-top-small-margin">
+                <a class="btn-auth btn-twitter large" href="{% url 'socialauth_begin' 'twitter' %}"
+                   onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
+                    Login with <b>Twitter</b>
+                </a>
+            </div>
+            <div class="extra-top-small-margin">
+                <a class="btn-auth btn-google large" href="{% url 'socialauth_begin' 'google-oauth2' %}"
+                   onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
+                    Login with <b>Google</b>
+                </a>
+            </div>
+        </div>
+        <hr>
+        <div class="row text-center" style="margin-top: 1em">
             <form action="{% url 'users:login' %}" method="post">
                 {% csrf_token %}
                 <div>
@@ -257,7 +279,7 @@
                     <input type="password" name="password" placeholder="Password">
                 </div>
                 <div class="centered extra-margin-top">
-                    <button type="submit" class="other-button"
+                    <button type="submit"
                             onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">Sign
                         Up
                     </button>
@@ -279,7 +301,7 @@
                 <div id="validation-contact" class="validation" style="color: red;"></div>
             </div>
             <div class="centered extra-top-margin">
-                <button id="contact-send" class="other-button">Send</button>
+                <button id="contact-send">Send</button>
             </div>
         </div>
     </div>
@@ -591,5 +613,20 @@
     ga('send', 'pageview');
 </script>
 {% block additionalScripts %}
+    <script>
+        $(function () {
+            $('#sign').click(function () {
+                $('#sign-up').lightbox_me({centered: true});
+            });
+
+            $('#sign2').click(function () {
+                $('#sign-up').lightbox_me({centered: true});
+            });
+
+            $('.login').click(function () {
+                $('#login-up').lightbox_me({centered: true});
+            });
+        });
+    </script>
 {% endblock %}
 </html>
