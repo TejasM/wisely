@@ -102,7 +102,8 @@
                                                     <span class="overall-mark">{{ pledge.get_aim }}<sup>%</sup></span>
                                                 </p>
                                             </div>
-                                            <div class="metrics pledge share-it" data-share="{{ course.title }}" data-shareid="{{ course.id }}">
+                                            <div class="metrics pledge share-it" data-share="{{ course.title }}"
+                                                 data-shareid="{{ course.id }}">
                                                 <p>PLEDGE<br>
                                                     <span class="overall-mark">${{ pledge.money }}</span></p>
                                             </div>
@@ -110,7 +111,7 @@
                                         {% elif forloop.counter == pledges.count %}
                                             {% if course.get_amount_progress <= 50 %}
                                                 <div class="metrics goal" data-class="{{ course.title }}"
-                                                         data-id="{{ course.id }}"><p>
+                                                     data-id="{{ course.id }}"><p>
                                                     <img src="{% static 'images/pledge-icon.png' %}"
                                                          class="pledge-start"></p>
                                                 </div>
@@ -118,7 +119,7 @@
                                                     <p><strong>&#151; &#151;</strong></p>
                                                 </div>
                                             {% else %}
-                                                <div class="metrics goal pledge-start">
+                                                <div class="metrics goal">
                                                     <p><strong>&#151; &#151;</strong></p>
                                                 </div>
                                                 <div class="metrics pledge">
@@ -129,14 +130,16 @@
                                     {% endfor %}
                                     {% if not pledges %}
                                         {% if course.get_amount_progress <= 50 %}
-                                            <div class="metrics goal" data-class="{{ course.title }}" data-id="{{ course.id }}">
-                                                <p><img src="{% static 'images/pledge-icon.png' %}" class="pledge-start"></p>
+                                            <div class="metrics goal" data-class="{{ course.title }}"
+                                                 data-id="{{ course.id }}">
+                                                <p><img src="{% static 'images/pledge-icon.png' %}"
+                                                        class="pledge-start"></p>
                                             </div>
                                             <div class="metrics pledge">
                                                 <p><strong>&#151; &#151;</strong></p>
                                             </div>
                                         {% else %}
-                                            <div class="metrics goal pledge-start">
+                                            <div class="metrics goal">
                                                 <p><strong>&#151; &#151;</strong></p>
                                             </div>
                                             <div class="metrics pledge">
@@ -164,14 +167,56 @@
                                         <p>SCORE<br>
                                             <span class="overall-mark">50<sup>%</sup></span></p>
                                     </div>
-                                    <div class="metrics goal">
-                                        <p>GOAL<br>
-                                            <span class="overall-mark">50<sup>%</sup></span></p>
-                                    </div>
-                                    <div class="metrics pledge">
-                                        <p>PLEDGE<br>
-                                            <span class="overall-mark">$50</span></p>
-                                    </div>
+                                    {% for pledge in pledges %}
+                                        {% if pledge.course == course %}
+                                            <div class="metrics goal">
+                                                <p>GOAL<br>
+                                                    <span class="overall-mark">{{ pledge.get_aim }}<sup>%</sup></span>
+                                                </p>
+                                            </div>
+                                            <div class="metrics pledge share-it" data-share="{{ course.title }}"
+                                                 data-shareid="{{ course.id }}">
+                                                <p>PLEDGE<br>
+                                                    <span class="overall-mark">${{ pledge.money }}</span></p>
+                                            </div>
+                                            {{ forloop|break }}
+                                        {% elif forloop.counter == pledges.count %}
+                                            {% if course.get_amount_progress <= 50 %}
+                                                <div class="metrics goal pledge-start" data-class="{{ course.title }}"
+                                                     data-id="{{ course.id }}"><p>
+                                                    <img src="{% static 'images/pledge-icon.png' %}"></p>
+                                                </div>
+                                                <div class="metrics pledge">
+                                                    <p><strong>&#151; &#151;</strong></p>
+                                                </div>
+                                            {% else %}
+                                                <div class="metrics goal">
+                                                    <p><strong>&#151; &#151;</strong></p>
+                                                </div>
+                                                <div class="metrics pledge">
+                                                    <p><strong>&#151; &#151;</strong></p>
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if not pledges %}
+                                        {% if course.get_amount_progress <= 50 %}
+                                            <div class="metrics goal pledge-start" data-class="{{ course.title }}"
+                                                 data-id="{{ course.id }}">
+                                                <p><img src="{% static 'images/pledge-icon.png' %}"></p>
+                                            </div>
+                                            <div class="metrics pledge">
+                                                <p><strong>&#151; &#151;</strong></p>
+                                            </div>
+                                        {% else %}
+                                            <div class="metrics goal">
+                                                <p><strong>&#151; &#151;</strong></p>
+                                            </div>
+                                            <div class="metrics pledge">
+                                                <p><strong>&#151; &#151;</strong></p>
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
                                 </div>
                             </div>
                         </dd>
@@ -427,16 +472,16 @@
             var share_name = "";
             var share_id = 0;
             var temp_div = {};
-            $('.share-it').each(function(index, value){
+            $('.share-it').each(function (index, value) {
                 temp_div[$(this)] = $(this).html();
             });
-            $('.share-it').hover(function(){
+            $('.share-it').hover(function () {
                 $(this).html('<p><img src="{% static 'images/connect-icon.png' %}" valign="middle" style="display: inline"></p>');
-            }, function() {
+            }, function () {
                 $(this).html(temp_div[$(this)]);
             });
 
-            $('.share-it').click(function(){
+            $('.share-it').click(function () {
                 share_name = $(this).data('share');
                 share_id = parseInt($(this).data('shareid'));
                 var $share_box = $('#share-box');
