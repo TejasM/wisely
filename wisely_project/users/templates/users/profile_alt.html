@@ -206,7 +206,7 @@
 </div>
 </div>
     {% if public and viewed_user != request.user %}
-        {% include 'django_messages/reply.html' with path=request.get_full_path %}
+        {% include 'django_messages/compose.html' with path=request.get_full_path %}
     {% endif %}
     <div id="other-messages" class="light-box">
         <i class="fa fa-times-circle-o close" style="margin-top: -25px; margin-right: -30px; float: right"></i>
