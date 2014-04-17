@@ -110,10 +110,9 @@
                                             {{ forloop|break }}
                                         {% elif forloop.counter == pledges.count %}
                                             {% if course.get_amount_progress <= 50 %}
-                                                <div class="metrics goal" data-class="{{ course.title }}"
+                                                <div class="metrics goal pledge-start" data-class="{{ course.title }}"
                                                      data-id="{{ course.id }}"><p>
-                                                    <img src="{% static 'images/pledge-icon.png' %}"
-                                                         class="pledge-start"></p>
+                                                    <img src="{% static 'images/pledge-icon.png' %}" style="display: inline"></p>
                                                 </div>
                                                 <div class="metrics pledge">
                                                     <p><strong>&#151; &#151;</strong></p>
@@ -130,10 +129,9 @@
                                     {% endfor %}
                                     {% if not pledges %}
                                         {% if course.get_amount_progress <= 50 %}
-                                            <div class="metrics goal" data-class="{{ course.title }}"
+                                            <div class="metrics goal pledge-start" data-class="{{ course.title }}"
                                                  data-id="{{ course.id }}">
-                                                <p><img src="{% static 'images/pledge-icon.png' %}"
-                                                        class="pledge-start"></p>
+                                                <p><img src="{% static 'images/pledge-icon.png' %}"></p>
                                             </div>
                                             <div class="metrics pledge">
                                                 <p><strong>&#151; &#151;</strong></p>
