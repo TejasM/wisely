@@ -234,12 +234,12 @@
                     $('.course').hide();
                     $(this).parent().show();
                     $(this).parent().addClass('active');
-                    $('#course_graph_' + $(this).data('id')).show();
+                    $('#course_graph_' + $(this).parent().data('id')).show();
                     full = false;
                 } else {
                     full = true;
                     $('.course').show();
-                    $('#course_graph_' + $(this).data('id')).hide();
+                    $('#course_graph_' + $(this).parent().data('id')).hide();
                     $(this).parent().removeClass('active');
                 }
             });
