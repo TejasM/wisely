@@ -6,6 +6,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/style-news.css' %}" cache="false"/>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style-index.css' %}" cache="false"/>
     <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.hoverscroll.css' %}"/>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 {% endblock %}
 {% block content %}
     <div class="row wide-row" style="border-bottom: solid #D2D4D5 1px">
@@ -100,29 +102,45 @@
                                                     <span class="overall-mark">{{ pledge.get_aim }}<sup>%</sup></span>
                                                 </p>
                                             </div>
-                                            <div class="metrics pledge">
+                                            <div class="metrics pledge share-it" data-share="{{ course.title }}" data-shareid="{{ course.id }}">
                                                 <p>PLEDGE<br>
                                                     <span class="overall-mark">${{ pledge.money }}</span></p>
                                             </div>
                                             {{ forloop|break }}
                                         {% elif forloop.counter == pledges.count %}
                                             {% if course.get_amount_progress <= 50 %}
-                                                <div class="metrics goal">
-                                                    <img src="{% static 'images/pledge-icon.png' %}">
+                                                <div class="metrics goal" data-class="{{ course.title }}"
+                                                         data-id="{{ course.id }}"><p>
+                                                    <img src="{% static 'images/pledge-icon.png' %}"
+                                                         class="pledge-start"></p>
                                                 </div>
                                                 <div class="metrics pledge">
-                                                    <p></p>
+                                                    <p><strong>&#151; &#151;</strong></p>
+                                                </div>
+                                            {% else %}
+                                                <div class="metrics goal pledge-start">
+                                                    <p><strong>&#151; &#151;</strong></p>
+                                                </div>
+                                                <div class="metrics pledge">
+                                                    <p><strong>&#151; &#151;</strong></p>
                                                 </div>
                                             {% endif %}
                                         {% endif %}
                                     {% endfor %}
                                     {% if not pledges %}
                                         {% if course.get_amount_progress <= 50 %}
-                                            <div class="metrics goal">
-                                                <img src="{% static 'images/pledge-icon.png' %}">
+                                            <div class="metrics goal" data-class="{{ course.title }}" data-id="{{ course.id }}">
+                                                <p><img src="{% static 'images/pledge-icon.png' %}" class="pledge-start"></p>
                                             </div>
                                             <div class="metrics pledge">
-                                                <p></p>
+                                                <p><strong>&#151; &#151;</strong></p>
+                                            </div>
+                                        {% else %}
+                                            <div class="metrics goal pledge-start">
+                                                <p><strong>&#151; &#151;</strong></p>
+                                            </div>
+                                            <div class="metrics pledge">
+                                                <p><strong>&#151; &#151;</strong></p>
                                             </div>
                                         {% endif %}
                                     {% endif %}
@@ -200,10 +218,73 @@
             </div>
         </div>
     {% endfor %}
+    <div class="light-box" id="share-box">
+        <div id="share-title"></div>
+        <button class="btn-auth btn-facebook" id="share-facebook" type="submit">Share
+            on <b>Facebook</b>
+        </button>
+        <a class="twitter popup"
+           href="">
+            <button class="btn-auth btn-twitter" id="share-twitter" type="submit">Share
+                on <b>Twitter</b>
+            </button>
+        </a>
+    </div>
+    <div class="light-box" id="pledge-box">
+        <div class="row">
+            <div id="class-title"></div>
+            <input type="hidden" id="class-id">
+
+            <div class="summary row">
+                <div class="large-4 columns">
+                    <p>STUDENTS</p>
+
+                    <p id="number_pledges">0</p>
+                </div>
+                <div class="large-4 columns">
+                    <p>AVG. PLEDGE</p>
+
+                    <p id="avg_aim">N/A</p>
+                </div>
+                <div class="large-4 columns">
+                    <p>REWARD</p>
+
+                    <p id="probable_reward"><sup>$</sup>0</p>
+                </div>
+            </div>
+            <div style="position: relative; overflow: hidden">
+                <div id="goal-slider">
+                </div>
+                <div class="right">
+                    <p style="margin-bottom: 0; font-size: 1rem">GOAL</p>
+
+                    <p style="margin-bottom: 0" id="goal-value">75<sup>%</sup></p>
+                </div>
+            </div>
+            <div style="position: relative; overflow: hidden">
+
+                <div id="pledge-slider">
+                </div>
+                <div class="right">
+                    <p style="margin-bottom: 0;  font-size: 1rem">PLEDGE</p>
+
+                    <p style="margin-bottom: 0" id="pledge-value"><sup>$</sup>30</p>
+                </div>
+            </div>
+            <button id="make-pledge">Save Goal and Pledge</button>
+        </div>
+    </div>
+    <div id="other-messages" class="light-box">
+        <i class="fa fa-times-circle-o close" style="margin-top: -25px; margin-right: -30px; float: right"></i>
+
+        <div class="row text-center" id="other-message">
+        </div>
+    </div>
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'js/foundation/foundation.equalizer.js' %}"></script>
     <script src="{% static 'js/jquery.hoverscroll.js' %}"></script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
     <script>
         $(function () {
             $('.past').hide();
@@ -244,12 +325,190 @@
                 }
             });
             $('.class-progress').find('dl').hoverscroll({
-                        vertical: true,
-                        height: 400,
-                        arrows: true,
-                        arrowsOpacity: 0.5,
+                vertical: true,
+                height: 400,
+                arrows: true,
+                arrowsOpacity: 0.5,
+            });
+            var projected_amount = 5;
+            var average_aim = 75;
+            var current_name = "";
+            var current_id;
+            $('.pledge-start').click(function () {
+                var $clicked = $(this);
+                current_id = $clicked.data('id');
+                current_name = $clicked.data('class');
+                $('#class-title').html('<p>' + current_name + '</p>');
+                $('#class-id').val(current_id);
+                $.get('{% url 'users:get_course_stats' %}', {'id': current_id}, function (data) {
+                    if (parseInt(data['fail']) == 0) {
+                        if (parseInt(data['count']) != 0) {
+                            $('#number_pledges').text(data['count']);
+                            $('#avg_aim').html(data['avg_aim'] + '<sup>%</sup>');
+                            average_aim = parseInt(data['avg_aim']);
+                            projected_amount = parseInt(data['probable_reward']);
+                        }
+                        $('#probable_reward').html('<sup>$</sup>' + data['probable_reward']);
                     }
-            );
+                    $('#pledge-box').lightbox_me({centered: true});
+                });
+            });
+            $("#goal-slider").slider({
+                value: 75,
+                range: "min",
+                min: 0,
+                step: 5,
+                max: 100,
+                slide: function (event, ui) {
+                    if (ui.value <= 45) {
+                        return false;
+                    }
+                    $('#goal-value').html(ui.value.toString() + '<sup>%</sup>');
+                    var value =
+                            projected_amount *
+                                    (1 + (ui.value / 100 - average_aim / 100) / (average_aim / 100));
+                    if (isNaN(value)) {
+                        value = 5;
+                    }
+                    value = Math.round(value * 100) / 100;
+                    $('#probable_reward').html('<sup>$</sup>' + value.toString());
+                }
+            });
+            $("#pledge-slider").slider({
+                value: 30,
+                range: "min",
+                min: 0,
+                step: 5,
+                max: 100,
+                slide: function (event, ui) {
+                    if (ui.value <= 5) {
+                        return false;
+                    }
+                    $('#pledge-value').html('<sup>$</sup>' + ui.value.toString());
+                }
+            });
+
+            $('#make-pledge').click(function () {
+                var token = function (res) {
+                    $.post('{% url 'pledges:create_ajax' %}', {'stripeToken': res.id, 'course': current_id, 'money': money,
+                        'aim': aim
+                    }, function (data) {
+                        if (parseInt(data['fail']) == 0) {
+                            //TODO: update div
+                            $('div[data-id="' + current_id.toString() + '"]').html('<p>GOAL<br><span class="overall-mark">' + aim.toString() + '<sup>%</sup></span></p>');
+                            var $new_share = $('div[data-id="' + current_id.toString() + '"] + div');
+                            $new_share.html('<p>PLEDGE<br><span class="overall-mark">$' + money.toString() + '</span></p>');
+                            $new_share.data('share', current_name);
+                            $new_share.data('shareid', data['id']);
+                            $new_share.addClass('share-it');
+                            temp_div[$new_share] = $new_share.html();
+                            $('#make-pledge').trigger('close');
+                        } else {
+                            $('#other-message').text(data['message']);
+                            $('#other-messages').lightbox_me({centered: true});
+                        }
+                    });
+                };
+                var money = parseInt($('#pledge-value').text().replace('$', ''));
+                var aim = parseInt($('#goal-value').text().replace('%', ''));
+                if (!isNaN(money)) {
+                    StripeCheckout.open({
+                        key: 'pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb',
+                        address: false,
+                        amount: money * 100,
+                        currency: 'cad',
+                        name: "Pledge",
+                        description: "For " + current_name,
+                        panelLabel: 'Pledge ',
+                        token: token
+                    });
+                }
+            });
+            var share_name = "";
+            var share_id = 0;
+            var temp_div = {};
+            $('.share-it').each(function(index, value){
+                temp_div[$(this)] = $(this).html();
+            });
+            $('.share-it').hover(function(){
+                $(this).html('<p><img src="{% static 'images/connect-icon.png' %}" valign="middle" style="display: inline"></p>');
+            }, function() {
+                $(this).html(temp_div[$(this)]);
+            });
+
+            $('.share-it').click(function(){
+                share_name = $(this).data('share');
+                share_id = parseInt($(this).data('shareid'));
+                var $share_box = $('#share-box');
+                $('#share-title').html('<p>' + share_name + '</p>');
+                $share_box.find('.twitter').attr('href', get_twitter_string());
+                $share_box.lightbox_me({centered: true});
+            });
+
+            $('#share-facebook').click(function () {
+                FB.ui(
+                        {
+                            method: 'feed',
+                            name: 'Pledge for ' + share_name,
+                            description: (
+                                    'I' + ' have just made a' +
+                                            ' pledge for ' + share_name + ', help me stay motivated by following the pledge.'
+                                    ),
+                            link: 'http://www.projectwisely.com/follow/' + share_id.toString(),
+                            picture: 'http://www.fbrell.com/public/f8.jpg'
+                        },
+                        function (response) {
+                            if (response && response.post_id) {
+                            } else {
+                            }
+                        }
+                );
+            });
+
+            function get_twitter_string() {
+                return "http://twitter.com/share?text=Just%20made%20a%20pledge%20for%20" + share_name + "%2C%20help%20me%20stay%20motivated%20by%20following%20the%20pledge!&url=http://www.projectwisely.com/follow/" + share_id;
+            }
         });
+    </script>
+    <div id="fb-root"></div>
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '405339162934237',
+                status: true,
+                xfbml: true
+            });
+        };
+        $(function () {
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {
+                    return;
+                }
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "//connect.facebook.net/en_US/all.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+
+        });
+
+        $('.popup').click(function (event) {
+            var width = 575,
+                    height = 400,
+                    left = ($(window).width() - width) / 2,
+                    top = ($(window).height() - height) / 2,
+                    url = this.href,
+                    opts = 'status=1' +
+                            ',width=' + width +
+                            ',height=' + height +
+                            ',top=' + top +
+                            ',left=' + left;
+
+            window.open(url, 'twitter', opts);
+
+            return false;
+        });
+
     </script>
 {% endblock %}

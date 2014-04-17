@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.core.urlresolvers import reverse
-from django.db.models import Q
+from django.db.models import Q, Avg, Sum
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
@@ -52,7 +52,9 @@ def logout_user(request):
 
 
 def get_suggested_followers(user):
-    return UserProfile.objects.filter(~Q(pk=user.id)).filter(~Q(id__in=user.follows.all().values_list('id', flat=True))).order_by('?')[:3]
+    return UserProfile.objects.filter(~Q(pk=user.id)).filter(
+        ~Q(id__in=user.follows.all().values_list('id', flat=True))).order_by('?')[:3]
+
 
 @login_required
 def news(request):
@@ -361,26 +363,45 @@ def index_alt(request):
     else:
         pledges = Pledge.objects.filter(user=request.user.userprofile)
         progresses = Progress.objects.filter(user=request.user.userprofile)
-        other_pledgers_coursera = []
-        other_pledgers_edx = []
         current_courses = 0
         past_courses = 0
+
         for course in coursera_profile.courses.all():
-            other_pledgers_coursera.append(Pledge.objects.filter(course=course).order_by('?')[:5])
             if course.get_amount_progress >= 100:
                 past_courses += 1
             else:
                 current_courses += 1
         for course in edx_profile.courses.all():
-            other_pledgers_edx.append(Pledge.objects.filter(course=course).order_by('?')[:5])
             if course.get_amount_progress >= 100:
                 past_courses += 1
             else:
                 current_courses += 1
         return render(request, 'users/index-alt.html', {'pledges': pledges, 'progresses': progresses, 'form': False,
-                                                    'others_coursera': other_pledgers_coursera,
-                                                    'others_edx': other_pledgers_edx, 'current_courses': current_courses,
-                                                    'past_courses': past_courses})
+                                                        'current_courses': current_courses,
+                                                        'past_courses': past_courses})
+
+
+@csrf_exempt
+@login_required
+def get_course_stats(request):
+    if request.method == "GET":
+        course_id = request.GET['id']
+        pledges = Pledge.objects.filter(course__id=course_id)
+        avg_pledges = 'N/A'
+        if pledges:
+            avg_pledges = pledges.aggregate(Avg('aim')).values()[0] * 100
+        count = pledges.count()
+        probable_reward = 5
+        if pledges:
+            total_pool = pledges.aggregate(Sum('money')).values()[0]
+            probable_pool = 0.2 * float(total_pool)
+            probable_num_rewarded = count * 0.8
+            probable_reward = probable_pool / probable_num_rewarded
+        return HttpResponse(
+            json.dumps({'fail': 0, 'avg_aim': avg_pledges, 'count': count, 'probable_reward': probable_reward}),
+            content_type='application/json')
+    return HttpResponse(json.dumps({'fail': 1}),
+                        content_type='application/json')
 
 
 @login_required

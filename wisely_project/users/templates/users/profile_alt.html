@@ -51,7 +51,7 @@
                                     </div>
                                 </div>
                                 <div class="large-3 columns plus-i" style="text-align: center"
-                                     onclick="follow_add({{ follow.id }});">
+                                     onclick="follow_add({{ follow.id }}, '{{ follow.user.first_name }} {{ follow.user.last_name }}');">
                                     +
                                 </div>
                             </div>
@@ -231,10 +231,10 @@
                 }
             });
         });
-        function follow_add(id) {
+        function follow_add(id, name) {
             $.post('{% url 'users:follow' %}', {user_id: id }).done(function (data) {
                 if (data['HTTPRESPONSE'] == "1") {
-                    $('#other-message').text('Now following {{ viewed_user.first_name }} {{ viewed_user.last_name }}');
+                    $('#other-message').text('Now following ' + name);
                     $('#other-messages').lightbox_me({centered: true});
                     $('#follow_' + id.toString()).hide();
                 } else {

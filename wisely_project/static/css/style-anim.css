@@ -361,14 +361,14 @@ h2 {
     background-clip: padding-box;
     -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-    background: #fff;
+    background: #F1F2F2;
     display: none;
     border-radius: 3px;
     -webkit-backface-visibility: hidden;
     -webkit-transform: translateZ(0);
     width: 380px;
-    margin-top: 150px;
-    margin-left: -200px;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .light-box button {
@@ -968,4 +968,14 @@ ul.follower-list li {
     font-size: 1.3em;
     width: 49%;
     display: inline-block;
+}
+
+button, .button {
+    background-color: #79CDEB;
+    color: #fff;
+}
+
+button:hover, .button:hover, button:active, .button:active {
+    background-color: #0F486D;
+    color: #fff;
 }

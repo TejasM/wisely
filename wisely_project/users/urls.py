@@ -19,4 +19,5 @@ urlpatterns = patterns('',
                        url(r'^compose/$', views.compose, name='compose'),
                        url(r'^reply/$', views.reply, name='reply'),
                        url(r'^follow/$', views.follow, name='follow'),
+                       url(r'^get_course_stats/$', views.get_course_stats, name='get_course_stats'),
 )

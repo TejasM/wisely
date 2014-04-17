@@ -19,4 +19,5 @@ urlpatterns = patterns('',
                        url(r'^share/(?P<pledge_id>\d+)/$', views.share, name='share'),
                        # /pledges/23/
                        url(r'^(?P<pledge_id>\d+)/results/$', views.results, name='results'),
+                       url(r'^create_ajax/$', views.create_ajax, name='create_ajax'),
 )

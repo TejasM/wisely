@@ -10,11 +10,12 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 import stripe
 
 from users.models import Course, UserProfile, EdxProfile, CourseraProfile
 from users.utils import divide_timedelta
-
+import json
 
 __author__ = 'Cheng'
 
@@ -22,7 +23,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from models import Pledge, Follower, Reward
 from actstream import action
-import wisely_project.settings.base as settings
+from django.conf import settings
 
 
 def mass_pay(email, amt):
@@ -224,6 +225,42 @@ def already(request, pledge_id):
 @login_required
 def results(request, poll_id):
     return HttpResponse("You're looking at the results of pledge %s." % poll_id)
+
+
+@login_required
+@csrf_exempt
+def create_ajax(request):
+    if request.method == "POST":
+        token = request.POST.get('stripeToken', '')
+        money = int(float(request.POST['money'].replace(',', '')))
+        if money < 10:
+            return HttpResponse(json.dumps({'fail': 1, 'message': "Can't pledge less than $10."}),
+                                content_type='application/json')
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        try:
+            charge = stripe.Charge.create(
+                amount=money * 100,  # amount in cents, again
+                currency="cad",
+                card=token,
+                description=request.user.username,
+            )
+            course = Course.objects.get(pk=int(request.POST['course']))
+            pledge = Pledge.objects.create(user=request.user.userprofile,
+                                           course=course,
+                                           money=money, is_active=True,
+                                           aim=float(request.POST['aim'].replace('%', '')) / 100)
+            action.send(request.user, verb="pledged for", action_object=pledge, target=course)
+            pledge.charge = charge.id
+            pledge.is_active = True
+            pledge.save()
+            return HttpResponse(json.dumps({'fail': 0, 'id': pledge.id}),
+                                content_type='application/json')
+        except stripe.CardError, _:
+            return HttpResponse(json.dumps({'fail': 1, 'message': 'Credit Card Error'}),
+                                content_type='application/json')
+
+    return HttpResponse(json.dumps({'fail': 1}),
+                        content_type='application/json')
 
 
 @login_required
