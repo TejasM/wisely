@@ -86,7 +86,7 @@
             </div>
             <div class="row" style="margin-top: 80px">
                 <div class="large-3 columns">
-                    <a href="#pledge-sec" id="one-pledge">
+                    <a href="#pledge-ic" id="one-pledge">
                         <img src="{% static 'images/pledge-blue.png' %}">
 
                         <div class="row pledge-color" style="margin-top: 10px;">
@@ -95,7 +95,7 @@
                     </a>
                 </div>
                 <div class="large-3 columns">
-                    <a href="#track-sec" id="one-track">
+                    <a href="#track-ic" id="one-track">
                         <img src="{% static 'images/track-orange.png' %}">
 
                         <div class="row track-color" style="margin-top: 10px">
@@ -104,7 +104,7 @@
                     </a>
                 </div>
                 <div class="large-3 columns">
-                    <a href="#share-sec" id="one-connect">
+                    <a href="#share-ic" id="one-connect">
                         <img src="{% static 'images/connect-grey.png' %}">
 
                         <div class="row connect-color" style="margin-top: 10px">
@@ -113,7 +113,7 @@
                     </a>
                 </div>
                 <div class="large-3 columns">
-                    <a href="#achieve-sec" id="one-achieve">
+                    <a href="#achieve-ic" id="one-achieve">
                         <img src="{% static 'images/achieve-green.png' %}">
 
                         <div class="row achieve-color" style="margin-top: 10px">
@@ -534,12 +534,8 @@
                 clearInterval(int_func);
                 clearInterval(other_int);
                 var image = $('#background-image');
-                {#                image.hide();#}
-                {#                $("#inner").fadeTo(10, 1);#}
                 image.css("background", "url('{% static 'images/shutterstock_153034898.jpg' %}') no-repeat center center fixed");
                 image.css("background-size", "cover");
-                {#                image.fadeIn(100, function () {#}
-                {#                });#}
                 $('#inner-above').text('COLLABRATE EDUCATION');
                 $('#above-slider').fadeIn(1000);
                 $('#below-slider').fadeIn(1000);
