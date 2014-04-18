@@ -291,6 +291,8 @@ def get_coursera_courses(profile):
             coursera.get_enrollments(profile)
         print "Coursera Done"
     except Exception as e:
+        profile.incorrect_login = True
+        profile.save()
         print e
 
 
