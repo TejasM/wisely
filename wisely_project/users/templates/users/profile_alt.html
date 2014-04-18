@@ -117,7 +117,7 @@
                 <div style="margin-top: 50px; margin-left: 90px;">
                     <span class="today-button">Today</span>
                 </div>
-                <ul>
+                <ul id='timeline-profile'>
                     {% for feed in feeds %}
                         {% if feed.actor_content_type.name == "user" and feed.actor.first_name %}
                             <li class='work-profile'>
