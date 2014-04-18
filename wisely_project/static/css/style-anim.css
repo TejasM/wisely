@@ -1013,3 +1013,8 @@ button:hover, .button:hover, button:active, .button:active {
 .tooltip {
     margin-top: -8em;
 }
+
+img.small {
+    width: 3em;
+    height: 3em;
+}

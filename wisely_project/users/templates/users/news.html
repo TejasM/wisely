@@ -71,7 +71,9 @@
                                 </div>
                                 <div class="large-6 columns">
                                     <div>
-                                        <h3 style="font-size: 16px">{{ follow.user.first_name }} {{ follow.user.last_name }}</h3>
+                                        <a href="{% url 'users:public_profile' follow.user.id %}"><h3
+                                                style="font-size: 16px">{{ follow.user.first_name }} {{ follow.user.last_name }}</h3>
+                                        </a>
                                         {% if follow.headline %}
                                             <p>{{ follow.headline }}</p>
                                         {% endif %}
@@ -254,7 +256,7 @@
         function follow_add(id, name) {
             $.post('{% url 'users:follow' %}', {user_id: id }).done(function (data) {
                 if (data['HTTPRESPONSE'] == "1") {
-                    $('#other-message').text('Now following ' + name);
+                    $('#other-message').html('Now following <a href="/users/profile/' + id.toString() + '">' + name + '</a>');
                     $('#other-messages').lightbox_me({centered: true});
                     $('#follow_' + id.toString()).hide();
                 } else {
