@@ -1,0 +1,167 @@
+{% extends 'base-app-alt.html' %}
+{% load breaktag %}
+{% load staticfiles %}
+{% load breaktag %}
+{% block headers_css %}
+{% endblock %}
+{% block content %}
+    <div class="row wide-row" style="border-bottom: solid #D2D4D5 1px">
+        <div class="large-4 columns" style="border-right: solid #D2D4D5 1px; padding-top: 40px;">
+            <div class="row">
+                <h2 style="color: #000; margin-left: 30%"><strong>FAQ</strong></h2>
+            </div>
+        </div>
+        <div class="large-8 columns" style="margin-top: 25px; text-align: center">
+            <div class="row" id="filters">
+                <div class="large-4 columns"><a href="#"><p class="selected-news" id="all-filt">All topics</p>
+                </a></div>
+                <div class="large-4 columns"><a href="#"><p id="pay-filt">Payments</p></a></div>
+                <div class="large-4 columns"><a href="#"><p id="tech-filt">Technical</p></a></div>
+            </div>
+        </div>
+    </div>
+    <div class="row faq" style="margin-top: 1em" id="all-topics">
+        <div class="large-12 columns">
+            <div class="panel">
+                How much should I pledge?
+            </div>
+            <div class="panel-content">
+                That’s up to you! Wisely encourages you to pledge the amount that you think will
+                motivate you to achieve your goals, with a minimum of $10. Your reward will be
+                calculated based on what grade you aim to
+                achieve in the course, not how much you pledge.
+            </div>
+
+            <div class="panel">
+                What should my goal be?
+            </div>
+            <div class="panel-content">
+                This one’s up to you! Take a minute to review the course topics, assignments and
+                expectations and consider factors such as:
+                <br>
+                <br>
+                <ul>
+                    <li>How much time will I have to commit?</li>
+                    <li>How important is the course material to me?</li>
+                </ul>
+                Push yourself! Remember, the higher your goal, the more you’ll be rewarded when
+                you reach your goal.
+            </div>
+
+            <div class="panel">
+                Can I change my pledge?
+            </div>
+            <div class="panel-content">
+                Unfortunately, once you make a pledge for an entire course, you cannot change
+                your pledge for that course. This is to help keep you motivated and
+                committed.
+            </div>
+
+            <div class="panel">
+                Can I remove my pledge?
+            </div>
+            <div class="panel-content">
+                Of course, we understand sometimes circumstances can come up. If that’s the
+                case, please fill out a Request for Leave of Compassionate Reason. Once
+                approved, your pledge amount is safe and will stay in your account and you can
+                come back at anytime to pledge it towards another course.
+            </div>
+            <div class="panel">
+                How much will I be rewarded?
+            </div>
+            <div class="panel-content">
+                Pledges from all of the users that do not reach their goal are pooled. The pool
+                is divided amongst all of the users that were successful. The rewards are
+                allocated based on the goal you set for yourself. If you pledge to obtain 90% in
+                the course, you will be rewarded more than if you pledged to 60%.
+            </div>
+            <div class="panel">
+                What counts as ‘achieving my goal’?
+            </div>
+            <div class="panel-content">
+                When you make a pledge, you will be asked to set a goal for performance in the
+                course. If your final mark in the course is equal to or above the goal you set
+                for yourself, congratulations! You have successfully achieved your goal.
+            </div>
+        </div>
+    </div>
+    <div class="row faq" style="margin-top: 1em; display: none" id="pay-topics">
+        <div class="large-12 columns">
+            <div class="panel">
+                How are payments accepted?
+            </div>
+            <div class="panel-content">
+                Wisely currently accepts payment through Visa, MasterCard and all other credit
+                cards.
+            </div>
+
+            <div class="panel">
+                Will I get charged right away?
+            </div>
+            <div class="panel-content">
+                No, we will only charge your pledge amount at the end of your course if you do
+                not complete your goal. You will not be charged any money if you complete your
+                course. We collect your credit card information upfront to help keep you
+                motivated.
+            </div>
+
+            <div class="panel">
+                Can I change my pledge?
+            </div>
+            <div class="panel-content">
+                Unfortunately, once you make a pledge for an entire course, you cannot change
+                your pledge for that course. This is to help keep you motivated and
+                committed.
+            </div>
+
+            <div class="panel">
+                When can I collect my reward?
+            </div>
+            <div class="panel-content">
+                Once your rewards account reaches $10, you can cash in your reward through paypal.
+                Well done on your hard work! Alternatively, you can continue to let it accumulate
+                and cash in on various gift cards and prizes from our sponsors. Lastly, once you
+                accumulate rewards, you have the option to pledge using your reward account instead
+                of cash.
+            </div>
+        </div>
+    </div>
+    <div class="row faq" style="margin-top: 1em; display: none" id="tech-topics">
+        <div class="large-12 columns">
+            <div class="panel">
+                How does Wisely track my progress?
+            </div>
+            <div class="panel-content">
+                Once you sign into your Coursera account, we will be able to help
+                you track your progress
+                through information we gather from Coursera. Don’t worry, all of your information is
+                secured
+                and will never be shared with anyone.
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block additionalScripts %}
+    <script>
+        $('#all-filt').click(function () {
+            $('.faq').hide();
+            $('#all-topics').show();
+            $('#filters').find('p').removeClass('selected-news');
+            $(this).addClass('selected-news');
+        });
+
+        $('#pay-filt').click(function () {
+            $('.faq').hide();
+            $('#pay-topics').show();
+            $('#filters').find('p').removeClass('selected-news');
+            $(this).addClass('selected-news');
+        });
+
+        $('#tech-filt').click(function () {
+            $('.faq').hide();
+            $('#tech-topics').show();
+            $('#filters').find('p').removeClass('selected-news');
+            $(this).addClass('selected-news');
+        });
+    </script>
+{% endblock %}

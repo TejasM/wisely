@@ -1,0 +1,83 @@
+{% extends 'base-app-alt.html' %}
+{% load breaktag %}
+{% load staticfiles %}
+{% load breaktag %}
+{% block headers_css %}
+{% endblock %}
+{% block content %}
+    <div class="row wide-row" style="border-bottom: solid #D2D4D5 1px">
+        <div class="large-4 columns" style="border-right: solid #D2D4D5 1px; padding-top: 40px; padding-bottom: 1%;">
+            <div class="row">
+                <div class="large-3 columns">
+                    <img {% if user.userprofile.picture %}src="/media/{{ user.userprofile.picture }}"
+                         {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
+                         class="pull-left img-circle">
+                </div>
+                <div class="large-6 columns">
+                    <div style="margin-top: 10px">
+                        <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+
+                        {% if user.userprofile.headline %}
+                            <p>{{ user.userprofile.headline }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="large-3 columns">
+                </div>
+            </div>
+        </div>
+        <div class="large-8 columns" style="margin-top: 50px; text-align: center">
+            <div class="row" id="filters">
+                <div class="large-4 columns"><a href="#"><p class="selected-news" id="coursera-add">Add Coursera
+                    Account</p>
+                </a></div>
+                <div class="large-4 columns"><a href="#"><p id="edx-add">Add edX Account</p></a></div>
+                <div class="large-4 columns"><a href="#"><p id="udemy-add">Add Udemy Account</p></a></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-12 columns" style="margin-top: 3em">
+            <form id="coursera-form" action="{% url 'users:index_alt' %}" class="platform-form"
+                  method="post">
+                <p><strong>Add Coursera Account</strong></p>
+                {% csrf_token %}
+                <input type="hidden" value="coursera" name="platform" id="platform_name"/>
+
+                <input type="text" name="username" class="form-control" id="add-username"
+                       placeholder="Coursera Username">
+                <input type="password" name="password" class="form-control" id="add-password"
+                       placeholder="Coursera Password">
+                <button type="submit" class="btn btn-primary btn-lg">Add Account</button>
+            </form>
+            <form id="edx-form" action="{% url 'users:index_alt' %}" class="platform-form"
+                  method="post" style="display: none">
+                <p><strong>Add edX Account</strong></p>
+                {% csrf_token %}
+                <input type="hidden" value="edx" name="platform" id="platform_name"/>
+
+                <input type="text" name="username" class="form-control" id="add-username"
+                       placeholder="edX Username">
+                <input type="password" name="password" class="form-control" id="add-password"
+                       placeholder="edX Password">
+                <button type="submit" class="btn btn-primary btn-lg">Add Account</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block additionalScripts %}
+    <script>
+        $('#coursera-add').click(function () {
+            $('.platform-form').hide();
+            $('#coursera-form').show();
+            $('#filters').find('p').removeClass('selected-news');
+            $(this).addClass('selected-news');
+        });
+        $('#edx-add').click(function () {
+            $('.platform-form').hide();
+            $('#edx-form').show();
+            $('#filters').find('p').removeClass('selected-news');
+            $(this).addClass('selected-news');
+        });
+    </script>
+{% endblock %}

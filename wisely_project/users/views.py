@@ -1,5 +1,5 @@
 import json
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from actstream.models import Action
 from django.contrib import messages
@@ -315,51 +315,43 @@ def index_alt(request):
         edx_profile = EdxProfile.objects.create(user=request.user)
 
     if request.method == "POST":
-        request.session['onboarding'] = coursera_profile.username == "" and edx_profile.email == ""
-        request.session.save()
         if request.POST['platform'] == "coursera":
             request.user.courseraprofile.username = request.POST['username'].strip()
             already_exist = CourseraProfile.objects.filter(username=request.user.courseraprofile.username).count() > 0
             if already_exist:
-                if not request.session['onboarding']:
-                    messages.success(request, 'Someone else is already using that Coursera account')
-                    return redirect(reverse('users:index'))
-                return render(request, 'users/index-alt.html', {'alreadyExistCoursera': True})
+                messages.success(request, 'Someone else is already using that Coursera account')
+                return redirect(reverse('users:index_alt'))
 
             request.user.courseraprofile.password = request.POST['password']
             request.user.courseraprofile.save()
             request.user.last_login = timezone.now()
             request.user.save()
-            if not request.session['onboarding']:
+            if not request.session.get('onboarding', False):
                 messages.success(request, 'Added your Coursera account refresh in a few minutes to see your courses')
-                return redirect(reverse('users:index'))
-            else:
-                return redirect(reverse('pledges:create'))
+            return redirect(reverse('users:index_alt'))
         elif request.POST['platform'] == "edx":
             request.user.edxprofile.email = request.POST['username'].strip()
             already_exist = EdxProfile.objects.filter(email=request.user.edxprofile.email).count() > 0
             if already_exist:
-                if not request.session['onboarding']:
-                    messages.success(request, 'Someone else is already using that Edx account')
-                    return redirect(reverse('users:index'))
-                return render(request, 'users/index-alt.html', {'alreadyExistEdx': True})
+                messages.success(request, 'Someone else is already using that edX account')
+                return redirect(reverse('users:index_alt'))
 
             request.user.edxprofile.password = request.POST['password']
             request.user.edxprofile.save()
             request.user.last_login = timezone.now()
             request.user.save()
-            if not request.session['onboarding']:
+            if not request.session.get('onboarding', False):
                 messages.success(request, 'Added your Edx account refresh in a few minutes to see your courses')
-                return redirect(reverse('users:index'))
-            else:
-                return redirect(reverse('pledges:create'))
+            return redirect(reverse('users:index_alt'))
         else:
             messages.error(request, "Something really went wrong, please try again or contact us")
-            return redirect(reverse('user:index'))
+            return redirect(reverse('user:index_alt'))
 
     if (coursera_profile.username == "" or coursera_profile.incorrect_login) and (
                     edx_profile.email == "" or edx_profile.incorrect_login):
-        return render(request, 'users/index-alt.html', {'form': True})
+        request.session['onboarding'] = True
+        request.session.save()
+        return render(request, 'users/onboarding.html')
     else:
         pledges = Pledge.objects.filter(user=request.user.userprofile)
         progresses = Progress.objects.filter(user=request.user.userprofile)
@@ -376,9 +368,12 @@ def index_alt(request):
                 past_courses += 1
             else:
                 current_courses += 1
+        onboarding = request.session.get('onboarding', False)
+        request.session['onboarding'] = False
+        request.session.save()
         return render(request, 'users/index-alt.html', {'pledges': pledges, 'progresses': progresses, 'form': False,
                                                         'current_courses': current_courses,
-                                                        'past_courses': past_courses})
+                                                        'past_courses': past_courses, 'onboarding': onboarding})
 
 
 @csrf_exempt

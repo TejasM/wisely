@@ -38,7 +38,9 @@
     <section id="background-image">
         <div id="inner">
             <div style="padding-top: 3%" id="other-menu">
-                {% include 'nav-bar-alt.html' %}
+                {% if done != '' %}
+                    {% include 'nav-bar-alt.html' %}
+                {% endif %}
             </div>
 
             <div class="row wide-row">
@@ -481,44 +483,53 @@
             range: "min",
             min: 1,
             max: 1000,
+            animate: 2000,
             create: function (event, ui) {
                 setSliderTicks(event.target);
-                $('.under-slide').css({width: '39px'})
+                $('.under-slide').css({width: '39px'});
+                $('.ui-slider-handle').append("<img src='{% static 'images/scene2.png' %}' class='under-slide'>");
+
             },
             slide: function (event, ui) {
-                if (completed) {
-                    return false;
-                }
-                if (ui.value > 400 && started == false) {
-                    $('#above-slider').fadeOut(300);
-                    $('#below-slider').fadeOut(300);
-                    var image = $('#background-image');
-                    image.css("background", "url('{% static 'images/shutterstock_125165846.jpg' %}') no-repeat center center fixed");
-                    image.css("background-size", "cover");
-                    $('.anim-circle').css({visibility: 'visible'});
-                    $('.anim-circle').fadeIn(1000, function () {
-                        start_anim();
-                    });
-                    $('#slider').find('.ui-slider-range').css({'-moz-box-shadow': '0 0 10px #fff',
-                        '-webkit-box-shadow': '0 0 10px #fff', 'box-shadow': '0 0 10px #fff', 'background': '#fff'});
+                return false;
+            }
+        });
 
-                    started = true;
-                }
-                if (ui.value == 1000) {
-                    completed = true;
-                    int_func = setInterval(finishanim, 10);
-                }
+        function startanim() {
+            $('#slider').slider('value', 500);
+            $('#above-slider').fadeOut(300);
+            $('#below-slider').fadeOut(300);
+            var image = $('#background-image');
+            image.css("background", "url('{% static 'images/shutterstock_125165846.jpg' %}') no-repeat center center fixed");
+            image.css("background-size", "cover");
+            $('.anim-circle').css({visibility: 'visible'});
+            $('.anim-circle').fadeIn(1000, function () {
+                start_anim();
+            });
+            $('#slider').find('.ui-slider-range').css({'-moz-box-shadow': '0 0 10px #fff',
+                '-webkit-box-shadow': '0 0 10px #fff', 'box-shadow': '0 0 10px #fff', 'background': '#fff'});
 
+            started = true;
+        }
+
+        $('.ui-slider-handle').mousedown(function () {
+            if (started == true) {
+                completed = true;
+                int_func = setInterval(finishanim, 10);
+                return false;
+            } else {
+                startanim();
             }
         });
 
         function finishanim() {
             if ($('#goal').text() == "75%") {
+
                 $('.anim-circle').fadeOut(1000, function () {
                     $('.anim-circle').css({visibility: 'hidden'});
                     $('.anim-circle').show();
-                    $('#after-scroll').fadeIn(500);
-                    $('.finish-anim').fadeIn(500);
+                    $('#after-scroll').fadeIn(1000);
+                    $('.finish-anim').fadeIn(1000);
                 });
                 clearInterval(int_func);
                 clearInterval(other_int);
@@ -530,9 +541,10 @@
                 {#                image.fadeIn(100, function () {#}
                 {#                });#}
                 $('#inner-above').text('COLLABRATE EDUCATION');
-                $('#above-slider').fadeIn(100);
-                $('#below-slider').fadeIn(100);
+                $('#above-slider').fadeIn(1000);
+                $('#below-slider').fadeIn(1000);
                 $('.under-slide').attr({src: "{% static 'images/check-mark-green.png' %}"});
+                $('#slider').slider('value', 1000);
             }
         }
 
@@ -549,8 +561,6 @@
                 }
             }
         }
-
-        $('.ui-slider-handle').append("<img src='{% static 'images/scene2.png' %}' class='under-slide'>");
 
         $('#one-pledge').hover(function () {
             $(this).find('img').attr('src', '{% static 'images/pledge-icon.png' %}');

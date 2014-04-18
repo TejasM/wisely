@@ -678,6 +678,7 @@ select.course {
     -webkit-transition: background 1s linear;
     -moz-transition: background 1s linear;
     -o-transition: background 1s linear;
+    border-radius: 0;
 }
 
 .under-slide {
@@ -869,7 +870,6 @@ img.finish-anim {
     min-height: 150px;
     text-align: center;
     padding: 3%;
-    margin: 0 auto;
 }
 
 .right-nav a, .right-nav a:hover {
@@ -981,4 +981,26 @@ button, .button {
 button:hover, .button:hover, button:active, .button:active {
     background-color: #0F486D;
     color: #fff;
+}
+
+.panel {
+    background: #79cdeb;
+    color: #000;
+    margin-bottom: 0;
+}
+
+.panel-content {
+    padding: 2% 3%;
+    background: #F1F2F2;
+}
+
+#filters p {
+    color: #000;
+}
+
+#filters p.selected-news {
+    background: #fff;
+    border-radius: 2px;
+    padding: 1%;
+    color: #1E5376;
 }

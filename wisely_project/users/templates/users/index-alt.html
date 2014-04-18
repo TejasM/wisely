@@ -28,7 +28,8 @@
                     </div>
                 </div>
                 <div class="large-3 columns">
-                    <img src="{% static 'images/settings-icon.png' %}" style="width: 80%; margin-top: 10px">
+                    <img src="{% static 'images/settings-icon.png' %}" style="width: 80%; margin-top: 10px"
+                         id="settings-icon">
                 </div>
             </div>
         </div>
@@ -112,7 +113,8 @@
                                             {% if course.get_amount_progress <= 50 %}
                                                 <div class="metrics goal pledge-start" data-class="{{ course.title }}"
                                                      data-id="{{ course.id }}"><p>
-                                                    <img src="{% static 'images/pledge-icon.png' %}" style="display: inline"></p>
+                                                    <img src="{% static 'images/pledge-icon.png' %}"
+                                                         style="display: inline"></p>
                                                 </div>
                                                 <div class="metrics pledge">
                                                     <p><strong>&#151; &#151;</strong></p>
@@ -323,195 +325,284 @@
         <div class="row text-center" id="other-message">
         </div>
     </div>
+    <div id="add-courses" class="light-box">
+        <p style="text-align: center" id="settings-title"><strong>ADD PLATFORMS</strong></p>
+
+        <div class="row" id="platform-options">
+            {% if  user.courseraprofile.username == '' %}
+                <div class="row extra-top-margin text-center">
+                    <button id="add-coursera">
+                        Add Coursera Account
+                    </button>
+                </div>
+            {% endif %}
+            {% if  user.edxprofile.email == '' %}
+                <div class="row extra-top-margin text-center">
+                    <button id="add-edx">
+                        Add edX Account
+                    </button>
+                </div>
+            {% endif %}
+        </div>
+        <form id="add-platform" action="{% url 'users:index' %}"
+              method="post" style="display: none">
+            {% csrf_token %}
+            <input type="hidden" value="coursera" name="platform" id="platform_name"/>
+
+            <input type="text" name="username" class="form-control" id="add-username"
+                   placeholder="Coursera Username">
+            <input type="password" name="password" class="form-control" id="add-password"
+                   placeholder="Coursera Password">
+            <button type="submit" class="btn btn-primary btn-lg">Add Account</button>
+        </form>
+    </div>
+    <div id="incorrect-lightbox" class="light-box">
+        <div class="row text-center">
+            Incorrect Coursera Login. Please confirm and try again.
+        </div>
+    </div>
+    <div id="coursera-wait" class="light-box">
+        <div class="row text-center">
+            Getting your courses, give us a few minutes!
+        </div>
+        <div class="row extra-top-margin text-center">
+            <div class="large-12 columns large-centered">
+                <a href="/learn-more">
+                    <button class="btn btn-primary btn-large">Learn More</button>
+                </a>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'js/foundation/foundation.equalizer.js' %}"></script>
     <script src="{% static 'js/jquery.hoverscroll.js' %}"></script>
     <script src="https://checkout.stripe.com/checkout.js"></script>
     <script>
-        $(function () {
+    $(function () {
+        $('.past').hide();
+        $('.current').show();
+        $('#past-filt').click(function () {
+            $('.past').show();
+            $('.current').hide();
+            $('#filters').find('p').removeClass('selected-news');
+            $(this).addClass('selected-news');
+        });
+
+        $('#current-filt').click(function () {
             $('.past').hide();
             $('.current').show();
-            $('#past-filt').click(function () {
-                $('.past').show();
-                $('.current').hide();
-                $('#filters').find('p').removeClass('selected-news');
-                $(this).addClass('selected-news');
-            });
+            $('#filters').find('p').removeClass('selected-news');
+            $(this).addClass('selected-news');
+        });
+        if (!window.location.origin)
+            window.location.origin = window.location.protocol + "//" + window.location.host;
+        if (RegExp('incorrect', 'gi').test(window.location.search)) {
+            $('#incorrect-lightbox').lightbox_me({centered: true});
+            setTimeout(function () {
+                $('#incorrect-lightbox').trigger('close');
+            }, 3000);
+        }
+        {% if onboarding %}
+            $('#coursera-wait').lightbox_me({centered: true, closeEsc: false, closeClick: false});
 
-            $('#current-filt').click(function () {
-                $('.past').hide();
-                $('.current').show();
-                $('#filters').find('p').removeClass('selected-news');
-                $(this).addClass('selected-news');
-            });
+            var intervalUpdated = null;
 
-            $('#all-filt').click(function () {
-                $('.past').show();
-                $('.current').show();
-                $('#filters').find('p').removeClass('selected-news');
-                $(this).addClass('selected-news');
-            });
-            var full = true;
-            $('.course').find('a').click(function () {
-                if (full) {
-                    $('.course').hide();
-                    $(this).parent().show();
-                    $(this).parent().addClass('active');
-                    $('#course_graph_' + $(this).parent().data('id')).show();
-                    full = false;
-                } else {
-                    full = true;
-                    $('.course').show();
-                    $('#course_graph_' + $(this).parent().data('id')).hide();
-                    $(this).parent().removeClass('active');
-                }
-            });
-            $('.class-progress').find('dl').hoverscroll({
-                vertical: true,
-                height: 400,
-                arrows: true,
-                arrowsOpacity: 0.5,
-            });
-            var projected_amount = 5;
-            var average_aim = 75;
-            var current_name = "";
-            var current_id;
-            $('.pledge-start').click(function () {
-                var $clicked = $(this);
-                current_id = $clicked.data('id');
-                current_name = $clicked.data('class');
-                $('#class-title').html('<p>' + current_name + '</p>');
-                $('#class-id').val(current_id);
-                $.get('{% url 'users:get_course_stats' %}', {'id': current_id}, function (data) {
-                    if (parseInt(data['fail']) == 0) {
-                        if (parseInt(data['count']) != 0) {
-                            $('#number_pledges').text(data['count']);
-                            $('#avg_aim').html(data['avg_aim'] + '<sup>%</sup>');
-                            average_aim = parseInt(data['avg_aim']);
-                            projected_amount = parseInt(data['probable_reward']);
-                        }
-                        $('#probable_reward').html('<sup>$</sup>' + data['probable_reward']);
-                    }
-                    $('#pledge-box').lightbox_me({centered: true});
-                });
-            });
-            $("#goal-slider").slider({
-                value: 75,
-                range: "min",
-                min: 0,
-                step: 5,
-                max: 100,
-                slide: function (event, ui) {
-                    if (ui.value <= 45) {
-                        return false;
-                    }
-                    $('#goal-value').html(ui.value.toString() + '<sup>%</sup>');
-                    var value =
-                            projected_amount *
-                                    (1 + (ui.value / 100 - average_aim / 100) / (average_aim / 100));
-                    if (isNaN(value)) {
-                        value = 5;
-                    }
-                    value = Math.round(value * 100) / 100;
-                    $('#probable_reward').html('<sup>$</sup>' + value.toString());
-                }
-            });
-            $("#pledge-slider").slider({
-                value: 30,
-                range: "min",
-                min: 0,
-                step: 5,
-                max: 100,
-                slide: function (event, ui) {
-                    if (ui.value <= 5) {
-                        return false;
-                    }
-                    $('#pledge-value').html('<sup>$</sup>' + ui.value.toString());
-                }
-            });
-
-            $('#make-pledge').click(function () {
-                var token = function (res) {
-                    $.post('{% url 'pledges:create_ajax' %}', {'stripeToken': res.id, 'course': current_id, 'money': money,
-                        'aim': aim
-                    }, function (data) {
-                        if (parseInt(data['fail']) == 0) {
-                            //TODO: update div
-                            $('div[data-id="' + current_id.toString() + '"]').html('<p>GOAL<br><span class="overall-mark">' + aim.toString() + '<sup>%</sup></span></p>');
-                            var $new_share = $('div[data-id="' + current_id.toString() + '"] + div');
-                            $new_share.html('<p>PLEDGE<br><span class="overall-mark">$' + money.toString() + '</span></p>');
-                            $new_share.data('share', current_name);
-                            $new_share.data('shareid', data['id']);
-                            $new_share.addClass('share-it');
-                            temp_div[$new_share] = $new_share.html();
-                            $('#make-pledge').trigger('close');
+            function checkIfUpdated() {
+                $.get("{% url 'users:check_update' %}", function (res) {
+                    if (res['updated'] == true) {
+                        clearInterval(intervalUpdated);
+                        if (res['incorrect'] == true) {
+                            location.href = '{% url 'users:index' %}?incorrect=true';
                         } else {
-                            $('#other-message').text(data['message']);
-                            $('#other-messages').lightbox_me({centered: true});
+                            $('#coursera-wait').trigger('close');
+                            location.reload();
                         }
-                    });
-                };
-                var money = parseInt($('#pledge-value').text().replace('$', ''));
-                var aim = parseInt($('#goal-value').text().replace('%', ''));
-                if (!isNaN(money)) {
-                    StripeCheckout.open({
-                        key: 'pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb',
-                        address: false,
-                        amount: money * 100,
-                        currency: 'cad',
-                        name: "Pledge",
-                        description: "For " + current_name,
-                        panelLabel: 'Pledge ',
-                        token: token
-                    });
-                }
-            });
-            var share_name = "";
-            var share_id = 0;
-            var temp_div = {};
-            $('.share-it').each(function (index, value) {
-                temp_div[$(this)] = $(this).html();
-            });
-            $('.share-it').hover(function () {
-                $(this).html('<p><img src="{% static 'images/connect-icon.png' %}" valign="middle" style="display: inline"></p>');
-            }, function () {
-                $(this).html(temp_div[$(this)]);
-            });
+                    }
+                });
+            }
 
-            $('.share-it').click(function () {
-                share_name = $(this).data('share');
-                share_id = parseInt($(this).data('shareid'));
-                var $share_box = $('#share-box');
-                $('#share-title').html('<p>' + share_name + '</p>');
-                $share_box.find('.twitter').attr('href', get_twitter_string());
-                $share_box.lightbox_me({centered: true});
-            });
-
-            $('#share-facebook').click(function () {
-                FB.ui(
-                        {
-                            method: 'feed',
-                            name: 'Pledge for ' + share_name,
-                            description: (
-                                    'I' + ' have just made a' +
-                                            ' pledge for ' + share_name + ', help me stay motivated by following the pledge.'
-                                    ),
-                            link: 'http://www.projectwisely.com/follow/' + share_id.toString(),
-                            picture: 'http://www.fbrell.com/public/f8.jpg'
-                        },
-                        function (response) {
-                            if (response && response.post_id) {
-                            } else {
-                            }
-                        }
-                );
-            });
-
-            function get_twitter_string() {
-                return "http://twitter.com/share?text=Just%20made%20a%20pledge%20for%20" + share_name + "%2C%20help%20me%20stay%20motivated%20by%20following%20the%20pledge!&url=http://www.projectwisely.com/follow/" + share_id;
+            intervalUpdated = setInterval(checkIfUpdated, 200);
+        {% endif %}
+        $('#all-filt').click(function () {
+            $('.past').show();
+            $('.current').show();
+            $('#filters').find('p').removeClass('selected-news');
+            $(this).addClass('selected-news');
+        });
+        var full = true;
+        $('.course').find('a').click(function () {
+            if (full) {
+                $('.course').hide();
+                $(this).parent().show();
+                $(this).parent().addClass('active');
+                $('#course_graph_' + $(this).parent().data('id')).show();
+                full = false;
+            } else {
+                full = true;
+                $('.course').show();
+                $('#course_graph_' + $(this).parent().data('id')).hide();
+                $(this).parent().removeClass('active');
             }
         });
+        $('.class-progress').find('dl').hoverscroll({
+            vertical: true,
+            height: 400,
+            arrows: true,
+            arrowsOpacity: 0.5,
+        });
+        var projected_amount = 5;
+        var average_aim = 75;
+        var current_name = "";
+        var current_id;
+        $('.pledge-start').click(function () {
+            var $clicked = $(this);
+            current_id = $clicked.data('id');
+            current_name = $clicked.data('class');
+            $('#class-title').html('<p>' + current_name + '</p>');
+            $('#class-id').val(current_id);
+            $.get('{% url 'users:get_course_stats' %}', {'id': current_id}, function (data) {
+                if (parseInt(data['fail']) == 0) {
+                    if (parseInt(data['count']) != 0) {
+                        $('#number_pledges').text(data['count']);
+                        $('#avg_aim').html(data['avg_aim'] + '<sup>%</sup>');
+                        average_aim = parseInt(data['avg_aim']);
+                        projected_amount = parseInt(data['probable_reward']);
+                    }
+                    $('#probable_reward').html('<sup>$</sup>' + data['probable_reward']);
+                }
+                $('#pledge-box').lightbox_me({centered: true});
+            });
+        });
+        $("#goal-slider").slider({
+            value: 75,
+            range: "min",
+            min: 0,
+            step: 5,
+            max: 100,
+            slide: function (event, ui) {
+                if (ui.value <= 45) {
+                    return false;
+                }
+                $('#goal-value').html(ui.value.toString() + '<sup>%</sup>');
+                var value =
+                        projected_amount *
+                                (1 + (ui.value / 100 - average_aim / 100) / (average_aim / 100));
+                if (isNaN(value)) {
+                    value = 5;
+                }
+                value = Math.round(value * 100) / 100;
+                $('#probable_reward').html('<sup>$</sup>' + value.toString());
+            }
+        });
+        $("#pledge-slider").slider({
+            value: 30,
+            range: "min",
+            min: 0,
+            step: 5,
+            max: 100,
+            slide: function (event, ui) {
+                if (ui.value <= 5) {
+                    return false;
+                }
+                $('#pledge-value').html('<sup>$</sup>' + ui.value.toString());
+            }
+        });
+
+        $('#make-pledge').click(function () {
+            var token = function (res) {
+                $.post('{% url 'pledges:create_ajax' %}', {'stripeToken': res.id, 'course': current_id, 'money': money,
+                    'aim': aim
+                }, function (data) {
+                    if (parseInt(data['fail']) == 0) {
+                        //TODO: update div
+                        $('div[data-id="' + current_id.toString() + '"]').html('<p>GOAL<br><span class="overall-mark">' + aim.toString() + '<sup>%</sup></span></p>');
+                        var $new_share = $('div[data-id="' + current_id.toString() + '"] + div');
+                        $new_share.html('<p>PLEDGE<br><span class="overall-mark">$' + money.toString() + '</span></p>');
+                        $new_share.data('share', current_name);
+                        $new_share.data('shareid', data['id']);
+                        $new_share.addClass('share-it');
+                        temp_div[$new_share] = $new_share.html();
+                        $('#make-pledge').trigger('close');
+                    } else {
+                        $('#other-message').text(data['message']);
+                        $('#other-messages').lightbox_me({centered: true});
+                    }
+                });
+            };
+            var money = parseInt($('#pledge-value').text().replace('$', ''));
+            var aim = parseInt($('#goal-value').text().replace('%', ''));
+            if (!isNaN(money)) {
+                StripeCheckout.open({
+                    key: 'pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb',
+                    address: false,
+                    amount: money * 100,
+                    currency: 'cad',
+                    name: "Pledge",
+                    description: "For " + current_name,
+                    panelLabel: 'Pledge ',
+                    token: token
+                });
+            }
+        });
+        var share_name = "";
+        var share_id = 0;
+        var temp_div = {};
+        $('.share-it').each(function (index, value) {
+            temp_div[$(this)] = $(this).html();
+        });
+        $('.share-it').hover(function () {
+            $(this).html('<p><img src="{% static 'images/connect-icon.png' %}" valign="middle" style="display: inline"></p>');
+        }, function () {
+            $(this).html(temp_div[$(this)]);
+        });
+
+        $('.share-it').click(function () {
+            share_name = $(this).data('share');
+            share_id = parseInt($(this).data('shareid'));
+            var $share_box = $('#share-box');
+            $('#share-title').html('<p>' + share_name + '</p>');
+            $share_box.find('.twitter').attr('href', get_twitter_string());
+            $share_box.lightbox_me({centered: true});
+        });
+
+        $('#settings-icon').click(function () {
+            $('#add-courses').lightbox_me({centered: true});
+        });
+
+        $("#add-edx").click(function () {
+            $('#platform-options').hide();
+            $('#add-platform').show();
+            $('#platform_name').val('edx');
+            $('#settings-title').val('edX');
+            $('#add-username').attr('placeholder', 'edX Username');
+            $('#add-password').attr('placeholder', 'edX Password');
+        });
+
+        $('#share-facebook').click(function () {
+            FB.ui(
+                    {
+                        method: 'feed',
+                        name: 'Pledge for ' + share_name,
+                        description: (
+                                'I' + ' have just made a' +
+                                        ' pledge for ' + share_name + ', help me stay motivated by following the pledge.'
+                                ),
+                        link: 'http://www.projectwisely.com/follow/' + share_id.toString(),
+                        picture: 'http://www.fbrell.com/public/f8.jpg'
+                    },
+                    function (response) {
+                        if (response && response.post_id) {
+                        } else {
+                        }
+                    }
+            );
+        });
+
+        function get_twitter_string() {
+            return "http://twitter.com/share?text=Just%20made%20a%20pledge%20for%20" + share_name + "%2C%20help%20me%20stay%20motivated%20by%20following%20the%20pledge!&url=http://www.projectwisely.com/follow/" + share_id;
+        }
+    });
     </script>
     <div id="fb-root"></div>
     <script>

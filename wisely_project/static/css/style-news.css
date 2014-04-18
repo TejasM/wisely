@@ -168,10 +168,3 @@ label {
         display: none;
     }
 }
-
-p.selected-news {
-    background: #fff;
-    border-radius: 2px;
-    padding: 1%;
-    color: #1E5376;
-}
