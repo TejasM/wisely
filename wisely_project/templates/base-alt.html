@@ -487,7 +487,9 @@
             create: function (event, ui) {
                 setSliderTicks(event.target);
                 $('.under-slide').css({width: '39px'});
-                $('.ui-slider-handle').append("<img src='{% static 'images/scene2.png' %}' class='under-slide'>");
+                var $handle = $('.ui-slider-handle');
+                $handle.append("<img src='{% static 'images/scene2.png' %}' class='under-slide'>");
+                $handle.addClass('cursor');
 
             },
             slide: function (event, ui) {

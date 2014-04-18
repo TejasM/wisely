@@ -285,9 +285,10 @@ class CourseraScraper:
 
 def get_coursera_courses(profile):
     try:
-        coursera = CourseraDownloader(profile.username, profile.password)
-        coursera.login('gamification-003', profile)
-        coursera.get_enrollments(profile)
+        if profile.username != "":
+            coursera = CourseraDownloader(profile.username, profile.password)
+            coursera.login('gamification-003', profile)
+            coursera.get_enrollments(profile)
         print "Coursera Done"
     except Exception as e:
         print e

@@ -1004,3 +1004,12 @@ button:hover, .button:hover, button:active, .button:active {
     padding: 1%;
     color: #1E5376;
 }
+
+
+.cursor {
+    cursor: pointer !important;
+}
+
+.tooltip {
+    margin-top: -8em;
+}

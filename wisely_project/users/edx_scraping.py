@@ -144,12 +144,15 @@ def scrape_for_user(edxprofile):
                 mark = None
                 for section in sections:
                     marks = [e.text.replace('\n', '').strip() for e in scores_selector(section)]
-                    if marks:
-                        mark = sum(
-                            map(lambda x: Fraction(sum(Fraction(s) if not s.endswith('/0') else 0 for s in x.split())),
-                                marks))
-                        mark = str(mark.numerator) + "/" + str(mark.denominator)
-                    else:
+                    try:
+                        if marks:
+                            mark = sum(
+                                map(lambda x: Fraction(sum(Fraction(s) if not s.endswith('/0') else 0 for s in x.split())),
+                                    marks))
+                            mark = str(mark.numerator) + "/" + str(mark.denominator)
+                        else:
+                            mark = "0/0"
+                    except:
                         mark = "0/0"
                 if mark is not None:
                     try:

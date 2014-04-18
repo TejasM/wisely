@@ -75,6 +75,7 @@ def profile(request):
         user_profile = UserProfile.objects.get(user=request.user)
     except UserProfile.DoesNotExist:
         user_profile = UserProfile.objects.create(user=request.user)
+    feed_list = Action.objects.filter(actor_object_id=request.user.id).order_by('-timestamp')[:20]
 
     user_profile_form = UserProfileForm(instance=user_profile)
     user_form = UserForm(instance=request.user)
@@ -86,7 +87,8 @@ def profile(request):
     followers = UserProfile.objects.filter(follows__in=[user_profile.id])
     context_dict = {'viewed_user': request.user, 'user_profile': user_profile, 'user_profile_form': user_profile_form,
                     'user_form': user_form, 'completed_pledges': completed_pledges, 'current_pledges': current_pledges,
-                    'message_list': message_list, 'followers': followers, 'who_to_follow': who_to_follow}
+                    'message_list': message_list, 'followers': followers, 'who_to_follow': who_to_follow,
+                    'feeds': feed_list}
     return render(request, 'users/profile_alt.html', context_dict)
 
 
