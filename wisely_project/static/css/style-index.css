@@ -2,7 +2,7 @@
     background: #fff;
 }
 
-.tabs dd:hover > a {
+.tabs dd:hover:not(.active) > a {
     background: #fff;
     border-left: solid #80BC62 1rem;
 }
@@ -15,7 +15,6 @@
 
 .tabs dd.active > a {
     background: #fff;
-    border-left: solid #80BC62 1rem;
     color: #565557;
 }
 

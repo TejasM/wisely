@@ -450,6 +450,7 @@
                 $('.course').hide();
                 $(this).parent().show();
                 $(this).parent().addClass('active');
+                $(this).prepend('<i class="fa fa-chevron-left left"></i>');
                 $('#course_graph_' + $(this).parent().data('id')).show();
                 full = false;
             } else {
@@ -457,6 +458,7 @@
                 $('.course').show();
                 $('#course_graph_' + $(this).parent().data('id')).hide();
                 $(this).parent().removeClass('active');
+                $(this).parent().find('i').remove();
             }
         });
         $('.class-progress').find('dl').hoverscroll({
