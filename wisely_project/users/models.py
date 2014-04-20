@@ -147,7 +147,8 @@ class Progress(BaseModel):
                     num = float(Fraction(self.score))
                 except ValueError:
                     try:
-                        clean = self.score.replace('.0 ', ' ').replace('.0/', '/').rstrip('0.').split()
+                        clean = self.score.replace('.00 ', ' ').replace('.00/', '/').rstrip('0.')
+                        clean = clean.replace('.0 ', ' ').replace('.0/', '/').rstrip('0.').split()
                         num = sum(Fraction(part) for part in clean)
                     except ValueError:
                         return 0
