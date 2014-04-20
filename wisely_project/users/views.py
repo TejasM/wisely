@@ -356,7 +356,7 @@ def index_alt(request):
         return render(request, 'users/onboarding.html')
     else:
         pledges = Pledge.objects.filter(user=request.user.userprofile)
-        progresses = Progress.objects.filter(user=request.user.userprofile)
+        progresses = Progress.objects.filter(user=request.user.userprofile).order_by('quiz__deadline')
         current_courses = 0
         past_courses = 0
 

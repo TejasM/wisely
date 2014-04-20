@@ -252,8 +252,8 @@
                     </dl>
                 </div>
             </div>
-            <div class="large-8 columns">
-                <p>Graph Coming Soon</p>
+            <div class="large-8 columns" style="height: 400px">
+                <canvas id="canvas_{{ course.id }}" height="400" width="800"></canvas>
             </div>
         </div>
     {% endfor %}
@@ -271,8 +271,8 @@
                     </dl>
                 </div>
             </div>
-            <div class="large-8 columns">
-                <p>Graph Coming Soon</p>
+            <div class="large-8 columns" style="height: 400px">
+                <canvas id="canvas_{{ course.id }}" height="400" width="800"></canvas>
             </div>
         </div>
     {% endfor %}
@@ -390,6 +390,7 @@
 {% block additionalScripts %}
     <script src="{% static 'js/foundation/foundation.equalizer.js' %}"></script>
     <script src="{% static 'js/foundation/foundation.tooltip.js' %}"></script>
+    <script src="{% static 'js/chart.js' %}"></script>
     <script src="{% static 'js/jquery.hoverscroll.js' %}"></script>
     <script src="https://checkout.stripe.com/checkout.js"></script>
     <script>
@@ -438,6 +439,7 @@
 
             intervalUpdated = setInterval(checkIfUpdated, 200);
         {% endif %}
+
         $('#all-filt').click(function () {
             $('.past').show();
             $('.current').show();
@@ -627,6 +629,60 @@
         function get_twitter_string() {
             return "http://twitter.com/share?text=Just%20made%20a%20pledge%20for%20" + share_name + "%2C%20help%20me%20stay%20motivated%20by%20following%20the%20pledge!&url=http://www.projectwisely.com/follow/" + share_id;
         }
+
+        var barChartData;
+
+        var options = {scaleSteps: 5,
+            //Number - The value jump in the hard coded scale
+            scaleStepWidth: 20,
+            //Number - The scale starting value
+            scaleStartValue: 0,
+            animation: false,
+            scaleOverride: true};
+        {% for course in user.courseraprofile.courses.all %}
+            var data_{{ course.id }} = [];
+            var labels_{{ course.id }} = [];
+            {% for progress in progresses %}
+                {% if progress.quiz.course == course %}
+                    data_{{ course.id }}.push({{ progress.parse_to_percentage }});
+                    labels_{{ course.id }}.push('Week ' + data_{{ course.id }}.length);
+                {% endif %}
+            {% endfor %}
+            barChartData = {
+                labels: labels_{{ course.id }},
+                datasets: [
+                    {
+                        fillColor: "rgba(151, 211, 137, 1)",
+                        strokeColor: "rgba(151, 211, 137, 1)",
+                        data: data_{{ course.id }}
+                    },
+                ]
+            };
+            new Chart(document.getElementById("canvas_{{ course.id }}").getContext("2d")).Bar(barChartData, {animation: false});
+        {% endfor %}
+        {% for course in user.edxprofile.courses.all %}
+            var data_{{ course.id }} = [];
+            var labels_{{ course.id }} = [];
+            {% for progress in progresses %}
+                {% if progress.quiz.course == course %}
+                    data_{{ course.id }}.push({{ progress.parse_to_percentage }});
+                    labels_{{ course.id }}.push(data_{{ course.id }}.length);
+                {% endif %}
+            {% endfor %}
+            barChartData = {
+                labels: labels_{{ course.id }},
+                datasets: [
+                    {
+                        fillColor: "rgba(151, 211, 137, 1)",
+                        strokeColor: "rgba(151, 211, 137, 1)",
+                        data: data_{{ course.id }}
+                    },
+                ]
+            };
+
+            new Chart(document.getElementById("canvas_{{ course.id }}").getContext("2d")).Bar(barChartData, options);
+
+        {% endfor %}
     });
     </script>
     <div id="fb-root"></div>

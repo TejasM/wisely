@@ -1,6 +1,8 @@
 from __future__ import division
 from datetime import date
+from fractions import Fraction
 import json
+import locale
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -133,3 +135,18 @@ class Progress(BaseModel):
 
     def get_date(self):
         return json.dumps({'date': self.quiz.deadline.date(), 'title': self.quiz.heading})
+
+    def parse_to_percentage(self):
+        try:
+            num = float(self.score)
+        except ValueError:
+            try:
+                num = locale.atof(self.score)
+            except ValueError:
+                try:
+                    num = float(Fraction(self.score))
+                except ValueError:
+                    return 0
+                except ZeroDivisionError:
+                    return 100
+        return num*100
