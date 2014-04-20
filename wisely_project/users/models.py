@@ -152,7 +152,7 @@ class Progress(BaseModel):
                         clean = clean.replace('.0', ' ')
                         clean = clean.split('/')
                         if len(clean) == 2:
-                            num = Fraction(int(float(clean[0]*100)), int(float(clean[1]*100)))
+                            num = Fraction(int(float(clean[0])*100), int(float(clean[1])*100))
                         else:
                             num = 0
                     except ValueError:
