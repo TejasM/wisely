@@ -1097,6 +1097,9 @@ window.Chart = function (context) {
                 ctx.fillStyle = data.datasets[i].fillColor;
                 ctx.strokeStyle = data.datasets[i].strokeColor;
                 for (var j = 0; j < data.datasets[i].data.length; j++) {
+                    if (animPc * calculateOffset(data.datasets[i].data[j], calculatedScale, scaleHop) + (config.barStrokeWidth / 2) < 300) {
+                        ctx.fillStyle = "rgba(247, 148, 30, 1)"
+                    }
                     var barOffset = yAxisPosX + config.barValueSpacing + valueHop * j + barWidth * i + config.barDatasetSpacing * i + config.barStrokeWidth * i;
                     if (animPc * calculateOffset(data.datasets[i].data[j], calculatedScale, scaleHop) + (config.barStrokeWidth / 2) < 10) {
                         cornerRadius = 0;

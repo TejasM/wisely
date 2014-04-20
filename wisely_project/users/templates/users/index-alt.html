@@ -645,7 +645,7 @@
             {% for progress in progresses %}
                 {% if progress.quiz.course == course %}
                     data_{{ course.id }}.push({{ progress.parse_to_percentage }});
-                    labels_{{ course.id }}.push('Week ' + data_{{ course.id }}.length);
+                    labels_{{ course.id }}.push(data_{{ course.id }}.length);
                 {% endif %}
             {% endfor %}
             barChartData = {
@@ -658,7 +658,8 @@
                     },
                 ]
             };
-            new Chart(document.getElementById("canvas_{{ course.id }}").getContext("2d")).Bar(barChartData, {animation: false});
+
+            new Chart(document.getElementById("canvas_{{ course.id }}").getContext("2d")).Bar(barChartData, options);
         {% endfor %}
         {% for course in user.edxprofile.courses.all %}
             var data_{{ course.id }} = [];
