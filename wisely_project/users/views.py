@@ -367,12 +367,12 @@ def index_alt(request):
                 messages.success(request, 'Added your Coursera account refresh in a few minutes to see your courses')
             return redirect(reverse('users:index_alt'))
         elif request.POST['platform'] == "edx":
-            edx_profile.email = request.POST['username'].strip()
             already_exist = EdxProfile.objects.filter(email=request.user.edxprofile.email).count() > 0
             if already_exist:
                 messages.success(request, 'Someone else is already using that edX account')
                 return redirect(reverse('users:index_alt'))
 
+            edx_profile.email = request.POST['username'].strip()
             edx_profile.password = request.POST['password']
             edx_profile.save()
             request.user.last_login = timezone.now()
@@ -381,12 +381,12 @@ def index_alt(request):
                 messages.success(request, 'Added your Edx account refresh in a few minutes to see your courses')
             return redirect(reverse('users:index_alt'))
         elif request.POST['platform'] == "udemy":
-            udemy_profile.email = request.POST['username'].strip()
+
             already_exist = UdemyProfile.objects.filter(email=request.user.udemyprofile.email).count() > 0
             if already_exist:
                 messages.success(request, 'Someone else is already using that Udemy account')
                 return redirect(reverse('users:index_alt'))
-
+            udemy_profile.email = request.POST['username'].strip()
             udemy_profile.password = request.POST['password']
             udemy_profile.save()
             request.user.last_login = timezone.now()
