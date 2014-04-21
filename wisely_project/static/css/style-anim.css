@@ -985,8 +985,15 @@ button:hover, .button:hover, button:active, .button:active {
 
 .panel {
     background: #79cdeb;
-    color: #000;
+    color: #333;
     margin-bottom: 0;
+}
+
+.panel-white {
+    background: #fff;
+    color: #333;
+    margin-bottom: 0;
+    padding: 3%;
 }
 
 .panel-content {

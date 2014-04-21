@@ -24,7 +24,7 @@ import twitter
 from actstream import action
 
 from models import CourseraProfile, Progress, UserProfile, EdxProfile, Invitees
-from pledges.models import Pledge
+from pledges.models import Pledge, Reward
 from forms import UserProfileForm, UserForm
 from users.models import convert_to_percentage
 from users.utils import send_welcome_email
@@ -86,10 +86,12 @@ def profile(request):
     current_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=False)
     message_list = Message.objects.inbox_for(request.user)
     followers = UserProfile.objects.filter(follows__in=[user_profile.id])
+    user_profile = UserProfile.objects.get(user=request.user)
+    rewards = Reward.objects.filter(user=user_profile)
     context_dict = {'viewed_user': request.user, 'user_profile': user_profile, 'user_profile_form': user_profile_form,
                     'user_form': user_form, 'completed_pledges': completed_pledges, 'current_pledges': current_pledges,
                     'message_list': message_list, 'followers': followers, 'who_to_follow': who_to_follow,
-                    'feeds': feed_list}
+                    'feeds': feed_list, 'rewards': rewards}
     return render(request, 'users/profile_alt.html', context_dict)
 
 

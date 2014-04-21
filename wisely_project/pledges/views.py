@@ -344,10 +344,11 @@ def collect_reward(request):
         else:
             response = mass_pay(email, float(reward.money))
             if str(response["ACK"]) != "Failure":
+                messages.success(request, "Successfully collected your hard earned rewards")
                 reward.collected = True
                 reward.save()
             else:
                 messages.error(request, "Failed to transfer money please try again later!")
         return redirect(reverse('pledges:collect_reward'))
     else:
-        return redirect(reverse('pledges:list_rewards'))
+        return redirect(reverse('users:profile'))
