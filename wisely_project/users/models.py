@@ -5,6 +5,7 @@ import json
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+
 from polls.models import Question
 
 
@@ -68,6 +69,15 @@ class CourseraProfile(BaseModel):
 
 
 class EdxProfile(BaseModel):
+    user = models.OneToOneField(User)
+    courses = models.ManyToManyField(Course)
+    email = models.CharField(max_length=100, default="")
+    password = models.CharField(max_length=100, default="")
+    counted_as_completed = models.CommaSeparatedIntegerField(default='', blank=True, max_length=200)
+    incorrect_login = models.BooleanField(default=False)
+
+
+class UdemyProfile(BaseModel):
     user = models.OneToOneField(User)
     courses = models.ManyToManyField(Course)
     email = models.CharField(max_length=100, default="")

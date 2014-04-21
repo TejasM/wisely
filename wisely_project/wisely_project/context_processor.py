@@ -1,8 +1,11 @@
 from random import randint
+
 from django.db.models import Q
+
 from polls.models import Question
-from users.models import UserProfile, CourseraProfile, EdxProfile
+from users.models import UserProfile, CourseraProfile, EdxProfile, UdemyProfile
 from wisely_project.settings import base as settings
+
 __author__ = 'tmehta'
 
 
@@ -12,22 +15,24 @@ def async_url(request):
 
 def survey_questions(request):
     if request.user.is_authenticated():
+        mooc_profile = ""
         try:
-            coursera_profile = CourseraProfile.objects.get(user=request.user)
-            if coursera_profile.username == "" or coursera_profile.incorrect_login:
-                try:
-                    edxprofile = EdxProfile.objects.get(user=request.user)
-                    if edxprofile.email == "" or edxprofile.incorrect_login:
-                        return {}
-                except EdxProfile.DoesNotExist:
-                    return {}
+            mooc_profile = CourseraProfile.objects.get(user=request.user)
         except CourseraProfile.DoesNotExist:
+            pass
+        if mooc_profile == "" or mooc_profile.username == "" or mooc_profile.incorrect_login:
             try:
-                edxprofile = EdxProfile.objects.get(user=request.user)
-                if edxprofile.email == "" or edxprofile.incorrect_login:
-                    return {}
+                mooc_profile = EdxProfile.objects.get(user=request.user)
             except EdxProfile.DoesNotExist:
-                return {}
+                pass
+            if mooc_profile == "" or mooc_profile.email == "" or mooc_profile.incorrect_login:
+                try:
+                    mooc_profile = UdemyProfile.objects.get(user=request.user)
+                except UdemyProfile.DoesNotExist:
+                    pass
+                if mooc_profile == "" or mooc_profile.email == "" or mooc_profile.incorrect_login:
+                    return {}
+
         try:
             profile = UserProfile.objects.get(user=request.user)
         except UserProfile.DoesNotExist as _:

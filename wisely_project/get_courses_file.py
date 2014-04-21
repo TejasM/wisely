@@ -14,7 +14,7 @@ from users.tasks import get_coursera_courses, get_edx_courses
 
 __author__ = 'tmehta'
 
-from users.models import CourseraProfile, EdxProfile
+from users.models import CourseraProfile, EdxProfile, UdemyProfile
 
 while True:
     try:
@@ -29,5 +29,9 @@ while True:
             get_edx_courses(user)
             user.last_updated = timezone.now()
             user.save()
+        for user in UdemyProfile.objects.filter(last_updated__lt=F('user__last_login')):
+            print 'Not implemented'
+            raise
+
     except Exception as e:
         print traceback.format_exc()

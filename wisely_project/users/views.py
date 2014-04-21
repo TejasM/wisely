@@ -1,5 +1,5 @@
 import json
-from datetime import timedelta, datetime
+from datetime import timedelta
 
 from actstream.models import Action
 from django.contrib import messages
@@ -23,7 +23,7 @@ from social_auth.db.django_models import UserSocialAuth
 import twitter
 from actstream import action
 
-from models import CourseraProfile, Progress, UserProfile, EdxProfile, Invitees
+from models import CourseraProfile, Progress, UserProfile, EdxProfile, Invitees, UdemyProfile
 from pledges.models import Pledge
 from forms import UserProfileForm, UserForm
 from users.utils import send_welcome_email
@@ -227,9 +227,14 @@ def index(request):
         edx_profile = EdxProfile.objects.get(user=request.user)
     except EdxProfile.DoesNotExist:
         edx_profile = EdxProfile.objects.create(user=request.user)
+    try:
+        udemy_profile = UdemyProfile.objects.get(user=request.user)
+    except UdemyProfile.DoesNotExist:
+        udemy_profile = UdemyProfile.objects.create(user=request.user)
 
     if request.method == "POST":
-        request.session['onboarding'] = coursera_profile.username == "" and edx_profile.email == ""
+        request.session[
+            'onboarding'] = coursera_profile.username == "" and edx_profile.email == "" and udemy_profile.email == ""
         request.session.save()
         if request.POST['platform'] == "coursera":
             request.user.courseraprofile.username = request.POST['username'].strip()
@@ -267,25 +272,48 @@ def index(request):
                 return redirect(reverse('users:index'))
             else:
                 return redirect(reverse('pledges:create'))
+        elif request.POST['platform'] == "udemy":
+            request.user.udemyprofile.email = request.POST['username'].strip()
+            already_exist = EdxProfile.objects.filter(email=request.user.udemyprofile.email).count() > 0
+            if already_exist:
+                if not request.session['onboarding']:
+                    messages.success(request, 'Someone else is already using that Edx account')
+                    return redirect(reverse('users:index'))
+                return render(request, 'users/index.html', {'alreadyExistUdemy': True})
+            request.user.udemyprofile.password = request.POST['password']
+            request.user.udemyprofile.save()
+            request.user.last_login = timezone.now()
+            request.user.save()
+            if not request.session['onboarding']:
+                messages.success(request, 'Added your Udemy account refresh in a few minutes to see your courses')
+                return redirect(reverse('users:index'))
+            else:
+                return redirect(reverse('pledges:create'))
         else:
             messages.error(request, "Something really went wrong, please try again or contact us")
             return redirect(reverse('user:index'))
 
-    if (coursera_profile.username == "" or coursera_profile.incorrect_login) and (
-                    edx_profile.email == "" or edx_profile.incorrect_login):
+    if (coursera_profile.username == "" or coursera_profile.incorrect_login) \
+            and (edx_profile.email == "" or edx_profile.incorrect_login) \
+            and (udemy_profile.email == "" or udemy_profile.incorrect_login):
         return render(request, 'users/index.html', {'form': True})
     else:
         pledges = Pledge.objects.filter(user=request.user.userprofile)
         progresses = Progress.objects.filter(user=request.user.userprofile)
         other_pledgers_coursera = []
         other_pledgers_edx = []
+        other_pledgers_udemy = []
         for course in coursera_profile.courses.all():
             other_pledgers_coursera.append(Pledge.objects.filter(course=course).order_by('?')[:5])
         for course in edx_profile.courses.all():
             other_pledgers_edx.append(Pledge.objects.filter(course=course).order_by('?')[:5])
+        for course in udemy_profile.courses.all():
+            other_pledgers_udemy.append(Pledge.objects.filter(course=course).order_by('?')[:5])
         return render(request, 'users/index.html', {'pledges': pledges, 'progresses': progresses, 'form': False,
                                                     'others_coursera': other_pledgers_coursera,
-                                                    'others_edx': other_pledgers_edx})
+                                                    'others_edx': other_pledgers_edx,
+                                                    'others_udemy': other_pledgers_udemy,
+        })
 
 
 @login_required

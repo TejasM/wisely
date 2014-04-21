@@ -11,8 +11,8 @@
             class="fa fa-book"></i><span>Pledges</span></a>
     </li>
     <li class=""><a href="{% url 'pledges:list_rewards' %}"><i
-                            class="fa fa-money"></i><span>Rewards</span></a>
-                    </li>
+            class="fa fa-money"></i><span>Rewards</span></a>
+    </li>
     <li class=""><a href="/more"><i
             class="fa fa-book"></i><span>More Coming Soon!</span></a>
     </li>
@@ -24,17 +24,20 @@
             <h1 class="separator bottom">To Get Started!</h1>
 
             <div class="row">
-                <div class="col-sm-6 col-sm-offset-3">
+                <div class="col-sm-9 col-sm-offset-1">
                     <div class="tabsbar">
                         <ul>
-                            <li class="{% if not alreadyExistEdx %}active{% endif %}"><a href="#tab1-3"
-                                                                                         data-toggle="tab"><i></i> Add
+                            <li class="{% if not alreadyExistCoursera %}active{% endif %}"><a href="#tab1-3"
+                                                                                              data-toggle="tab"><i></i>
+                                Add
                                 Coursera
                                 Account</a></li>
                             <li class="{% if alreadyExistEdx %}active{% endif %}"><a href="#tab2-3"
                                                                                      data-toggle="tab"><i></i> Add edX
                                 Account</a></li>
-                            <li><a href="#tab3-3" data-toggle="tab"><i></i> More Coming Soon </a></li>
+                            <li class="{% if alreadyExistUdemy %}active{% endif %}"><a href="#tab3-3"
+                                                                                       data-toggle="tab"><i></i> Add
+                                Udemy Account</a></li>
                         </ul>
                     </div>
                     <div class="tab-content">
@@ -116,9 +119,44 @@
 
                             </div>
                         </div>
-                        <!-- // Tab content END -->
+
+                        <!-- Tab content -->
                         <div class="tab-pane" id="tab3-3">
-                            Stay Tuned We Are Working On Adding More Online Course Platforms
+                            <div class="innerLR row">
+                                {% if alreadyExistUdemy %}
+                                    <div class="row text-center">
+                                        This Udemy account is already linked to a Wisely account. Please use a
+                                        different
+                                        Udemy
+                                        account.
+                                    </div>
+                                {% endif %}
+                                <form class="form-horizontal col-sm-12" action="{% url 'users:index' %}"
+                                      method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="udemy" name="platform"/>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <input type="text" name="username" class="form-control"
+                                                   placeholder="Udemy Email">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+
+                                        <div class="col-sm-12">
+                                            <input type="password" name="password" class="form-control"
+                                                   placeholder="Udemy Password">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <button type="submit" class="btn btn-primary btn-lg">Add Account</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -141,7 +179,8 @@
                         <div class="col-lg-6" id="course-{{ course.id }}-div">
                             <div class="box-generic bg-primary-light text-center main-selections">
                                 <div class="innerTB">
-                                    <div class="innerAll"><img style="max-width: 250px; max-height: 200px" src="{{ course.image_link }}"/>
+                                    <div class="innerAll"><img style="max-width: 250px; max-height: 200px"
+                                                               src="{{ course.image_link }}"/>
                                     </div>
                                     <h5 class="strong">{{ course.title }}</h5>
 
@@ -200,7 +239,8 @@
                         <div class="col-lg-6" id="course-{{ course.id }}-div">
                             <div class="box-generic bg-primary-light text-center main-selections">
                                 <div class="innerTB">
-                                    <div class="innerAll"><img style="max-width: 250px; max-height: 200px" src="{{ course.image_link }}"/>
+                                    <div class="innerAll"><img style="max-width: 250px; max-height: 200px"
+                                                               src="{{ course.image_link }}"/>
                                     </div>
                                     <h5 class="strong">{{ course.title }}</h5>
 
@@ -259,6 +299,7 @@
             </div>
         </div>
         <!-- // END col-app -->
+
 
 
         <!-- col -->
@@ -423,6 +464,87 @@
                 {% endif %}
             {% endfor %}
         {% endfor %}
+        {% for course in user.udemyprofile.courses.all %}
+            <div class="col-lg-4 col-md-5 col-sm-12 sides {% if  user.courseraprofile.courses.all.count == 0 and user.edXprofile.courses.all.count == 0 and forloop.first %}sides-first{% endif %}"
+                 id="side-{{ course.id }}">
+
+
+            <div class="widget widget-body-white">
+                <!-- Widget Heading -->
+                <div class="widget-head">
+                    <h4 class="heading glyphicons calendar"><i></i>{{ course.title }}</h4>
+                </div>
+                <!-- // Widget Heading END -->
+
+                <div class="widget-body innerAll inner-2x">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <h3>Current Progress</h3>
+                            {% for progress in progresses %}
+                                {% if progress.quiz.course == course %}
+                                    <p>{{ progress|safe }}</p>
+                                {% endif %}
+                            {% endfor %}
+                            {% if course.is_done %}
+                                <p>Congratulations, you have completed {{ course.title }}, sit tight while we verify
+                                    your final grade!</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Widget -->
+            {% for ps in others_udemy %}
+                {% if forloop.parentloop.counter == forloop.counter %}
+                    {% if ps or pledge.follower_set.all.count > 0 %}
+                        {% if pledge.follower_set.all.count <= 0 %}
+                            <div class="col-sm-12">
+                        {% else %}
+                            <div class="col-sm-6">
+                        {% endif %}
+                    <h5 class="innerAll bg-primary margin-bottom-none">Other Pledges</h5>
+
+                    <ul class="list-group list-group-1 margin-none borders-none">
+                        {% for pledge in ps %}
+                            <li class="list-group-item animated fadeInUp"><a
+                                    href="{% url 'pledges:follow' pledge.id %}">{{ pledge.user.user.first_name }} {{ pledge.user.user.last_name }}
+                                is pledging ${{ pledge.money }} to get {{ pledge.get_aim }}%</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    </div>
+                        {% if pledge.follower_set.all.count > 0 %}
+                            <div class="col-sm-6">
+                                <div class="lead margin-none strong">{{ pledge.follower_set.all.count }}</div>
+                                <p class="margin-none">followers</p>
+                                <ul class="list-group list-group-1 margin-none borders-none">
+                                    {% for follower in pledge.follower_set.all %}
+                                        <li class="list-group-item animated fadeInUp">{{ follower.email }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="widget widget-body-gray">
+                            <!-- Widget Heading -->
+                            <div class="widget-head">
+                                <h4 class="heading glyphicons calendar"><i></i>Calendar</h4>
+                            </div>
+                            <!-- // Widget Heading END -->
+
+                            <div class="widget-body innerAll inner-2x">
+                                <div data-component>
+                                    <div id="calendar-{{ course.id }}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+
     </div>
     {% endif %}
     {% if form %}
@@ -448,7 +570,8 @@
 
     <div id="no-courses-lightbox" class="light-box">
         <div class="row text-center">
-            You have no courses you can pledge for. Sign up for a course at <a href="https://coursera.org">Coursera</a>
+            You have no courses you can pledge for. Sign up for a course at <a href="https://coursera.org">Coursera</a>,
+            <a href="https://www.edx.org/">edX</a>, or <a href="https://www.udemy.com">udemy</a>
             to get started.
         </div>
         <div class="row extra-top-margin">

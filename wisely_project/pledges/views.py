@@ -3,6 +3,7 @@ from datetime import datetime
 import md5
 import urllib
 import urllib2
+import json
 
 from dateutil.relativedelta import relativedelta
 from django.contrib import messages
@@ -13,9 +14,9 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 import stripe
 
-from users.models import Course, UserProfile, EdxProfile, CourseraProfile
+from users.models import Course, UserProfile, EdxProfile, CourseraProfile, UdemyProfile
 from users.utils import divide_timedelta
-import json
+
 
 __author__ = 'Cheng'
 
@@ -282,8 +283,12 @@ def create(request):
         edx_profile = EdxProfile.objects.get(user=request.user)
     except EdxProfile.DoesNotExist:
         edx_profile = EdxProfile.objects.create(user=request.user)
+    try:
+        udemy_profile = UdemyProfile.objects.get(user=request.user)
+    except EdxProfile.DoesNotExist:
+        udemy_profile = UdemyProfile.objects.create(user=request.user)
 
-    if coursera_profile.username == '' and edx_profile.email == '':
+    if coursera_profile.username == '' and edx_profile.email == '' and udemy_profile.email == '':
         request.session['onboarding'] = True
         request.session.save()
         return redirect(reverse('users:index'))
@@ -301,6 +306,14 @@ def create(request):
             courses_available = courses_available | request.user.edxprofile.courses.all()
     except EdxProfile.DoesNotExist:
         pass
+    try:
+        if pledged_courses:
+            courses_available = courses_available | request.user.udemyprofile.courses.filter(~Q(pk__in=pledged_courses))
+        else:
+            courses_available = courses_available | request.user.udemyprofile.courses.all()
+    except UdemyProfile.DoesNotExist:
+        pass
+
     to_keep = []
 
     for course_available in courses_available:
