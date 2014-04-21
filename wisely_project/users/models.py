@@ -17,6 +17,30 @@ def convertDatetimeToString(o):
     return o.strftime("%s %s" % (DATE_FORMAT, TIME_FORMAT))
 
 
+def convert_to_percentage(string):
+    try:
+        num = float(string)
+    except ValueError:
+        try:
+            num = locale.atof(string)
+        except ValueError:
+            try:
+                num = float(Fraction(string))
+            except ValueError:
+                try:
+                    clean = string.replace(' ', '')
+                    clean = clean.split('/')
+                    if len(clean) == 2:
+                        num = float(Fraction(int(float(clean[0])*100), int(float(clean[1])*100)))
+                    else:
+                        num = 0
+                except ValueError:
+                    return 0
+            except ZeroDivisionError:
+                return 100
+    return num * 100
+
+
 class BaseModel(models.Model):
     created = models.DateTimeField(default=timezone.now())
     last_updated = models.DateTimeField(default=timezone.now(), auto_now=True)
@@ -137,26 +161,4 @@ class Progress(BaseModel):
         return json.dumps({'date': self.quiz.deadline.date(), 'title': self.quiz.heading})
 
     def parse_to_percentage(self):
-        try:
-            num = float(self.score)
-        except ValueError:
-            try:
-                num = locale.atof(self.score)
-            except ValueError:
-                try:
-                    num = float(Fraction(self.score))
-                except ValueError:
-                    try:
-                        clean = self.score.replace(' ', '')
-                        clean = clean.replace('.00', '')
-                        clean = clean.replace('.0', ' ')
-                        clean = clean.split('/')
-                        if len(clean) == 2:
-                            num = Fraction(int(float(clean[0])*100), int(float(clean[1])*100))
-                        else:
-                            num = 0
-                    except ValueError:
-                        return 0
-                except ZeroDivisionError:
-                    return 100
-        return num * 100
+        return convert_to_percentage(self.score)

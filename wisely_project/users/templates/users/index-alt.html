@@ -80,7 +80,7 @@
         <div class="large-12 columns">
             <div class="row">
                 <dl class="tabs vertical" style="width: 100%" data-tab>
-                    {% for course in user.courseraprofile.courses.all %}
+                    {% for course, grade in coursera_courses %}
                         <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
                             class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}"><a
                                 href="#panel{{ course.id }}a"
@@ -94,7 +94,7 @@
                                 <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                                     <div class="metrics score">
                                         <p>SCORE<br>
-                                            <span class="overall-mark">50<sup>%</sup></span></p>
+                                            <span class="overall-mark">{{ grade }}<sup>%</sup></span></p>
                                     </div>
                                     {% for pledge in pledges %}
                                         {% if pledge.course == course %}
@@ -157,7 +157,7 @@
                             </div>
                         </dd>
                     {% endfor %}
-                    {% for course in user.edxprofile.courses.all %}
+                    {% for course, grade in edx_courses %}
                         <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
                             class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}"><a
                                 href="#panel{{ course.id }}a"
@@ -171,7 +171,7 @@
                                 <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                                     <div class="metrics score">
                                         <p>SCORE<br>
-                                            <span class="overall-mark">50<sup>%</sup></span></p>
+                                            <span class="overall-mark">{{ grade }}<sup>%</sup></span></p>
                                     </div>
                                     {% for pledge in pledges %}
                                         {% if pledge.course == course %}
@@ -238,7 +238,7 @@
             </div>
         </div>
     </div>
-    {% for course in user.courseraprofile.courses.all %}
+    {% for course, grade in coursera_courses %}
         <div class="class-progress row wide-row" id="course_graph_{{ course.id }}"
              style="display: none; max-height: 400px">
             <div class="large-4 columns">
@@ -257,7 +257,7 @@
             </div>
         </div>
     {% endfor %}
-    {% for course in user.edxprofile.courses.all %}
+    {% for course, grade in edx_courses %}
         <div class="class-progress row wide-row" id="course_graph_{{ course.id }}"
              style="display: none; max-height: 400px">
             <div class="large-4 columns">
@@ -641,7 +641,7 @@
             scaleStartValue: 0,
             animation: false,
             scaleOverride: true};
-        {% for course in user.courseraprofile.courses.all %}
+        {% for course, grade in coursera_courses %}
             var data_{{ course.id }} = [];
             var labels_{{ course.id }} = [];
             {% for progress in progresses %}
@@ -663,7 +663,7 @@
 
             new Chart(document.getElementById("canvas_{{ course.id }}").getContext("2d")).Bar(barChartData, options);
         {% endfor %}
-        {% for course in user.edxprofile.courses.all %}
+        {% for course, grade in edx_courses %}
             var data_{{ course.id }} = [];
             var labels_{{ course.id }} = [];
             {% for progress in progresses %}
