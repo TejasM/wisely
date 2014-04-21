@@ -348,7 +348,7 @@ def index_alt(request):
         edx_profile = EdxProfile.objects.create(user=request.user)
     try:
         udemy_profile = UdemyProfile.objects.get(user=request.user)
-    except EdxProfile.DoesNotExist:
+    except UdemyProfile.DoesNotExist:
         udemy_profile = UdemyProfile.objects.create(user=request.user)
 
     if request.method == "POST":

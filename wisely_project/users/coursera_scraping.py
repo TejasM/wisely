@@ -1,10 +1,10 @@
 from datetime import date, timedelta
 import re
 from time import timezone
+
 from bs4 import BeautifulSoup
-from lxml import html
-from lxml.cssselect import CSSSelector
 import dateutil.parser
+
 __author__ = 'tmehta'
 import json
 import requests

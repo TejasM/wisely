@@ -3,15 +3,13 @@ import os
 import traceback
 
 from django import db
-from users.udemy_scraping import get_udemy_courses
-
 
 sys.path.append('/root/wisely/wisely_project/')
-os.environ['DJANGO_SETTINGS_MODULE'] = 'wisely_project.settings.production'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'wisely_project.settings.local'
 
 from django.db.models import F
 from django.utils import timezone
-from users.tasks import get_coursera_courses, get_edx_courses
+from users.tasks import get_coursera_courses, get_edx_courses, get_udemy_courses
 
 __author__ = 'tmehta'
 

@@ -798,6 +798,29 @@
             new Chart(document.getElementById("canvas_{{ course.id }}").getContext("2d")).Bar(barChartData, options);
 
         {% endfor %}
+        {% for course, grade in udemy_courses %}
+            var data_{{ course.id }} = [];
+            var labels_{{ course.id }} = [];
+            {% for progress in progresses %}
+                {% if progress.quiz.course == course %}
+                    data_{{ course.id }}.push({{ progress.parse_to_percentage }});
+                    labels_{{ course.id }}.push(data_{{ course.id }}.length);
+                {% endif %}
+            {% endfor %}
+            barChartData = {
+                labels: labels_{{ course.id }},
+                datasets: [
+                    {
+                        fillColor: "rgba(151, 211, 137, 1)",
+                        strokeColor: "rgba(151, 211, 137, 1)",
+                        data: data_{{ course.id }}
+                    },
+                ]
+            };
+
+            new Chart(document.getElementById("canvas_{{ course.id }}").getContext("2d")).Bar(barChartData, options);
+
+        {% endfor %}
     });
     </script>
     <div id="fb-root"></div>

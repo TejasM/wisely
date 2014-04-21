@@ -5,9 +5,6 @@ from lxml import html
 from lxml.cssselect import CSSSelector
 import requests
 
-#from users.models import Course, Quiz, Progress
-
-
 __author__ = 'Cheng'
 
 client_id = '0aff2449c24e7732ebfb8b50549faef7'
@@ -110,52 +107,6 @@ def main():
             print quiz_id
             #todo create progress
             pass
-
-
-def get_udemy_courses(profile):
-    session = Session(profile.email, profile.password)
-    r = session.login()
-    if r:
-        courses = session.get_list_courses()
-        for course_id in courses:
-            course_dict = get_course(course_id)
-            try:
-                course = Course.objects.get(course_id=course_id)
-            except Course.DoesNotExist:
-                image_url = course_dict['images']['img_75x75']
-                title = course_dict['title']
-                description = re.sub('<[^>]*>', '', course_dict['promoAsset']['description'])
-                course_url = course_dict['url']
-                course = Course.objects.create(course_id=course_id, title=title,
-                                               course_link=course_url, description=description,
-                                               quiz_link=root_url + 'courses/' + course_id + '/curriculum',
-                                               image_link=image_url)
-            #todo: create course
-
-            ci = session.get_curriculum(course_id)
-            for c in ci:
-                try:
-                    Quiz.objects.get(quizid=c['id'])
-                except Quiz.DoesNotExist:
-                    Quiz.objects.create(quizid=c['id'], course=course, heading=c['title'])
-            progress = session.get_course_progress(course_id)
-            overall_completion = progress['completion_ratio']
-            #todo: set overall score
-            progress = dict(progress['quiz_progress'].items() + progress['lectures_progress'].items())
-            for quiz_id, quiz_marks in progress.iteritems():
-                try:
-                    quiz = Quiz.objects.get(quizid=quiz_id)
-                    try:
-                        progress = Progress.objects.get(user=profile, quiz=quiz)
-                        progress.score = float(quiz_marks['completionRatio'])/100
-                        progress.save()
-                    except Progress.DoesNotExist:
-                        Progress.objects.create(user=profile, quiz=quiz, score=float(quiz_marks['completionRatio'])/100)
-                except Quiz.DoesNotExist:
-                    pass
-    else:
-        profile.incorrect_login = True
-        profile.save()
 
 
 def pretty(d, indent=0):
