@@ -94,7 +94,7 @@
                                 <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                                     <div class="metrics score">
                                         <p>SCORE<br>
-                                            <span class="overall-mark">{{ grade }}<sup>%</sup></span></p>
+                                            <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
                                     </div>
                                     {% for pledge in pledges %}
                                         {% if pledge.course == course %}
@@ -171,7 +171,7 @@
                                 <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                                     <div class="metrics score">
                                         <p>SCORE<br>
-                                            <span class="overall-mark">{{ grade }}<sup>%</sup></span></p>
+                                            <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
                                     </div>
                                     {% for pledge in pledges %}
                                         {% if pledge.course == course %}
