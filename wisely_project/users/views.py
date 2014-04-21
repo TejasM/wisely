@@ -23,8 +23,8 @@ from social_auth.db.django_models import UserSocialAuth
 import twitter
 from actstream import action
 
-from models import CourseraProfile, Progress, UserProfile, EdxProfile, Invitees
-from pledges.models import Pledge
+from models import CourseraProfile, Progress, UserProfile, EdxProfile, Invitees, UdemyProfile
+from pledges.models import Pledge, Reward
 from forms import UserProfileForm, UserForm
 from users.models import convert_to_percentage
 from users.utils import send_welcome_email
@@ -134,7 +134,7 @@ def signup(request):
                 return render(request, 'base.html')
         else:
             return render(request, 'base.html')
-        return redirect(reverse('users:index'))
+        return redirect(reverse('users:index_alt'))
     return render(request, 'base.html')
 
 
@@ -346,35 +346,53 @@ def index_alt(request):
         edx_profile = EdxProfile.objects.get(user=request.user)
     except EdxProfile.DoesNotExist:
         edx_profile = EdxProfile.objects.create(user=request.user)
+    try:
+        udemy_profile = UdemyProfile.objects.get(user=request.user)
+    except EdxProfile.DoesNotExist:
+        udemy_profile = UdemyProfile.objects.create(user=request.user)
 
     if request.method == "POST":
         if request.POST['platform'] == "coursera":
-            request.user.courseraprofile.username = request.POST['username'].strip()
+            coursera_profile.username = request.POST['username'].strip()
             already_exist = CourseraProfile.objects.filter(username=request.user.courseraprofile.username).count() > 0
             if already_exist:
                 messages.success(request, 'Someone else is already using that Coursera account')
                 return redirect(reverse('users:index_alt'))
 
-            request.user.courseraprofile.password = request.POST['password']
-            request.user.courseraprofile.save()
+            coursera_profile.password = request.POST['password']
+            coursera_profile.save()
             request.user.last_login = timezone.now()
             request.user.save()
             if not request.session.get('onboarding', False):
                 messages.success(request, 'Added your Coursera account refresh in a few minutes to see your courses')
             return redirect(reverse('users:index_alt'))
         elif request.POST['platform'] == "edx":
-            request.user.edxprofile.email = request.POST['username'].strip()
+            edx_profile.email = request.POST['username'].strip()
             already_exist = EdxProfile.objects.filter(email=request.user.edxprofile.email).count() > 0
             if already_exist:
                 messages.success(request, 'Someone else is already using that edX account')
                 return redirect(reverse('users:index_alt'))
 
-            request.user.edxprofile.password = request.POST['password']
-            request.user.edxprofile.save()
+            edx_profile.password = request.POST['password']
+            edx_profile.save()
             request.user.last_login = timezone.now()
             request.user.save()
             if not request.session.get('onboarding', False):
                 messages.success(request, 'Added your Edx account refresh in a few minutes to see your courses')
+            return redirect(reverse('users:index_alt'))
+        elif request.POST['platform'] == "udemy":
+            udemy_profile.email = request.POST['username'].strip()
+            already_exist = UdemyProfile.objects.filter(email=request.user.edxprofile.email).count() > 0
+            if already_exist:
+                messages.success(request, 'Someone else is already using that edX account')
+                return redirect(reverse('users:index_alt'))
+
+            udemy_profile.password = request.POST['password']
+            udemy_profile.save()
+            request.user.last_login = timezone.now()
+            request.user.save()
+            if not request.session.get('onboarding', False):
+                messages.success(request, 'Added your Udemy account refresh in a few minutes to see your courses')
             return redirect(reverse('users:index_alt'))
         else:
             messages.error(request, "Something really went wrong, please try again or contact us")
@@ -392,8 +410,11 @@ def index_alt(request):
         past_courses = 0
         coursera_courses = coursera_profile.courses.all()
         edx_courses = edx_profile.courses.all()
+        udemy_courses = udemy_profile.courses.all()
+
         coursera_grades = []
         edx_grades = []
+        udemy_grades = []
 
         for course in coursera_courses:
             if course.get_amount_progress >= 100:
@@ -405,7 +426,7 @@ def index_alt(request):
                 grades = [convert_to_percentage(x) for x in grades]
                 coursera_grades.append(sum(grades)/len(grades))
             else:
-                coursera_grades.append(50)
+                coursera_grades.append(0)
 
         for course in edx_courses:
             if course.get_amount_progress >= 100:
@@ -417,7 +438,19 @@ def index_alt(request):
                 grades = [convert_to_percentage(x) for x in grades]
                 edx_grades.append(sum(grades)/len(grades))
             else:
-                edx_grades.append(50)
+                edx_grades.append(0)
+
+        for course in udemy_courses:
+            if course.get_amount_progress >= 100:
+                past_courses += 1
+            else:
+                current_courses += 1
+            grades = Progress.objects.filter(quiz__course=course).values_list('score', flat=True)
+            if grades:
+                grades = [convert_to_percentage(x) for x in grades]
+                udemy_grades.append(sum(grades)/len(grades))
+            else:
+                udemy_grades.append(0)
 
         onboarding = request.session.get('onboarding', False)
         request.session['onboarding'] = False
@@ -425,6 +458,7 @@ def index_alt(request):
         return render(request, 'users/index-alt.html',
                       {'coursera_courses': zip(coursera_courses, coursera_grades),
                        'edx_courses': zip(edx_courses, edx_grades),
+                       'udemy_courses': zip(udemy_courses, udemy_grades),
                        'pledges': pledges, 'progresses': progresses, 'form': False,
                        'current_courses': current_courses,
                        'past_courses': past_courses, 'onboarding': onboarding})

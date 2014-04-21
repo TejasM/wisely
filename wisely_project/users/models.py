@@ -141,6 +141,7 @@ class Quiz(BaseModel):
     course = models.ForeignKey(Course)
     deadline = models.DateTimeField(null=True, default=None)
     hard_deadline = models.DateTimeField(null=True, default=None)
+    quizid = models.CharField(max_length=100, default="")
 
     def __unicode__(self):
         return self.heading

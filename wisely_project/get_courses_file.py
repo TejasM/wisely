@@ -3,6 +3,7 @@ import os
 import traceback
 
 from django import db
+from users.udemy_scraping import get_udemy_courses
 
 
 sys.path.append('/root/wisely/wisely_project/')
@@ -30,8 +31,9 @@ while True:
             user.last_updated = timezone.now()
             user.save()
         for user in UdemyProfile.objects.filter(last_updated__lt=F('user__last_login')):
-            print 'Not implemented'
-            raise
+            get_udemy_courses(user)
+            user.last_updated = timezone.now()
+            user.save()
 
     except Exception as e:
         print traceback.format_exc()
