@@ -1,5 +1,5 @@
 import json
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from actstream.models import Action
 from django.contrib import messages
@@ -23,9 +23,10 @@ from social_auth.db.django_models import UserSocialAuth
 import twitter
 from actstream import action
 
-from models import CourseraProfile, Progress, UserProfile, EdxProfile, Invitees, UdemyProfile
+from models import CourseraProfile, Progress, UserProfile, EdxProfile, Invitees
 from pledges.models import Pledge
 from forms import UserProfileForm, UserForm
+from users.models import convert_to_percentage
 from users.utils import send_welcome_email
 from wisely_project.settings import base
 
@@ -85,10 +86,12 @@ def profile(request):
     current_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=False)
     message_list = Message.objects.inbox_for(request.user)
     followers = UserProfile.objects.filter(follows__in=[user_profile.id])
+    user_profile = UserProfile.objects.get(user=request.user)
+    rewards = Reward.objects.filter(user=user_profile)
     context_dict = {'viewed_user': request.user, 'user_profile': user_profile, 'user_profile_form': user_profile_form,
                     'user_form': user_form, 'completed_pledges': completed_pledges, 'current_pledges': current_pledges,
                     'message_list': message_list, 'followers': followers, 'who_to_follow': who_to_follow,
-                    'feeds': feed_list}
+                    'feeds': feed_list, 'rewards': rewards}
     return render(request, 'users/profile_alt.html', context_dict)
 
 
@@ -384,26 +387,47 @@ def index_alt(request):
         return render(request, 'users/onboarding.html')
     else:
         pledges = Pledge.objects.filter(user=request.user.userprofile)
-        progresses = Progress.objects.filter(user=request.user.userprofile)
+        progresses = Progress.objects.filter(user=request.user.userprofile).order_by('quiz__deadline')
         current_courses = 0
         past_courses = 0
+        coursera_courses = coursera_profile.courses.all()
+        edx_courses = edx_profile.courses.all()
+        coursera_grades = []
+        edx_grades = []
 
-        for course in coursera_profile.courses.all():
+        for course in coursera_courses:
             if course.get_amount_progress >= 100:
                 past_courses += 1
             else:
                 current_courses += 1
-        for course in edx_profile.courses.all():
+            grades = Progress.objects.filter(quiz__course=course).values_list('score', flat=True)
+            if grades:
+                grades = [convert_to_percentage(x) for x in grades]
+                coursera_grades.append(sum(grades)/len(grades))
+            else:
+                coursera_grades.append(50)
+
+        for course in edx_courses:
             if course.get_amount_progress >= 100:
                 past_courses += 1
             else:
                 current_courses += 1
+            grades = Progress.objects.filter(quiz__course=course).values_list('score', flat=True)
+            if grades:
+                grades = [convert_to_percentage(x) for x in grades]
+                edx_grades.append(sum(grades)/len(grades))
+            else:
+                edx_grades.append(50)
+
         onboarding = request.session.get('onboarding', False)
         request.session['onboarding'] = False
         request.session.save()
-        return render(request, 'users/index-alt.html', {'pledges': pledges, 'progresses': progresses, 'form': False,
-                                                        'current_courses': current_courses,
-                                                        'past_courses': past_courses, 'onboarding': onboarding})
+        return render(request, 'users/index-alt.html',
+                      {'coursera_courses': zip(coursera_courses, coursera_grades),
+                       'edx_courses': zip(edx_courses, edx_grades),
+                       'pledges': pledges, 'progresses': progresses, 'form': False,
+                       'current_courses': current_courses,
+                       'past_courses': past_courses, 'onboarding': onboarding})
 
 
 @csrf_exempt

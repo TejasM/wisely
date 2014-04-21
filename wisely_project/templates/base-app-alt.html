@@ -67,10 +67,12 @@
 {% endblock %}
 <script>
     $(function () {
-        $(document).foundation();
+
         {% if messages %}
             $('#messages').lightbox_me({centered: true});
         {% endif %}
+
+        $(document).foundation();
     });
 </script>
 </html>

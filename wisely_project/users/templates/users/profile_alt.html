@@ -18,7 +18,8 @@
 
                     <dd><a href="#panel3a"><i class="fa fa-list"></i>Tasks</a>
                     </dd>
-                    <dd><a href="#panel4a"><i class="fa fa-certificate"></i>Achievements</a></dd>
+                    <dd><a href="#panel4a" id="acheivements-panel"><i class="fa fa-certificate"></i>Achievements</a>
+                    </dd>
                     <dd><a href="#panel5a"><i class="fa fa-users"></i>Followers</a></dd>
                     <dd><a href="#panel6a"><i class="fa fa-user"></i>Following</a></dd>
                 </dl>
@@ -67,162 +68,220 @@
     {% else %}
         <div class="large-12 columns" style="padding-top: 80px">
     {% endif %}
-<div class="row profile-area"
-     style="position:relative;
-             height: 28em; background: url('{% static 'images/shutterstock_153034898.jpg' %}') no-repeat center center; background-size: cover">
-    <div class="large-3 columns">
-    </div>
-    <div class="large-6 push-3 columns" style="text-align: center;">
-        <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
-             {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
-             class="img-circle" style="display: block; margin: 20px auto; height: 200px;">
+    <div class="row profile-area"
+         style="position:relative;
+                 height: 28em; background: url('{% static 'images/shutterstock_153034898.jpg' %}') no-repeat center center; background-size: cover">
+        <div class="large-3 columns">
+        </div>
+        <div class="large-6 push-3 columns" style="text-align: center;">
+            <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
+                 {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
+                 class="img-circle" style="display: block; margin: 20px auto; height: 200px;">
 
-        <div>
-            <h3>{{ viewed_user.first_name }} {{ viewed_user.last_name }}</h3>
+            <div>
+                <h3>{{ viewed_user.first_name }} {{ viewed_user.last_name }}</h3>
 
-            <p>{% if user_profile.headline %}{{ user_profile.headline }}{% endif %}</p>
-            <hr>
-            <div class="info">
-                <img src="{% static 'images/map-icon.png' %}">
-                {% if user_profile.current_city %}{{ user_profile.current_city }}{% else %}
-                    Toronto{% endif %}
+                <p>{% if user_profile.headline %}{{ user_profile.headline }}{% endif %}</p>
+                <hr>
+                <div class="info">
+                    <img src="{% static 'images/map-icon.png' %}">
+                    {% if user_profile.current_city %}{{ user_profile.current_city }}{% else %}
+                        Toronto{% endif %}
+                    <br>
+                    <img src="{% static 'images/envelope-icon.png' %}"> {% if viewed_user.email %}
+                    {{ viewed_user.email }}{% else %}email@email.com{% endif %}
+                </div>
+            </div>
+        </div>
+        {% if viewed_user == request.user %}
+            <div class="large-3 {% if public and viewed_user != user %}push-3{% endif %} columns">
+                <div style="text-align: right; float: right">
+                    <i class="fa fa-gear icon-remove-sign"></i>
+                </div>
+            </div>
+        {% endif %}
+        {% if public and viewed_user != user %}
+            <div style="position: absolute; bottom: 10px; right: 10px; z-index: 199">
+                <img src="{% static 'images/message-icon.png' %}"
+                     onclick="$('#compose-message').lightbox_me({centered: true});">
                 <br>
-                <img src="{% static 'images/envelope-icon.png' %}"> {% if viewed_user.email %}
-                {{ viewed_user.email }}{% else %}email@email.com{% endif %}
+                {% if viewed_user.userprofile not in user.userprofile.follows %}
+                    <img src="{% static 'images/follow-button.png' %}" style="margin-top: 10px" id='follow-button'>
+                {% endif %}
             </div>
-        </div>
+        {% endif %}
     </div>
-    {% if viewed_user == request.user %}
-        <div class="large-3 {% if public and viewed_user != user %}push-3{% endif %} columns">
-            <div style="text-align: right; float: right">
-                <i class="fa fa-gear icon-remove-sign"></i>
-            </div>
-        </div>
-    {% endif %}
-    {% if public and viewed_user != user %}
-        <div style="position: absolute; bottom: 10px; right: 10px; z-index: 199">
-            <img src="{% static 'images/message-icon.png' %}"
-                 onclick="$('#compose-message').lightbox_me({centered: true});">
-            <br>
-            {% if viewed_user.userprofile not in user.userprofile.follows %}
-                <img src="{% static 'images/follow-button.png' %}" style="margin-top: 10px" id='follow-button'>
-            {% endif %}
-        </div>
-    {% endif %}
-</div>
-<div class="row">
-    <div class="large-12 columns">
-        <div class="tabs-content vertical" style="width: 100%; margin-top: 2em">
-            <div class="content active" id="panel1a">
-                <div style="margin-top: 50px; margin-left: 90px;">
-                    <span class="today-button">Today</span>
-                </div>
-                <ul id='timeline-profile'>
-                    {% for feed in feeds %}
-                        {% if feed.actor_content_type.name == "user" and feed.actor.first_name %}
-                            <li class='work-profile'>
-                                <input class='radio' type='radio' checked>
+    <div class="row">
+        <div class="large-12 columns">
+            <div class="tabs-content vertical" style="width: 100%; margin-top: 2em">
+                <div class="content active" id="panel1a">
+                    <div style="margin-top: 50px; margin-left: 90px;">
+                        <span class="today-button">Today</span>
+                    </div>
+                    <ul id='timeline-profile'>
+                        {% for feed in feeds %}
+                            {% if feed.actor_content_type.name == "user" and feed.actor.first_name %}
+                                <li class='work-profile'>
+                                    <input class='radio' type='radio' checked>
 
-                                <div class="relative">
-                                    <span class='date-profile'>{{ feed.timestamp|naturaltime }}</span>
-                                    <span class='circle-profile'></span>
-                                </div>
-                                <div class='content-profile'>
-                                    <p>
-                                        <a href="/users/profile/{{ feed.actor_object_id }}">
-                                            {{ feed.actor.first_name }} {{ feed.actor.last_name }}
-                                        </a>
-                                        {% if feed.actions_with_pledges_pledge_as_action_object == None %}
-                                            <a href="/pledges/share/{{ feed.action_object_object_id }}">
-                                        {% endif %}
-                                        {{ feed.verb }}
-                                        {% if feed.actions_with_pledges_pledge_as_action_object == None %}
+                                    <div class="relative">
+                                        <span class='date-profile'>{{ feed.timestamp|naturaltime }}</span>
+                                        <span class='circle-profile'></span>
+                                    </div>
+                                    <div class='content-profile'>
+                                        <p>
+                                            <a href="/users/profile/{{ feed.actor_object_id }}">
+                                                {{ feed.actor.first_name }} {{ feed.actor.last_name }}
                                             </a>
-                                        {% endif %}
-                                        {% if feed.target %}
-                                            {% if feed.actions_with_users_course_as_target == None %}
-                                                <a href="{{ feed.target.course_link }}">{{ feed.target }}</a>
-                                            {% else %}
-                                                {{ feed.target }}
+                                            {% if feed.actions_with_pledges_pledge_as_action_object == None %}
+                                                <a href="/pledges/share/{{ feed.action_object_object_id }}">
                                             {% endif %}
+                                            {{ feed.verb }}
+                                            {% if feed.actions_with_pledges_pledge_as_action_object == None %}
+                                                </a>
+                                            {% endif %}
+                                            {% if feed.target %}
+                                                {% if feed.actions_with_users_course_as_target == None %}
+                                                    <a href="{{ feed.target.course_link }}">{{ feed.target }}</a>
+                                                {% else %}
+                                                    {{ feed.target }}
+                                                {% endif %}
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% if viewed_user == request.user %}
+                    <div class="content" id="panel2a" style="width: 100%">
+                        {% include 'django_messages/inbox.html' %}
+                    </div>
+                    <div class="content" id="panel3a">
+                        <h3>Coming Soon.</h3>
+                    </div>
+                    <div class="content" id="panel4a">
+                        {% if rewards %}
+                            {% for reward in rewards %}
+                                <div class="row" style="margin-top: 2em" data-equalizer>
+                                    <div class="large-6 columns panel-white" data-equalizer-watch>
+                                        {% if reward.pledge %}
+                                            <h4 class="media-heading innerT"><a href=""
+                                                                                class="text-inverse">{{ reward.pledge.course }}</a> <span
+                                                    class="text-small"><i
+                                                    class="fa fa-fw fa-clock-o"></i>&nbsp; {{ reward.pledge.created }}</span>
+                                            </h4>
                                         {% endif %}
-                                    </p>
+                                        <p>Your reward &nbsp;</p>
+
+                                        <h3 style="display: inline" class="cursive">
+                                            $ {{ reward.money|floatformat:2 }}</h3>
+
+                                        <p>{% if reward.pledge %} &nbsp; for
+                                            achieving
+                                            your goal of
+                                            get {{ reward.pledge.get_aim|floatformat:0 }}%{% endif %}</p>
+                                    </div>
+                                    <div class="large-6 columns panel-content" data-equalizer-watch
+                                         style="display: table">
+                                        <div style="display: table-cell; vertical-align: middle">
+                                            {% if reward.collected %}
+                                                <button class="btn btn-primary btn-lg" disabled>Already
+                                                    Collected
+                                                </button>
+                                            {% else %}
+                                                <div class="widget-head"><h4 class="heading">Collect Your
+                                                    Rewards</h4><span
+                                                        class="collapse-toggle"></span></div>
+                                                <div class="row centered">
+                                                    <div class="large-12 columns">
+                                                        <form action="{% url 'pledges:collect_reward' %}" method="post">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" value="{{ reward.id }}"
+                                                                   name="reward_id">
+                                                            <input type="text" placeholder="Your PayPal Email Address"
+                                                                   name="email"
+                                                                   class="form-control">
+                                                            <button type="submit">
+                                                                Collect
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
                                 </div>
-                            </li>
+                            {% endfor %}
+                        {% else %}
+                            <h3>Looks like you have no rewards</h3>
+                            <h4>Create A Pledge Now to Start Earning Rewards</h4>
+                            <a href="{% url 'users:index_alt' %}">
+                                <button>Create Pledge</button>
+                            </a>
                         {% endif %}
-                    {% endfor %}
-                </ul>
+                    </div>
+                    <div class="content" id="panel5a">
+                        {% if followers %}
+                            <ul class="follower-list">
+                                {% for follower in followers %}
+                                    <li>
+                                        <div class="row" style="margin: 3% 5%;">
+                                            <div class="large-3 columns" style="padding: 0 4%;">
+                                                <img {% if follower.picture %}src="/media/{{ follower.picture }}"
+                                                     {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
+                                                     class="pull-left img-circle small">
+                                            </div>
+                                            <div class="large-9 columns">
+                                                <div>
+                                                    <h3 style="font-size: 16px">{{ follower.user.first_name }} {{ follower.user.last_name }}</h3>
+                                                    {% if follower.headline %}
+                                                        <p>{{ follower.headline }}</p>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>No follower's yet!</p>
+                        {% endif %}
+                    </div>
+                    <div class="content" id="panel6a">
+                        {% if user_profile.follows.count != 0 %}
+                            <ul class="follower-list">
+                                {% for following in user_profile.follows.all %}
+                                    <li>
+                                        <div class="row" style="margin: 3% 5%;">
+                                            <div class="large-3 columns" style="padding: 0 4%;">
+                                                <img {% if following.picture %}src="/media/{{ following.picture }}"
+                                                     {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
+                                                     class="pull-left img-circle small">
+                                            </div>
+                                            <div class="large-9 columns">
+                                                <div>
+                                                    <h3 style="font-size: 16px">{{ following.user.first_name }} {{ following.user.last_name }}</h3>
+                                                    {% if following.headline %}
+                                                        <p>{{ following.headline }}</p>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p> You are not following anyone yet!</p>
+                        {% endif %}
+                    </div>
+                {% endif %}
             </div>
-            {% if viewed_user == request.user %}
-                <div class="content" id="panel2a" style="width: 100%">
-                    {% include 'django_messages/inbox.html' %}
-                </div>
-                <div class="content" id="panel3a">
-                    <p>Panel 3 content goes here.</p>
-                </div>
-                <div class="content" id="panel4a">
-                    <p>Panel 4 content goes here.</p>
-                </div>
-                <div class="content" id="panel5a">
-                    {% if followers %}
-                        <ul class="follower-list">
-                            {% for follower in followers %}
-                                <li>
-                                    <div class="row" style="margin: 3% 5%;">
-                                        <div class="large-3 columns" style="padding: 0 4%;">
-                                            <img {% if follower.picture %}src="/media/{{ follower.picture }}"
-                                                 {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
-                                                 class="pull-left img-circle small">
-                                        </div>
-                                        <div class="large-9 columns">
-                                            <div>
-                                                <h3 style="font-size: 16px">{{ follower.user.first_name }} {{ follower.user.last_name }}</h3>
-                                                {% if follower.headline %}
-                                                    <p>{{ follower.headline }}</p>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>No follower's yet!</p>
-                    {% endif %}
-                </div>
-                <div class="content" id="panel6a">
-                    {% if user_profile.follows.count != 0 %}
-                        <ul class="follower-list">
-                            {% for following in user_profile.follows.all %}
-                                <li>
-                                    <div class="row" style="margin: 3% 5%;">
-                                        <div class="large-3 columns" style="padding: 0 4%;">
-                                            <img {% if following.picture %}src="/media/{{ following.picture }}"
-                                                 {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
-                                                 class="pull-left img-circle small">
-                                        </div>
-                                        <div class="large-9 columns">
-                                            <div>
-                                                <h3 style="font-size: 16px">{{ following.user.first_name }} {{ following.user.last_name }}</h3>
-                                                {% if following.headline %}
-                                                    <p>{{ following.headline }}</p>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p> You are not following anyone yet!</p>
-                    {% endif %}
-                </div>
-            {% endif %}
         </div>
     </div>
-</div>
-</div>
-</div>
+    </div>
+    </div>
     {% if public and viewed_user != request.user %}
         {% include 'django_messages/compose.html' with path=request.get_full_path %}
     {% endif %}
@@ -232,10 +291,12 @@
         <div class="row text-center" id="other-message">
         </div>
     </div>
+    </div>
 {% endblock %}
 {% block additionalScripts %}
     <script src="{% static 'js/foundation/foundation.tab.js' %}"></script>
     <script src="{% static 'js/foundation/foundation.accordion.js' %}"></script>
+    <script src="{% static 'js/foundation/foundation.equalizer.js' %}"></script>
     <script>
         $('#follow-button').click(function () {
             $.post('{% url 'users:follow' %}', {user_id: {{ viewed_user.id }} }).done(function (data) {
@@ -261,5 +322,15 @@
                 }
             });
         }
+
+        $(function () {
+            $('#acheivements-panel').click(function () {
+                setTimeout(function () {
+                    $(document).foundation('equalizer', 'reflow');
+                }, 10);
+
+            });
+
+        });
     </script>
 {% endblock %}
