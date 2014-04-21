@@ -382,9 +382,9 @@ def index_alt(request):
             return redirect(reverse('users:index_alt'))
         elif request.POST['platform'] == "udemy":
             udemy_profile.email = request.POST['username'].strip()
-            already_exist = UdemyProfile.objects.filter(email=request.user.edxprofile.email).count() > 0
+            already_exist = UdemyProfile.objects.filter(email=request.user.udemyprofile.email).count() > 0
             if already_exist:
-                messages.success(request, 'Someone else is already using that edX account')
+                messages.success(request, 'Someone else is already using that Udemy account')
                 return redirect(reverse('users:index_alt'))
 
             udemy_profile.password = request.POST['password']
