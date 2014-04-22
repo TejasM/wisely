@@ -343,12 +343,16 @@ def get_udemy_courses(profile):
                 try:
                     quiz = Quiz.objects.get(quizid=quiz_id)
                     try:
+                        mark = float(quiz_marks['completionRatio']) / 100
+                    except:
+                        mark = 0
+                    try:
                         progress = Progress.objects.get(user=profile.user.userprofile, quiz=quiz)
-                        progress.score = float(quiz_marks['completionRatio']) / 100
+                        progress.score = 0
                         progress.save()
                     except Progress.DoesNotExist:
                         Progress.objects.create(user=profile.user.userprofile, quiz=quiz,
-                                                score=float(quiz_marks['completionRatio']) / 100)
+                                                score=0)
                 except Quiz.DoesNotExist:
                     pass
         print "done udemy"
