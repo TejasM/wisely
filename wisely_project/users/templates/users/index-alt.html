@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 {% endblock %}
+{% block nav-bar %}
+    {% include 'nav-bar-alt.html' with courses="True" %}
+{% endblock %}
 {% block content %}
     <div class="row wide-row" style="border-bottom: solid #D2D4D5 1px">
         <div class="large-4 columns" style="border-right: solid #D2D4D5 1px; padding-top: 40px; padding-bottom: 1%;">

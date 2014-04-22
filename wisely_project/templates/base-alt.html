@@ -36,11 +36,10 @@
 
     <!-- Header -->
     <section id="background-image">
-        <div id="inner">
-            <div style="padding-top: 3%" id="other-menu">
-                {% if done != '' %}
-                    {% include 'nav-bar-alt.html' %}
-                {% endif %}
+        <div id="inner wide-row">
+            <div style="padding-top: 2%;{% if done != '' %}display: visible{% else %}display:none{% endif %}"
+                 id="other-menu">
+                {% include 'nav-bar-alt.html' %}
             </div>
 
             <div class="row wide-row">
@@ -129,7 +128,7 @@
         <div class="pledge-sec alt-back" id="pledge-sec" style="position: relative">
             <div class="row">
 
-                <h1 class="pledge-color"><strong>PLEDGE</strong></h1>
+                <h1 class="pledge-color">PLEDGE</h1>
 
                 <h2 style="text-align: left">Set your goal and make a pledge to commit to your learning. Get rewards for
                     completing assignments and reaching your goals, paid for by member who don't.</h2>
@@ -143,7 +142,7 @@
         <div class="track-sec" id="track-sec" style="position: relative">
             <div class="row">
 
-                <h1 class="track-color"><strong>TRACK</strong></h1>
+                <h1 class="track-color">TRACK</h1>
 
                 <h2 style="text-align: left">Wisely helps you monitor your progress across all of your online courses in
                     one easy-to-use dashboard. Get notified of announcements, updates, and upcoming deadlines.</h2>
@@ -156,7 +155,7 @@
         </div>
         <div class="share-sec alt-back" id="share-sec" style="position: relative">
             <div class="row">
-                <h1 class="connect-color"><strong>CONNECT</strong></h1>
+                <h1 class="connect-color">CONNECT</h1>
 
                 <h2 style="text-align: left">Meet your online classmates through Wisely and collabrate through live
                     study rooms. Share your progress with your followers and social networks.</h2>
@@ -170,7 +169,7 @@
         <div class="achieve-sec" id="achieve-sec" style="position: relative">
             <div class="row">
 
-                <h1 class="achieve-color"><strong>ACHIEVE</strong></h1>
+                <h1 class="achieve-color">ACHIEVE</h1>
 
                 <h2 style="text-align: center">Stay motivated, stay on track, and achieve your goals with Wisely.</h2>
 
@@ -493,6 +492,9 @@
 
             },
             slide: function (event, ui) {
+                if (started == false) {
+                    return true;
+                }
                 return false;
             }
         });
@@ -543,6 +545,7 @@
                 $('#below-slider').fadeIn(1000);
                 $('.under-slide').attr({src: "{% static 'images/check-mark-green.png' %}"});
                 $('#slider').slider('value', 1000);
+                $('#other-menu').show();
             }
         }
 

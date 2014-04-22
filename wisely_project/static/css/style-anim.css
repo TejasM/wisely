@@ -65,7 +65,6 @@ strong {
 
 .top-bar-inner {
     color: #fff;
-    max-width: 62.5em;
     margin: 0 auto;
 }
 
@@ -85,9 +84,7 @@ strong {
 }
 
 .top-bar-inner {
-    height: 65px;
-    padding-top: 1%;
-    padding-bottom: 1%;
+    height: 55px;
 }
 
 .wide-row {
@@ -776,9 +773,6 @@ img.finish-anim {
 
 .one-place h2 {
     color: #314250;
-    font-family: 'Source Sans Pro', sans-serif;
-    font-size: 1.65em;
-    font-weight: 400;
 }
 
 .pledge-sec {
@@ -802,7 +796,7 @@ img.finish-anim {
 }
 
 .track-sec h1 {
-    font-size: 1.2em;
+    font-size: 1.5em;
 }
 
 .track-sec h2 {
@@ -823,7 +817,7 @@ img.finish-anim {
 }
 
 .share-sec h1 {
-    font-size: 1.2em;
+    font-size: 1.5em;
 }
 
 .share-sec h2 {
@@ -838,7 +832,7 @@ img.finish-anim {
 }
 
 .achieve-sec h1 {
-    font-size: 1.2em;
+    font-size: 1.5em;
 }
 
 .achieve-sec h2 {
@@ -860,9 +854,6 @@ img.finish-anim {
 
 .people-sec h2 {
     color: #9c9d9e;
-    font-family: 'Source Sans Pro', sans-serif;
-    font-size: 1.55em;
-    font-weight: 400;
 }
 
 .last-sec {
@@ -871,7 +862,9 @@ img.finish-anim {
     text-align: center;
     padding: 3%;
 }
-
+.right-nav {
+    padding-top: 2%;
+}
 .right-nav a, .right-nav a:hover {
     margin: 0 3%;
     display: inline;
@@ -886,6 +879,11 @@ img.finish-anim {
 
 .pledge-color {
     color: #79cdeb;
+}
+
+.img-circle {
+    border-radius: 50%;
+    border: solid #fff 2px;
 }
 
 .track-color {

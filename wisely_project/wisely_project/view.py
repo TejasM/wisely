@@ -6,13 +6,13 @@ __author__ = 'tmehta'
 
 def index(request):
     done = request.COOKIES.get('animation', '')
-    response = render_to_response('base-alt.html', {'done': done})
+    response = render_to_response('base-alt.html', {'done': done, 'user': request.user})
     response.set_cookie('animation', 'done')
     return response
 
 
 def index_alt(request):
     done = request.COOKIES.get('animation', '')
-    response = render_to_response('base-alt.html', {'done': done})
+    response = render_to_response('base-alt.html', {'done': done, 'user': request.user})
     response.set_cookie('animation', 'done')
     return response

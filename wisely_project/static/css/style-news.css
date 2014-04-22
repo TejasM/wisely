@@ -104,11 +104,6 @@ label {
     transition: color 0.3s linear 0.3s;
 }
 
-.img-circle {
-    border-radius: 50%;
-    border: solid #fff 2px;
-}
-
 /* -------------------------------------
  * mobile phones (vertical version only)
  * ------------------------------------- */

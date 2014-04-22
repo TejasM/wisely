@@ -27,7 +27,9 @@
 <section id="after-scroll">
     <div id="main-nav-wrapper" style="display: block; position: fixed; z-index: 100;top: 0; padding-top: 0.5%;
          left: 0;right: 0;width: 100%;background: #0F486D;">
-        {% include 'nav-bar-alt.html' %}
+        {% block nav-bar %}
+            {% include 'nav-bar-alt.html' %}
+        {% endblock %}
     </div>
     <div style="margin-top: 87px;">
         {% block content %}
