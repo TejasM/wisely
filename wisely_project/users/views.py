@@ -82,14 +82,13 @@ def profile(request):
     user_form = UserForm(instance=request.user)
     who_to_follow = get_suggested_followers(user_profile)
 
-    completed_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=True)
-    current_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=False)
+    pledges = Pledge.objects.filter(user=request.user.userprofile)
     message_list = Message.objects.inbox_for(request.user)
     followers = UserProfile.objects.filter(follows__in=[user_profile.id])
     user_profile = UserProfile.objects.get(user=request.user)
     rewards = Reward.objects.filter(user=user_profile)
     context_dict = {'viewed_user': request.user, 'user_profile': user_profile, 'user_profile_form': user_profile_form,
-                    'user_form': user_form, 'completed_pledges': completed_pledges, 'current_pledges': current_pledges,
+                    'user_form': user_form, 'completed_pledges': pledges,
                     'message_list': message_list, 'followers': followers, 'who_to_follow': who_to_follow,
                     'feeds': feed_list, 'rewards': rewards}
     return render(request, 'users/profile_alt.html', context_dict)

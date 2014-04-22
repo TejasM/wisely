@@ -153,9 +153,11 @@
                 {% endfor %}</div>
             <div class="large-6 columns">{% endif %}
         <h3>Activites</h3>
-        <div style="margin-top: 50px; margin-left: 90px;">
-            <span class="today-button">Today</span>
-        </div>
+        {% if feeds %}
+            <div style="margin-top: 50px; margin-left: 90px;">
+                <span class="today-button">Today</span>
+            </div>
+        {% endif %}
         <ul id='timeline-profile'>
             {% for feed in feeds %}
                 {% if feed.actor_content_type.name == "user" and feed.actor.first_name %}
@@ -209,6 +211,25 @@
                                 <a href="{{ course.course_link }}"><strong>{{ course.title }}</strong></a>
 
                                 <p>Coursera</p>
+                                {% for pledge in completed_pledges %}
+                                    {% if pledge.course == course %}
+                                        <hr style="border: solid 0.2em #05A551; width: 100%">
+                                        <div class="row">
+                                            <div class="large-4 columns"><p>SCORED<br>
+                                                <span class="overall-mark">{{ pledge.get_actual_mark }}
+                                                <sup>%</sup></span></div>
+                                            <div class="large-4 columns"><p>GOAL<br>
+                                                <span class="overall-mark">{{ pledge.get_aim }}<sup>%</sup></span></div>
+                                            <div class="large-4 columns"><p>REWARD<br>
+                                                {% if pledge.reward_set.0 %}
+                                                    <span class="overall-mark"><sup>$</sup>{{ pledge.reward_set.0.money }}</span>
+                                                {% else %}
+                                                    <span class="overall-mark"><sup>$</sup>0</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
                     {% endif %}
@@ -220,6 +241,21 @@
                                 <a href="{{ course.course_link }}"><strong>{{ course.title }}</strong></a>
 
                                 <p>edX</p>
+                                {% for pledge in completed_pledges %}
+                                    {% if pledge.course == course %}
+                                        <hr style="border: solid 0.2em #05A551; width: 100%">
+                                        <div class="row">
+                                            <div class="large-4 columns"><p>SCORED<br>
+                                                <span class="overall-mark">{{ pledge.get_actual_mark }}
+                                                <sup>%</sup></span></div>
+                                            <div class="large-4 columns"><p>GOAL<br>
+                                                <span class="overall-mark">{{ pledge.get_aim }}<sup>%</sup></span></div>
+                                            <div class="large-4 columns"><p>REWARD<br>
+                                                <span class="overall-mark"><sup>$</sup>{{ pledge.reward_set.0.money }}</span>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
                     {% endif %}
@@ -231,6 +267,21 @@
                                 <a href="{{ course.course_link }}"><strong>{{ course.title }}</strong></a>
 
                                 <p>Udemy</p>
+                                {% for pledge in completed_pledges %}
+                                    {% if pledge.course == course %}
+                                        <hr style="border: solid 0.2em #05A551; width: 100%">
+                                        <div class="row">
+                                            <div class="large-4 columns"><p>SCORED<br>
+                                                <span class="overall-mark">{{ pledge.get_actual_mark }}
+                                                <sup>%</sup></span></div>
+                                            <div class="large-4 columns"><p>GOAL<br>
+                                                <span class="overall-mark">{{ pledge.get_aim }}<sup>%</sup></span></div>
+                                            <div class="large-4 columns"><p>REWARD<br>
+                                                <span class="overall-mark"><sup>$</sup>{{ pledge.reward_set.0.money }}</span>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
                     {% endif %}

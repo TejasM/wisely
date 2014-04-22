@@ -4,56 +4,58 @@
         <div class="large-4 columns">
             <div class="left-nav">
                 <div class="row" style="text-align: center">
-                    <div class="large-4  columns">
-                        <a href="/users/news">
-                            {% if news %}
-                                <img src="{% static 'images/news-white.png' %}" width="28px">
-                            {% else %}
-                                <img src="{% static 'images/activities-icon-trans.png' %}" width="28px">
-                            {% endif %}
-                            <div class="row" style="margin-top: 5px">
-                                NEWS
-                            </div>
-                            {% if news %}
-                                <hr style="border: solid #fff 0.3em; margin: 0; position: absolute; bottom: -0.1em; width: 80%">
-                            {% endif %}
-                        </a>
-                    </div>
-                    <div class="large-4 columns">
-                        <a href="/users/index/alt">
-                            {% if courses %}
-                                <img src="{% static 'images/book-white.png' %}" height="25px"
-                                     width="30px">
-                            {% else %}
-                                <img src="{% static 'images/book-icon-trans.png' %}" height="25px"
-                                     width="30px">
-                            {% endif %}
+                    {% if user.is_authenticated %}
+                        <div class="large-4  columns">
+                            <a href="/users/news">
+                                {% if news %}
+                                    <img src="{% static 'images/news-white.png' %}" width="28px">
+                                {% else %}
+                                    <img src="{% static 'images/activities-icon-trans.png' %}" width="28px">
+                                {% endif %}
+                                <div class="row" style="margin-top: 5px">
+                                    NEWS
+                                </div>
+                                {% if news %}
+                                    <hr style="border: solid #fff 0.3em; margin: 0; position: absolute; bottom: -0.1em; width: 80%">
+                                {% endif %}
+                            </a>
+                        </div>
+                        <div class="large-4 columns">
+                            <a href="/users/index/alt">
+                                {% if courses %}
+                                    <img src="{% static 'images/book-white.png' %}" height="25px"
+                                         width="30px">
+                                {% else %}
+                                    <img src="{% static 'images/book-icon-trans.png' %}" height="25px"
+                                         width="30px">
+                                {% endif %}
 
-                            <div class="row" style="margin-top: 5px">
-                                COURSES
-                            </div>
-                            {% if courses %}
-                                <hr style="border: solid #fff 0.3em; margin: 0; position: absolute; bottom: -0.1em; width: 80%">
-                            {% endif %}
-                        </a>
-                    </div>
-                    <div class="large-4 columns">
-                        <a href="#">
-                            {% if activities %}
-                                <img src="{% static 'images/me-icon.png' %}" height="25px" width="25px">
-                            {% else %}
-                                <img src="{% static 'images/me-icon-trans.png' %}" height="25px" width="25px">
-                            {% endif %}
+                                <div class="row" style="margin-top: 5px">
+                                    COURSES
+                                </div>
+                                {% if courses %}
+                                    <hr style="border: solid #fff 0.3em; margin: 0; position: absolute; bottom: -0.1em; width: 80%">
+                                {% endif %}
+                            </a>
+                        </div>
+                        <div class="large-4 columns">
+                            <a href="#">
+                                {% if activities %}
+                                    <img src="{% static 'images/me-icon.png' %}" height="25px" width="25px">
+                                {% else %}
+                                    <img src="{% static 'images/me-icon-trans.png' %}" height="25px" width="25px">
+                                {% endif %}
 
-                            <div class="row" style="margin-top: 5px">
-                                ACTIVITIES
-                            </div>
+                                <div class="row" style="margin-top: 5px">
+                                    ACTIVITIES
+                                </div>
 
-                            {% if activites %}
-                                <hr style="border: solid #fff 0.3em; margin: 0; position: absolute; bottom: -0.1em; width: 80%">
-                            {% endif %}
-                        </a>
-                    </div>
+                                {% if activites %}
+                                    <hr style="border: solid #fff 0.3em; margin: 0; position: absolute; bottom: -0.1em; width: 80%">
+                                {% endif %}
+                            </a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -76,7 +78,8 @@
                     {% if user.is_authenticated %}
                         <a href="/users/profile">
                             {% if user.userprofile.picture %}
-                                <img src="/media/{{ user.userprofile.picture }}" class="img-circle" width="40" height="40">
+                                <img src="/media/{{ user.userprofile.picture }}" class="img-circle" width="40"
+                                     height="40">
                             {% else %}
                                 <img src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"
                                      class="img-circle" width="40" height="40">

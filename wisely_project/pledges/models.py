@@ -20,7 +20,10 @@ class Pledge(BaseModel):
         return self.aim*100
 
     def get_actual_mark(self):
-        return self.actual_mark*100
+        if self.actual_mark:
+            return self.actual_mark*100
+        else:
+            return 0
 
 
 class Reward(BaseModel):
