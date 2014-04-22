@@ -5,7 +5,10 @@ __author__ = 'tmehta'
 
 
 def index(request):
-    return render(request, 'base.html')
+    done = request.COOKIES.get('animation', '')
+    response = render_to_response('base-alt.html', {'done': done})
+    response.set_cookie('animation', 'done')
+    return response
 
 
 def index_alt(request):
