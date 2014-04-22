@@ -48,19 +48,19 @@
 
                         <div id="slider-parent" style="position: relative; max-height: 500px">
                             <div id="goal-name" class="anim-circle">Goal</div>
-                            <div id="goal" class="anim-circle">0%</div>
+                            <div id="goal" class="anim-circle">0<sup>%</sup></div>
                             <div id="above-slider" style="position: absolute; top: 140px; width: 100%;"><h1
                                     id="inner-above"
                                     style="font-size: 3.5em">CROWD-SOURCED MOTIVATION</h1>
                             </div>
                             <div id="slider"></div>
-                            <div id="below-slider" style="position: absolute; top: 400px; left: 50px"><h2
-                                    style="font-size: 2em; color: #fff; text-align: left">Wisely helps you meet your
-                                personal learning goals on Coursera, EdX, Udemy. <br>
+                            <div id="below-slider" style="position: absolute; top: 400px; left: 50px; width: 100%"><h2
+                                    style="font-size: 1.8em; color: #fff; text-align: left">Wisely helps you meet your
+                                personal learning goals on Coursera, EdX, and Udemy. <br>
                                 Keep track of your progress and earn rewards for your achievements.</h2>
                             </div>
                             <div id="holder" class="anim-circle"></div>
-                            <div id="reward" class="anim-circle">$0</div>
+                            <div id="reward" class="anim-circle"><sup>$</sup>0</div>
                             <div id="reward-name" class="anim-circle">Pledged</div>
                         </div>
 
@@ -157,7 +157,7 @@
             <div class="row">
                 <h1 class="connect-color">CONNECT</h1>
 
-                <h2 style="text-align: left">Meet your online classmates through Wisely and collabrate through live
+                <h2 style="text-align: left">Meet your online classmates through Wisely and collaborate through live
                     study rooms. Share your progress with your followers and social networks.</h2>
 
                 <img src="{% static 'images/connect-image.png' %}" style="margin-bottom: -80px">
@@ -175,12 +175,12 @@
 
                 <img src="{% static 'images/achieve-image.png' %}" style="margin-bottom: -80px">
             </div>
-            <div style="position: absolute; bottom: -33px; width: 64px; left: 50%; margin-left: -32px; margin-top: 33px; z-index: 100">
+            <div style="position: absolute; width: 64px; left: 50%; margin-left: -32px; margin-top: 33px; z-index: 100; bottom: -4em;">
                 <img src="{% static 'images/logo-blue.png' %}">
             </div>
         </div>
 
-        <div class="people-sec alt-back">
+        <div class="people-sec alt-back" style="margin-top: 2em">
             <div class="row">
 
                 <h1 style="margin-bottom: 0">WHAT PEOPLE SAY ABOUT US</h1>
@@ -434,8 +434,8 @@
         if (counter_reward < 0) {
             counter_reward = 3;
         }
-        $('#goal').text(counter_goal.toString() + "%");
-        $('#reward').text("$" + counter_reward.toString());
+        $('#goal').html(counter_goal.toString() + "<sup>%</sup>");
+        $('#reward').html("<sup>$</sup>" + counter_reward.toString());
     }
     var other_int = null;
 
@@ -540,10 +540,12 @@
                 var image = $('#background-image');
                 image.css("background", "url('{% static 'images/shutterstock_153034898.jpg' %}') no-repeat center center fixed");
                 image.css("background-size", "cover");
-                $('#inner-above').text('COLLABRATE EDUCATION');
+                $('#inner-above').text('MOTIVATE YOUR LEARNING');
                 $('#above-slider').fadeIn(1000);
                 $('#below-slider').fadeIn(1000);
-                $('.under-slide').attr({src: "{% static 'images/check-mark-green.png' %}"});
+                setTimeout(function () {
+                    $('.under-slide').attr({src: "{% static 'images/check-mark-green.png' %}"});
+                }, 2000);
                 $('#slider').slider('value', 1000);
                 $('#other-menu').show();
             }

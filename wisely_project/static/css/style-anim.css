@@ -690,6 +690,10 @@ select.course {
     border-radius: 50%;
 }
 
+.under-slide:hover {
+    background: #fff;
+}
+
 .ui-slider-tick-mark {
     display: inline-block;
     width: 0.1em;
@@ -715,12 +719,22 @@ select.course {
 
 #goal {
     padding-bottom: 50px;
-    font-size: 50px;
+    font-size: 60px;
     font-family: 'Lovelo', serif;
 }
 
+#goal sup {
+    font-size: 30px;
+    font-family: 'Dist-light', sans-serif;
+}
+
+#reward sup {
+    font-size: 30px;
+    font-family: 'Dist-light', sans-serif;
+}
+
 #reward {
-    font-size: 50px;
+    font-size: 60px;
     font-family: 'Lovelo', serif;
 }
 
@@ -777,7 +791,7 @@ img.finish-anim {
 
 .pledge-sec {
     text-align: center;
-    padding: 2.5% 0;
+    padding: 4% 0;
 }
 
 .pledge-sec h1 {
@@ -792,7 +806,7 @@ img.finish-anim {
 
 .track-sec {
     text-align: center;
-    padding: 2.5% 0;
+    padding: 4% 0;
 }
 
 .track-sec h1 {
@@ -843,7 +857,7 @@ img.finish-anim {
 
 .people-sec {
     text-align: center;
-    padding: 2.5% 0;
+    padding: 5% 0;
 }
 
 .people-sec h1 {
@@ -1036,4 +1050,9 @@ img.small {
 
 .course-panel a strong {
     font-size: 1em;
+}
+
+.login:hover {
+    background: #05A551;
+    border-radius: 6px;
 }
