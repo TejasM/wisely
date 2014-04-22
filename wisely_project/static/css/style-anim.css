@@ -1024,3 +1024,18 @@ img.small {
     width: 3em;
     height: 3em;
 }
+
+.course-panel {
+    border: 1px solid #bcbec0;
+    margin-bottom: 20px;
+    float: left;
+    padding-top: 4%;
+    padding-left: 5%;
+    padding-right: 5%;
+    width: 100%;
+    background: #fff;
+}
+
+.course-panel a strong {
+    font-size: 1em;
+}

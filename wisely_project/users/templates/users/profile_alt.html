@@ -16,9 +16,9 @@
                     <dd><a href="#panel2a"><i class="fa fa-envelope"></i>Inbox<span
                             class="right">{% inbox_count %}</span></a></dd>
 
-                    <dd><a href="#panel3a"><i class="fa fa-list"></i>Tasks</a>
+                    <dd><a href="#panel3a"><i class="fa fa-list"></i>Achievements</a>
                     </dd>
-                    <dd><a href="#panel4a" id="acheivements-panel"><i class="fa fa-certificate"></i>Achievements</a>
+                    <dd><a href="#panel4a" id="acheivements-panel"><i class="fa fa-certificate"></i>Rewards</a>
                     </dd>
                     <dd><a href="#panel5a"><i class="fa fa-users"></i>Followers</a></dd>
                     <dd><a href="#panel6a"><i class="fa fa-user"></i>Following</a></dd>
@@ -112,173 +112,249 @@
         {% endif %}
     </div>
     <div class="row">
-        <div class="large-12 columns">
-            <div class="tabs-content vertical" style="width: 100%; margin-top: 2em">
-                <div class="content active" id="panel1a">
-                    <div style="margin-top: 50px; margin-left: 90px;">
-                        <span class="today-button">Today</span>
-                    </div>
-                    <ul id='timeline-profile'>
-                        {% for feed in feeds %}
-                            {% if feed.actor_content_type.name == "user" and feed.actor.first_name %}
-                                <li class='work-profile'>
-                                    <input class='radio' type='radio' checked>
+    <div class="large-12 columns">
+    <div class="tabs-content vertical" style="width: 100%; margin-top: 2em">
+    <div class="content active" id="panel1a">
+        {% if viewed_user != request.user %}
+            <div class="row">
+            <div class="large-6 columns"><h3>Completed Courses</h3>
+                {% for course in viewed_user.courseraprofile.courses.all %}
+                    {% if course.get_amount_progress >= 100 %}
+                        <div class="large-6 columns">
+                            <div class="course-panel">
+                                <a href="{{ course.course_link }}"><strong>{{ course.title }}</strong></a>
 
-                                    <div class="relative">
-                                        <span class='date-profile'>{{ feed.timestamp|naturaltime }}</span>
-                                        <span class='circle-profile'></span>
-                                    </div>
-                                    <div class='content-profile'>
-                                        <p>
-                                            <a href="/users/profile/{{ feed.actor_object_id }}">
-                                                {{ feed.actor.first_name }} {{ feed.actor.last_name }}
-                                            </a>
-                                            {% if feed.actions_with_pledges_pledge_as_action_object == None %}
-                                                <a href="/pledges/share/{{ feed.action_object_object_id }}">
-                                            {% endif %}
-                                            {{ feed.verb }}
-                                            {% if feed.actions_with_pledges_pledge_as_action_object == None %}
-                                                </a>
-                                            {% endif %}
-                                            {% if feed.target %}
-                                                {% if feed.actions_with_users_course_as_target == None %}
-                                                    <a href="{{ feed.target.course_link }}">{{ feed.target }}</a>
-                                                {% else %}
-                                                    {{ feed.target }}
-                                                {% endif %}
-                                            {% endif %}
-                                        </p>
-                                    </div>
-                                </li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% if viewed_user == request.user %}
-                    <div class="content" id="panel2a" style="width: 100%">
-                        {% include 'django_messages/inbox.html' %}
-                    </div>
-                    <div class="content" id="panel3a">
-                        <h3>Coming Soon.</h3>
-                    </div>
-                    <div class="content" id="panel4a">
-                        {% if rewards %}
-                            {% for reward in rewards %}
-                                <div class="row" style="margin-top: 2em" data-equalizer>
-                                    <div class="large-6 columns panel-white" data-equalizer-watch>
-                                        {% if reward.pledge %}
-                                            <h4 class="media-heading innerT"><a href=""
-                                                                                class="text-inverse">{{ reward.pledge.course }}</a> <span
-                                                    class="text-small"><i
-                                                    class="fa fa-fw fa-clock-o"></i>&nbsp; {{ reward.pledge.created }}</span>
-                                            </h4>
-                                        {% endif %}
-                                        <p>Your reward &nbsp;</p>
+                                <p>Coursera</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                {% for course in viewed_user.edxprofile.courses.all %}
+                    {% if course.get_amount_progress >= 100 %}
+                        <div class="large-6 columns">
+                            <div class="course-panel">
+                                <a href="{{ course.course_link }}"><strong>{{ course.title }}</strong></a>
 
-                                        <h3 style="display: inline" class="cursive">
-                                            $ {{ reward.money|floatformat:2 }}</h3>
+                                <p>edX</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                {% for course in viewed_user.udemyprofile.courses.all %}
+                    {% if course.get_amount_progress >= 100 %}
+                        <div class="large-6 columns">
+                            <div class="course-panel">
+                                <a href="{{ course.course_link }}"><strong>{{ course.title }}</strong></a>
 
-                                        <p>{% if reward.pledge %} &nbsp; for
-                                            achieving
-                                            your goal of
-                                            get {{ reward.pledge.get_aim|floatformat:0 }}%{% endif %}</p>
-                                    </div>
-                                    <div class="large-6 columns panel-content" data-equalizer-watch
-                                         style="display: table">
-                                        <div style="display: table-cell; vertical-align: middle">
-                                            {% if reward.collected %}
-                                                <button class="btn btn-primary btn-lg" disabled>Already
-                                                    Collected
-                                                </button>
-                                            {% else %}
-                                                <div class="widget-head"><h4 class="heading">Collect Your
-                                                    Rewards</h4><span
-                                                        class="collapse-toggle"></span></div>
-                                                <div class="row centered">
-                                                    <div class="large-12 columns">
-                                                        <form action="{% url 'pledges:collect_reward' %}" method="post">
-                                                            {% csrf_token %}
-                                                            <input type="hidden" value="{{ reward.id }}"
-                                                                   name="reward_id">
-                                                            <input type="text" placeholder="Your PayPal Email Address"
-                                                                   name="email"
-                                                                   class="form-control">
-                                                            <button type="submit">
-                                                                Collect
-                                                            </button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        {% else %}
-                            <h3>Looks like you have no rewards</h3>
-                            <h4>Create A Pledge Now to Start Earning Rewards</h4>
-                            <a href="{% url 'users:index_alt' %}">
-                                <button>Create Pledge</button>
-                            </a>
-                        {% endif %}
-                    </div>
-                    <div class="content" id="panel5a">
-                        {% if followers %}
-                            <ul class="follower-list">
-                                {% for follower in followers %}
-                                    <li>
-                                        <div class="row" style="margin: 3% 5%;">
-                                            <div class="large-3 columns" style="padding: 0 4%;">
-                                                <img {% if follower.picture %}src="/media/{{ follower.picture }}"
-                                                     {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
-                                                     class="pull-left img-circle small">
-                                            </div>
-                                            <div class="large-9 columns">
-                                                <div>
-                                                    <h3 style="font-size: 16px">{{ follower.user.first_name }} {{ follower.user.last_name }}</h3>
-                                                    {% if follower.headline %}
-                                                        <p>{{ follower.headline }}</p>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            <p>No follower's yet!</p>
-                        {% endif %}
-                    </div>
-                    <div class="content" id="panel6a">
-                        {% if user_profile.follows.count != 0 %}
-                            <ul class="follower-list">
-                                {% for following in user_profile.follows.all %}
-                                    <li>
-                                        <div class="row" style="margin: 3% 5%;">
-                                            <div class="large-3 columns" style="padding: 0 4%;">
-                                                <img {% if following.picture %}src="/media/{{ following.picture }}"
-                                                     {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
-                                                     class="pull-left img-circle small">
-                                            </div>
-                                            <div class="large-9 columns">
-                                                <div>
-                                                    <h3 style="font-size: 16px">{{ following.user.first_name }} {{ following.user.last_name }}</h3>
-                                                    {% if following.headline %}
-                                                        <p>{{ following.headline }}</p>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            <p> You are not following anyone yet!</p>
-                        {% endif %}
-                    </div>
+                                <p>Udemy</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}</div>
+            <div class="large-6 columns">{% endif %}
+        <h3>Activites</h3>
+        <div style="margin-top: 50px; margin-left: 90px;">
+            <span class="today-button">Today</span>
+        </div>
+        <ul id='timeline-profile'>
+            {% for feed in feeds %}
+                {% if feed.actor_content_type.name == "user" and feed.actor.first_name %}
+                    <li class='work-profile'>
+                        <input class='radio' type='radio' checked>
+
+                        <div class="relative">
+                            <span class='date-profile'>{{ feed.timestamp|naturaltime }}</span>
+                            <span class='circle-profile'></span>
+                        </div>
+                        <div class='content-profile'>
+                            <p>
+                                <a href="/users/profile/{{ feed.actor_object_id }}">
+                                    {{ feed.actor.first_name }} {{ feed.actor.last_name }}
+                                </a>
+                                {% if feed.actions_with_pledges_pledge_as_action_object == None %}
+                                    <a href="/pledges/share/{{ feed.action_object_object_id }}">
+                                {% endif %}
+                                {{ feed.verb }}
+                                {% if feed.actions_with_pledges_pledge_as_action_object == None %}
+                                    </a>
+                                {% endif %}
+                                {% if feed.target %}
+                                    {% if feed.actions_with_users_course_as_target == None %}
+                                        <a href="{{ feed.target.course_link }}">{{ feed.target }}</a>
+                                    {% else %}
+                                        {{ feed.target }}
+                                    {% endif %}
+                                {% endif %}
+                            </p>
+                        </div>
+                    </li>
                 {% endif %}
+            {% endfor %}
+        </ul>
+        {% if viewed_user != request.user %}
+            </div></div>
+        {% endif %}
+    </div>
+    {% if viewed_user == request.user %}
+        <div class="content" id="panel2a" style="width: 100%">
+            {% include 'django_messages/inbox.html' %}
+        </div>
+        <div class="content" id="panel3a">
+            <div class="row">
+                <h3>Completed Courses</h3>
+                {% for course in viewed_user.courseraprofile.courses.all %}
+                    {% if course.get_amount_progress >= 100 %}
+                        <div class="large-6 columns">
+                            <div class="course-panel">
+                                <a href="{{ course.course_link }}"><strong>{{ course.title }}</strong></a>
+
+                                <p>Coursera</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                {% for course in viewed_user.edxprofile.courses.all %}
+                    {% if course.get_amount_progress >= 100 %}
+                        <div class="large-6 columns">
+                            <div class="course-panel">
+                                <a href="{{ course.course_link }}"><strong>{{ course.title }}</strong></a>
+
+                                <p>edX</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                {% for course in viewed_user.udemyprofile.courses.all %}
+                    {% if course.get_amount_progress >= 100 %}
+                        <div class="large-6 columns">
+                            <div class="course-panel">
+                                <a href="{{ course.course_link }}"><strong>{{ course.title }}</strong></a>
+
+                                <p>Udemy</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
+        <div class="content" id="panel4a">
+            {% if rewards %}
+                {% for reward in rewards %}
+                    <div class="row" style="margin-top: 2em" data-equalizer>
+                        <div class="large-6 columns panel-white" data-equalizer-watch>
+                            {% if reward.pledge %}
+                                <h4 class="media-heading innerT"><a href=""
+                                                                    class="text-inverse">{{ reward.pledge.course }}</a> <span
+                                        class="text-small"><i
+                                        class="fa fa-fw fa-clock-o"></i>&nbsp; {{ reward.pledge.created }}</span>
+                                </h4>
+                            {% endif %}
+                            <p>Your reward &nbsp;</p>
+
+                            <h3 style="display: inline" class="cursive">
+                                $ {{ reward.money|floatformat:2 }}</h3>
+
+                            <p>{% if reward.pledge %} &nbsp; for
+                                achieving
+                                your goal of
+                                get {{ reward.pledge.get_aim|floatformat:0 }}%{% endif %}</p>
+                        </div>
+                        <div class="large-6 columns panel-content" data-equalizer-watch
+                             style="display: table">
+                            <div style="display: table-cell; vertical-align: middle">
+                                {% if reward.collected %}
+                                    <button class="btn btn-primary btn-lg" disabled>Already
+                                        Collected
+                                    </button>
+                                {% else %}
+                                    <div class="widget-head"><h4 class="heading">Collect Your
+                                        Rewards</h4><span
+                                            class="collapse-toggle"></span></div>
+                                    <div class="row centered">
+                                        <div class="large-12 columns">
+                                            <form action="{% url 'pledges:collect_reward' %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" value="{{ reward.id }}"
+                                                       name="reward_id">
+                                                <input type="text" placeholder="Your PayPal Email Address"
+                                                       name="email"
+                                                       class="form-control">
+                                                <button type="submit">
+                                                    Collect
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h3>Looks like you have no rewards</h3>
+                <h4>Create A Pledge Now to Start Earning Rewards</h4>
+                <a href="{% url 'users:index_alt' %}">
+                    <button>Create Pledge</button>
+                </a>
+            {% endif %}
+        </div>
+        <div class="content" id="panel5a">
+            {% if followers %}
+                <ul class="follower-list">
+                    {% for follower in followers %}
+                        <li>
+                            <div class="row" style="margin: 3% 5%;">
+                                <div class="large-3 columns" style="padding: 0 4%;">
+                                    <img {% if follower.picture %}src="/media/{{ follower.picture }}"
+                                         {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
+                                         class="pull-left img-circle small">
+                                </div>
+                                <div class="large-9 columns">
+                                    <div>
+                                        <h3 style="font-size: 16px">{{ follower.user.first_name }} {{ follower.user.last_name }}</h3>
+                                        {% if follower.headline %}
+                                            <p>{{ follower.headline }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No follower's yet!</p>
+            {% endif %}
+        </div>
+        <div class="content" id="panel6a">
+            {% if user_profile.follows.count != 0 %}
+                <ul class="follower-list">
+                    {% for following in user_profile.follows.all %}
+                        <li>
+                            <div class="row" style="margin: 3% 5%;">
+                                <div class="large-3 columns" style="padding: 0 4%;">
+                                    <img {% if following.picture %}src="/media/{{ following.picture }}"
+                                         {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
+                                         class="pull-left img-circle small">
+                                </div>
+                                <div class="large-9 columns">
+                                    <div>
+                                        <h3 style="font-size: 16px">{{ following.user.first_name }} {{ following.user.last_name }}</h3>
+                                        {% if following.headline %}
+                                            <p>{{ following.headline }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p> You are not following anyone yet!</p>
+            {% endif %}
+        </div>
+    {% endif %}
+    </div>
+    </div>
     </div>
     </div>
     </div>

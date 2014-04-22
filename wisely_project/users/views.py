@@ -105,9 +105,11 @@ def public_profile(request, user_id):
     completed_pledges = Pledge.objects.filter(user=viewed_user.userprofile, is_complete=True)
     current_pledges = Pledge.objects.filter(user=viewed_user.userprofile, is_complete=False)
     who_to_follow = get_suggested_followers(user_profile)
+    feed_list = Action.objects.filter(actor_object_id=user_id).order_by('-timestamp')[:20]
 
     context_dict = {'viewed_user': viewed_user, 'user_profile': user_profile, 'completed_pledges': completed_pledges,
-                    'current_pledges': current_pledges, 'public': True, 'who_to_follow': who_to_follow}
+                    'current_pledges': current_pledges, 'public': True, 'who_to_follow': who_to_follow,
+                    'feeds': feed_list}
     return render(request, 'users/profile_alt.html', context_dict)
 
 
@@ -422,7 +424,7 @@ def index_alt(request):
             grades = Progress.objects.filter(quiz__course=course).values_list('score', flat=True)
             if grades:
                 grades = [convert_to_percentage(x) for x in grades]
-                coursera_grades.append(sum(grades)/len(grades))
+                coursera_grades.append(sum(grades) / len(grades))
             else:
                 coursera_grades.append(0)
 
@@ -434,7 +436,7 @@ def index_alt(request):
             grades = Progress.objects.filter(quiz__course=course).values_list('score', flat=True)
             if grades:
                 grades = [convert_to_percentage(x) for x in grades]
-                edx_grades.append(sum(grades)/len(grades))
+                edx_grades.append(sum(grades) / len(grades))
             else:
                 edx_grades.append(0)
 
@@ -446,7 +448,7 @@ def index_alt(request):
             grades = Progress.objects.filter(quiz__course=course).values_list('score', flat=True)
             if grades:
                 grades = [convert_to_percentage(x) for x in grades]
-                udemy_grades.append(sum(grades)/len(grades))
+                udemy_grades.append(sum(grades) / len(grades))
             else:
                 udemy_grades.append(0)
 
