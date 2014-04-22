@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        <div class="large-4 columns" style="text-align: center">
+        <div class="large-4 {% if not user.is_authenticated %} push-4 {% endif %} columns" style="text-align: center">
             <a href="{% url 'users:index' %}" class="title-area">
                 <img alt="Wisely" src="{% static 'images/logo-in-white.png' %}" height="55" width="55"/>
             </a>
