@@ -96,7 +96,9 @@ def scrape_for_user(edxprofile):
                                                    image_link=image_links[i],
                                                    start_date=date_real)
             if course is not None:
-                edxprofile.courses.add(course)
+                if course not in edxprofile.courses:
+                    edxprofile.courses.add(course)
+                    #todo: add feed
 
         for i, current_course in enumerate(upcoming_courses):
             i += len(current_courses) - 1

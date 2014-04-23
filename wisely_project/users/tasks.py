@@ -315,7 +315,9 @@ def get_udemy_courses(profile):
             course_dict = udemy_scraping.get_course(course_id)
             try:
                 course = Course.objects.get(course_id=course_id)
-                profile.courses.add(course)
+                if course not in profile.courses:
+                    profile.courses.add(course)
+                    #todo: add feed
             except Course.DoesNotExist:
                 image_url = course_dict['images']['img_75x75']
                 title = course_dict['title']
@@ -327,6 +329,8 @@ def get_udemy_courses(profile):
                                                          '/curriculum',
                                                image_link=image_url)
                 profile.courses.add(course)
+                #todo: add feed
+
             #todo: create course
 
             ci = session.get_curriculum(course_id)

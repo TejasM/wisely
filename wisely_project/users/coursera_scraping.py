@@ -143,7 +143,9 @@ class CourseraDownloader(object):
                                     if course.end_date != end_date:
                                         course.end_date = end_date
                                     course.save()
-                            user.courses.add(course)
+                            if course not in user.courses:
+                                user.courses.add(course)
+                                #todo: add feed
                             try:
                                 pledge = Pledge.objects.get(course=course, user=user)
                                 if enrollment['grade_normal'] != 'null':
@@ -171,6 +173,7 @@ class CourseraDownloader(object):
                                                            start_date=start_date, end_date=end_date, image_link=image_link,
                                                            description=description, course_id=topic_id)
                             user.courses.add(course)
+                            #todo: add feed
                         res = self.session.get(quiz_link)
                         soup = BeautifulSoup(res.text)
                         quiz_list = soup.select('div.course-item-list .course-item-list-header')
