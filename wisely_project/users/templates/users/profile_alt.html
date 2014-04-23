@@ -88,8 +88,10 @@
                     {% if user_profile.current_city %}{{ user_profile.current_city }}{% else %}
                         Toronto{% endif %}
                     <br>
-                    <img src="{% static 'images/envelope-icon.png' %}"> {% if viewed_user.email %}
-                    {{ viewed_user.email }}{% else %}email@email.com{% endif %}
+                    {% if viewed_user == request.user %}
+                        <img src="{% static 'images/envelope-icon.png' %}"> {% if viewed_user.email %}
+                        {{ viewed_user.email }}{% else %}email@email.com{% endif %}
+                    {% endif %}
                 </div>
             </div>
         </div>
