@@ -334,31 +334,31 @@ def get_udemy_courses(profile):
             #todo: create course
 
             ci = session.get_curriculum(course_id)
+            progress = session.get_course_progress(course_id)
+            progress = dict(progress['quiz_progress'].items() + progress['lectures_progress'].items())
+            quiz_ids, quiz_marks = progress.iteritems()
             for c in ci:
                 try:
-                    Quiz.objects.get(quizid=c['id'])
+                    quiz = Quiz.objects.get(quizid=c['id'])
                 except Quiz.DoesNotExist:
-                    Quiz.objects.create(quizid=c['id'], course=course, heading=c['title'])
-            progress = session.get_course_progress(course_id)
-            overall_completion = progress['completion_ratio']
-            #todo: set overall score
-            progress = dict(progress['quiz_progress'].items() + progress['lectures_progress'].items())
-            for quiz_id, quiz_marks in progress.iteritems():
-                try:
-                    quiz = Quiz.objects.get(quizid=quiz_id)
+                    quiz = Quiz.objects.create(quizid=c['id'], course=course, heading=c['title'])
+                if c['id'] in quiz_ids:
+                    index = quiz_ids.index(c['id'])
                     try:
-                        mark = str(float(quiz_marks['completionRatio']) / 100)
+                        mark = str(float(quiz_marks[index]['completionRatio']) / 100)
                     except:
                         mark = str(0)
-                    try:
-                        progress = Progress.objects.get(user=profile.user.userprofile, quiz=quiz)
-                        progress.score = mark
-                        progress.save()
-                    except Progress.DoesNotExist:
-                        Progress.objects.create(user=profile.user.userprofile, quiz=quiz,
-                                                score=mark)
-                except Quiz.DoesNotExist:
-                    pass
+                else:
+                    mark = str(0)
+                try:
+                    progress = Progress.objects.get(user=profile.user.userprofile, quiz=quiz)
+                    progress.score = mark
+                    progress.save()
+                except Progress.DoesNotExist:
+                    Progress.objects.create(user=profile.user.userprofile, quiz=quiz,
+                                            score=mark)
+
+            overall_completion = progress['completion_ratio']
         print "done udemy"
     else:
         profile.incorrect_login = True
