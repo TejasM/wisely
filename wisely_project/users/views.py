@@ -316,8 +316,7 @@ def index(request):
         return render(request, 'users/index.html', {'pledges': pledges, 'progresses': progresses, 'form': False,
                                                     'others_coursera': other_pledgers_coursera,
                                                     'others_edx': other_pledgers_edx,
-                                                    'others_udemy': other_pledgers_udemy,
-        })
+                                                    'others_udemy': other_pledgers_udemy})
 
 
 @login_required

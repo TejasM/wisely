@@ -38,7 +38,7 @@ def convert_to_percentage(string):
                 except ValueError:
                     return 0
             except ZeroDivisionError:
-                return 100
+                return 0
     return num * 100
 
 
