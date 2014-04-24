@@ -419,7 +419,7 @@ def index_alt(request):
                 past_courses += 1
             else:
                 current_courses += 1
-            grades = Progress.objects.filter(quiz__course=course).values_list('score', flat=True)
+            grades = Progress.objects.filter(quiz__course=course, user=user_profile).values_list('score', flat=True)
             if grades:
                 grades = [convert_to_percentage(x) for x in grades]
                 coursera_grades.append(sum(grades) / len(grades))
@@ -431,7 +431,7 @@ def index_alt(request):
                 past_courses += 1
             else:
                 current_courses += 1
-            grades = Progress.objects.filter(quiz__course=course).values_list('score', flat=True)
+            grades = Progress.objects.filter(quiz__course=course, user=user_profile).values_list('score', flat=True)
             if grades:
                 grades = [convert_to_percentage(x) for x in grades]
                 edx_grades.append(sum(grades) / len(grades))
@@ -443,7 +443,7 @@ def index_alt(request):
                 past_courses += 1
             else:
                 current_courses += 1
-            grades = Progress.objects.filter(quiz__course=course).values_list('score', flat=True)
+            grades = Progress.objects.filter(quiz__course=course, user=user_profile).values_list('score', flat=True)
             if grades:
                 grades = [convert_to_percentage(x) for x in grades]
                 udemy_grades.append(sum(grades) / len(grades))
