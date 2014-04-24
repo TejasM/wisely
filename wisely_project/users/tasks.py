@@ -315,7 +315,7 @@ def get_udemy_courses(profile):
             course_dict = udemy_scraping.get_course(course_id)
             try:
                 course = Course.objects.get(course_id=course_id)
-                if course not in profile.courses:
+                if course not in profile.courses.all():
                     profile.courses.add(course)
                     #todo: add feed
             except Course.DoesNotExist:

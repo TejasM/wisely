@@ -143,7 +143,7 @@ class CourseraDownloader(object):
                                     if course.end_date != end_date:
                                         course.end_date = end_date
                                     course.save()
-                            if course not in user.courses:
+                            if course not in user.courses.all():
                                 user.courses.add(course)
                                 #todo: add feed
                             try:
