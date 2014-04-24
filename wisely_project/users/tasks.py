@@ -335,6 +335,7 @@ def get_udemy_courses(profile):
 
             ci = session.get_curriculum(course_id)
             progress = session.get_course_progress(course_id)
+            #overall_completion = progress['completion_ratio']
             progress = dict(progress['quiz_progress'].items() + progress['lectures_progress'].items())
             quiz_ids = progress.keys()
             quiz_marks = progress.values()
@@ -359,7 +360,6 @@ def get_udemy_courses(profile):
                     Progress.objects.create(user=profile.user.userprofile, quiz=quiz,
                                             score=mark)
 
-            overall_completion = progress['completion_ratio']
         print "done udemy"
     else:
         profile.incorrect_login = True
