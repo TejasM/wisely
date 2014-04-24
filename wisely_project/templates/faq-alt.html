@@ -200,17 +200,10 @@
     </script>
     <script>
         $(function () {
-            $('.login').click(function () {
-                $('#login-up').lightbox_me({centered: true});
-                $('.lb_overlay').css('top', '-100px', 'important');
-            });
-        });
-    </script>
-    <script>
-        $(function () {
             $('#sign').click(function () {
                 switch_form();
                 $('#sign-in').lightbox_me({centered: true});
+                $('.lb_overlay').css('top', '-100px', 'important');
             });
 
 
@@ -240,6 +233,7 @@
             $('.login').click(function () {
                 switch_form_login();
                 $('#sign-in').lightbox_me({centered: true});
+                $('.lb_overlay').css('top', '-100px', 'important');
             });
         });
     </script>
