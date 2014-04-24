@@ -464,10 +464,7 @@
 
             },
             slide: function (event, ui) {
-                if (started == false) {
-                    return true;
-                }
-                return false;
+                return started == false;
             }
         });
 
@@ -486,6 +483,8 @@
                 '-webkit-box-shadow': '0 0 10px #fff', 'box-shadow': '0 0 10px #fff', 'background': '#fff'});
 
             started = true;
+            $('.under-slide').addClass('white-back');
+            moving = true;
         }
 
         $('.ui-slider-handle').mousedown(function () {
@@ -495,8 +494,10 @@
                 return false;
             } else {
                 startanim();
+                return false;
             }
         });
+        var moving = false;
 
         function finishanim() {
             if ($('#goal').text() == "75%") {
@@ -516,10 +517,13 @@
                 $('#above-slider').fadeIn(1000);
                 $('#below-slider').fadeIn(1000);
                 setTimeout(function () {
+                    $('.under-slide').removeClass('white-back');
                     $('.under-slide').attr({src: "{% static 'images/check-mark-green.png' %}"});
                 }, 2000);
                 $('#slider').slider('value', 1000);
                 $('#other-menu').show();
+                $('.under-slide').addClass('white-back');
+                moving = true;
             }
         }
 
@@ -579,6 +583,16 @@
                 mustSlideDown = true;
             }
         });
+        var count = 0;
+        setInterval(function () {
+            if (completed == false) {
+                if (moving == false || count >= 2) {
+                    $('.under-slide').toggleClass('white-back');
+                } else {
+                    count++;
+                }
+            }
+        }, 1000);
     });
 </script>
 <script>
