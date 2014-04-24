@@ -114,39 +114,62 @@
             </div>
         </div>
     </div>
-    <div id="login-up" class="light-box">
-        <div class="row text-center">
-            <div>
-                <a class="btn-auth btn-facebook large" href="{% url 'socialauth_begin' 'facebook' %}"
-                   onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
-                    Login with <b>Facebook</b>
-                </a>
+    <div id="sign-in" class="light-box-white">
+        <div class="row">
+            <div class="large-6 columns" style="margin-top: 10px">
+                <strong style="font-weight: 400;" id="sign-up-heading">SIGN IN</strong>
             </div>
-            <div class="extra-top-small-margin">
-                <a class="btn-auth btn-twitter large" href="{% url 'socialauth_begin' 'twitter' %}"
-                   onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
-                    Login with <b>Twitter</b>
-                </a>
-            </div>
-            <div class="extra-top-small-margin">
-                <a class="btn-auth btn-google large" href="{% url 'socialauth_begin' 'google-oauth2' %}"
-                   onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
-                    Login with <b>Google</b>
-                </a>
+            <div class="large-6 columns" style="text-align: right">
+                <a href="{% url 'socialauth_begin' 'facebook' %}"><img
+                        src="{% static 'images/facebook-login.png' %}"></a>
+                <a href="{% url 'socialauth_begin' 'twitter' %}"><img src="{% static 'images/twitter-login.png' %}"></a>
+                <a href="{% url 'socialauth_begin' 'google-oauth2' %}"><img
+                        src="{% static 'images/google-login.png' %}"></a>
             </div>
         </div>
-        <hr>
-        <div class="row text-center" style="margin-top: 1em">
-            <form action="{% url 'users:login' %}" method="post">
+        <div class="row text-center" style="margin-top: 4em">
+            <form action="{% url 'users:login' %}" method="post" style="margin-bottom: 0" id="login-form">
                 {% csrf_token %}
                 <div>
-                    <input type="email" name="email" placeholder="Email">
+                    <input type="email" name="email" id="login-email" placeholder="Email">
                 </div>
                 <div class="extra-margin-top">
-                    <input type="password" name="password" placeholder="Password">
+                    <input type="password" name="password" id="login-password" placeholder="Password">
                 </div>
-                <div class="centered extra-margin-top">
-                    <button type="submit">Login</button>
+                <div class="centered" style="margin-top: 3em">
+                    <div class="row">
+                        <div class="large-6 columns">
+                            <button type="submit">LOGIN</button>
+                        </div>
+                        <div class="large-6 columns">
+                            <button type="button" id="sign-up">SIGN UP</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <form action="{% url 'users:sign-up' %}" method="post" style="display: none" id="signup-form">
+                {% csrf_token %}
+                <div>
+                    <input type="text" name="first_name" placeholder="First Name">
+                </div>
+                <div class="extra-margin-top">
+                    <input type="text" name="last_name" placeholder="Last Name">
+                </div>
+                <div class="extra-margin-top">
+                    <input type="email" name="email" id="signup-email" placeholder="Email">
+                </div>
+                <div class="extra-margin-top">
+                    <input type="password" name="password" id="signup-password" placeholder="Password">
+                </div>
+                <div class="centered" style="margin-top: 3em">
+                    <div class="row">
+                        <div class="large-6 columns">
+                            <button type="submit">SIGN UP</button>
+                        </div>
+                        <div class="large-6 columns">
+                            <button type="button" id="login-switch">LOGIN</button>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
@@ -180,6 +203,43 @@
             $('.login').click(function () {
                 $('#login-up').lightbox_me({centered: true});
                 $('.lb_overlay').css('top', '-100px', 'important');
+            });
+        });
+    </script>
+    <script>
+        $(function () {
+            $('#sign').click(function () {
+                switch_form();
+                $('#sign-in').lightbox_me({centered: true});
+            });
+
+
+            function switch_form() {
+                $('form', '#sign-in').hide();
+                $('#sign-up-heading').text('SIGN UP');
+                $('#signup-email').val($('login-email').val());
+                $('#signup-password').val($('login-password').val());
+                $('#signup-form').show();
+            }
+
+            function switch_form_login() {
+                $('form', '#sign-in').hide();
+                $('#sign-up-heading').text('SIGN IN');
+                $('login-email').val($('#signup-email').val());
+                $('login-password').val($('#signup-password').val());
+                $('#login-form').show();
+            }
+
+            $('#sign-up').click(function () {
+                switch_form();
+            });
+            $('#login-switch').click(function () {
+                switch_form_login();
+            });
+
+            $('.login').click(function () {
+                switch_form_login();
+                $('#sign-in').lightbox_me({centered: true});
             });
         });
     </script>
