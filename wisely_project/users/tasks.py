@@ -336,7 +336,8 @@ def get_udemy_courses(profile):
             ci = session.get_curriculum(course_id)
             progress = session.get_course_progress(course_id)
             progress = dict(progress['quiz_progress'].items() + progress['lectures_progress'].items())
-            quiz_ids, quiz_marks = progress.iteritems()
+            quiz_ids = progress.keys()
+            quiz_marks = progress.values()
             for c in ci:
                 try:
                     quiz = Quiz.objects.get(quizid=c['id'])
