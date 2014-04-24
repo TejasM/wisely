@@ -1,3 +1,7 @@
+html {
+    font-size: 80%;
+}
+
 #background-image {
     background: url('../images/shutterstock_133805588.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
