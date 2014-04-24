@@ -114,6 +114,43 @@
             </div>
         </div>
     </div>
+    <div id="login-up" class="light-box">
+        <div class="row text-center">
+            <div>
+                <a class="btn-auth btn-facebook large" href="{% url 'socialauth_begin' 'facebook' %}"
+                   onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
+                    Login with <b>Facebook</b>
+                </a>
+            </div>
+            <div class="extra-top-small-margin">
+                <a class="btn-auth btn-twitter large" href="{% url 'socialauth_begin' 'twitter' %}"
+                   onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
+                    Login with <b>Twitter</b>
+                </a>
+            </div>
+            <div class="extra-top-small-margin">
+                <a class="btn-auth btn-google large" href="{% url 'socialauth_begin' 'google-oauth2' %}"
+                   onclick="document.getElementById('fb_pixel').setAttribute('class', 'fb_pixel_signup');">
+                    Login with <b>Google</b>
+                </a>
+            </div>
+        </div>
+        <hr>
+        <div class="row text-center" style="margin-top: 1em">
+            <form action="{% url 'users:login' %}" method="post">
+                {% csrf_token %}
+                <div>
+                    <input type="email" name="email" placeholder="Email">
+                </div>
+                <div class="extra-margin-top">
+                    <input type="password" name="password" placeholder="Password">
+                </div>
+                <div class="centered extra-margin-top">
+                    <button type="submit">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}
 {% block additionalScripts %}
     <script>
@@ -136,6 +173,14 @@
             $('#tech-topics').show();
             $('#filters').find('p').removeClass('selected-news');
             $(this).addClass('selected-news');
+        });
+    </script>
+    <script>
+        $(function () {
+            $('.login').click(function () {
+                $('#login-up').lightbox_me({centered: true});
+                $('.lb_overlay').css('top', '-100px', 'important');
+            });
         });
     </script>
 {% endblock %}

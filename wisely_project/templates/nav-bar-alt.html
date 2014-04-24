@@ -65,8 +65,7 @@
                 <img alt="Wisely" src="{% static 'images/logo-in-white.png' %}" height="55" width="55" style="image-rendering: -moz-crisp-edges;"/>
             </a>
         </div>
-
-        <div class="large-4 columns">
+        <div class="large-4 columns" style="{% if done != '' %}display: visible{% else %}display:none{% endif %}">
             <div class="right-nav">
                 <div class="row" style="text-align: center">
                     <a href="/faq/alt">

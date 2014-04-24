@@ -876,9 +876,11 @@ img.finish-anim {
     text-align: center;
     padding: 3%;
 }
+
 .right-nav {
     padding-top: 2%;
 }
+
 .right-nav a, .right-nav a:hover {
     margin: 0 3%;
     display: inline;
@@ -1055,4 +1057,34 @@ img.small {
 .login:hover {
     background: #05A551;
     border-radius: 6px;
+}
+
+.light-box-white {
+    background: #fff;
+    padding: 3% 1%;
+    border-radius: 5px;
+    min-width: 400px;
+}
+
+.light-box-white img {
+    margin-right: 5px;
+}
+
+.light-box-white input[type=text], .light-box-white input[type=email], .light-box-white input[type=password] {
+    border-radius: 5px;
+    background: #F1F2F4;
+    width: 100%;
+    padding: 0.5em;
+    height: 2.7rem;;
+}
+
+.light-box-white input:focus {
+    border: solid #83BC5D 1px;
+    background: #fff;
+}
+
+.light-box-white button {
+    border-radius: 10px;
+    width: 100%;
+    background: #83BC5D;
 }
