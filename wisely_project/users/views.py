@@ -406,9 +406,9 @@ def index_alt(request):
         progresses = Progress.objects.filter(user=request.user.userprofile).order_by('quiz__deadline')
         current_courses = 0
         past_courses = 0
-        coursera_courses = coursera_profile.courses.all()
-        edx_courses = edx_profile.courses.all()
-        udemy_courses = udemy_profile.courses.all()
+        coursera_courses = list(coursera_profile.courses.all())
+        edx_courses = list(edx_profile.courses.all())
+        udemy_courses = list(udemy_profile.courses.all())
 
         coursera_grades = []
         edx_grades = []
