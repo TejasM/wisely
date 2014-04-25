@@ -101,13 +101,13 @@
                             {% if feeds %}
                                 <ul class='timeline feed'>
                                     {% for feed in feeds %}
-                                        {% if feed.actor_content_type.name == "user" and feed.actor.first_name %}
+                                        {% if feed.actor_content_type.name == "user profile" %}
                                             <li class='work {% if feed.actor.userprofile in followers %}followers{% endif %} {% if feed.actor.userprofile in user_profile.follows %}following{% endif %}'>
                                                 <input class='radio' type='radio' checked>
 
                                                 <div class="relative">
                                         <span class='circle img-circle'><img
-                                                src="{% if feed.actor.userprofile.picture %}/media/{{ feed.actor.userprofile.picture }}
+                                                src="{% if feed.actor.picture %}/media/{{ feed.actor.picture }}
                                                      {% else %}http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png{% endif %}"
                                                 width="40"
                                                 style="margin-left: 2px"></span>
@@ -115,7 +115,7 @@
                                                 <div class='content-news'>
                                                     <p>
                                                         <a href="/users/profile/{{ feed.actor_object_id }}">
-                                                            {{ feed.actor.first_name }} {{ feed.actor.last_name }}
+                                                            {{ feed.actor.user.first_name }} {{ feed.actor.user.last_name }}
                                                         </a>
                                                         {% if feed.actions_with_pledges_pledge_as_action_object == None %}
                                                             <a href="/pledges/share/{{ feed.action_object_object_id }}">
