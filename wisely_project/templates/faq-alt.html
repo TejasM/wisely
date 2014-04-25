@@ -114,6 +114,11 @@
             </div>
         </div>
     </div>
+    {% if not user.is_authenticated %}
+        <div style="text-align: center">
+            <button id="sign" style="margin: 1em auto 2em">GET STARTED</button>
+        </div>
+    {% endif %}
     <div id="sign-in" class="light-box-white">
         <div class="row">
             <div class="large-6 columns" style="margin-top: 10px">
