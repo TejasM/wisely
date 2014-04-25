@@ -40,11 +40,11 @@ def login_user(request):
                 request.user.last_login = timezone.now()
                 request.user.save()
             else:
-                return render(request, 'base.html')
+                return redirect(reverse('users:index'))
         else:
-            return render(request, 'base.html')
+            return redirect(reverse('users:index'))
         return redirect(reverse('users:index'))
-    return redirect('/')
+    return redirect(reverse('users:index'))
 
 
 def logout_user(request):
