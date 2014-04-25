@@ -55,7 +55,7 @@ class Session:
 
     def get_list_courses(self):
         page = self.get(root_url + 'users/me/taking').json()
-        course_ids = map(lambda x: x['id'],page['courses'])
+        course_ids = map(lambda x: x['id'], page['courses'])
         return course_ids
 
     def get_csrf_token(self):

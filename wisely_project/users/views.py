@@ -381,8 +381,7 @@ def check_updated(request):
 @login_required
 def force_updated(request):
     userprofile = request.user.userprofile
-    if userprofile.last_forced is None or (
-                    userprofile.last_forced is not None and userprofile.last_forced.date() != timezone.now().date()):
+    if userprofile.last_forced is None:
         userprofile.last_forced = timezone.now()
         userprofile.save()
         user = request.user
