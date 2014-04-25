@@ -28,11 +28,11 @@ def check_udemy_api_status():
 
 def get_course(id):
     client = requests.session()
+    r = client.get(root_url + 'courses/' + id, headers=headers)
     try:
-        r = client.get(root_url + 'courses/' + id, headers=headers)
         course = r.json()
     except:
-        print client.get(root_url + 'courses/' + id, headers=headers)
+        print r.text
         course = []
     return course
 
