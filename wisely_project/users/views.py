@@ -1,5 +1,5 @@
 import json
-from datetime import timedelta, datetime
+from datetime import timedelta
 
 from actstream.models import Action
 from django.contrib import messages
@@ -76,7 +76,7 @@ def profile(request):
         user_profile = UserProfile.objects.get(user=request.user)
     except UserProfile.DoesNotExist:
         user_profile = UserProfile.objects.create(user=request.user)
-    feed_list = Action.objects.filter(actor_object_id=request.user.id).order_by('-timestamp')[:20]
+    feed_list = Action.objects.filter(actor_object_id=request.user.userprofile.id).order_by('-timestamp')[:20]
 
     user_profile_form = UserProfileForm(instance=user_profile)
     user_form = UserForm(instance=request.user)
@@ -104,7 +104,7 @@ def public_profile(request, user_id):
     completed_pledges = Pledge.objects.filter(user=viewed_user.userprofile, is_complete=True)
     current_pledges = Pledge.objects.filter(user=viewed_user.userprofile, is_complete=False)
     who_to_follow = get_suggested_followers(user_profile)
-    feed_list = Action.objects.filter(actor_object_id=user_id).order_by('-timestamp')[:20]
+    feed_list = Action.objects.filter(actor_object_id=viewed_user.userprofile.id).order_by('-timestamp')[:20]
 
     context_dict = {'viewed_user': viewed_user, 'user_profile': user_profile, 'completed_pledges': completed_pledges,
                     'current_pledges': current_pledges, 'public': True, 'who_to_follow': who_to_follow,

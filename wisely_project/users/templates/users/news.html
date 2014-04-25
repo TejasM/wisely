@@ -114,25 +114,22 @@
                                                 </div>
                                                 <div class='content-news'>
                                                     <p>
-                                                        <a href="/users/profile/{{ feed.actor_object_id }}">
-                                                            {{ feed.actor.user.first_name }} {{ feed.actor.user.last_name }}
+                                                        <a href="/users/profile/{{ feed.actor.user.id }}">
+                                                        {{ feed.actor.user.first_name }} {{ feed.actor.user.last_name }}
                                                         </a>
-                                                        {% if feed.actions_with_pledges_pledge_as_action_object == None %}
-                                                            <a href="/pledges/share/{{ feed.action_object_object_id }}">
-                                                        {% endif %}
-                                                        {{ feed.verb }}
-                                                        {% if feed.actions_with_pledges_pledge_as_action_object == None %}
-                                                            </a>
+                                                        {% if feed.actions_with_pledges_pledge_as_action_object == True %}
+                                                            <a href="/pledges/share/{{ feed.action_object_object_id }}">{{ feed.verb }}</a>
+                                                        {% else %}
+                                                            {{ feed.verb }}
                                                         {% endif %}
                                                         {% if feed.target %}
-                                                            {% if feed.actions_with_users_course_as_target == None %}
+                                                            {% if feed.actions_with_users_course_as_target == True %}
                                                                 <a href="{{ feed.target.course_link }}">{{ feed.target }}</a>
                                                             {% else %}
                                                                 {{ feed.target }}
                                                             {% endif %}
                                                         {% endif %}
                                                     </p>
-
                                                     <p>{{ feed.timestamp|naturaltime }}</p>
                                                 </div>
                                             </li>
