@@ -450,20 +450,26 @@
                     </button>
                 </div>
             {% endif %}
-            {% if  user.edxprofile.email == '' or user.edxprofile.incorrect_login  %}
+            {% if  user.edxprofile.email == '' or user.edxprofile.incorrect_login %}
                 <div class="row extra-top-margin text-center">
                     <button id="add-edx">
                         Add edX Account
                     </button>
                 </div>
             {% endif %}
-            {% if  user.udemyprofile.email == '' or user.udemyprofile.incorrect_login  %}
+            {% if  user.udemyprofile.email == '' or user.udemyprofile.incorrect_login %}
                 <div class="row extra-top-margin text-center">
                     <button id="add-udemy">
                         Add Udemy Account
                     </button>
                 </div>
             {% endif %}
+
+            <div class="row extra-top-margin text-center">
+                <button id="force-ref" class="close">
+                    Refresh from Platforms
+                </button>
+            </div>
         </div>
         <form id="add-platform" action="{% url 'users:index_alt' %}"
               method="post" style="display: none">
@@ -480,6 +486,12 @@
     <div id="incorrect-lightbox" class="light-box">
         <div class="row text-center">
             Incorrect Login. Please confirm and try again.
+        </div>
+    </div>
+
+    <div id="force-up" class="light-box">
+        <div class="row text-center">
+            Updating. Refresh in a bit.
         </div>
     </div>
     <div id="coursera-wait" class="light-box">
@@ -510,6 +522,13 @@
             $('.current').hide();
             $('#filters').find('p').removeClass('selected-news');
             $(this).addClass('selected-news');
+        });
+
+        $('#force-ref').click(function () {
+            $.post('{% url 'users:force_update' %}', function () {
+                $('#add-courses').trigger('close');
+                $('#force-up').lightbox_me({centered: true});
+            });
         });
 
         $('#current-filt').click(function () {

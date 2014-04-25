@@ -205,121 +205,6 @@ def sync_up_user(user, social_users):
 
 
 @login_required
-def index(request):
-    try:
-        user_profile = UserProfile.objects.get(user=request.user)
-    except UserProfile.DoesNotExist:
-        user_profile = UserProfile.objects.create(user=request.user)
-    social_users = UserSocialAuth.objects.filter(user=request.user)
-    sync_up_user(request.user, social_users)
-    if user_profile.picture._file is None and request.user.social_auth.all().count() > 0 and \
-                    request.user.social_auth.all()[0].provider == 'facebook':
-        url = 'http://graph.facebook.com/{0}/picture'.format(request.user.social_auth.all()[0].uid)
-        try:
-            response = request2('GET', url, params={'type': 'large'})
-            response.raise_for_status()
-            user_profile.picture.save('{0}_social.jpg'.format(request.user.username),
-                                      ContentFile(response.content))
-            user_profile.save()
-        except HTTPError:
-            pass
-    try:
-        coursera_profile = CourseraProfile.objects.get(user=request.user)
-    except CourseraProfile.DoesNotExist:
-        coursera_profile = CourseraProfile.objects.create(user=request.user)
-    try:
-        edx_profile = EdxProfile.objects.get(user=request.user)
-    except EdxProfile.DoesNotExist:
-        edx_profile = EdxProfile.objects.create(user=request.user)
-    try:
-        udemy_profile = UdemyProfile.objects.get(user=request.user)
-    except UdemyProfile.DoesNotExist:
-        udemy_profile = UdemyProfile.objects.create(user=request.user)
-
-    if request.method == "POST":
-        request.session[
-            'onboarding'] = coursera_profile.username == "" and edx_profile.email == "" and udemy_profile.email == ""
-        request.session.save()
-        if request.POST['platform'] == "coursera":
-            request.user.courseraprofile.username = request.POST['username'].strip()
-            already_exist = CourseraProfile.objects.filter(username=request.user.courseraprofile.username).count() > 0
-            if already_exist:
-                if not request.session['onboarding']:
-                    messages.success(request, 'Someone else is already using that Coursera account')
-                    return redirect(reverse('users:index'))
-                return render(request, 'users/index.html', {'alreadyExistCoursera': True})
-
-            request.user.courseraprofile.password = request.POST['password']
-            request.user.courseraprofile.save()
-            request.user.last_login = timezone.now()
-            request.user.save()
-            if not request.session['onboarding']:
-                messages.success(request, 'Added your Coursera account refresh in a few minutes to see your courses')
-                return redirect(reverse('users:index'))
-            else:
-                return redirect(reverse('pledges:create'))
-        elif request.POST['platform'] == "edx":
-            request.user.edxprofile.email = request.POST['username'].strip()
-            already_exist = EdxProfile.objects.filter(email=request.user.edxprofile.email).count() > 0
-            if already_exist:
-                if not request.session['onboarding']:
-                    messages.success(request, 'Someone else is already using that Edx account')
-                    return redirect(reverse('users:index'))
-                return render(request, 'users/index.html', {'alreadyExistEdx': True})
-
-            request.user.edxprofile.password = request.POST['password']
-            request.user.edxprofile.save()
-            request.user.last_login = timezone.now()
-            request.user.save()
-            if not request.session['onboarding']:
-                messages.success(request, 'Added your Edx account refresh in a few minutes to see your courses')
-                return redirect(reverse('users:index'))
-            else:
-                return redirect(reverse('pledges:create'))
-        elif request.POST['platform'] == "udemy":
-            request.user.udemyprofile.email = request.POST['username'].strip()
-            already_exist = UdemyProfile.objects.filter(email=request.user.udemyprofile.email).count() > 0
-            if already_exist:
-                if not request.session['onboarding']:
-                    messages.success(request, 'Someone else is already using that Udemy account')
-                    return redirect(reverse('users:index'))
-                return render(request, 'users/index.html', {'alreadyExistUdemy': True})
-            request.user.udemyprofile.password = request.POST['password']
-            request.user.udemyprofile.save()
-            request.user.last_login = timezone.now()
-            request.user.save()
-            if not request.session['onboarding']:
-                messages.success(request, 'Added your Udemy account refresh in a few minutes to see your courses')
-                return redirect(reverse('users:index'))
-            else:
-                return redirect(reverse('pledges:create'))
-        else:
-            messages.error(request, "Something really went wrong, please try again or contact us")
-            return redirect(reverse('user:index'))
-
-    if (coursera_profile.username == "" or coursera_profile.incorrect_login) \
-            and (edx_profile.email == "" or edx_profile.incorrect_login) \
-            and (udemy_profile.email == "" or udemy_profile.incorrect_login):
-        return render(request, 'users/index.html', {'form': True})
-    else:
-        pledges = Pledge.objects.filter(user=request.user.userprofile)
-        progresses = Progress.objects.filter(user=request.user.userprofile)
-        other_pledgers_coursera = []
-        other_pledgers_edx = []
-        other_pledgers_udemy = []
-        for course in coursera_profile.courses.all():
-            other_pledgers_coursera.append(Pledge.objects.filter(course=course).order_by('?')[:5])
-        for course in edx_profile.courses.all():
-            other_pledgers_edx.append(Pledge.objects.filter(course=course).order_by('?')[:5])
-        for course in udemy_profile.courses.all():
-            other_pledgers_udemy.append(Pledge.objects.filter(course=course).order_by('?')[:5])
-        return render(request, 'users/index.html', {'pledges': pledges, 'progresses': progresses, 'form': False,
-                                                    'others_coursera': other_pledgers_coursera,
-                                                    'others_edx': other_pledgers_edx,
-                                                    'others_udemy': other_pledgers_udemy})
-
-
-@login_required
 def index_alt(request):
     try:
         user_profile = UserProfile.objects.get(user=request.user)
@@ -494,18 +379,14 @@ def check_updated(request):
 
 
 @login_required
+@csrf_exempt
 def force_updated(request):
     userprofile = request.user.userprofile
-    if userprofile.last_forced is None or (
-                    userprofile.last_forced is not None and userprofile.last_forced.date() != timezone.now().date()):
-        userprofile.last_forced = timezone.now()
-        userprofile.save()
-        user = request.user
-        user.last_login = timezone.now()
-        user.save()
-    else:
-        return HttpResponse(json.dumps({'fail': True}),
-                            content_type='application/json')
+    userprofile.last_forced = timezone.now()
+    userprofile.save()
+    user = request.user
+    user.last_login = timezone.now()
+    user.save()
     return HttpResponse(json.dumps({}),
                         content_type='application/json')
 

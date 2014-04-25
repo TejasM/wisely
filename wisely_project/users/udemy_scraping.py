@@ -28,7 +28,12 @@ def check_udemy_api_status():
 
 def get_course(id):
     client = requests.session()
-    course = client.get(root_url + 'courses/' + id, headers=headers).json()
+    r = client.get(root_url + 'courses/' + id, headers=headers)
+    try:
+        course = r.json()
+    except:
+        print r.text
+        course = []
     return course
 
 
@@ -43,14 +48,14 @@ class Session:
         self.password = password
 
     def get(self, url):
-        return self.session.get(url, headers=self.headers)
+        return self.session.get(url, headers=self.headers, timeout=100)
 
     def post(self, url, data):
         return self.session.post(url, data, headers=self.headers)
 
     def get_list_courses(self):
         page = self.get(root_url + 'users/me/taking').json()
-        course_ids = map(lambda x: x['id'],page['courses'])
+        course_ids = map(lambda x: x['id'], page['courses'])
         return course_ids
 
     def get_csrf_token(self):
@@ -82,7 +87,7 @@ class Session:
 def main():
     # print(check_udemy_api_status)
     # course = get_course('5678')
-    session = Session('alirtariq@gmail.com', 'gal00t')
+    session = Session('tejasmehta@live.com', 'gitajay12')
     r = session.login()
     print r
     courses = session.get_list_courses()

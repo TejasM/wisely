@@ -303,71 +303,74 @@ def get_edx_courses(edxprofile):
 
 
 def get_udemy_courses(profile):
-    print profile.user.email
-    session = Session(profile.email, profile.password)
-    print "Trying Udemy"
-    r = session.login()
-    if r:
-        print "logged into udemy"
-        courses = session.get_list_courses()
-        for course_id in courses:
-            course_dict = udemy_scraping.get_course(course_id)
-            try:
-                course = Course.objects.get(course_id=course_id)
-                if course not in profile.courses.all():
-                    profile.courses.add(course)
+    try:
+        print profile.user.email
+        session = Session(profile.email, profile.password)
+        print "Trying Udemy"
+        r = session.login()
+        if r:
+            print "logged into udemy"
+            courses = session.get_list_courses()
+            for course_id in courses:
+                course_dict = udemy_scraping.get_course(course_id)
+                try:
+                    course = Course.objects.get(course_id=course_id)
+                    if course not in profile.courses.all():
+                        profile.courses.add(course)
+                        #todo: added feed check
+                        #action.send(actor=profile.user_profile, verb='enrolled in', target=course)
+
+                except Course.DoesNotExist:
+                    image_url = course_dict['images']['img_75x75']
+                    title = course_dict['title']
+                    try:
+                        description = re.sub('<[^>]*>', '', course_dict['promoAsset']['description'])
+                        course_url = course_dict['url']
+                        course = Course.objects.create(course_id=course_id, title=title,
+                                                       course_link=course_url, description=description,
+                                                       quiz_link='https://www.udemy.com/api-1.1/courses/' + course_id +
+                                                                 '/curriculum',
+                                                       image_link=image_url)
+                        profile.courses.add(course)
+                        profile.last_updated = timezone.now()
+                        profile.save()
+                    except:
+                        pass
                     #todo: added feed check
                     #action.send(actor=profile.user_profile, verb='enrolled in', target=course)
 
-            except Course.DoesNotExist:
-                image_url = course_dict['images']['img_75x75']
-                title = course_dict['title']
-                try:
-                    description = re.sub('<[^>]*>', '', course_dict['promoAsset']['description'])
-                    course_url = course_dict['url']
-                    course = Course.objects.create(course_id=course_id, title=title,
-                                                   course_link=course_url, description=description,
-                                                   quiz_link='https://www.udemy.com/api-1.1/courses/' + course_id +
-                                                             '/curriculum',
-                                                   image_link=image_url)
-                    profile.courses.add(course)
-                    profile.last_updated = timezone.now()
-                    profile.save()
-                except:
-                    pass
-                #todo: added feed check
-                #action.send(actor=profile.user_profile, verb='enrolled in', target=course)
+                #todo: create course
 
-            #todo: create course
-
-            ci = session.get_curriculum(course_id)
-            progress = session.get_course_progress(course_id)
-            #overall_completion = progress['completion_ratio']
-            progress = dict(progress['quiz_progress'].items() + progress['lectures_progress'].items())
-            quiz_ids = progress.keys()
-            quiz_marks = progress.values()
-            for c in ci:
-                try:
-                    quiz = Quiz.objects.get(quizid=c['id'])
-                except Quiz.DoesNotExist:
-                    quiz = Quiz.objects.create(quizid=c['id'], course=course, heading=c['title'])
-                if c['id'] in quiz_ids:
-                    index = quiz_ids.index(c['id'])
+                ci = session.get_curriculum(course_id)
+                progress = session.get_course_progress(course_id)
+                #overall_completion = progress['completion_ratio']
+                progress = dict(progress['quiz_progress'].items() + progress['lectures_progress'].items())
+                quiz_ids = progress.keys()
+                quiz_marks = progress.values()
+                for c in ci:
                     try:
-                        mark = str(float(quiz_marks[index]['completionRatio']) / 100)
-                    except:
+                        quiz = Quiz.objects.get(quizid=c['id'])
+                    except Quiz.DoesNotExist:
+                        quiz = Quiz.objects.create(quizid=c['id'], course=course, heading=c['title'])
+                    if c['id'] in quiz_ids:
+                        index = quiz_ids.index(c['id'])
+                        try:
+                            mark = str(float(quiz_marks[index]['completionRatio']) / 100)
+                        except:
+                            mark = str(0)
+                    else:
                         mark = str(0)
-                else:
-                    mark = str(0)
-                try:
-                    progress = Progress.objects.get(user=profile.user.userprofile, quiz=quiz)
-                    progress.score = mark
-                    progress.save()
-                except Progress.DoesNotExist:
-                    Progress.objects.create(user=profile.user.userprofile, quiz=quiz,
-                                            score=mark)
+                    try:
+                        progress = Progress.objects.get(user=profile.user.userprofile, quiz=quiz)
+                        progress.score = mark
+                        progress.save()
+                    except Progress.DoesNotExist:
+                        Progress.objects.create(user=profile.user.userprofile, quiz=quiz,
+                                                score=mark)
 
-        print "done udemy"
-    else:
-        profile.incorrect_login = True
-        profile.save()
+            print "done udemy"
+        else:
+            profile.incorrect_login = True
+            profile.save()
+    except:
+        return

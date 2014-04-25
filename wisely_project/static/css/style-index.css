@@ -158,6 +158,10 @@
     background-color: #80BC62;
 }
 
+.tabs dd > a {
+    min-height: 7em;
+}
+
 #class-title p, #share-title p {
     font-size: 1.2rem;
     text-align: left;
