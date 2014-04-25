@@ -118,7 +118,6 @@ class CourseraDownloader(object):
                 topics = data['list2']['topics']
                 courses = data['list2']['courses']
                 if user:
-                    print user.user_profile.email
                     for i, enrollment in enumerate(enrollments):
                         topic_id = enrollment['course__topic_id']
                         course_id = enrollment['course_id']
