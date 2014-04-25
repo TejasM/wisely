@@ -322,16 +322,19 @@ def get_udemy_courses(profile):
             except Course.DoesNotExist:
                 image_url = course_dict['images']['img_75x75']
                 title = course_dict['title']
-                description = re.sub('<[^>]*>', '', course_dict['promoAsset']['description'])
-                course_url = course_dict['url']
-                course = Course.objects.create(course_id=course_id, title=title,
-                                               course_link=course_url, description=description,
-                                               quiz_link='https://www.udemy.com/api-1.1/courses/' + course_id +
-                                                         '/curriculum',
-                                               image_link=image_url)
-                profile.courses.add(course)
-                profile.last_updated = timezone.now()
-                profile.save()
+                try:
+                    description = re.sub('<[^>]*>', '', course_dict['promoAsset']['description'])
+                    course_url = course_dict['url']
+                    course = Course.objects.create(course_id=course_id, title=title,
+                                                   course_link=course_url, description=description,
+                                                   quiz_link='https://www.udemy.com/api-1.1/courses/' + course_id +
+                                                             '/curriculum',
+                                                   image_link=image_url)
+                    profile.courses.add(course)
+                    profile.last_updated = timezone.now()
+                    profile.save()
+                except:
+                    pass
                 #todo: added feed check
                 #action.send(actor=profile.user_profile, verb='enrolled in', target=course)
 

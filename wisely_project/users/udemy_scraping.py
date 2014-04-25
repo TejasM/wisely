@@ -28,7 +28,7 @@ def check_udemy_api_status():
 
 def get_course(id):
     client = requests.session()
-    course = client.get(root_url + 'courses/' + id + '/extended', headers=headers).json()
+    course = client.get(root_url + 'courses/' + id, headers=headers).json()
     return course
 
 
@@ -70,7 +70,7 @@ class Session:
 
     def get_curriculum(self, id):
         ci = self.get(
-            root_url + 'courses/' + id + '/curriculum?fields[lecture]=@min&fields[quiz]=@min,completionRatio,progressStatus').json()
+            root_url + 'courses/' + id + '/curriculum').json()
         ci = filter(lambda x: x['type'] == 'quiz' or x['type'] == 'lecture', ci)
         return ci
 
