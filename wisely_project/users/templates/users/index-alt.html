@@ -466,7 +466,7 @@
             {% endif %}
 
             <div class="row extra-top-margin text-center">
-                <button id="force-ref">
+                <button id="force-ref" class="close">
                     Refresh from Platforms
                 </button>
             </div>
@@ -526,6 +526,7 @@
 
         $('#force-ref').click(function () {
             $.post('{% url 'users:force_update' %}', function () {
+                $('#add-courses').trigger('close');
                 $('#force-up').lightbox_me({centered: true});
             });
         });
