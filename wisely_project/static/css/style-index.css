@@ -158,7 +158,7 @@
     background-color: #80BC62;
 }
 
-.course a {
+.tabs dd > a {
     min-height: 7em;
 }
 

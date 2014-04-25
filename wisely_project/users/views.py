@@ -379,6 +379,7 @@ def check_updated(request):
 
 
 @login_required
+@csrf_exempt
 def force_updated(request):
     userprofile = request.user.userprofile
     if userprofile.last_forced is None:
