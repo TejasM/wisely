@@ -1,10 +1,13 @@
 from datetime import datetime
 from fractions import Fraction
+
 from django.utils import timezone
+from actstream import action
 
 from lxml.cssselect import CSSSelector
 from pledges.models import Pledge
 from users.models import Course, Quiz, Progress
+
 
 __author__ = 'tmehta'
 from lxml import html
@@ -98,7 +101,8 @@ def scrape_for_user(edxprofile):
             if course is not None:
                 if course not in edxprofile.courses.all():
                     edxprofile.courses.add(course)
-                    #todo: add feed
+                    #todo: added feed check
+                    action.send(actor=edxprofile.user_profile, verb='enrolled in', target=course)
 
         for i, current_course in enumerate(upcoming_courses):
             i += len(current_courses) - 1

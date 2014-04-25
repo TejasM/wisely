@@ -5,6 +5,7 @@ from time import timezone
 from bs4 import BeautifulSoup
 import dateutil.parser
 
+
 __author__ = 'tmehta'
 import json
 import requests
@@ -12,6 +13,7 @@ from six import print_
 from pledges.models import Pledge
 
 from users.models import Course, Quiz, Progress
+from actstream import action
 
 
 class CourseraDownloader(object):
@@ -116,7 +118,7 @@ class CourseraDownloader(object):
                 topics = data['list2']['topics']
                 courses = data['list2']['courses']
                 if user:
-                    print user.user.email
+                    print user.user_profile.email
                     for i, enrollment in enumerate(enrollments):
                         topic_id = enrollment['course__topic_id']
                         course_id = enrollment['course_id']
@@ -145,7 +147,8 @@ class CourseraDownloader(object):
                                     course.save()
                             if course not in user.courses.all():
                                 user.courses.add(course)
-                                #todo: add feed
+                                #todo: added feed check
+                                action.send(actor=user.user_profile, verb='enrolled in', target=course)
                             try:
                                 pledge = Pledge.objects.get(course=course, user=user)
                                 if enrollment['grade_normal'] != 'null':
@@ -173,7 +176,8 @@ class CourseraDownloader(object):
                                                            start_date=start_date, end_date=end_date, image_link=image_link,
                                                            description=description, course_id=topic_id)
                             user.courses.add(course)
-                            #todo: add feed
+                            #todo: added feed check
+                            action.send(actor=user.user_profile, verb='enrolled in', target=course)
                         res = self.session.get(quiz_link)
                         soup = BeautifulSoup(res.text)
                         quiz_list = soup.select('div.course-item-list .course-item-list-header')

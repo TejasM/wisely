@@ -1,20 +1,17 @@
 from __future__ import absolute_import, division
-from datetime import datetime
 import re
-import time
 
 from bs4 import BeautifulSoup
 import dateutil.parser
 from django.utils import timezone
 import stripe
-from pledges.models import Pledge
+from actstream import action
+
 from users import udemy_scraping
 from users.coursera_scraping import CourseraDownloader
 from users.edx_scraping import scrape_for_user
-
 from users.models import Course, Quiz, Progress
 from users.udemy_scraping import Session
-
 
 class CourseraScraper:
     def __init__(self, ):
@@ -317,7 +314,9 @@ def get_udemy_courses(profile):
                 course = Course.objects.get(course_id=course_id)
                 if course not in profile.courses.all():
                     profile.courses.add(course)
-                    #todo: add feed
+                    #todo: added feed check
+                    action.send(actor=profile.user_profile, verb='enrolled in', target=course)
+
             except Course.DoesNotExist:
                 image_url = course_dict['images']['img_75x75']
                 title = course_dict['title']
@@ -329,7 +328,8 @@ def get_udemy_courses(profile):
                                                          '/curriculum',
                                                image_link=image_url)
                 profile.courses.add(course)
-                #todo: add feed
+                #todo: added feed check
+                action.send(actor=profile.user_profile, verb='enrolled in', target=course)
 
             #todo: create course
 
