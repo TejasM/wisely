@@ -397,7 +397,8 @@ def index_alt(request):
             return redirect(reverse('user:index_alt'))
 
     if (coursera_profile.username == "" or coursera_profile.incorrect_login) and (
-                    edx_profile.email == "" or edx_profile.incorrect_login):
+                    edx_profile.email == "" or edx_profile.incorrect_login) and (
+                    udemy_profile.email == "" or udemy_profile.incorrect_login):
         request.session['onboarding'] = True
         request.session.save()
         return render(request, 'users/onboarding.html')

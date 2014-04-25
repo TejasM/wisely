@@ -307,8 +307,8 @@ def get_udemy_courses(profile):
     session = Session(profile.email, profile.password)
     print "Trying Udemy"
     r = session.login()
-    print "logged into udemy"
     if r:
+        print "logged into udemy"
         courses = session.get_list_courses()
         for course_id in courses:
             course_dict = udemy_scraping.get_course(course_id)
