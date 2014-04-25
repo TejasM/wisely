@@ -48,7 +48,7 @@ class Session:
         self.password = password
 
     def get(self, url):
-        return self.session.get(url, headers=self.headers, timeout=10)
+        return self.session.get(url, headers=self.headers, timeout=100)
 
     def post(self, url, data):
         return self.session.post(url, data, headers=self.headers)

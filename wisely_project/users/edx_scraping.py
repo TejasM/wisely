@@ -98,7 +98,6 @@ def scrape_for_user(edxprofile):
                                                    course_link=course_links[i], quiz_link=progress_links[i],
                                                    image_link=image_links[i],
                                                    start_date=date_real)
-            print course.title
             if course is not None:
                 if course not in edxprofile.courses.all():
                     edxprofile.courses.add(course)
