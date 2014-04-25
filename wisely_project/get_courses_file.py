@@ -21,17 +21,20 @@ while True:
             if len(connection.queries) > 100:
                 db.reset_queries()
         for user in CourseraProfile.objects.filter(last_updated__lt=F('user__last_login')):
-            get_coursera_courses(user)
-            user.last_updated = timezone.now()
-            user.save()
+            if user.username != '':
+                get_coursera_courses(user)
+                user.last_updated = timezone.now()
+                user.save()
         for user in EdxProfile.objects.filter(last_updated__lt=F('user__last_login')):
-            get_edx_courses(user)
-            user.last_updated = timezone.now()
-            user.save()
+            if user.email != '':
+                get_edx_courses(user)
+                user.last_updated = timezone.now()
+                user.save()
         for user in UdemyProfile.objects.filter(last_updated__lt=F('user__last_login')):
-            get_udemy_courses(user)
-            user.last_updated = timezone.now()
-            user.save()
+            if user.email != '':
+                get_udemy_courses(user)
+                user.last_updated = timezone.now()
+                user.save()
 
     except Exception as e:
         print traceback.format_exc()

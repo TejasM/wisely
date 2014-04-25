@@ -28,7 +28,7 @@ def check_udemy_api_status():
 
 def get_course(id):
     client = requests.session()
-    course = client.get(root_url + 'courses/' + id + '/extended', headers=headers).json()
+    course = client.get(root_url + 'courses/' + id, headers=headers).json()
     return course
 
 
@@ -49,10 +49,8 @@ class Session:
         return self.session.post(url, data, headers=self.headers)
 
     def get_list_courses(self):
-        page = self.get(courses_url)
-        tree = html.fromstring(page.text)
-        course_id_selector = CSSSelector('.my-course-box')
-        course_ids = [e.get('data-courseid') for e in course_id_selector(tree)]
+        page = self.get(root_url + 'users/me/taking').json()
+        course_ids = map(lambda x: x['id'],page['courses'])
         return course_ids
 
     def get_csrf_token(self):
@@ -72,7 +70,7 @@ class Session:
 
     def get_curriculum(self, id):
         ci = self.get(
-            root_url + 'courses/' + id + '/curriculum?fields[lecture]=@min&fields[quiz]=@min,completionRatio,progressStatus').json()
+            root_url + 'courses/' + id + '/curriculum').json()
         ci = filter(lambda x: x['type'] == 'quiz' or x['type'] == 'lecture', ci)
         return ci
 
@@ -84,9 +82,11 @@ class Session:
 def main():
     # print(check_udemy_api_status)
     # course = get_course('5678')
-    session = Session('tejasmehta@live.com', 'gitajay12')
-    session.login()
+    session = Session('alirtariq@gmail.com', 'gal00t')
+    r = session.login()
+    print r
     courses = session.get_list_courses()
+    print courses
     for course in courses:
         course_dict = get_course(course)
         #todo: create course

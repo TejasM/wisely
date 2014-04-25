@@ -443,21 +443,21 @@
         <p style="text-align: center" id="settings-title"><strong>ADD PLATFORMS</strong></p>
 
         <div class="row" id="platform-options">
-            {% if  user.courseraprofile.username == '' %}
+            {% if  user.courseraprofile.username == '' or user.courseraprofile.incorrect_login %}
                 <div class="row extra-top-margin text-center">
                     <button id="add-coursera">
                         Add Coursera Account
                     </button>
                 </div>
             {% endif %}
-            {% if  user.edxprofile.email == '' %}
+            {% if  user.edxprofile.email == '' or user.edxprofile.incorrect_login  %}
                 <div class="row extra-top-margin text-center">
                     <button id="add-edx">
                         Add edX Account
                     </button>
                 </div>
             {% endif %}
-            {% if  user.udemyprofile.email == '' %}
+            {% if  user.udemyprofile.email == '' or user.udemyprofile.incorrect_login  %}
                 <div class="row extra-top-margin text-center">
                     <button id="add-udemy">
                         Add Udemy Account
@@ -479,7 +479,7 @@
     </div>
     <div id="incorrect-lightbox" class="light-box">
         <div class="row text-center">
-            Incorrect Coursera Login. Please confirm and try again.
+            Incorrect Login. Please confirm and try again.
         </div>
     </div>
     <div id="coursera-wait" class="light-box">
