@@ -305,7 +305,9 @@ def get_edx_courses(edxprofile):
 def get_udemy_courses(profile):
     print profile.user.email
     session = Session(profile.email, profile.password)
+    print "Trying Udemy"
     r = session.login()
+    print "logged into udemy"
     if r:
         courses = session.get_list_courses()
         for course_id in courses:
