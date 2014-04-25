@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include
 from django.http.response import HttpResponse
 from django.views.generic import TemplateView
 
@@ -6,9 +6,15 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 from settings import production
 from wisely_project import view
-import django_messages
+from django.contrib import sitemaps
+from django.conf.urls import patterns, url
+from sitemaps import StaticViewSitemap
 
 admin.autodiscover()
+
+sitemaps = {
+    'static': StaticViewSitemap,
+}
 
 urlpatterns = patterns('',
                        url(r'^$', view.index),
@@ -38,6 +44,7 @@ urlpatterns = patterns('',
                        url(r'^pledges/', include('pledges.urls', namespace="pledges")),
                        url(r'^blog/', include('cms.urls')),
                        url('activity/', include('actstream.urls')),
+                       url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
 )
 
 if not production.DEBUG:
