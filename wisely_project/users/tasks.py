@@ -318,6 +318,7 @@ def get_udemy_courses(profile):
                     if course not in profile.courses.all():
                         profile.courses.add(course)
                         #todo: added feed check
+                        action.send(actor=profile.user.userprofile, verb='enrolled in', target=course, sender=None)
                         #action.send(actor=profile.user_profile, verb='enrolled in', target=course)
 
                 except Course.DoesNotExist:
@@ -337,6 +338,7 @@ def get_udemy_courses(profile):
                     except:
                         pass
                     #todo: added feed check
+                    action.send(actor=profile.user.userprofile, verb='enrolled in', target=course, sender=None)
                     #action.send(actor=profile.user_profile, verb='enrolled in', target=course)
 
                 #todo: create course
