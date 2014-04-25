@@ -382,15 +382,11 @@ def check_updated(request):
 @csrf_exempt
 def force_updated(request):
     userprofile = request.user.userprofile
-    if userprofile.last_forced is None:
-        userprofile.last_forced = timezone.now()
-        userprofile.save()
-        user = request.user
-        user.last_login = timezone.now()
-        user.save()
-    else:
-        return HttpResponse(json.dumps({'fail': True}),
-                            content_type='application/json')
+    userprofile.last_forced = timezone.now()
+    userprofile.save()
+    user = request.user
+    user.last_login = timezone.now()
+    user.save()
     return HttpResponse(json.dumps({}),
                         content_type='application/json')
 
