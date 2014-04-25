@@ -102,7 +102,7 @@ def scrape_for_user(edxprofile):
                 if course not in edxprofile.courses.all():
                     edxprofile.courses.add(course)
                     #todo: added feed check
-                    action.send(actor=edxprofile.user_profile, verb='enrolled in', target=course)
+                   # action.send(actor=edxprofile.user_profile, verb='enrolled in', target=course)
 
         for i, current_course in enumerate(upcoming_courses):
             i += len(current_courses) - 1

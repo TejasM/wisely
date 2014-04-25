@@ -315,7 +315,7 @@ def get_udemy_courses(profile):
                 if course not in profile.courses.all():
                     profile.courses.add(course)
                     #todo: added feed check
-                    action.send(actor=profile.user_profile, verb='enrolled in', target=course)
+                    #action.send(actor=profile.user_profile, verb='enrolled in', target=course)
 
             except Course.DoesNotExist:
                 image_url = course_dict['images']['img_75x75']
@@ -328,8 +328,10 @@ def get_udemy_courses(profile):
                                                          '/curriculum',
                                                image_link=image_url)
                 profile.courses.add(course)
+                profile.last_updated = timezone.now()
+                profile.save()
                 #todo: added feed check
-                action.send(actor=profile.user_profile, verb='enrolled in', target=course)
+                #action.send(actor=profile.user_profile, verb='enrolled in', target=course)
 
             #todo: create course
 
