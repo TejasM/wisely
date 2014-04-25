@@ -278,10 +278,10 @@ def index(request):
                 return redirect(reverse('pledges:create'))
         elif request.POST['platform'] == "udemy":
             request.user.udemyprofile.email = request.POST['username'].strip()
-            already_exist = EdxProfile.objects.filter(email=request.user.udemyprofile.email).count() > 0
+            already_exist = UdemyProfile.objects.filter(email=request.user.udemyprofile.email).count() > 0
             if already_exist:
                 if not request.session['onboarding']:
-                    messages.success(request, 'Someone else is already using that Edx account')
+                    messages.success(request, 'Someone else is already using that Udemy account')
                     return redirect(reverse('users:index'))
                 return render(request, 'users/index.html', {'alreadyExistUdemy': True})
             request.user.udemyprofile.password = request.POST['password']
