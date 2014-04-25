@@ -28,7 +28,12 @@ def check_udemy_api_status():
 
 def get_course(id):
     client = requests.session()
-    course = client.get(root_url + 'courses/' + id, headers=headers).json()
+    try:
+        r = client.get(root_url + 'courses/' + id, headers=headers)
+        course = r.json()
+    except:
+        print client.get(root_url + 'courses/' + id, headers=headers)
+        course = []
     return course
 
 
@@ -82,7 +87,7 @@ class Session:
 def main():
     # print(check_udemy_api_status)
     # course = get_course('5678')
-    session = Session('alirtariq@gmail.com', 'gal00t')
+    session = Session('tejasmehta@live.com', 'gitajay12')
     r = session.login()
     print r
     courses = session.get_list_courses()
