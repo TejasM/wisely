@@ -107,8 +107,9 @@ def scrape_for_user(edxprofile):
 
         for i, current_course in enumerate(upcoming_courses):
             i += len(current_courses) - 1
+            course = None
             try:
-                Course.objects.get(course_id=course_ids[i])
+                course = Course.objects.get(course_id=course_ids[i])
             except Course.DoesNotExist:
                 date_real = None
                 try:
@@ -116,9 +117,12 @@ def scrape_for_user(edxprofile):
                                                                    '%b %d, %Y').date()
                 except:
                     pass
-                Course.objects.create(course_id=course_ids[i], title=current_course,
+                course = Course.objects.create(course_id=course_ids[i], title=current_course,
                                       image_link=image_links[i],
                                       start_date=date_real)
+            if course is not None:
+                if course not in edxprofile.courses.all():
+                    edxprofile.courses.add(course)
 
         edxprofile.last_updated = timezone.now()
         edxprofile.save()
