@@ -7,18 +7,23 @@
 <!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
 
 <url>
-  <loc>https://www.projectwisely.com/</loc>
+  <loc>http://www.projectwisely.com/</loc>
   <changefreq>always</changefreq>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>https://www.projectwisely.com/faq</loc>
+  <loc>http://www.projectwisely.com/faq</loc>
   <changefreq>always</changefreq>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://www.projectwisely.com/learn-more</loc>
+  <loc>http://www.projectwisely.com/learn-more</loc>
   <changefreq>always</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.projectwisely.com//privacy</loc>
+  <changefreq>weekly</changefreq>
   <priority>0.80</priority>
 </url>
 </urlset>
