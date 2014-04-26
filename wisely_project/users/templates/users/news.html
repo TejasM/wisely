@@ -10,14 +10,14 @@
 {% endblock %}
 {% block content %}
     <div class="row wide-row" style="border-bottom: solid #D2D4D5 1px">
-        <div class="large-4 columns" style="border-right: solid #D2D4D5 1px; padding-top: 1%; padding-bottom: 1%;">
+        <div class="large-4 small-4 columns" style="border-right: solid #D2D4D5 1px; padding-top: 1%; padding-bottom: 1%;">
             <div class="row">
-                <div class="large-3 columns">
+                <div class="large-3 small-3 columns">
                     <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
                          {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
                          class="pull-left img-circle">
                 </div>
-                <div class="large-6 columns">
+                <div class="large-6 small-6 columns">
                     <div style="margin-top: 10px">
                         <h3>{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</h3>
 
@@ -26,21 +26,21 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="large-3 columns">
+                <div class="large-3 small-3 columns">
                     <img src="{% static 'images/settings-icon.png' %}" style="width: 80%; margin-top: 10px">
                 </div>
             </div>
         </div>
-        <div class="large-8 columns" style="margin-top: 50px; text-align: center">
+        <div class="large-8 small-8 columns" style="margin-top: 50px; text-align: center">
             <div class="row" id="filters">
-                <div class="large-4 columns"><p class="selected-news" id="everyone-filt">Everyone</p></div>
-                <div class="large-4 columns"><p id="following-filt">Following</p></div>
-                <div class="large-4 columns"><p id="followers-filt">Followers</p></div>
+                <div class="large-4 small-4 columns"><p class="selected-news" id="everyone-filt">Everyone</p></div>
+                <div class="large-4 small-4 columns"><p id="following-filt">Following</p></div>
+                <div class="large-4 small-4 columns"><p id="followers-filt">Followers</p></div>
             </div>
         </div>
     </div>
     <div class="row wide-row">
-        <div class="large-4 columns">
+        <div class="large-4 small-4 columns">
             <div class="row">
                 <dl class="tabs vertical" style="width: 100%" data-tab>
                     <dd class="active"><a href="#panel1a" onclick="$('#filters').show();"><i class="fa fa-desktop"></i>Newsfeed</a>
@@ -53,10 +53,10 @@
                 </dl>
             </div>
             <div class="row" style="margin-top: 30px;">
-                <div class="large-3 columns">
+                <div class="large-3 small-3 columns">
                     <img src="{% static 'images/plus-icon.png' %}" style="width: 100%">
                 </div>
-                <div class="large-9 columns">
+                <div class="large-9 small-9 columns">
                     <div style="margin-top: 15px; margin-left: -10px">
                         <p style="color: #1E5376; font-size: 1.6em; font-weight: 700">Who To Follow</p>
                     </div>
@@ -93,9 +93,9 @@
             </div>
         </div>
 
-        <div class="large-8 columns" style="padding-top: 1%;">
+        <div class="large-8 small-8 columns" style="padding-top: 1%;">
             <div class="row">
-                <div class="large-12 columns">
+                <div class="large-12 small-12 columns">
                     <div class="tabs-content vertical" style="width: 100%">
                         <div class="content active" id="panel1a">
                             {% if feeds %}

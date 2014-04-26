@@ -1,11 +1,11 @@
 {% load staticfiles %}
-<div class="row wide-row">
+<div class="row wide-row" style="width: 100%">
     <div class="top-bar-inner">
-        <div class="large-4 columns">
+        <div class="large-4 small-4 columns">
             <div class="left-nav">
                 <div class="row" style="text-align: center">
                     {% if user.is_authenticated %}
-                        <div class="large-4  columns">
+                        <div class="large-4 small-4 columns">
                             <a href="/users/news">
                                 {% if news %}
                                     <img src="{% static 'images/news-white.png' %}" width="28px">
@@ -20,7 +20,7 @@
                                 {% endif %}
                             </a>
                         </div>
-                        <div class="large-4 columns">
+                        <div class="large-4 small-4 columns">
                             <a href="/users/index/alt">
                                 {% if courses %}
                                     <img src="{% static 'images/book-white.png' %}" height="25px"
@@ -38,7 +38,7 @@
                                 {% endif %}
                             </a>
                         </div>
-                        <div class="large-4 columns">
+                        <div class="large-4 small-4 columns">
                             <a href="#">
                                 {% if activities %}
                                     <img src="{% static 'images/me-icon.png' %}" height="25px" width="25px">
@@ -60,12 +60,12 @@
             </div>
         </div>
 
-        <div class="large-4 {% if not user.is_authenticated %} push-4 {% endif %} columns" style="text-align: center">
+        <div class="large-4 small-4 {% if not user.is_authenticated %} push-4 {% endif %} columns" style="text-align: center">
             <a href="/" class="title-area">
                 <img alt="Wisely" src="{% static 'images/log-white-small.png' %}" height="60" width="60" style="image-rendering: -moz-crisp-edges;"/>
             </a>
         </div>
-        <div class="large-4 columns" style="{% if done != '' %}display: visible{% else %}display:none{% endif %}" id="finish-anim">
+        <div class="large-4 small-4 columns" style="{% if done != '' %}display: visible{% else %}display:none{% endif %}" id="finish-anim">
             <div class="right-nav">
                 <div class="row" style="text-align: center">
                     <a href="/faq/alt">
