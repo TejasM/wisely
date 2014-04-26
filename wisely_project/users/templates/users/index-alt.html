@@ -765,6 +765,7 @@
                         now.setDate(now.getDate());
                         picker.setDate(now.getFullYear() + '-' + now.getMonth() + '-' + now.getDate());
                         $('#datepicker').val(picker.toString('YYYY-MM-DD'));
+                        $('#datepicker').prop('disabled', false);
                     }
                 }
                 $('#pledge-box').lightbox_me({centered: true});
