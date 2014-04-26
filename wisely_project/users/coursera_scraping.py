@@ -215,6 +215,8 @@ class CourseraDownloader(object):
 
                             try:
                                 progress = Progress.objects.get(quiz=quiz, user=user.user.userprofile)
+                            except Progress.MultipleObjectsReturned:
+                                progress = Progress.objects.filter(quiz=quiz, user=user.user.userprofile)[0]
                             except Progress.DoesNotExist:
                                 progress = Progress.objects.create(quiz=quiz, user=user.user.userprofile)
                             progress.score = quiz_details[i].select(
