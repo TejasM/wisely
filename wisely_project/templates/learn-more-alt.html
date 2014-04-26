@@ -12,9 +12,16 @@
                 follows:</h3>
             <ul style="margin-left: 3%; list-style: none; line-height: 2em; font-size: 1.2em;">
                 <li><strong>&#8226; &nbsp; &nbsp;&nbsp; &nbsp; $20 reward for a pledge with a goal of 100%</strong></li>
-                <li><strong>&#8226; &nbsp; &nbsp;&nbsp; &nbsp; $10 reward for a pledge with a goal of 80-99%</strong></li>
-                <li><strong>&#8226; &nbsp; &nbsp;&nbsp; &nbsp; $5 reward for a pledge with a goal of 60-79%</strong></li>
+                <li><strong>&#8226; &nbsp; &nbsp;&nbsp; &nbsp; $10 reward for a pledge with a goal of 80-99%</strong>
+                </li>
+                <li><strong>&#8226; &nbsp; &nbsp;&nbsp; &nbsp; $5 reward for a pledge with a goal of 60-79%</strong>
+                </li>
             </ul>
+            {% if not user.is_authenticated %}
+                <div style="text-align: center">
+                    <button id="sign2" style="margin: 1em auto 2em">GET STARTED</button>
+                </div>
+            {% endif %}
         </div>
         <div class="row wide-row panel" style="padding-top: 3%; margin-top: 1em">
             <div class="row" style="margin: 0 auto">
@@ -173,6 +180,12 @@
     <script>
         $(function () {
             $('#sign').click(function () {
+                switch_form();
+                $('#sign-in').lightbox_me({centered: true});
+                $('.lb_overlay').css('top', '-100px', 'important');
+            });
+            
+            $('#sign2').click(function () {
                 switch_form();
                 $('#sign-in').lightbox_me({centered: true});
                 $('.lb_overlay').css('top', '-100px', 'important');
