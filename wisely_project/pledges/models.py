@@ -2,7 +2,7 @@ from django.utils import timezone
 from django.db import models
 
 from users.models import Course, BaseModel, UserProfile
-
+from datetime import date
 
 class Pledge(BaseModel):
     user = models.ForeignKey(UserProfile)
@@ -15,6 +15,7 @@ class Pledge(BaseModel):
     aim = models.FloatField(default=0.50)
     actual_mark = models.FloatField(default=None, null=True, blank=True)
     charge = models.CharField(default="", max_length=1000)
+    pledge_end_date = models.DateField(default=timezone.now(), null=True)
 
     def get_aim(self):
         return self.aim*100
@@ -24,6 +25,25 @@ class Pledge(BaseModel):
             return self.actual_mark*100
         else:
             return 0
+
+    def get_amount_progress(self):
+        percentage = 0
+        if self.pledge_end_date is not None and self.pledge_date is not None:
+            if self.pledge_end_date > timezone.now().date():
+                percentage = (timezone.now().date() - self.pledge_date).days / (
+                    (self.pledge_end_date - self.pledge_date).days) * 100
+            else:
+                percentage = 100
+        elif self.pledge_date is None and self.pledge_date is not None:
+            percentage = 100
+        return percentage
+
+    @property
+    def is_done(self):
+        if self.pledge_end_date is not None:
+            if date.today() > self.pledge_end_date:
+                return True
+        return False
 
 
 class Reward(BaseModel):

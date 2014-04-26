@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/style-news.css' %}" cache="false"/>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style-index.css' %}" cache="false"/>
     <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.hoverscroll.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/pickaday.css' %}"/>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 {% endblock %}
@@ -13,7 +14,7 @@
     {% include 'nav-bar-alt.html' with courses="True" %}
 {% endblock %}
 {% block content %}
-    <div class="row wide-row" style="border-bottom: solid #D2D4D5 1px">
+    <div class="row wide-row" style="border-bottom: solid #D2D4D5 1px;">
         <div class="large-4 columns" style="border-right: solid #D2D4D5 1px; padding-top: 40px; padding-bottom: 1%;">
             <div class="row">
                 <div class="large-3 columns">
@@ -84,23 +85,26 @@
     <div class="row">
     <dl class="tabs vertical" style="width: 100%" data-tab>
     {% for course, grade in coursera_courses %}
-        <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
-            class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}"><a
-                href="#panel{{ course.id }}a"
-                onclick="$('#filters').toggle();"
-                style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}</a>
+        {% for pledge in pledges %}
+            {% if pledge.course == course %}
+                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+                    class="course {% if course.get_amount_progress >= 100 or pledge.is_done %}past{% else %}current{% endif %}">
+                    <a
+                            href="#panel{{ course.id }}a"
+                            onclick="$('#filters').toggle();"
+                            style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
+                        <br>Pledge Ending: {{ pledge.pledge_end_date }}
+                    </a>
 
-            <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
-                <div class="meter">
-                    <span style="width: {{ course.get_amount_progress }}%"></span>
-                </div>
-                <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
-                    <div class="metrics score">
-                        <p>SCORE<br>
-                            <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
-                    </div>
-                    {% for pledge in pledges %}
-                        {% if pledge.course == course %}
+                    <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
+                        <div class="meter">
+                            <span style="width: {{ pledge.get_amount_progress }}%"></span>
+                        </div>
+                        <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
+                            <div class="metrics score">
+                                <p>SCORE<br>
+                                    <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
+                            </div>
                             <div class="metrics goal">
                                 <p>GOAL<br>
                                     <span class="overall-mark">{{ pledge.get_aim }}<sup>%</sup></span>
@@ -111,8 +115,27 @@
                                 <p>PLEDGE<br>
                                     <span class="overall-mark">${{ pledge.money }}</span></p>
                             </div>
-                            {{ forloop|break }}
-                        {% elif forloop.counter == pledges.count %}
+                        </div>
+                    </div>
+                </dd>
+                {{ forloop|break }}
+            {% elif forloop.counter == pledges.count %}
+                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+                    class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
+                    <a href="#panel{{ course.id }}a"
+                       onclick="$('#filters').toggle();"
+                       style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
+                    </a>
+
+                    <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
+                        <div class="meter">
+                            <span style="width: {{ course.get_amount_progress }}%"></span>
+                        </div>
+                        <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
+                            <div class="metrics score">
+                                <p>SCORE<br>
+                                    <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
+                            </div>
                             {% if course.get_amount_progress <= 50 %}
                                 <div class="metrics goal pledge-start has-tip tip-bottom"
                                      data-class="{{ course.title }}"
@@ -133,15 +156,35 @@
                                     <p><strong>&#151; &#151;</strong></p>
                                 </div>
                             {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                    {% if not pledges %}
+                        </div>
+                    </div>
+                </dd>
+            {% endif %}
+        {% endfor %}
+        {% if not pledges %}
+            <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+                class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
+                <a href="#panel{{ course.id }}a"
+                   onclick="$('#filters').toggle();"
+                   style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
+                </a>
+
+                <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
+                    <div class="meter">
+                        <span style="width: {{ course.get_amount_progress }}%"></span>
+                    </div>
+                    <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
+                        <div class="metrics score">
+                            <p>SCORE<br>
+                                <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
+                        </div>
                         {% if course.get_amount_progress <= 50 %}
                             <div class="metrics goal pledge-start has-tip tip-bottom"
                                  data-class="{{ course.title }}"
                                  data-id="{{ course.id }}" data-tooltip
-                                 data-options="disable_for_touch:true" title="Make a pledge">
-                                <p><img src="{% static 'images/pledge-icon.png' %}"></p>
+                                 data-options="disable_for_touch:true" title="Make a pledge"><p>
+                                <img src="{% static 'images/pledge-icon.png' %}"
+                                     style="display: inline"></p>
                             </div>
                             <div class="metrics pledge">
                                 <p><strong>&#151; &#151;</strong></p>
@@ -155,29 +198,32 @@
                                 <p><strong>&#151; &#151;</strong></p>
                             </div>
                         {% endif %}
-                    {% endif %}
+                    </div>
                 </div>
-            </div>
-        </dd>
+            </dd>
+        {% endif %}
     {% endfor %}
     {% for course, grade in edx_courses %}
-        <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
-            class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}"><a
-                href="#panel{{ course.id }}a"
-                onclick="$('#filters').toggle();"
-                style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}</a>
+        {% for pledge in pledges %}
+            {% if pledge.course == course %}
+                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+                    class="course {% if course.get_amount_progress >= 100 or pledge.is_done %}past{% else %}current{% endif %}">
+                    <a
+                            href="#panel{{ course.id }}a"
+                            onclick="$('#filters').toggle();"
+                            style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
+                        <br>Pledge Ending: {{ pledge.pledge_end_date }}
+                    </a>
 
-            <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
-                <div class="meter">
-                    <span style="width: {{ course.get_amount_progress }}%"></span>
-                </div>
-                <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
-                    <div class="metrics score">
-                        <p>SCORE<br>
-                            <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
-                    </div>
-                    {% for pledge in pledges %}
-                        {% if pledge.course == course %}
+                    <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
+                        <div class="meter">
+                            <span style="width: {{ pledge.get_amount_progress }}%"></span>
+                        </div>
+                        <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
+                            <div class="metrics score">
+                                <p>SCORE<br>
+                                    <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
+                            </div>
                             <div class="metrics goal">
                                 <p>GOAL<br>
                                     <span class="overall-mark">{{ pledge.get_aim }}<sup>%</sup></span>
@@ -188,8 +234,27 @@
                                 <p>PLEDGE<br>
                                     <span class="overall-mark">${{ pledge.money }}</span></p>
                             </div>
-                            {{ forloop|break }}
-                        {% elif forloop.counter == pledges.count %}
+                        </div>
+                    </div>
+                </dd>
+                {{ forloop|break }}
+            {% elif forloop.counter == pledges.count %}
+                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+                    class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
+                    <a href="#panel{{ course.id }}a"
+                       onclick="$('#filters').toggle();"
+                       style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
+                    </a>
+
+                    <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
+                        <div class="meter">
+                            <span style="width: {{ course.get_amount_progress }}%"></span>
+                        </div>
+                        <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
+                            <div class="metrics score">
+                                <p>SCORE<br>
+                                    <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
+                            </div>
                             {% if course.get_amount_progress <= 50 %}
                                 <div class="metrics goal pledge-start has-tip tip-bottom"
                                      data-class="{{ course.title }}"
@@ -210,15 +275,35 @@
                                     <p><strong>&#151; &#151;</strong></p>
                                 </div>
                             {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                    {% if not pledges %}
+                        </div>
+                    </div>
+                </dd>
+            {% endif %}
+        {% endfor %}
+        {% if not pledges %}
+            <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+                class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
+                <a href="#panel{{ course.id }}a"
+                   onclick="$('#filters').toggle();"
+                   style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
+                </a>
+
+                <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
+                    <div class="meter">
+                        <span style="width: {{ course.get_amount_progress }}%"></span>
+                    </div>
+                    <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
+                        <div class="metrics score">
+                            <p>SCORE<br>
+                                <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
+                        </div>
                         {% if course.get_amount_progress <= 50 %}
                             <div class="metrics goal pledge-start has-tip tip-bottom"
                                  data-class="{{ course.title }}"
                                  data-id="{{ course.id }}" data-tooltip
-                                 data-options="disable_for_touch:true" title="Make a pledge">
-                                <p><img src="{% static 'images/pledge-icon.png' %}"></p>
+                                 data-options="disable_for_touch:true" title="Make a pledge"><p>
+                                <img src="{% static 'images/pledge-icon.png' %}"
+                                     style="display: inline"></p>
                             </div>
                             <div class="metrics pledge">
                                 <p><strong>&#151; &#151;</strong></p>
@@ -232,29 +317,32 @@
                                 <p><strong>&#151; &#151;</strong></p>
                             </div>
                         {% endif %}
-                    {% endif %}
+                    </div>
                 </div>
-            </div>
-        </dd>
+            </dd>
+        {% endif %}
     {% endfor %}
     {% for course, grade in udemy_courses %}
-        <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
-            class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}"><a
-                href="#panel{{ course.id }}a"
-                onclick="$('#filters').toggle();"
-                style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}</a>
+        {% for pledge in pledges %}
+            {% if pledge.course == course %}
+                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+                    class="course {% if course.get_amount_progress >= 100 or pledge.is_done %}past{% else %}current{% endif %}">
+                    <a
+                            href="#panel{{ course.id }}a"
+                            onclick="$('#filters').toggle();"
+                            style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
+                        <br>Pledge Ending: {{ pledge.pledge_end_date }}
+                    </a>
 
-            <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
-                <div class="meter">
-                    <span style="width: {{ course.get_amount_progress }}%"></span>
-                </div>
-                <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
-                    <div class="metrics score">
-                        <p>SCORE<br>
-                            <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
-                    </div>
-                    {% for pledge in pledges %}
-                        {% if pledge.course == course %}
+                    <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
+                        <div class="meter">
+                            <span style="width: {{ pledge.get_amount_progress }}%"></span>
+                        </div>
+                        <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
+                            <div class="metrics score">
+                                <p>SCORE<br>
+                                    <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
+                            </div>
                             <div class="metrics goal">
                                 <p>GOAL<br>
                                     <span class="overall-mark">{{ pledge.get_aim }}<sup>%</sup></span>
@@ -265,9 +353,28 @@
                                 <p>PLEDGE<br>
                                     <span class="overall-mark">${{ pledge.money }}</span></p>
                             </div>
-                            {{ forloop|break }}
-                        {% elif forloop.counter == pledges.count %}
-                            {% if course.get_amount_progress <= 50 %}
+                        </div>
+                    </div>
+                </dd>
+                {{ forloop|break }}
+            {% elif forloop.counter == pledges.count %}
+                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+                    class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
+                    <a href="#panel{{ course.id }}a"
+                       onclick="$('#filters').toggle();"
+                       style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
+                    </a>
+
+                    <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
+                        <div class="meter">
+                            <span style="width: {{ course.get_amount_progress }}%"></span>
+                        </div>
+                        <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
+                            <div class="metrics score">
+                                <p>SCORE<br>
+                                    <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
+                            </div>
+                            {% if course.get_amount_progress <= 50 and grade < 25 %}
                                 <div class="metrics goal pledge-start has-tip tip-bottom"
                                      data-class="{{ course.title }}"
                                      data-id="{{ course.id }}" data-tooltip
@@ -287,15 +394,35 @@
                                     <p><strong>&#151; &#151;</strong></p>
                                 </div>
                             {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                    {% if not pledges %}
-                        {% if course.get_amount_progress <= 50 %}
+                        </div>
+                    </div>
+                </dd>
+            {% endif %}
+        {% endfor %}
+        {% if not pledges %}
+            <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+                class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
+                <a href="#panel{{ course.id }}a"
+                   onclick="$('#filters').toggle();"
+                   style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
+                </a>
+
+                <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
+                    <div class="meter">
+                        <span style="width: {{ course.get_amount_progress }}%"></span>
+                    </div>
+                    <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
+                        <div class="metrics score">
+                            <p>SCORE<br>
+                                <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
+                        </div>
+                        {% if course.get_amount_progress <= 50 and grade < 25 %}
                             <div class="metrics goal pledge-start has-tip tip-bottom"
                                  data-class="{{ course.title }}"
                                  data-id="{{ course.id }}" data-tooltip
-                                 data-options="disable_for_touch:true" title="Make a pledge">
-                                <p><img src="{% static 'images/pledge-icon.png' %}"></p>
+                                 data-options="disable_for_touch:true" title="Make a pledge"><p>
+                                <img src="{% static 'images/pledge-icon.png' %}"
+                                     style="display: inline"></p>
                             </div>
                             <div class="metrics pledge">
                                 <p><strong>&#151; &#151;</strong></p>
@@ -309,10 +436,10 @@
                                 <p><strong>&#151; &#151;</strong></p>
                             </div>
                         {% endif %}
-                    {% endif %}
+                    </div>
                 </div>
-            </div>
-        </dd>
+            </dd>
+        {% endif %}
     {% endfor %}
     </dl>
     </div>
@@ -410,6 +537,10 @@
 
                     <p id="probable_reward"><sup>$</sup>0</p>
                 </div>
+            </div>
+            <div style="position: relative; overflow: hidden; min-height: 7em">
+                <label for="datepicker">Pledge Completion Date:
+                    <input type="text" id="datepicker" name="date"></label>
             </div>
             <div style="position: relative; overflow: hidden">
                 <div id="goal-slider">
@@ -512,6 +643,7 @@
     <script src="{% static 'js/foundation/foundation.tooltip.js' %}"></script>
     <script src="{% static 'js/chart.js' %}"></script>
     <script src="{% static 'js/jquery.hoverscroll.js' %}"></script>
+    <script src="{% static 'js/pickaday.js' %}"></script>
     <script src="https://checkout.stripe.com/checkout.js"></script>
     <script>
     $(function () {
@@ -563,7 +695,6 @@
                     }
                 });
             }
-
             intervalUpdated = setInterval(checkIfUpdated, 200);
         {% endif %}
 
@@ -600,10 +731,14 @@
         var average_aim = 75;
         var current_name = "";
         var current_id;
+        var current_date;
+        var picker;
         $('.pledge-start').click(function () {
             var $clicked = $(this);
             current_id = $clicked.data('id');
             current_name = $clicked.data('class');
+            current_date = $clicked.data('end');
+
             $('#class-title').html('<p>' + current_name + '</p>');
             $('#class-id').val(current_id);
             $.get('{% url 'users:get_course_stats' %}', {'id': current_id}, function (data) {
@@ -615,6 +750,23 @@
                         projected_amount = parseInt(data['probable_reward']);
                     }
                     $('#probable_reward').html('<sup>$</sup>' + data['probable_reward']);
+                    var now = new Date();
+                    if (!picker) {
+                        picker = new Pikaday({ field: document.getElementById('datepicker'),
+                            minDate: now,
+                            setDefaultDate: true,
+                            position: 'top left'
+                        });
+                    }
+                    if (current_date && current_date != "None") {
+                        picker.setDate(current_date);
+                        $('#datepicker').val(picker.getDate());
+                        $('#datepicker').prop('disabled', true);
+                    } else {
+                        now.setDate(now.getDate());
+                        picker.setDate(now.getFullYear() + '-' + now.getMonth() + '-' + now.getDate());
+                        $('#datepicker').val(picker.toString('YYYY-MM-DD'));
+                    }
                 }
                 $('#pledge-box').lightbox_me({centered: true});
             });
@@ -634,7 +786,7 @@
                         projected_amount *
                                 (1 + (ui.value / 100 - average_aim / 100) / (average_aim / 100));
                 if (isNaN(value)) {
-                    value = 5;
+                    value = 10;
                 }
                 value = Math.round(value * 100) / 100;
                 $('#probable_reward').html('<sup>$</sup>' + value.toString());
@@ -656,8 +808,10 @@
 
         $('#make-pledge').click(function () {
             var token = function (res) {
+                var date = picker.getDate();
+                date = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
                 $.post('{% url 'pledges:create_ajax' %}', {'stripeToken': res.id, 'course': current_id, 'money': money,
-                    'aim': aim
+                    'aim': aim, 'date': date
                 }, function (data) {
                     if (parseInt(data['fail']) == 0) {
                         //TODO: update div

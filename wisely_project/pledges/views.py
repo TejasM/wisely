@@ -246,7 +246,8 @@ def create_ajax(request):
                 description=request.user.username,
             )
             course = Course.objects.get(pk=int(request.POST['course']))
-            pledge = Pledge.objects.create(user=request.user.userprofile,
+            date = request.POST.get('date', course.end_date)
+            pledge = Pledge.objects.create(user=request.user.userprofile, pledge_end_date=date,
                                            course=course,
                                            money=money, is_active=True,
                                            aim=float(request.POST['aim'].replace('%', '')) / 100)

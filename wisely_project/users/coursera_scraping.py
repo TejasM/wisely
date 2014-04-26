@@ -147,8 +147,7 @@ class CourseraDownloader(object):
                             if course not in user.courses.all():
                                 user.courses.add(course)
                                 #todo: added feed check
-                                action.send(actor=user.user.userprofile, verb='enrolled in', target=course, sender=None)
-                                #action.send(actor=user.user_profile, verb='enrolled in', target=course)
+                                #action.send(actor=user.user.userprofile, verb='enrolled in', target=course, sender=None)
                             try:
                                 pledge = Pledge.objects.get(course=course, user=user)
                                 if enrollment['grade_normal'] != 'null':
@@ -177,7 +176,7 @@ class CourseraDownloader(object):
                                                            description=description, course_id=topic_id)
                             user.courses.add(course)
                             #todo: added feed check
-                            action.send(actor=user.user.userprofile, verb='enrolled in', target=course, sender=None)
+                            #action.send(actor=user.user.userprofile, verb='enrolled in', target=course, sender=None)
                         res = self.session.get(quiz_link)
                         soup = BeautifulSoup(res.text)
                         quiz_list = soup.select('div.course-item-list .course-item-list-header')
