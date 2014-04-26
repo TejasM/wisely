@@ -186,6 +186,8 @@ class CourseraDownloader(object):
                             heading = quiz_coursera.select('h3')[0].find(text=True, recursive=False)
                             try:
                                 quiz = Quiz.objects.get(heading=heading, course=course)
+                            except Quiz.MultipleObjectsReturned:
+                                quiz = Quiz.objects.filter(heading=heading, course=course)[0]
                             except Quiz.DoesNotExist:
                                 deadline = None
                                 try:
