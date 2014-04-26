@@ -87,10 +87,9 @@
     {% for course, grade in coursera_courses %}
         {% for pledge in pledges %}
             {% if pledge.course == course %}
-                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}" data-name="{{ course.title }}" data-end="{{ course.end_date }}"
                     class="course {% if course.get_amount_progress >= 100 or pledge.is_done %}past{% else %}current{% endif %}">
-                    <a
-                            href="#panel{{ course.id }}a"
+                    <a href="#panel{{ course.id }}a"
                             onclick="$('#filters').toggle();"
                             style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
                         <br>Pledge Ending: {{ pledge.pledge_end_date }}
@@ -120,7 +119,7 @@
                 </dd>
                 {{ forloop|break }}
             {% elif forloop.counter == pledges.count %}
-                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}" data-name="{{ course.title }}" data-end="{{ course.end_date }}"
                     class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
                     <a href="#panel{{ course.id }}a"
                        onclick="$('#filters').toggle();"
@@ -162,7 +161,7 @@
             {% endif %}
         {% endfor %}
         {% if not pledges %}
-            <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+            <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}" data-name="{{ course.title }}" data-end="{{ course.end_date }}"
                 class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
                 <a href="#panel{{ course.id }}a"
                    onclick="$('#filters').toggle();"
@@ -206,7 +205,7 @@
     {% for course, grade in edx_courses %}
         {% for pledge in pledges %}
             {% if pledge.course == course %}
-                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}" data-name="{{ course.title }}" data-end="{{ course.end_date }}"
                     class="course {% if course.get_amount_progress >= 100 or pledge.is_done %}past{% else %}current{% endif %}">
                     <a
                             href="#panel{{ course.id }}a"
@@ -239,7 +238,7 @@
                 </dd>
                 {{ forloop|break }}
             {% elif forloop.counter == pledges.count %}
-                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}" data-name="{{ course.title }}" data-end="{{ course.end_date }}"
                     class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
                     <a href="#panel{{ course.id }}a"
                        onclick="$('#filters').toggle();"
@@ -281,7 +280,7 @@
             {% endif %}
         {% endfor %}
         {% if not pledges %}
-            <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+            <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}" data-name="{{ course.title }}" data-end="{{ course.end_date }}"
                 class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
                 <a href="#panel{{ course.id }}a"
                    onclick="$('#filters').toggle();"
@@ -325,7 +324,7 @@
     {% for course, grade in udemy_courses %}
         {% for pledge in pledges %}
             {% if pledge.course == course %}
-                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}" data-name="{{ course.title }}" data-end="{{ course.end_date }}"
                     class="course {% if course.get_amount_progress >= 100 or pledge.is_done %}past{% else %}current{% endif %}">
                     <a
                             href="#panel{{ course.id }}a"
@@ -358,7 +357,7 @@
                 </dd>
                 {{ forloop|break }}
             {% elif forloop.counter == pledges.count %}
-                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}" data-name="{{ course.title }}" data-end="{{ course.end_date }}"
                     class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
                     <a href="#panel{{ course.id }}a"
                        onclick="$('#filters').toggle();"
@@ -400,7 +399,7 @@
             {% endif %}
         {% endfor %}
         {% if not pledges %}
-            <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+            <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}" data-name="{{ course.title }}" data-end="{{ course.end_date }}"
                 class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
                 <a href="#panel{{ course.id }}a"
                    onclick="$('#filters').toggle();"
