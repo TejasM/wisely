@@ -15,6 +15,7 @@ urlpatterns = patterns('',
                        url(r'^google46c8e47a069f43cd\.html$',
                            lambda r: HttpResponse("google-site-verification: google46c8e47a069f43cd.html",
                                                   mimetype="text/plain")),
+                       url(r'BingSiteAuth\.xml', TemplateView.as_view(template_name='BingSiteAuth.xml')),
                        url(r'^alt$', view.index_alt),
                        url(r'^main$', view.index),
                        url(r'^learn-more$', TemplateView.as_view(template_name='learn-more-alt.html')),
@@ -39,7 +40,7 @@ urlpatterns = patterns('',
                        url(r'^blog/', include('cms.urls')),
                        url('activity/', include('actstream.urls')),
                        url(r'^sitemap\.xml$', TemplateView.as_view(template_name='sitemap.xml')),
-)
+                       )
 
 if not production.DEBUG:
     urlpatterns += patterns('',
