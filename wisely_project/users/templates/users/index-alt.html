@@ -119,7 +119,7 @@
                 </dd>
                 {{ forloop|break }}
             {% elif forloop.counter == pledges.count %}
-                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}" data-name="{{ course.title }}" data-end="{{ course.end_date }}"
+                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
                     class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
                     <a href="#panel{{ course.id }}a"
                        onclick="$('#filters').toggle();"
@@ -137,7 +137,7 @@
                             </div>
                             {% if course.get_amount_progress <= 50 %}
                                 <div class="metrics goal pledge-start has-tip tip-bottom"
-                                     data-class="{{ course.title }}"
+                                     data-class="{{ course.title }}" data-end="{{ course.end_date }}"
                                      data-id="{{ course.id }}" data-tooltip
                                      data-options="disable_for_touch:true" title="Make a pledge"><p>
                                     <img src="{% static 'images/pledge-icon.png' %}"
@@ -161,7 +161,7 @@
             {% endif %}
         {% endfor %}
         {% if not pledges %}
-            <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}" data-name="{{ course.title }}" data-end="{{ course.end_date }}"
+            <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
                 class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
                 <a href="#panel{{ course.id }}a"
                    onclick="$('#filters').toggle();"
@@ -179,7 +179,7 @@
                         </div>
                         {% if course.get_amount_progress <= 50 %}
                             <div class="metrics goal pledge-start has-tip tip-bottom"
-                                 data-class="{{ course.title }}"
+                                 data-class="{{ course.title }}" data-end="{{ course.end_date }}"
                                  data-id="{{ course.id }}" data-tooltip
                                  data-options="disable_for_touch:true" title="Make a pledge"><p>
                                 <img src="{% static 'images/pledge-icon.png' %}"
@@ -205,7 +205,7 @@
     {% for course, grade in edx_courses %}
         {% for pledge in pledges %}
             {% if pledge.course == course %}
-                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}" data-name="{{ course.title }}" data-end="{{ course.end_date }}"
+                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
                     class="course {% if course.get_amount_progress >= 100 or pledge.is_done %}past{% else %}current{% endif %}">
                     <a
                             href="#panel{{ course.id }}a"
@@ -238,7 +238,7 @@
                 </dd>
                 {{ forloop|break }}
             {% elif forloop.counter == pledges.count %}
-                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}" data-name="{{ course.title }}" data-end="{{ course.end_date }}"
+                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
                     class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
                     <a href="#panel{{ course.id }}a"
                        onclick="$('#filters').toggle();"
@@ -256,7 +256,7 @@
                             </div>
                             {% if course.get_amount_progress <= 50 %}
                                 <div class="metrics goal pledge-start has-tip tip-bottom"
-                                     data-class="{{ course.title }}"
+                                     data-class="{{ course.title }}" data-end="{{ course.end_date }}"
                                      data-id="{{ course.id }}" data-tooltip
                                      data-options="disable_for_touch:true" title="Make a pledge"><p>
                                     <img src="{% static 'images/pledge-icon.png' %}"
@@ -280,7 +280,7 @@
             {% endif %}
         {% endfor %}
         {% if not pledges %}
-            <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}" data-name="{{ course.title }}" data-end="{{ course.end_date }}"
+            <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
                 class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
                 <a href="#panel{{ course.id }}a"
                    onclick="$('#filters').toggle();"
@@ -298,7 +298,7 @@
                         </div>
                         {% if course.get_amount_progress <= 50 %}
                             <div class="metrics goal pledge-start has-tip tip-bottom"
-                                 data-class="{{ course.title }}"
+                                 data-class="{{ course.title }}" data-end="{{ course.end_date }}"
                                  data-id="{{ course.id }}" data-tooltip
                                  data-options="disable_for_touch:true" title="Make a pledge"><p>
                                 <img src="{% static 'images/pledge-icon.png' %}"
@@ -324,7 +324,7 @@
     {% for course, grade in udemy_courses %}
         {% for pledge in pledges %}
             {% if pledge.course == course %}
-                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}" data-name="{{ course.title }}" data-end="{{ course.end_date }}"
+                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
                     class="course {% if course.get_amount_progress >= 100 or pledge.is_done %}past{% else %}current{% endif %}">
                     <a
                             href="#panel{{ course.id }}a"
@@ -357,7 +357,7 @@
                 </dd>
                 {{ forloop|break }}
             {% elif forloop.counter == pledges.count %}
-                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}" data-name="{{ course.title }}" data-end="{{ course.end_date }}"
+                <dd style="overflow: hidden; position: relative"
                     class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
                     <a href="#panel{{ course.id }}a"
                        onclick="$('#filters').toggle();"
@@ -375,7 +375,7 @@
                             </div>
                             {% if course.get_amount_progress <= 50 and grade < 25 %}
                                 <div class="metrics goal pledge-start has-tip tip-bottom"
-                                     data-class="{{ course.title }}"
+                                     data-class="{{ course.title }}" data-end="{{ course.end_date }}"
                                      data-id="{{ course.id }}" data-tooltip
                                      data-options="disable_for_touch:true" title="Make a pledge"><p>
                                     <img src="{% static 'images/pledge-icon.png' %}"
@@ -399,7 +399,7 @@
             {% endif %}
         {% endfor %}
         {% if not pledges %}
-            <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}" data-name="{{ course.title }}" data-end="{{ course.end_date }}"
+            <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
                 class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
                 <a href="#panel{{ course.id }}a"
                    onclick="$('#filters').toggle();"
@@ -417,7 +417,7 @@
                         </div>
                         {% if course.get_amount_progress <= 50 and grade < 25 %}
                             <div class="metrics goal pledge-start has-tip tip-bottom"
-                                 data-class="{{ course.title }}"
+                                 data-class="{{ course.title }}" data-end="{{ course.end_date }}"
                                  data-id="{{ course.id }}" data-tooltip
                                  data-options="disable_for_touch:true" title="Make a pledge"><p>
                                 <img src="{% static 'images/pledge-icon.png' %}"
