@@ -69,6 +69,9 @@
                   method="post" style="display: none">
                 <p><strong>Add udemy Account</strong></p>
                 {% csrf_token %}
+                <p>If you used facebook to setup your Udemy account, you can set a password at: <a
+                        href="https://www.udemy.com/user/edit-account/" target="_blank">https://www.udemy.com/user/edit-account/</a>.
+                </p>
                 <input type="hidden" value="udemy" name="platform" id="platform_name"/>
 
                 <input type="text" name="username" class="form-control" id="add-username"

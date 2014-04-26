@@ -55,7 +55,8 @@
                             </div>
                             <div id="slider"></div>
                             <div id="below-slider" style="position: absolute; top: 400px; left: 50px; width: 100%"><h2
-                                    style="font-size: 2em; color: #fff; text-align: left; padding: 0 2em">Wisely helps you meet your
+                                    style="font-size: 2em; color: #fff; text-align: left; padding: 0 2em">Wisely helps
+                                you meet your
                                 personal learning goals on Coursera, EdX, and Udemy. <br>
                                 Keep track of your progress and earn rewards for your achievements.</h2>
                             </div>
@@ -68,7 +69,7 @@
                     <div class="row" style="display: block">
                         <a href="#after-scroll" style="color: #fff">
                             <h3 class="finish-anim" style="text-align: center; color: #fff">Get $20
-                                guaranteed rewards for course completion. <a href="#pledge-ic" style="display: none;">See below.</a></h3>
+                                guaranteed rewards for course completion.</h3>
                             <img src="{% static 'images/down-orange.png' %}" class="finish-anim"
                                  style="margin: 0 auto; text-align: center; display: none"></a>
                     </div>
@@ -199,19 +200,34 @@
             {% if not user.is_authenticated %}
                 <button id="sign">GET STARTED</button>
             {% endif %}
+            <div class="row">
+                <div class="large-12 centered">
+                    <div class="row" style="margin-top: 2em; font-size: 1.3em">
+                        <a id="contact" style="margin-right: 2em; color: #fff">Contact Us</a>
+                        <a href="https://www.facebook.com/projectwisely" style="margin-right: 2em"><img
+                                src="{% static 'images/facebook-login.png' %}"></a>
+                        <a href="https://twitter.com/learnwithwisely" style="margin-right: 2em"><img
+                                src="{% static 'images/twitter-login.png' %}"></a>
+                        <a href="https://plus.google.com/+Projectwisely/posts" style="margin-right: 2em"><img
+                                src="{% static 'images/google-login.png' %}"></a>
+                        <a href="" style="color: #fff">Privacy</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-
     <div id="contact-us" class="light-box">
         <div class="row text-center" id="contact-body">
-            <h2>Contact Us</h2>
+            <h2 style="color: #333">Contact Us</h2>
 
             <div class="extra-top-margin">
-                <input type="email" name="email" id='contact-email' placeholder="Your Email Address">
+                <input style="font-size: 1.2em" type="email" name="email" id='contact-email'
+                       placeholder="Your Email Address">
             </div>
             <div class="extra-margin-top">
-                <textarea id="contact-mail" placeholder="Your Message"></textarea>
+                <textarea id="contact-mail" style="font-size: 1.2em; font-family: Dist-light"
+                          placeholder="Your Message"></textarea>
             </div>
             <div class="row">
                 <div id="validation-contact" class="validation" style="color: red;"></div>
@@ -442,6 +458,26 @@
                 // Alternatively you could use:
                 // (new Image()).src = this;
             });
+        }
+
+        $('#contact').click(function () {
+            $('#contact-us').lightbox_me({centered: true});
+        });
+
+        $('#contact-send').click(function () {
+            var myRootRef = new Firebase('https://wisely.firebaseIO.com/');
+
+            if (validateEmail($('#contact-email').val())) {
+                myRootRef.push({name: $('#contact-email').val().split('@')[0], msg: $('#contact-mail').val()});
+                $('#contact-body').text('Thank You! We will keep you updated!');
+                $('#contact-us').trigger('close');
+            } else {
+                $('#validation-contact').text('That doesn\'t look like a valid email address. Please try again.');
+            }
+        });
+        function validateEmail(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
         }
 
         // Usage:
