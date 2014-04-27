@@ -336,7 +336,8 @@ def get_udemy_courses(profile):
                         profile.last_updated = timezone.now()
                         profile.save()
                     except:
-                        pass
+                        print traceback.format_exc()
+                        continue
                     #todo: added feed check
                     #action.send(actor=profile.user.userprofile, verb='enrolled in', target=course, sender=None)
                     #action.send(actor=profile.user_profile, verb='enrolled in', target=course)
