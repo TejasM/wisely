@@ -70,7 +70,7 @@ def scrape_for_user(edxprofile):
                         pass
                 if course.end_date is None and 'Course Completed' in dates[i]:
                     try:
-                        course.end_date = datetime.strptime(dates[i].replace('Course Started - ', ''),
+                        course.end_date = datetime.strptime(dates[i].replace('Course Completed - ', ''),
                                                             '%b %d, %Y').date()
                     except:
                         pass
