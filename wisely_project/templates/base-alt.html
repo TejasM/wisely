@@ -42,9 +42,9 @@
                 {% include 'nav-bar-alt.html' %}
             </div>
 
-            <div class="row wide-row">
+            <div class="row wide-row" style="width: 100%">
                 <div class="large-12 large-centered small-12 columns">
-                    <div class="title">
+                    <div class="title" style="width: 100%">
 
                         <div id="slider-parent" style="position: relative; max-height: 500px">
                             <div id="goal-name" class="anim-circle">Goal</div>
@@ -55,25 +55,25 @@
                             </div>
                             <div id="slider"></div>
                             <div id="below-slider" style="position: absolute; top: 400px; left: 50px; width: 100%"><h2
-                                    style="font-size: 2em; color: #fff; text-align: left; padding: 0 2em">Wisely helps
+                                    id="below-text" style="font-size: 2em; color: #fff; text-align: left; padding: 0 2em">Wisely helps
                                 you meet your
                                 personal learning goals on Coursera, EdX, and Udemy. <br>
                                 Keep track of your progress and earn rewards for your achievements.</h2>
                             </div>
-                            <div id="holder" class="anim-circle"></div>
+                            <div id="holder" class="anim-circle" style="margin: 0 auto; width: 100%; left: 0"></div>
                             <div id="reward" style="margin-top: 1.1em" class="anim-circle"><sup>$</sup>0</div>
                             <div id="reward-name" class="anim-circle">Reward</div>
                         </div>
 
                     </div>
-                    <div class="row" style="display: block">
-                        <a href="#after-scroll" style="color: #fff">
-                            <h3 class="finish-anim" style="text-align: center; color: #fff">Get $20
-                                guaranteed rewards for course completion.</h3>
-                            <img src="{% static 'images/down-orange.png' %}" class="finish-anim"
-                                 style="margin: 0 auto; text-align: center; display: none"></a>
-                    </div>
                 </div>
+            </div>
+            <div class="row" style="display: block">
+                <a href="#after-scroll" style="color: #fff">
+                    <h3 class="finish-anim" style="text-align: center; color: #fff">Get $20
+                        guaranteed rewards for course completion.</h3>
+                    <img src="{% static 'images/down-orange.png' %}" class="finish-anim"
+                         style="margin: 0 auto; text-align: center; display: none"></a>
             </div>
         </div>
     </section>
