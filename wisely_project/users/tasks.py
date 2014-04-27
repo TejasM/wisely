@@ -325,7 +325,10 @@ def get_udemy_courses(profile):
                     image_url = course_dict['images']['img_75x75']
                     title = course_dict['title']
                     try:
-                        description = re.sub('<[^>]*>', '', course_dict['promoAsset']['description'])
+                        try:
+                            description = re.sub('<[^>]*>', '', course_dict['promoAsset']['description'])
+                        except:
+                            description = ""
                         course_url = course_dict['url']
                         course = Course.objects.create(course_id=course_id, title=title,
                                                        course_link=course_url, description=description,
