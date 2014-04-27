@@ -130,25 +130,25 @@ class CourseraDownloader(object):
                             course = Course.objects.get(course_id=enrollment['course__topic_id'])
                             course_id = enrollment['course_id']
                             for coursera_course in courses:
-                                try:
-                                    if coursera_course['id'] == course_id:
-                                        course_link = coursera_course['home_link']
-                                        quiz_link = coursera_course['home_link'] + "quiz"
+                                if coursera_course['id'] == course_id:
+                                    course_link = coursera_course['home_link']
+                                    quiz_link = coursera_course['home_link'] + "quiz"
+                                    try:
                                         start_date = date(coursera_course['start_year'], coursera_course['start_month'],
-                                                          coursera_course['start_day'])
-                                        end_date = None
-                                        if "weeks" in coursera_course['duration_string']:
-                                            delta = timedelta(weeks=int(re.findall(r'\d+',
-                                                                                   coursera_course['duration_string'])[0]))
-                                            end_date = start_date + delta
-                                        if course.start_date != start_date:
-                                            course.start_date = start_date
-                                        if course.end_date != end_date:
-                                            course.end_date = end_date
-                                        course.save()
-                                except:
-                                    print coursera_course
-                                    continue
+                                                      coursera_course['start_day'])
+                                    except:
+                                        start_date = date(coursera_course['start_year'], coursera_course['start_month'],
+                                                      1)
+                                    end_date = None
+                                    if "weeks" in coursera_course['duration_string']:
+                                        delta = timedelta(weeks=int(re.findall(r'\d+',
+                                                                               coursera_course['duration_string'])[0]))
+                                        end_date = start_date + delta
+                                    if course.start_date != start_date:
+                                        course.start_date = start_date
+                                    if course.end_date != end_date:
+                                        course.end_date = end_date
+                                    course.save()
                             if course not in user.courses.all():
                                 user.courses.add(course)
                                 #todo: added feed check
