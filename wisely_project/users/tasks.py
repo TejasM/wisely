@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division
 import re
+import traceback
 
 from bs4 import BeautifulSoup
 import dateutil.parser
@@ -292,7 +293,7 @@ def get_coursera_courses(profile):
     except Exception as e:
         profile.incorrect_login = True
         profile.save()
-        print e
+        print traceback.format_exc()
 
 
 def get_edx_courses(edxprofile):
@@ -374,4 +375,4 @@ def get_udemy_courses(profile):
             profile.incorrect_login = True
             profile.save()
     except:
-        return
+        print traceback.format_exc()
