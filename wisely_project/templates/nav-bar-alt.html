@@ -1,7 +1,7 @@
 {% load staticfiles %}
 <div class="row wide-row" style="width: 100%">
     <div class="top-bar-inner">
-        <div class="large-4 small-4 columns">
+        <div class="large-4 {% if user.is_authenticated and request.is_mobile %}small-12{% else %}small-4{% endif %} columns">
             <div class="left-nav">
                 <div class="row" style="text-align: center">
                     {% if user.is_authenticated %}
@@ -60,13 +60,17 @@
             </div>
         </div>
 
-        <div class="large-4 small-4 {% if not user.is_authenticated %} push-4 {% endif %} columns" style="text-align: center">
+        <div class="large-4 small-4 {% if not user.is_authenticated and not request.is_mobile %} push-4 {% endif %} columns"
+             style="text-align: center;
+                     {% if user.is_authenticated and request.is_mobile %}display: none{% endif %}">
             <a href="/" class="title-area">
-                <img alt="Wisely" src="{% static 'images/log-white-small.png' %}" height="60" width="60" style="image-rendering: -moz-crisp-edges;"/>
+                <img alt="Wisely" src="{% static 'images/log-white-small.png' %}" height="60" width="60"
+                     style="image-rendering: -moz-crisp-edges;"/>
             </a>
         </div>
-        <div class="large-4 small-4 columns" style="display: visible" id="finish-anim">
-        <div class="right-nav">
+        <div class="large-4 {% if request.is_mobile %}small-8{% else %}small-4{% endif %} columns"
+             style="display: visible" id="finish-anim">
+            <div class="right-nav">
                 <div class="row" style="text-align: center">
                     <a href="/faq/alt">
                         FAQ

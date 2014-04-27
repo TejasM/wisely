@@ -1098,15 +1098,10 @@ img.small {
     background: #83BC5D;
 }
 
-@media only screen
-and (min-device-width : 320px)
-and (max-device-width : 480px) {
-
-    #inner-above {
-        font-size: 2em !important;
+@media screen and (max-width: 650px) {
+    .light-box-white {
+        min-width: 300px;
+        padding: 3% 3%;
     }
 
-    #below-text {
-        font-size: 1.5em !important;
-    }
 }

@@ -33,52 +33,56 @@
          left: 0;right: 0;width: 100%;background: #0F486D;">
         {% include 'nav-bar-alt.html' %}
     </div>
+    {% if not request.is_mobile %}
+        <!-- Header -->
+        <section id="background-image">
+            <div id="inner wide-row" style="width: 100%">
+                <div style="padding-top: 2%;"
+                     id="other-menu">
+                    {% include 'nav-bar-alt.html' %}
+                </div>
 
-    <!-- Header -->
-    <section id="background-image">
-        <div id="inner wide-row">
-            <div style="padding-top: 2%;"
-                 id="other-menu">
-                {% include 'nav-bar-alt.html' %}
-            </div>
+                <div class="row wide-row" style="width: 100%">
+                    <div class="large-12 large-centered small-12 columns">
+                        <div class="title" style="width: 100%">
 
-            <div class="row wide-row" style="width: 100%">
-                <div class="large-12 large-centered small-12 columns">
-                    <div class="title" style="width: 100%">
-
-                        <div id="slider-parent" style="position: relative; max-height: 500px">
-                            <div id="goal-name" class="anim-circle">Goal</div>
-                            <div id="goal" class="anim-circle">0<sup>%</sup></div>
-                            <div id="above-slider" style="position: absolute; top: 140px; width: 100%;"><h1
-                                    id="inner-above"
-                                    style="font-size: 5em">CROWD-SOURCED MOTIVATION</h1>
+                            <div id="slider-parent" style="position: relative; max-height: 500px">
+                                <div id="goal-name" class="anim-circle">Goal</div>
+                                <div id="goal" class="anim-circle">0<sup>%</sup></div>
+                                <div id="above-slider" style="position: absolute; top: 140px; width: 100%;"><h1
+                                        id="inner-above"
+                                        style="font-size: 5em">CROWD-SOURCED MOTIVATION</h1>
+                                </div>
+                                <div id="slider"></div>
+                                <div id="below-slider" style="position: absolute; top: 400px; left: 50px; width: 100%">
+                                    <h2
+                                            id="below-text"
+                                            style="font-size: 2em; color: #fff; text-align: left; padding: 0 2em">Wisely
+                                        helps
+                                        you meet your
+                                        personal learning goals on Coursera, EdX, and Udemy. <br>
+                                        Keep track of your progress and earn rewards for your achievements.</h2>
+                                </div>
+                                <div id="holder" class="anim-circle" style="margin: 0 auto; width: 100%; left: 0"></div>
+                                <div id="reward" style="margin-top: 1.1em" class="anim-circle"><sup>$</sup>0</div>
+                                <div id="reward-name" class="anim-circle">Reward</div>
                             </div>
-                            <div id="slider"></div>
-                            <div id="below-slider" style="position: absolute; top: 400px; left: 50px; width: 100%"><h2
-                                    id="below-text" style="font-size: 2em; color: #fff; text-align: left; padding: 0 2em">Wisely helps
-                                you meet your
-                                personal learning goals on Coursera, EdX, and Udemy. <br>
-                                Keep track of your progress and earn rewards for your achievements.</h2>
-                            </div>
-                            <div id="holder" class="anim-circle" style="margin: 0 auto; width: 100%; left: 0"></div>
-                            <div id="reward" style="margin-top: 1.1em" class="anim-circle"><sup>$</sup>0</div>
-                            <div id="reward-name" class="anim-circle">Reward</div>
+
                         </div>
-
                     </div>
                 </div>
+                <div class="row" style="display: block">
+                    <a href="#after-scroll" style="color: #fff">
+                        <h3 class="finish-anim" style="text-align: center; color: #fff">Get $20
+                            guaranteed rewards for course completion.</h3>
+                        <img src="{% static 'images/down-orange.png' %}" class="finish-anim"
+                             style="margin: 0 auto; text-align: center; display: none"></a>
+                </div>
             </div>
-            <div class="row" style="display: block">
-                <a href="#after-scroll" style="color: #fff">
-                    <h3 class="finish-anim" style="text-align: center; color: #fff">Get $20
-                        guaranteed rewards for course completion.</h3>
-                    <img src="{% static 'images/down-orange.png' %}" class="finish-anim"
-                         style="margin: 0 auto; text-align: center; display: none"></a>
-            </div>
-        </div>
-    </section>
-    <section id="after-scroll" style="display: none">
-        <div class="one-place" style="position: relative">
+        </section>
+    {% endif %}
+    <section id="after-scroll" style="display: none;">
+        <div class="one-place" style="position: relative;  padding-left: 10px; padding-right: 10px">
             <div class="row">
                 <div class="large-12 columns">
                     <h1>ONE PLACE FOR ALL YOUR ONLINE COURSES</h1>
@@ -128,10 +132,11 @@
                 <img src="{% static 'images/pledge-icon.png' %}" id="pledge-ic">
             </div>
         </div>
-        <div class="pledge-sec alt-back" id="pledge-sec" style="position: relative">
+        <div class="pledge-sec alt-back" id="pledge-sec"
+             style="position: relative;  padding-left: 10px; padding-right: 10px">
             <div class="row">
 
-                <h1 class="pledge-color">PLEDGE</h1>
+                <h1 class="pledge-color" style="margin-top: 30px;">PLEDGE</h1>
 
                 <h2 style="text-align: left">Set your goal and make a pledge to commit to your learning. Get rewards for
                     completing assignments and reaching your goals, paid for by members who don't.</h2>
@@ -144,10 +149,10 @@
                 <img src="{% static 'images/track-icon.png' %}" id="track-ic">
             </div>
         </div>
-        <div class="track-sec" id="track-sec" style="position: relative">
+        <div class="track-sec" id="track-sec" style="position: relative;  padding-left: 10px; padding-right: 10px">
             <div class="row">
 
-                <h1 class="track-color">TRACK</h1>
+                <h1 class="track-color" style="margin-top: 30px;">TRACK</h1>
 
                 <h2 style="text-align: left">Wisely helps you monitor your progress across all of your online courses in
                     one easy-to-use dashboard. Get notified of announcements, updates, and upcoming deadlines.</h2>
@@ -158,9 +163,10 @@
                 <img src="{% static 'images/connect-icon.png' %}" id="share-ic">
             </div>
         </div>
-        <div class="share-sec alt-back" id="share-sec" style="position: relative">
+        <div class="share-sec alt-back" id="share-sec"
+             style="position: relative;  padding-left: 10px; padding-right: 10px">
             <div class="row">
-                <h1 class="connect-color">CONNECT</h1>
+                <h1 class="connect-color" style="margin-top: 30px;">CONNECT</h1>
 
                 <h2 style="text-align: left">Meet your online classmates through Wisely and collaborate through live
                     study rooms. Share your progress with your followers and social networks.</h2>
@@ -171,10 +177,10 @@
                 <img src="{% static 'images/acheive-icon.png' %}" id="achieve-ic">
             </div>
         </div>
-        <div class="achieve-sec" id="achieve-sec" style="position: relative">
+        <div class="achieve-sec" id="achieve-sec" style="position: relative;  padding-left: 10px; padding-right: 10px">
             <div class="row">
 
-                <h1 class="achieve-color">ACHIEVE</h1>
+                <h1 class="achieve-color" style="margin-top: 30px;">ACHIEVE</h1>
 
                 <h2 style="text-align: center">Stay motivated, stay on track, and achieve your goals with Wisely.</h2>
 
@@ -185,7 +191,7 @@
             </div>
         </div>
 
-        <div class="people-sec alt-back" style="margin-top: 2em">
+        <div class="people-sec alt-back" style="margin-top: 2em;  padding-left: 10px; padding-right: 10px">
             <div class="row">
 
                 <h1 style="margin-bottom: 0">WHAT PEOPLE SAY ABOUT US</h1>
@@ -262,10 +268,10 @@
                 </div>
                 <div class="centered" style="margin-top: 3em">
                     <div class="row">
-                        <div class="large-6 columns">
+                        <div class="large-6 small-6 columns">
                             <button type="submit">LOGIN</button>
                         </div>
-                        <div class="large-6 columns">
+                        <div class="large-6 small-6 columns">
                             <button type="button" id="sign-up">SIGN UP</button>
                         </div>
                     </div>
@@ -306,149 +312,152 @@
 <script src="{% static 'js/raph.js' %}"></script>
 <script src="{% static 'js/raph-plugin.js' %}"></script>
 <script>
-    var archtype = Raphael("holder", 500, 500);
-    archtype.defineLinearGradient("grad1", [
-        {
-            "id": "s1",
-            "offset": "0",
-            "style": "stop-color:#F15D28;stop-opacity:1;"},
-        {
-            "id": "s2",
-            "offset": "1",
-            "style": "stop-color:#F2CD03;stop-opacity:1;"}
-    ]);
+    {% if not request.is_mobile %}
+        var archtype = Raphael("holder", 500, 500);
+        archtype.defineLinearGradient("grad1", [
+            {
+                "id": "s1",
+                "offset": "0",
+                "style": "stop-color:#F15D28;stop-opacity:1;"},
+            {
+                "id": "s2",
+                "offset": "1",
+                "style": "stop-color:#F2CD03;stop-opacity:1;"}
+        ]);
 
-    var center = 250;
+        var center = 250;
 
-    archtype.defineLinearGradient("grad2", [
-        {
-            "id": "s1",
-            "offset": "0",
-            "style": "stop-color:#52ADA8;stop-opacity:1;"},
-        {
-            "id": "s2",
-            "offset": "1",
-            "style": "stop-color:#7EAA84;stop-opacity:1;"}
-    ]);
-    archtype.customAttributes.arc = function (xloc, yloc, value, total, R) {
-        var alpha = 360 / total * value,
-                a = (90 - alpha) * Math.PI / 180,
-                x = xloc + R * Math.cos(a),
-                y = yloc - R * Math.sin(a),
-                path;
-        if (total == value) {
-            path = [
-                ["M", xloc, yloc - R],
-                ["A", R, R, 0, 1, 1, xloc - 0.01, yloc - R]
-            ];
-        } else {
-            path = [
-                ["M", xloc, yloc - R],
-                ["A", R, R, 0, +(alpha > 180), 1, x, y]
-            ];
-        }
-        return {
-            path: path
+        archtype.defineLinearGradient("grad2", [
+            {
+                "id": "s1",
+                "offset": "0",
+                "style": "stop-color:#52ADA8;stop-opacity:1;"},
+            {
+                "id": "s2",
+                "offset": "1",
+                "style": "stop-color:#7EAA84;stop-opacity:1;"}
+        ]);
+        archtype.customAttributes.arc = function (xloc, yloc, value, total, R) {
+            var alpha = 360 / total * value,
+                    a = (90 - alpha) * Math.PI / 180,
+                    x = xloc + R * Math.cos(a),
+                    y = yloc - R * Math.sin(a),
+                    path;
+            if (total == value) {
+                path = [
+                    ["M", xloc, yloc - R],
+                    ["A", R, R, 0, 1, 1, xloc - 0.01, yloc - R]
+                ];
+            } else {
+                path = [
+                    ["M", xloc, yloc - R],
+                    ["A", R, R, 0, +(alpha > 180), 1, x, y]
+                ];
+            }
+            return {
+                path: path
+            };
         };
-    };
 
-    archtype.customAttributes.arc2 = function (xloc, yloc, value, total, R) {
-        var alpha = 360 / total * value,
-                a = (90 - alpha) * Math.PI / 180,
-                x = xloc - R * Math.cos(a),
-                y = yloc - R * Math.sin(a),
-                path;
-        if (total == value) {
-            path = [
-                ["M", xloc, yloc - R],
-                ["A", R, R, 0, 1, 1, xloc - 0.01, yloc - R]
-            ];
-        } else {
-            path = [
-                ["M", xloc, yloc - R],
-                ["A", R, R, 0, +(alpha > 180), 0, x, y]
-            ];
-        }
-        return {
-            path: path
+        archtype.customAttributes.arc2 = function (xloc, yloc, value, total, R) {
+            var alpha = 360 / total * value,
+                    a = (90 - alpha) * Math.PI / 180,
+                    x = xloc - R * Math.cos(a),
+                    y = yloc - R * Math.sin(a),
+                    path;
+            if (total == value) {
+                path = [
+                    ["M", xloc, yloc - R],
+                    ["A", R, R, 0, 1, 1, xloc - 0.01, yloc - R]
+                ];
+            } else {
+                path = [
+                    ["M", xloc, yloc - R],
+                    ["A", R, R, 0, +(alpha > 180), 0, x, y]
+                ];
+            }
+            return {
+                path: path
+            };
         };
-    };
 
-    //make an arc at 50,50 with a radius of 30 that grows from 0 to 40 of 100 with a bounce
-    var goal_arc = archtype.path().attr({
-        "stroke": "#f00",
-        "stroke-width": 15,
-        arc: [center, center, 0, 100, 200]
-    });
-    goal_arc.strokeLinearGradient("grad1", 15);
-    goal_arc.rotate(-87, center, center);
-
-    var top_grey_arc = archtype.path().attr({
-        "stroke": "#836D65",
-        "stroke-width": 15,
-        "stroke-opacity": 0.6,
-        arc: [center, center, 48.5, 100, 215]
-    });
-    top_grey_arc.rotate(-87, center, center);
-
-    var bottom_grey_arc = archtype.path().attr({
-        "stroke": "#836D65",
-        "stroke-width": 15,
-        "stroke-opacity": 0.6,
-        arc: [center, center, 49.5, 100, 215]
-    });
-    bottom_grey_arc.rotate(-270, center, center);
-
-    var money_arc = archtype.path().attr({
-        "stroke": "#f00",
-        "stroke-width": 15,
-        arc2: [center, center, 0, 100, 200]
-    });
-    money_arc.strokeLinearGradient("grad2", 15);
-    money_arc.rotate(-91, center, center);
-
-    var circle = archtype.circle(250, 250, 192);
-    circle.attr("fill", "#fff");
-    circle.attr("fill-opacity", 0.5);
-
-    // Sets the stroke attribute of the circle to white
-    circle.attr("stroke", "#fff");
-    var counter = 0;
-    var counter_goal = 0;
-    var counter_reward = 0;
-    function updateTime() {
-        counter++;
-        counter_goal = parseInt(counter);
-        if (counter_goal > 75) {
-            counter_goal = 75;
-        }
-        counter_reward = parseInt(counter_goal / 2) - 7;
-        if (counter_reward < 0) {
-            counter_reward = 3;
-        }
-        $('#goal').html(counter_goal.toString() + "<sup>%</sup>");
-        $('#reward').html("<sup>$</sup>" + counter_reward.toString());
-    }
-    var other_int = null;
-
-
-    function start_anim() {
-        // Custom Arc Attribute, position x&y, value portion of total, total value, Radius
-
-        goal_arc.animate({
-            arc: [center, center, 37, 100, 200]
-        }, 5000, "bounce", function () {
-
+        //make an arc at 50,50 with a radius of 30 that grows from 0 to 40 of 100 with a bounce
+        var goal_arc = archtype.path().attr({
+            "stroke": "#f00",
+            "stroke-width": 15,
+            arc: [center, center, 0, 100, 200]
         });
+        goal_arc.strokeLinearGradient("grad1", 15);
+        goal_arc.rotate(-87, center, center);
 
-
-        money_arc.animate({
-            arc2: [center, center, 19, 100, 200]
-        }, 5000, "bounce", function () {
-
+        var top_grey_arc = archtype.path().attr({
+            "stroke": "#836D65",
+            "stroke-width": 15,
+            "stroke-opacity": 0.6,
+            arc: [center, center, 48.5, 100, 215]
         });
-        other_int = setInterval(updateTime, 10000 / 75);
-    }
+        top_grey_arc.rotate(-87, center, center);
+
+        var bottom_grey_arc = archtype.path().attr({
+            "stroke": "#836D65",
+            "stroke-width": 15,
+            "stroke-opacity": 0.6,
+            arc: [center, center, 49.5, 100, 215]
+        });
+        bottom_grey_arc.rotate(-270, center, center);
+
+        var money_arc = archtype.path().attr({
+            "stroke": "#f00",
+            "stroke-width": 15,
+            arc2: [center, center, 0, 100, 200]
+        });
+        money_arc.strokeLinearGradient("grad2", 15);
+        money_arc.rotate(-91, center, center);
+
+        var circle = archtype.circle(250, 250, 192);
+        circle.attr("fill", "#fff");
+        circle.attr("fill-opacity", 0.5);
+
+        // Sets the stroke attribute of the circle to white
+        circle.attr("stroke", "#fff");
+        var counter = 0;
+        var counter_goal = 0;
+        var counter_reward = 0;
+        function updateTime() {
+            counter++;
+            counter_goal = parseInt(counter);
+            if (counter_goal > 75) {
+                counter_goal = 75;
+            }
+            counter_reward = parseInt(counter_goal / 2) - 7;
+            if (counter_reward < 0) {
+                counter_reward = 3;
+            }
+            $('#goal').html(counter_goal.toString() + "<sup>%</sup>");
+            $('#reward').html("<sup>$</sup>" + counter_reward.toString());
+        }
+        var other_int = null;
+
+        function start_anim() {
+            // Custom Arc Attribute, position x&y, value portion of total, total value, Radius
+
+            goal_arc.animate({
+                arc: [center, center, 37, 100, 200]
+            }, 5000, "bounce", function () {
+
+            });
+
+
+            money_arc.animate({
+                arc2: [center, center, 19, 100, 200]
+            }, 5000, "bounce", function () {
+
+            });
+            other_int = setInterval(updateTime, 10000 / 75);
+        }
+    {% else %}
+        $('#after-scroll').show();
+    {% endif %}
 </script>
 <script>
     $(function () {
@@ -526,61 +535,61 @@
             $('.under-slide').addClass('white-back');
             moving = true;
         }
+        {% if not request.is_mobile %}
+            $('.ui-slider-handle').mousedown(function () {
+                if (started == true) {
+                    completed = true;
+                    int_func = setInterval(finishanim, 10);
+                    return false;
+                } else {
+                    startanim();
+                    return false;
+                }
+            });
+            var moving = false;
 
-        $('.ui-slider-handle').mousedown(function () {
-            if (started == true) {
-                completed = true;
-                int_func = setInterval(finishanim, 10);
-                return false;
-            } else {
-                startanim();
-                return false;
-            }
-        });
-        var moving = false;
+            function finishanim() {
+                if ($('#goal').text() == "75%") {
 
-        function finishanim() {
-            if ($('#goal').text() == "75%") {
-
-                $('.anim-circle').fadeOut(1000, function () {
-                    $('.anim-circle').css({visibility: 'hidden'});
-                    $('.anim-circle').show();
-                    $('#after-scroll').fadeIn(1000);
-                    $('.finish-anim').fadeIn(1000);
-                });
-                clearInterval(int_func);
-                clearInterval(other_int);
-                var image = $('#background-image');
-                image.css("background", "url('{% static 'images/shutterstock_153034898.jpg' %}') no-repeat center center fixed");
-                image.css("background-size", "cover");
-                $('#inner-above').text('MOTIVATE YOUR LEARNING');
-                $('#above-slider').fadeIn(1000);
-                $('#below-slider').fadeIn(1000);
-                setTimeout(function () {
-                    $('.under-slide').removeClass('white-back');
-                    $('.under-slide').attr({src: "{% static 'images/check-mark-green.png' %}"});
-                }, 2000);
-                $('#slider').slider('value', 1000);
-                $('#other-menu').show();
-                $('.under-slide').addClass('white-back');
-                moving = true;
-            }
-        }
-
-        function setSliderTicks(el) {
-            var $slider = $(el);
-            var max = $slider.slider("option", "max");
-            var min = $slider.slider("option", "min");
-            var spacing = 25;
-
-            $slider.find('.ui-slider-tick-mark').remove();
-            for (var i = 1; i < max - min; i++) {
-                if (spacing * i < 100) {
-                    $('<span class="ui-slider-tick-mark"></span>').css('left', (spacing * i) + '%').appendTo($slider);
+                    $('.anim-circle').fadeOut(1000, function () {
+                        $('.anim-circle').css({visibility: 'hidden'});
+                        $('.anim-circle').show();
+                        $('#after-scroll').fadeIn(1000);
+                        $('.finish-anim').fadeIn(1000);
+                    });
+                    clearInterval(int_func);
+                    clearInterval(other_int);
+                    var image = $('#background-image');
+                    image.css("background", "url('{% static 'images/shutterstock_153034898.jpg' %}') no-repeat center center fixed");
+                    image.css("background-size", "cover");
+                    $('#inner-above').text('MOTIVATE YOUR LEARNING');
+                    $('#above-slider').fadeIn(1000);
+                    $('#below-slider').fadeIn(1000);
+                    setTimeout(function () {
+                        $('.under-slide').removeClass('white-back');
+                        $('.under-slide').attr({src: "{% static 'images/check-mark-green.png' %}"});
+                    }, 2000);
+                    $('#slider').slider('value', 1000);
+                    $('#other-menu').show();
+                    $('.under-slide').addClass('white-back');
+                    moving = true;
                 }
             }
-        }
 
+            function setSliderTicks(el) {
+                var $slider = $(el);
+                var max = $slider.slider("option", "max");
+                var min = $slider.slider("option", "min");
+                var spacing = 25;
+
+                $slider.find('.ui-slider-tick-mark').remove();
+                for (var i = 1; i < max - min; i++) {
+                    if (spacing * i < 100) {
+                        $('<span class="ui-slider-tick-mark"></span>').css('left', (spacing * i) + '%').appendTo($slider);
+                    }
+                }
+            }
+        {% endif %}
         $('#one-pledge').hover(function () {
             $(this).find('img').attr('src', '{% static 'images/pledge-icon.png' %}');
         }, function () {
@@ -624,15 +633,17 @@
             }
         });
         var count = 0;
-        setInterval(function () {
-            if (completed == false) {
-                if (moving == false || count >= 2) {
-                    $('.under-slide').toggleClass('white-back');
-                } else {
-                    count++;
+        {% if not request.is_mobile %}
+            setInterval(function () {
+                if (completed == false) {
+                    if (moving == false || count >= 2) {
+                        $('.under-slide').toggleClass('white-back');
+                    } else {
+                        count++;
+                    }
                 }
-            }
-        }, 1000);
+            }, 1000);
+        {% endif %}
     });
 </script>
 <script>

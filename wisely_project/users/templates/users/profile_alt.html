@@ -7,9 +7,10 @@
 {% load humanize %}
 {% load inbox %}
 {% block content %}
-    <div class="row wide-row">
+    <div class="row wide-row" style="{% if request.is_mobile %}width: 100%{% endif %}">
     {% if viewed_user == request.user %}
-        <div class="large-4 small-4 columns" style="border-right: solid #D2D4D5 1px;  padding-top: 80px">
+        <div class="large-4 columns"
+             style="border-right: solid #D2D4D5 1px;  padding-top: 80px;">
             <div class="row">
                 <dl class="tabs vertical" style="width: 100%; height: 28em" data-tab>
                     <dd class="active"><a href="#panel1a"><i class="fa fa-bolt"></i>Recent Activities</a></dd>
@@ -25,7 +26,7 @@
                 </dl>
             </div>
             <div class="row" style="margin-top: 30px;">
-                <div class="large-3 small-3 columns">
+                <div class="large-3 columns">
                     <img src="{% static 'images/plus-icon.png' %}" style="width: 100%">
                 </div>
                 <div class="large-9 small-9 columns">
@@ -64,16 +65,16 @@
                 </ul>
             </div>
         </div>
-        <div class="large-8 small-8 columns" style="padding-top: 80px">
+        <div class="large-8 columns" style="padding-top: 80px">
     {% else %}
-        <div class="large-12 small-12 columns" style="padding-top: 80px">
+        <div class="large-12 columns" style="padding-top: 80px">
     {% endif %}
     <div class="row profile-area"
          style="position:relative;
                  height: 28em; background: url('{% static 'images/shutterstock_153034898.jpg' %}') no-repeat center center; background-size: cover">
-        <div class="large-3 small-3 columns">
+        <div class="large-3 columns">
         </div>
-        <div class="large-6 push-3 small-6 columns" style="text-align: center;">
+        <div class="large-6 push-3 columns" style="text-align: center;">
             <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
                  {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
                  class="img-circle" style="display: block; margin: 20px auto; height:175px; width: 175px">
@@ -96,7 +97,7 @@
             </div>
         </div>
         {% if viewed_user == request.user %}
-            <div class="large-3 small-3 {% if public and viewed_user != user %}push-3{% endif %} columns">
+            <div class="large-3 {% if public and viewed_user != user %}push-3{% endif %} columns">
                 <div style="text-align: right; float: right">
                     <i class="fa fa-gear icon-remove-sign"></i>
                 </div>
@@ -114,12 +115,12 @@
         {% endif %}
     </div>
     <div class="row">
-    <div class="large-12 small-12 columns">
+    <div class="large-12 columns">
     <div class="tabs-content vertical" style="width: 100%; margin-top: 2em">
     <div class="content active" id="panel1a">
         {% if viewed_user != request.user %}
             <div class="row">
-            <div class="large-6 small-6 columns"><h3>Completed Courses</h3>
+            <div class="large-6 columns"><h3>Completed Courses</h3>
                 {% for course in viewed_user.courseraprofile.courses.all %}
                     {% if course.get_amount_progress >= 100 %}
                         <div class="large-6 columns">
@@ -133,7 +134,7 @@
                 {% endfor %}
                 {% for course in viewed_user.edxprofile.courses.all %}
                     {% if course.get_amount_progress >= 100 %}
-                        <div class="large-6 small-6 columns">
+                        <div class="large-6 columns">
                             <div class="course-panel">
                                 <a href="{{ course.course_link }}"><strong>{{ course.title }}</strong></a>
 
@@ -144,7 +145,7 @@
                 {% endfor %}
                 {% for course in viewed_user.udemyprofile.courses.all %}
                     {% if course.get_amount_progress >= 100 %}
-                        <div class="large-6 small-6 columns">
+                        <div class="large-6 columns">
                             <div class="course-panel">
                                 <a href="{{ course.course_link }}"><strong>{{ course.title }}</strong></a>
 
@@ -153,7 +154,7 @@
                         </div>
                     {% endif %}
                 {% endfor %}</div>
-            <div class="large-6 small-6 columns">{% endif %}
+            <div class="large-6 columns">{% endif %}
         <h3>Activites</h3>
         {% if feeds %}
             <div style="margin-top: 50px; margin-left: 90px;">
@@ -208,7 +209,7 @@
                 <h3>Completed Courses</h3>
                 {% for course in viewed_user.courseraprofile.courses.all %}
                     {% if course.get_amount_progress >= 100 %}
-                        <div class="large-6 small-6 columns">
+                        <div class="large-6 columns">
                             <div class="course-panel">
                                 <a href="{{ course.course_link }}"><strong>{{ course.title }}</strong></a>
 
@@ -294,7 +295,7 @@
             {% if rewards %}
                 {% for reward in rewards %}
                     <div class="row" style="margin-top: 2em" data-equalizer>
-                        <div class="large-6 small-6 columns panel-white" data-equalizer-watch>
+                        <div class="large-6 columns panel-white" data-equalizer-watch>
                             {% if reward.pledge %}
                                 <h4 class="media-heading innerT"><a href=""
                                                                     class="text-inverse">{{ reward.pledge.course }}</a> <span
@@ -312,7 +313,7 @@
                                 your goal of
                                 get {{ reward.pledge.get_aim|floatformat:0 }}%{% endif %}</p>
                         </div>
-                        <div class="large-6 small-6 columns panel-content" data-equalizer-watch
+                        <div class="large-6 columns panel-content" data-equalizer-watch
                              style="display: table">
                             <div style="display: table-cell; vertical-align: middle">
                                 {% if reward.collected %}
@@ -357,7 +358,7 @@
                     {% for follower in followers %}
                         <li><a href="{% url 'users:public_profile' follower.user.id %}">
                             <div class="row" style="margin: 3% 5%;">
-                                <div class="large-3 small-3 columns" style="padding: 0 4%;">
+                                <div class="large-3 columns" style="padding: 0 4%;">
                                     <img {% if follower.picture %}src="/media/{{ follower.picture }}"
                                          {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
                                          class="pull-left img-circle small">
@@ -385,12 +386,12 @@
                     {% for following in user_profile.follows.all %}
                         <li><a href="{% url 'users:public_profile' following.user.id %}">
                             <div class="row" style="margin: 3% 5%;">
-                                <div class="large-3 small-3 columns" style="padding: 0 4%;">
+                                <div class="large-3 columns" style="padding: 0 4%;">
                                     <img {% if following.picture %}src="/media/{{ following.picture }}"
                                          {% else %}src="http://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% endif %}
                                          class="pull-left img-circle small">
                                 </div>
-                                <div class="large-9 small-9 columns">
+                                <div class="large-9 columns">
                                     <div>
                                         <h3 style="font-size: 16px">{{ following.user.first_name }} {{ following.user.last_name }}</h3>
                                         {% if following.headline %}

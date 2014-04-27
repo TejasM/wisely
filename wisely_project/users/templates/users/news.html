@@ -9,8 +9,10 @@
     {% include 'nav-bar-alt.html' with news="True" %}
 {% endblock %}
 {% block content %}
-    <div class="row wide-row" style="border-bottom: solid #D2D4D5 1px">
-        <div class="large-4 small-4 columns" style="border-right: solid #D2D4D5 1px; padding-top: 1%; padding-bottom: 1%;">
+    <div class="row wide-row"
+         style="border-bottom: solid #D2D4D5 1px; {% if request.is_mobile %}width: 100%{% endif %}">
+        <div class="large-4 small-4 columns"
+             style="border-right: solid #D2D4D5 1px; padding-top: 1%; padding-bottom: 1%;">
             <div class="row">
                 <div class="large-3 small-3 columns">
                     <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
@@ -115,7 +117,7 @@
                                                 <div class='content-news'>
                                                     <p>
                                                         <a href="/users/profile/{{ feed.actor.user.id }}">
-                                                        {{ feed.actor.user.first_name }} {{ feed.actor.user.last_name }}
+                                                            {{ feed.actor.user.first_name }} {{ feed.actor.user.last_name }}
                                                         </a>
                                                         {% if feed.actions_with_pledges_pledge_as_action_object == True %}
                                                             <a href="/pledges/share/{{ feed.action_object_object_id }}">{{ feed.verb }}</a>
@@ -130,6 +132,7 @@
                                                             {% endif %}
                                                         {% endif %}
                                                     </p>
+
                                                     <p>{{ feed.timestamp|naturaltime }}</p>
                                                 </div>
                                             </li>

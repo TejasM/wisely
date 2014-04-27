@@ -14,7 +14,7 @@
     {% include 'nav-bar-alt.html' with courses="True" %}
 {% endblock %}
 {% block content %}
-    <div class="row wide-row" style="border-bottom: solid #D2D4D5 1px;">
+    <div class="row wide-row" style="border-bottom: solid #D2D4D5 1px; {% if request.is_mobile %}width: 100%{% endif %}">
         <div class="large-4 small-4 columns" style="border-right: solid #D2D4D5 1px; padding-top: 40px; padding-bottom: 1%;">
             <div class="row">
                 <div class="large-3 small-3 columns">
@@ -46,7 +46,7 @@
             </div>
         </div>
     </div>
-    <div class="row wide-row" data-equalizer>
+    <div class="row wide-row" data-equalizer style="{% if request.is_mobile %}width: 100%{% endif %}">
         <div class="large-4 small-4 columns">
             <div class="row">
                 <div style="background: #0F486D; font-size: 1.2em; color: #fff; padding: 5%;" data-equalizer-watch>
@@ -80,7 +80,7 @@
             </div>
         </div>
     </div>
-    <div class="row wide-row">
+    <div class="row wide-row" style="{% if request.is_mobile %}width: 100%{% endif %}">
     <div class="large-12 small-12 columns">
     <div class="row">
     <dl class="tabs vertical" style="width: 100%" data-tab>
