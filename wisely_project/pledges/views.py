@@ -274,7 +274,7 @@ def create(request):
                                            course=course,
                                            money=int(float(request.POST['money'].replace(',', ''))), is_active=False,
                                            aim=float(request.POST['aim'].replace('%', '')) / 100)
-            action.send(request.user, verb="pledged for", action_object=pledge, target=course)
+            action.send(request.user.userprofile, verb="pledged for", action_object=pledge, target=course)
             return redirect(reverse('pledges:detail', args=(pledge.id,)))
     try:
         coursera_profile = CourseraProfile.objects.get(user=request.user)
