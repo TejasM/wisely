@@ -171,7 +171,7 @@ class UserCourses(admin.ModelAdmin):
         return courses
 
 
-admin.site.register(User, UserCourses)
+#admin.site.register(User, UserCourses)
 
 
 class Quiz(BaseModel):
