@@ -154,8 +154,21 @@ class EdxInline(admin.TabularInline):
 
 class UserCourses(admin.ModelAdmin):
     fields = ['email',]
-    list_display = ('email',)
+    list_display = ('email', 'get_courses')
     inlines = [CourseraInline, EdxInline, UdemyInline]
+
+    def get_courses(self, obj):
+        courses = ""
+        if obj.edxprofile:
+            for x in obj.edxprofile.courses.all():
+                courses += x.title + '\n'
+        if obj.courseraprofile:
+            for x in obj.courseraprofile.courses.all():
+                courses += x.title + '\n'
+        if obj.udemyprofile:
+            for x in obj.udemyprofile.courses.all():
+                courses += x.title + '\n'
+        return courses
 
 
 admin.site.register(User, UserCourses)
