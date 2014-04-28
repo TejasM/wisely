@@ -3,6 +3,7 @@ from datetime import date
 from fractions import Fraction
 import json
 import locale
+from django.contrib import admin
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -32,7 +33,7 @@ def convert_to_percentage(string):
                     clean = string.replace(' ', '')
                     clean = clean.split('/')
                     if len(clean) == 2:
-                        num = float(Fraction(int(float(clean[0])*100), int(float(clean[1])*100)))
+                        num = float(Fraction(int(float(clean[0]) * 100), int(float(clean[1]) * 100)))
                     else:
                         num = 0
                 except ValueError:
@@ -134,6 +135,30 @@ class UserProfile(BaseModel):
     headline = models.TextField(null=True, blank=True, max_length=64)
     about_me = models.TextField(null=True, blank=True, max_length=500)
     website = models.URLField(null=True, blank=True)
+
+
+class CourseraInline(admin.TabularInline):
+    model = CourseraProfile
+    exclude = ('password',)
+
+
+class UdemyInline(admin.TabularInline):
+    model = UdemyProfile
+    exclude = ('password',)
+
+
+class EdxInline(admin.TabularInline):
+    model = EdxProfile
+    exclude = ('password',)
+
+
+class UserCourses(admin.ModelAdmin):
+    fields = ['email',]
+    list_display = ('email',)
+    inlines = [CourseraInline, EdxInline, UdemyInline]
+
+
+admin.site.register(User, UserCourses)
 
 
 class Quiz(BaseModel):
