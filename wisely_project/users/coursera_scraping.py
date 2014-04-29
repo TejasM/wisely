@@ -174,6 +174,7 @@ class CourseraDownloader(object):
                                         start_date = date(coursera_course['start_year'], coursera_course['start_month'],
                                                       coursera_course['start_day'])
                                     except:
+                                        print coursera_course
                                         start_date = date(coursera_course['start_year'], coursera_course['start_month'],
                                                       1)
                                     if "weeks" in coursera_course['duration_string']:
