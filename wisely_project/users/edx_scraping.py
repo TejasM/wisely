@@ -30,7 +30,7 @@ def scrape_for_user(edxprofile):
 
         login_data = dict(email=email, password=password, csrfmiddlewaretoken=csrftoken, redirect_url='/dashboard')
         r = client.post(login_url, data=login_data, headers=dict(Referer=URL))
-        if not r['success']:
+        if 'false' in r.text:
             print "incorrect"
             edxprofile.incorrect_login = True
             return
