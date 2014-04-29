@@ -30,7 +30,10 @@ def scrape_for_user(edxprofile):
 
         login_data = dict(email=email, password=password, csrfmiddlewaretoken=csrftoken, redirect_url='/dashboard')
         r = client.post(login_url, data=login_data, headers=dict(Referer=URL))
-        print r.text
+        if not r['success']:
+            print "incorrect"
+            edxprofile.incorrect_login = True
+            return
         page = client.get('https://courses.edx.org/dashboard')
         tree = html.fromstring(page.text)
 
@@ -113,12 +116,12 @@ def scrape_for_user(edxprofile):
                 date_real = None
                 try:
                     date_real = datetime.strptime(dates[i].replace('Course Starts - ', ''),
-                                                                   '%b %d, %Y').date()
+                                                  '%b %d, %Y').date()
                 except:
                     pass
                 course = Course.objects.create(course_id=course_ids[i], title=current_course,
-                                      image_link=image_links[i],
-                                      start_date=date_real)
+                                               image_link=image_links[i],
+                                               start_date=date_real)
             if course is not None:
                 if course not in edxprofile.courses.all():
                     edxprofile.courses.add(course)
@@ -147,7 +150,8 @@ def scrape_for_user(edxprofile):
                 try:
                     quiz = Quiz.objects.get(course__course_id=course_ids[i], heading=progress_title)
                 except Quiz.DoesNotExist:
-                    quiz = Quiz.objects.create(course=Course.objects.get(course_id=course_ids[i]), heading=progress_title)
+                    quiz = Quiz.objects.create(course=Course.objects.get(course_id=course_ids[i]),
+                                               heading=progress_title)
                 section_selector = CSSSelector('.chapters section')
                 sections = [e for e in section_selector(page)]
                 scores_selector = CSSSelector('.scores li')
@@ -157,7 +161,8 @@ def scrape_for_user(edxprofile):
                     try:
                         if marks:
                             mark = sum(
-                                map(lambda x: Fraction(sum(Fraction(s) if not s.endswith('/0') else 0 for s in x.split())),
+                                map(lambda x: Fraction(
+                                    sum(Fraction(s) if not s.endswith('/0') else 0 for s in x.split())),
                                     marks))
                             mark = str(mark.numerator) + "/" + str(mark.denominator)
                         else:
