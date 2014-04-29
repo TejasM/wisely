@@ -33,6 +33,7 @@ def scrape_for_user(edxprofile):
         if 'false' in r.text:
             print "incorrect"
             edxprofile.incorrect_login = True
+            edxprofile.save()
             return
         page = client.get('https://courses.edx.org/dashboard')
         tree = html.fromstring(page.text)

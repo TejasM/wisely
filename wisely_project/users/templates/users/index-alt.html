@@ -576,22 +576,22 @@
         <div class="row" id="platform-options">
             {% if  user.courseraprofile.username == '' or user.courseraprofile.incorrect_login %}
                 <div class="row extra-top-margin text-center">
-                    <button id="add-coursera">
-                        Add Coursera Account
+                    <button id="add-coursera" style="{% if user.courseraprofile.incorrect_login %}border: solid 1px red{% endif %}">
+                        {% if user.courseraprofile.incorrect_login %}Edit{% else %}Add{% endif %} Coursera Account
                     </button>
                 </div>
             {% endif %}
             {% if  user.edxprofile.email == '' or user.edxprofile.incorrect_login %}
                 <div class="row extra-top-margin text-center">
-                    <button id="add-edx">
-                        Add edX Account
+                    <button id="add-edx" style="{% if user.courseraprofile.incorrect_login %}border: solid 1px red{% endif %}">
+                        {% if user.courseraprofile.incorrect_login %}Edit{% else %}Add{% endif %} edX Account
                     </button>
                 </div>
             {% endif %}
             {% if  user.udemyprofile.email == '' or user.udemyprofile.incorrect_login %}
                 <div class="row extra-top-margin text-center">
-                    <button id="add-udemy">
-                        Add Udemy Account
+                    <button id="add-udemy" style="{% if user.courseraprofile.incorrect_login %}border: solid 1px red{% endif %}">
+                        {% if user.courseraprofile.incorrect_login %}Edit{% else %}Add{% endif %} Udemy Account
                     </button>
                 </div>
             {% endif %}
