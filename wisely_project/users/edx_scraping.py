@@ -29,7 +29,8 @@ def scrape_for_user(edxprofile):
         csrftoken = client.cookies['csrftoken']
 
         login_data = dict(email=email, password=password, csrfmiddlewaretoken=csrftoken, redirect_url='/dashboard')
-        client.post(login_url, data=login_data, headers=dict(Referer=URL))
+        r = client.post(login_url, data=login_data, headers=dict(Referer=URL))
+        print r
         page = client.get('https://courses.edx.org/dashboard')
         tree = html.fromstring(page.text)
 
