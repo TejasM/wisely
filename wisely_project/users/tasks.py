@@ -356,6 +356,8 @@ def get_udemy_courses(profile):
                 for c in ci:
                     try:
                         quiz = Quiz.objects.get(quizid=c['id'])
+                    except Quiz.MultipleObjectsReturned:
+                        quiz = Quiz.objects.filter(quizid=c['id'])[0]
                     except Quiz.DoesNotExist:
                         quiz = Quiz.objects.create(quizid=c['id'], course=course, heading=c['title'])
                     if c['id'] in quiz_ids:

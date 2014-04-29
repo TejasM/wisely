@@ -170,8 +170,12 @@ class CourseraDownloader(object):
                                 if coursera_course['id'] == course_id:
                                     course_link = coursera_course['home_link']
                                     quiz_link = coursera_course['home_link'] + "quiz"
-                                    start_date = date(coursera_course['start_year'], coursera_course['start_month'],
+                                    try:
+                                        start_date = date(coursera_course['start_year'], coursera_course['start_month'],
                                                       coursera_course['start_day'])
+                                    except:
+                                        start_date = date(coursera_course['start_year'], coursera_course['start_month'],
+                                                      1)
                                     if "weeks" in coursera_course['duration_string']:
                                         delta = timedelta(weeks=int(re.findall(r'\d+',
                                                                                coursera_course['duration_string'])[0]))

@@ -117,9 +117,13 @@ def signup(request):
         if User.objects.filter(username=request.POST["email"]).count() > 0:
             messages.error(request, 'Username already taken!')
             return redirect('/')
-        user = User.objects.create(username=request.POST["email"], email=request.POST["email"],
-                                   first_name=request.POST["first_name"],
-                                   last_name=request.POST["last_name"], is_active=True)
+        try:
+            user = User.objects.create(username=request.POST["email"], email=request.POST["email"],
+                                       first_name=request.POST["first_name"],
+                                       last_name=request.POST["last_name"], is_active=True)
+        except:
+            messages.error(request, "Sorry username can't be longer than 30 characters")
+            return redirect('/')
         user.set_password(request.POST["password"])
         user.save()
         user_profile = UserProfile.objects.create(user=user)
@@ -132,11 +136,11 @@ def signup(request):
                 user.save()
                 send_welcome_email(request)
             else:
-                return render(request, 'base.html')
+                return redirect('/')
         else:
-            return render(request, 'base.html')
+            return redirect('/')
         return redirect(reverse('users:index_alt'))
-    return render(request, 'base.html')
+    return redirect(reverse('users:index_alt'))
 
 
 def sync_up_user(user, social_users):
