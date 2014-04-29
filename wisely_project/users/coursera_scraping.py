@@ -137,8 +137,7 @@ class CourseraDownloader(object):
                                         start_date = date(coursera_course['start_year'], coursera_course['start_month'],
                                                       coursera_course['start_day'])
                                     except:
-                                        start_date = date(coursera_course['start_year'], coursera_course['start_month'],
-                                                      1)
+                                        start_date = None
                                     end_date = None
                                     if "weeks" in coursera_course['duration_string']:
                                         delta = timedelta(weeks=int(re.findall(r'\d+',
@@ -174,9 +173,7 @@ class CourseraDownloader(object):
                                         start_date = date(coursera_course['start_year'], coursera_course['start_month'],
                                                       coursera_course['start_day'])
                                     except:
-                                        print coursera_course
-                                        start_date = date(coursera_course['start_year'], coursera_course['start_month'],
-                                                      1)
+                                        start_date = None
                                     if "weeks" in coursera_course['duration_string']:
                                         delta = timedelta(weeks=int(re.findall(r'\d+',
                                                                                coursera_course['duration_string'])[0]))
