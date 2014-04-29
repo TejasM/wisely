@@ -5,7 +5,7 @@ import traceback
 from django import db
 
 sys.path.append('/root/wisely/wisely_project/')
-os.environ['DJANGO_SETTINGS_MODULE'] = 'wisely_project.settings.production'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'wisely_project.settings.local'
 
 from django.db.models import F
 from django.utils import timezone

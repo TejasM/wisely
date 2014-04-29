@@ -103,10 +103,9 @@ def scrape_for_user(edxprofile):
                     edxprofile.courses.add(course)
                     #todo: added feed check
                     #action.send(actor=edxprofile.user.userprofile, verb='enrolled in', target=course, sender=None)
-
-        for i, current_course in enumerate(upcoming_courses):
-            i += len(current_courses) - 1
-            course = None
+        i = len(current_courses) - 1
+        for current_course in upcoming_courses:
+            i += 1
             try:
                 course = Course.objects.get(course_id=course_ids[i])
             except Course.DoesNotExist:
