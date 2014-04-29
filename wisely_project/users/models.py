@@ -211,3 +211,6 @@ class Progress(BaseModel):
 
     def parse_to_percentage(self):
         return convert_to_percentage(self.score)
+
+
+admin.site.register(Course)

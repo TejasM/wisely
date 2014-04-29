@@ -127,7 +127,10 @@ class CourseraDownloader(object):
                         course_link = None
                         quiz_link = None
                         try:
-                            course = Course.objects.get(course_id=enrollment['course__topic_id'])
+                            try:
+                                course = Course.objects.get(course_id=enrollment['course__topic_id'])
+                            except Course.MultipleObjectsReturned:
+                                course = Course.objects.get(course_id=enrollment['course__topic_id'])[0]
                             course_id = enrollment['course_id']
                             for coursera_course in courses:
                                 if coursera_course['id'] == course_id:
@@ -135,7 +138,7 @@ class CourseraDownloader(object):
                                     quiz_link = coursera_course['home_link'] + "quiz"
                                     try:
                                         start_date = date(coursera_course['start_year'], coursera_course['start_month'],
-                                                      coursera_course['start_day'])
+                                                          coursera_course['start_day'])
                                     except:
                                         start_date = None
                                     end_date = None

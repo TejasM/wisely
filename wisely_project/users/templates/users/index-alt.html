@@ -32,7 +32,8 @@
                     </div>
                 </div>
                 <div class="large-3 small-3 columns">
-                    <img src="{% static 'images/settings-icon.png' %}" style="width: 80%; margin-top: 10px"
+
+                    <img src="{% static 'images/settings-icon.png' %}" style="width: 80%; margin-top: 10px; {% if user.courseraprofile.incorrect_login or user.udemyprofile.incorrect_login or user.edxprofile.incorrect_login %}border: solid 2px red; border-radius: 50%{% endif %}"
                          id="settings-icon">
                 </div>
             </div>
