@@ -248,6 +248,7 @@ def index_alt(request):
                 return redirect(reverse('users:index_alt'))
             coursera_profile.username = request.POST['username'].strip()
             coursera_profile.password = request.POST['password']
+            coursera_profile.incorrect_login = False
             coursera_profile.save()
             request.user.last_login = timezone.now()
             request.user.save()
@@ -262,6 +263,7 @@ def index_alt(request):
 
             edx_profile.email = request.POST['username'].strip()
             edx_profile.password = request.POST['password']
+            edx_profile.incorrect_login = False
             edx_profile.save()
             request.user.last_login = timezone.now()
             request.user.save()
@@ -275,6 +277,7 @@ def index_alt(request):
                 return redirect(reverse('users:index_alt'))
             udemy_profile.email = request.POST['username'].strip()
             udemy_profile.password = request.POST['password']
+            udemy_profile.incorrect_login = False
             udemy_profile.save()
             request.user.last_login = timezone.now()
             request.user.save()
