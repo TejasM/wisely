@@ -20,7 +20,7 @@ while True:
         for connection in db.connections.all():
             if len(connection.queries) > 100:
                 db.reset_queries()
-        for user in CourseraProfile.objects.filter(last_updated__lt=F('user__last_login')).filter(~Q(email='')).filter(
+        for user in CourseraProfile.objects.filter(last_updated__lt=F('user__last_login')).filter(~Q(username='')).filter(
                 incorrect_login=False):
             print user.username
             print "Start coursera"
