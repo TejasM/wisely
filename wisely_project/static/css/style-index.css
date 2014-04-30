@@ -2,6 +2,10 @@
     background: #fff;
 }
 
+.tabs dd:hover:not(.active) .meter {
+    border: solid #eeeeee 1px;
+}
+
 .tabs dd:hover:not(.active) > a {
     background: #fff;
     border-left: solid #80BC62 1rem;
