@@ -242,7 +242,7 @@ def index_alt(request):
 
     if request.method == "POST":
         if request.POST['platform'] == "coursera":
-            already_exist = CourseraProfile.objects.filter(username=request.POST['username'].strip()).count() > 0
+            already_exist = CourseraProfile.objects.filter(~Q(user=request.user)).filter(username=request.POST['username'].strip()).count() > 0
             if already_exist:
                 messages.success(request, 'Someone else is already using that Coursera account')
                 return redirect(reverse('users:index_alt'))
@@ -256,7 +256,7 @@ def index_alt(request):
                 messages.success(request, 'Added your Coursera account refresh in a few minutes to see your courses')
             return redirect(reverse('users:index_alt'))
         elif request.POST['platform'] == "edx":
-            already_exist = EdxProfile.objects.filter(email=request.POST['username'].strip()).count() > 0
+            already_exist = EdxProfile.objects.filter(~Q(user=request.user)).filter(email=request.POST['username'].strip()).count() > 0
             if already_exist:
                 messages.success(request, 'Someone else is already using that edX account')
                 return redirect(reverse('users:index_alt'))
@@ -271,7 +271,7 @@ def index_alt(request):
                 messages.success(request, 'Added your Edx account refresh in a few minutes to see your courses')
             return redirect(reverse('users:index_alt'))
         elif request.POST['platform'] == "udemy":
-            already_exist = UdemyProfile.objects.filter(email=request.POST['username'].strip()).count() > 0
+            already_exist = UdemyProfile.objects.filter(~Q(user=request.user)).filter(email=request.POST['username'].strip()).count() > 0
             if already_exist:
                 messages.success(request, 'Someone else is already using that Udemy account')
                 return redirect(reverse('users:index_alt'))
