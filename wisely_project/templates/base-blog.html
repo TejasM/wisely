@@ -190,7 +190,7 @@
                     <a class="dropdown-toggle " data-toggle="dropdown" href="#">
 				<span class="media margin-none">
 					<span class="pull-left"><img
-                            {% if user.userprofile == None or not user.userprofile.picture %}src="https://www.adas-lv.com/wp-content/uploads/2012/07/default_avatar.png"{% else %}
+                            {% if user.userprofile == None or not user.userprofile.picture %}src="https://www.gravatar.com/avatar/00000000000000000000000000000000"{% else %}
                             src="/media/{{ user.userprofile.picture }}"
                             {% endif %}
                             alt="user" class="img-circle"></span>
