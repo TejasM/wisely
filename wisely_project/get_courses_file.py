@@ -39,6 +39,7 @@ while True:
             print user.email
             print "Start udemy"
             get_udemy_courses(user)
+            print "Done Udemy"
             user.last_updated = timezone.now()
             user.save()
 
