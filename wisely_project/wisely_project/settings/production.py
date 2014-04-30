@@ -82,10 +82,28 @@ DATABASES = {
 PRODCUTION_APPS = (
     'djcelery',
     'async',
+    'sslify',
 )
 
 STRIPE_PUBLIC_KEY = "pk_live_0RNa74C7R8WWln4sSxUhJPYT"
 STRIPE_SECRET_KEY = "sk_live_pNRMbo0ViQKfqkqqKZN41mz5"
+
+MIDDLEWARE_CLASSES = (
+    # Default Django middleware.
+    'sslify.middleware.SSLifyMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_auth.middleware.SocialAuthExceptionMiddleware',
+    'mobiledetection.MobileDetectionMiddleware',
+    'cms.middleware.page.CurrentPageMiddleware',
+    'cms.middleware.user.CurrentUserMiddleware',
+    'cms.middleware.toolbar.ToolbarMiddleware',
+    'cms.middleware.language.LanguageCookieMiddleware',
+)
 
 # STRIPE_PUBLIC_KEY = "pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb"
 # STRIPE_SECRET_KEY = "sk_test_auCbY9IpyQ0hMHMcfvgjumxU"

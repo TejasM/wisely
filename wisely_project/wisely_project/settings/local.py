@@ -42,28 +42,5 @@ CACHES = {
 }
 ########## END CACHE CONFIGURATION
 
-
-########## TOOLBAR CONFIGURATION
-# See: https://github.com/django-debug-toolbar/django-debug-toolbar#installation
-INSTALLED_APPS += (
-    'debug_toolbar',
-    'south',
-)
-
-# See: https://github.com/django-debug-toolbar/django-debug-toolbar#installation
-INTERNAL_IPS = ('127.0.0.1',)
-
-# See: https://github.com/django-debug-toolbar/django-debug-toolbar#installation
-MIDDLEWARE_CLASSES += (
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
-)
-
 STRIPE_PUBLIC_KEY = "pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb"
 STRIPE_SECRET_KEY = "sk_test_auCbY9IpyQ0hMHMcfvgjumxU"
-
-# See: https://github.com/django-debug-toolbar/django-debug-toolbar#installation
-DEBUG_TOOLBAR_CONFIG = {
-    'INTERCEPT_REDIRECTS': False,
-    'SHOW_TEMPLATE_CONTEXT': True,
-}
-########## END TOOLBAR CONFIGURATION

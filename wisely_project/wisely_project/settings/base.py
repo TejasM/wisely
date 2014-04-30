@@ -171,7 +171,6 @@ CMS_TEMPLATES = (
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#middleware-classes
 MIDDLEWARE_CLASSES = (
     # Default Django middleware.
-    'sslify.middleware.SSLifyMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -236,7 +235,6 @@ THIRD_PARTY_APPS = (
     # Database migration helpers:
     'south',
     "payments",
-    'sslify',
 )
 
 # Apps specific for this project go here.
