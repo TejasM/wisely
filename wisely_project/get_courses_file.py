@@ -7,7 +7,7 @@ from django import db
 sys.path.append('/root/wisely/wisely_project/')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'wisely_project.settings.production'
 
-from django.db.models import F
+from django.db.models import F, Q
 from django.utils import timezone
 from users.tasks import get_coursera_courses, get_edx_courses, get_udemy_courses
 
@@ -20,27 +20,27 @@ while True:
         for connection in db.connections.all():
             if len(connection.queries) > 100:
                 db.reset_queries()
-        for user in CourseraProfile.objects.filter(last_updated__lt=F('user__last_login')):
-            if user.username != '' and user.incorrect_login == False:
-                print user.username
-                print "Start coursera"
-                get_coursera_courses(user)
-                user.last_updated = timezone.now()
-                user.save()
-        for user in EdxProfile.objects.filter(last_updated__lt=F('user__last_login')):
-            if user.email != '' and user.incorrect_login == False:
-                print user.email
-                print "Start edx"
-                get_edx_courses(user)
-                user.last_updated = timezone.now()
-                user.save()
-        for user in UdemyProfile.objects.filter(last_updated__lt=F('user__last_login')):
-            if user.email != '' and user.incorrect_login == False:
-                print user.email
-                print "Start udemy"
-                get_udemy_courses(user)
-                user.last_updated = timezone.now()
-                user.save()
+        for user in CourseraProfile.objects.filter(last_updated__lt=F('user__last_login')).filter(~Q(email='')).filter(
+                incorrect_login=False):
+            print user.username
+            print "Start coursera"
+            get_coursera_courses(user)
+            user.last_updated = timezone.now()
+            user.save()
+        for user in EdxProfile.objects.filter(last_updated__lt=F('user__last_login')).filter(~Q(email='')).filter(
+                incorrect_login=False):
+            print user.email
+            print "Start edx"
+            get_edx_courses(user)
+            user.last_updated = timezone.now()
+            user.save()
+        for user in UdemyProfile.objects.filter(last_updated__lt=F('user__last_login')).filter(~Q(email='')).filter(
+                incorrect_login=False):
+            print user.email
+            print "Start udemy"
+            get_udemy_courses(user)
+            user.last_updated = timezone.now()
+            user.save()
 
     except Exception as e:
         print traceback.format_exc()
