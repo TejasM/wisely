@@ -34,7 +34,7 @@ class CourseraDownloader(object):
     BASE_URL = 'https://class.coursera.org/%s'
     HOME_URL = BASE_URL + '/class/index'
     LECTURE_URL = BASE_URL + '/lecture/index'
-    QUIZ_URL = BASE_URL + '/quiz/index'
+    QUIZ_URL = BASE_URL + '/quiz'
     AUTH_URL = BASE_URL + "/auth/auth_redirector?type=login&subtype=normal"
     LOGIN_URL = "https://accounts.coursera.org/api/v1/login"
     ABOUT_URL = "https://www.coursera.org/maestro/api/topic/information?topic-id=%s"
