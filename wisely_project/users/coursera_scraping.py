@@ -232,8 +232,6 @@ class CourseraDownloader(object):
                             progress.score = quiz_details[j].select(
                                 '.course-quiz-item-score td span')[0].contents[0]
                             progress.save()
-
-
                     user.save()
                 else:
                     for i, enrollment in enumerate(enrollments):

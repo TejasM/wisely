@@ -605,6 +605,7 @@
         <form id="add-platform" action="{% url 'users:index_alt' %}"
               method="post" style="display: none">
             {% csrf_token %}
+            <p>Be sure to enter the same username/password as you use to login to the platform.</p>
             <input type="hidden" value="coursera" name="platform" id="platform_name"/>
 
             <input type="text" name="username" class="form-control" id="add-username"
