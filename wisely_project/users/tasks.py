@@ -289,7 +289,7 @@ def get_coursera_courses(profile):
             coursera = CourseraDownloader(profile.username, profile.password)
             coursera.login('gamification-003', profile)
             coursera.get_enrollments(profile)
-        print "Coursera Done"
+            print "Coursera Done"
     except Exception as e:
         profile.incorrect_login = True
         profile.save()

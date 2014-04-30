@@ -191,7 +191,7 @@ class CourseraDownloader(object):
                         soup = BeautifulSoup(res.text)
                         quiz_list = soup.select('div.course-item-list .course-item-list-header')
                         quiz_details = soup.select('ul.course-item-list-section-list')
-                        for i, quiz_coursera in enumerate(quiz_list):
+                        for j, quiz_coursera in enumerate(quiz_list):
                             heading = quiz_coursera.select('h3')[0].find(text=True, recursive=False)
                             try:
                                 quiz = Quiz.objects.get(heading=heading, course=course)
@@ -201,14 +201,14 @@ class CourseraDownloader(object):
                                 deadline = None
                                 try:
                                     deadline = dateutil.parser.parse(str(
-                                        quiz_details[i].select('.course-quiz-item-softdeadline .course-assignment-deadline')[
+                                        quiz_details[j].select('.course-quiz-item-softdeadline .course-assignment-deadline')[
                                             0].contents[
                                             0].replace('\n', '')))
                                 except IndexError:
                                     pass
                                 hard_deadline = None
                                 try:
-                                    hard_deadline = dateutil.parser.parse(quiz_details[i].select(
+                                    hard_deadline = dateutil.parser.parse(quiz_details[j].select(
                                         '.course-quiz-item-harddeadline .course-assignment-deadline')[0].contents[
                                                                               0].replace('\n', ''))
                                 except IndexError:
