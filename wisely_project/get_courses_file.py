@@ -21,21 +21,21 @@ while True:
             if len(connection.queries) > 100:
                 db.reset_queries()
         for user in CourseraProfile.objects.filter(last_updated__lt=F('user__last_login')):
-            if user.username != '':
+            if user.username != '' and user.incorrect_login == False:
                 print user.username
                 print "Start coursera"
                 get_coursera_courses(user)
                 user.last_updated = timezone.now()
                 user.save()
         for user in EdxProfile.objects.filter(last_updated__lt=F('user__last_login')):
-            if user.email != '':
+            if user.email != '' and user.incorrect_login == False:
                 print user.email
                 print "Start edx"
                 get_edx_courses(user)
                 user.last_updated = timezone.now()
                 user.save()
         for user in UdemyProfile.objects.filter(last_updated__lt=F('user__last_login')):
-            if user.email != '':
+            if user.email != '' and user.incorrect_login == False:
                 print user.email
                 print "Start udemy"
                 get_udemy_courses(user)
