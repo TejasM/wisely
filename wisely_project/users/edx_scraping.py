@@ -56,6 +56,8 @@ def scrape_for_user(edxprofile):
         name_selector = CSSSelector('.course-item .info hgroup h3 span')
         upcoming_courses = [e.text for e in name_selector(tree)]
 
+        current_courses += upcoming_courses
+
         #Dates
         date_selector = CSSSelector('.course-item .info hgroup p.date-block')
         dates = [e.text.replace('\n', '').strip() for e in date_selector(tree)]
@@ -108,24 +110,6 @@ def scrape_for_user(edxprofile):
                     edxprofile.courses.add(course)
                     #todo: added feed check
                     #action.send(actor=edxprofile.user.userprofile, verb='enrolled in', target=course, sender=None)
-        i = len(current_courses) - 1
-        for current_course in upcoming_courses:
-            i += 1
-            try:
-                course = Course.objects.get(course_id=course_ids[i])
-            except Course.DoesNotExist:
-                date_real = None
-                try:
-                    date_real = datetime.strptime(dates[i].replace('Course Starts - ', ''),
-                                                  '%b %d, %Y').date()
-                except:
-                    pass
-                course = Course.objects.create(course_id=course_ids[i], title=current_course,
-                                               image_link=image_links[i],
-                                               start_date=date_real)
-            if course is not None:
-                if course not in edxprofile.courses.all():
-                    edxprofile.courses.add(course)
 
         edxprofile.last_updated = timezone.now()
         edxprofile.save()
@@ -151,7 +135,11 @@ def scrape_for_user(edxprofile):
                 try:
                     quiz = Quiz.objects.get(course__course_id=course_ids[i], heading=progress_title)
                 except Quiz.DoesNotExist:
-                    quiz = Quiz.objects.create(course=Course.objects.get(course_id=course_ids[i]),
+                    try:
+                        c = Course.objects.get(course_id=course_ids[i])
+                    except Course.DoesNotExist:
+                        c = Course.objects.create(course_id=course_ids[i], title=current_courses[i])
+                    quiz = Quiz.objects.create(course=c,
                                                heading=progress_title)
                 section_selector = CSSSelector('.chapters section')
                 sections = [e for e in section_selector(page)]
