@@ -229,6 +229,7 @@ DJANGO_APPS = (
     'notifications',
     'django_messages',
     'django.contrib.sitemaps',
+    'django_extensions',
 )
 
 THIRD_PARTY_APPS = (
