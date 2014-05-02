@@ -278,6 +278,14 @@ def create_ajax(request):
                     pledge.charge = request.GET['txn_id']
                     pledge.is_active = True
                     pledge.save()
+                    return HttpResponse(json.dumps({'fail': 0, 'id': pledge.id}),
+                                        content_type='application/json')
+                return HttpResponse(json.dumps({'fail': 3}),
+                                    content_type='application/json')
+            return HttpResponse(json.dumps({'fail': 3}),
+                                content_type='application/json')
+        return HttpResponse(json.dumps({'fail': 2}),
+                            content_type='application/json')
     return HttpResponse(json.dumps({'fail': 1}),
                         content_type='application/json')
 
