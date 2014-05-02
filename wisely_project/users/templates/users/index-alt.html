@@ -608,8 +608,8 @@
             <p>Be sure to enter the same username/password as you use to login to the platform.</p>
             <input type="hidden" value="coursera" name="platform" id="platform_name"/>
 
-            <input type="text" name="username" class="form-control" id="add-username"
-                   placeholder="Coursera Username">
+            <input type="email" name="username" class="form-control" id="add-username"
+                   placeholder="Coursera Email">
             <input type="password" name="password" class="form-control" id="add-password"
                    placeholder="Coursera Password">
             <button type="submit" class="btn btn-primary btn-lg">Add Account</button>
@@ -897,7 +897,7 @@
             $('#platform_name').val('coursera');
             $('#settings-title').val('Coursera');
             $('#add-username').attr('placeholder', 'Coursera Username');
-            $('#add-username').attr('type', 'text');
+            $('#add-username').attr('type', 'email');
             $('#add-password').attr('placeholder', 'Coursera Password');
         });
 
