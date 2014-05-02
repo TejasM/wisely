@@ -235,6 +235,34 @@ logger = logging.getLogger(__name__)
 def create_ajax(request):
     if request.method == "POST":
         token = request.POST.get('stripeToken', '')
+        if token == '':
+            logger.debug("get request")
+            if request.POST['payment_status'] == 'Completed':
+                logger.debug("is completed")
+                if Pledge.objects.filter(charge=request.POST['txn_id']).count() == 0:
+                    if request.POST['money'] == request.POST['mc_gross1']:
+                        logger.debug("money equals")
+                        money = int(float(request.POST['money'].replace(',', '')))
+                        if money < 10:
+                            return HttpResponse(json.dumps({'fail': 1, 'message': "Can't pledge less than $10."}),
+                                                content_type='application/json')
+                        course = Course.objects.get(pk=int(request.GET['course']))
+                        date = request.POST.get('date', course.end_date)
+                        user_profile = UserProfile.objects.get(pk=request.GET['user'])
+                        pledge = Pledge.objects.create(user=user_profile, pledge_end_date=date,
+                                                       course=course,
+                                                       money=money, is_active=True,
+                                                       aim=float(request.POST['aim'].replace('%', '')) / 100)
+                        action.send(user_profile, verb="pledged for", action_object=pledge, target=course)
+                        pledge.charge = request.GET['txn_id']
+                        pledge.is_active = True
+                        pledge.save()
+                        return HttpResponse(json.dumps({'fail': 0, 'id': pledge.id}),
+                                            content_type='application/json')
+                    return HttpResponse(json.dumps({'fail': 3}),
+                                        content_type='application/json')
+                return HttpResponse(json.dumps({'fail': 3}),
+                                    content_type='application/json')
         money = int(float(request.POST['money'].replace(',', '')))
         if money < 10:
             return HttpResponse(json.dumps({'fail': 1, 'message': "Can't pledge less than $10."}),
@@ -262,36 +290,6 @@ def create_ajax(request):
         except stripe.CardError, _:
             return HttpResponse(json.dumps({'fail': 1, 'message': 'Credit Card Error'}),
                                 content_type='application/json')
-    elif request.method == "GET":
-        logger.debug("get request")
-        if request.GET['payment_status'] == 'Completed':
-            logger.debug("is completed")
-            if Pledge.objects.filter(charge=request.GET['txn_id']).count() == 0:
-                if request.GET['money'] == request.GET['mc_gross1']:
-                    logger.debug("money equals")
-                    money = int(float(request.POST['money'].replace(',', '')))
-                    if money < 10:
-                        return HttpResponse(json.dumps({'fail': 1, 'message': "Can't pledge less than $10."}),
-                                            content_type='application/json')
-                    course = Course.objects.get(pk=int(request.GET['course']))
-                    date = request.POST.get('date', course.end_date)
-                    user_profile = UserProfile.objects.get(pk=request.GET['user'])
-                    pledge = Pledge.objects.create(user=user_profile, pledge_end_date=date,
-                                                   course=course,
-                                                   money=money, is_active=True,
-                                                   aim=float(request.POST['aim'].replace('%', '')) / 100)
-                    action.send(user_profile, verb="pledged for", action_object=pledge, target=course)
-                    pledge.charge = request.GET['txn_id']
-                    pledge.is_active = True
-                    pledge.save()
-                    return HttpResponse(json.dumps({'fail': 0, 'id': pledge.id}),
-                                        content_type='application/json')
-                return HttpResponse(json.dumps({'fail': 3}),
-                                    content_type='application/json')
-            return HttpResponse(json.dumps({'fail': 3}),
-                                content_type='application/json')
-        return HttpResponse(json.dumps({'fail': 2}),
-                            content_type='application/json')
     return HttpResponse(json.dumps({'fail': 1}),
                         content_type='application/json')
 
