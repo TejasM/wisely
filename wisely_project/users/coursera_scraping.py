@@ -206,6 +206,8 @@ class CourseraDownloader(object):
                                             0].replace('\n', '')))
                                 except IndexError:
                                     pass
+                                except Exception as e:
+                                    print e
                                 hard_deadline = None
                                 try:
                                     hard_deadline = dateutil.parser.parse(quiz_details[j].select(
