@@ -1,5 +1,6 @@
 from __future__ import division
 from datetime import datetime
+import logging
 import md5
 import urllib
 import urllib2
@@ -227,6 +228,7 @@ def already(request, pledge_id):
 def results(request, poll_id):
     return HttpResponse("You're looking at the results of pledge %s." % poll_id)
 
+logger = logging.getLogger(__name__)
 
 @login_required
 @csrf_exempt
@@ -261,9 +263,12 @@ def create_ajax(request):
             return HttpResponse(json.dumps({'fail': 1, 'message': 'Credit Card Error'}),
                                 content_type='application/json')
     elif request.method == "GET":
+        logger.debug("get request")
         if request.GET['payment_status'] == 'Completed':
+            logger.debug("is completed")
             if Pledge.objects.filter(charge=request.GET['txn_id']).count() == 0:
                 if request.GET['money'] == request.GET['mc_gross1']:
+                    logger.debug("money equals")
                     money = int(float(request.POST['money'].replace(',', '')))
                     if money < 10:
                         return HttpResponse(json.dumps({'fail': 1, 'message': "Can't pledge less than $10."}),
