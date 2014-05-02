@@ -251,7 +251,7 @@ def create_ajax(request):
                                            course=course,
                                            money=money, is_active=True,
                                            aim=float(request.POST['aim'].replace('%', '')) / 100)
-            action.send(request.user, verb="pledged for", action_object=pledge, target=course)
+            action.send(request.user.userprofile, verb="pledged for", action_object=pledge, target=course)
             pledge.charge = charge.id
             pledge.is_active = True
             pledge.save()
