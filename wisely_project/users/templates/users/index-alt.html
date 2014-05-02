@@ -569,18 +569,18 @@
             <button id="chose-pledge">Save Goal and Pledge</button>
         </div>
         <div class="row" style="display: none" id="chose-option">
-            <script id="paypal-button" src="{% static 'js/paypal-button.js' %}?merchant=927W6GKLCPL5W"
-                    data-button="buynow"
-                    data-name="Pledge"
-                    data-quantity="1"
-                    data-amount="12"
-                    data-currency="USD"
-                    data-shipping="0"
-                    data-tax="0"
-                    data-callback="http://{{ request.get_host }}/pledges/create_ajax"
-                    data-env="sandbox"
-                    ></script>
-            <p style="text-align: center; margin-top: 1.25rem">OR</p>
+{#            <script id="paypal-button" src="{% static 'js/paypal-button.js' %}?merchant=927W6GKLCPL5W"#}
+{#                    data-button="buynow"#}
+{#                    data-name="Pledge"#}
+{#                    data-quantity="1"#}
+{#                    data-amount="12"#}
+{#                    data-currency="USD"#}
+{#                    data-shipping="0"#}
+{#                    data-tax="0"#}
+{#                    data-callback="http://{{ request.get_host }}/pledges/create_ajax"#}
+{#                    data-env="sandbox"#}
+{#                    ></script>#}
+{#            <p style="text-align: center; margin-top: 1.25rem">OR</p>#}
 
             <button id="make-pledge" style="margin-top: 0">USING CREDIT CARD</button>
             <br>
