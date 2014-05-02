@@ -569,18 +569,18 @@
             <button id="chose-pledge">Save Goal and Pledge</button>
         </div>
         <div class="row" style="display: none" id="chose-option">
-{#            <script id="paypal-button" src="{% static 'js/paypal-button.js' %}?merchant=927W6GKLCPL5W"#}
-{#                    data-button="buynow"#}
-{#                    data-name="Pledge"#}
-{#                    data-quantity="1"#}
-{#                    data-amount="12"#}
-{#                    data-currency="USD"#}
-{#                    data-shipping="0"#}
-{#                    data-tax="0"#}
-{#                    data-callback="http://{{ request.get_host }}/pledges/create_ajax"#}
-{#                    data-env="sandbox"#}
-{#                    ></script>#}
-{#            <p style="text-align: center; margin-top: 1.25rem">OR</p>#}
+            {#            <script id="paypal-button" src="{% static 'js/paypal-button.js' %}?merchant=927W6GKLCPL5W"#}
+            {#                    data-button="buynow"#}
+            {#                    data-name="Pledge"#}
+            {#                    data-quantity="1"#}
+            {#                    data-amount="12"#}
+            {#                    data-currency="USD"#}
+            {#                    data-shipping="0"#}
+            {#                    data-tax="0"#}
+            {#                    data-callback="http://{{ request.get_host }}/pledges/create_ajax"#}
+            {#                    data-env="sandbox"#}
+            {#                    ></script>#}
+            {#            <p style="text-align: center; margin-top: 1.25rem">OR</p>#}
 
             <button id="make-pledge" style="margin-top: 0">USING CREDIT CARD</button>
             <br>
@@ -842,7 +842,7 @@
             var date = picker.getDate();
             date = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
             var aim = parseInt($('#goal-value').text().replace('%', ''));
-            $paypal.find('input[name=notify_url]').val('http://{{ request.get_host }}/pledges/create_ajax?course=' + current_id + '&money=' + money + '&aim=' + aim + '&date=' + date);
+            $paypal.find('input[name=notify_url]').val('http://{{ request.get_host }}/pledges/create_ajax?course=' + current_id + '&money=' + money + '&aim=' + aim + '&date=' + date + '&user={{ request.user.userprofile.id }}');
             $('#chose-option').show();
         });
 
