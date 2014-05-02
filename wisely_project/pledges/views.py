@@ -397,3 +397,7 @@ def collect_reward(request):
         return redirect(reverse('pledges:collect_reward'))
     else:
         return redirect(reverse('users:profile'))
+
+
+def myfunction():
+    logger.debug("this is a debug message!")
