@@ -285,23 +285,19 @@
                     <strong style="font-weight: 400;" id="sign-up-heading">SIGN IN</strong>
                 </div>
                 <div class="large-6 columns" style="text-align: right">
-                    <a href="{% url 'socialauth_begin' 'facebook' %}"
-                       onclick="return $('#privacy-check')[0].checked;"><img
+                    <a href="{% url 'socialauth_begin' 'facebook' %}"><img
                             src="{% static 'images/facebook-login.png' %}"></a>
-                    <a href="{% url 'socialauth_begin' 'twitter' %}"
-                       onclick="return $('#privacy-check')[0].checked;"><img
+                    <a href="{% url 'socialauth_begin' 'twitter' %}"><img
                             src="{% static 'images/twitter-login.png' %}"></a>
-                    <a href="{% url 'socialauth_begin' 'google-oauth2' %}"
-                       onclick="return $('#privacy-check')[0].checked;"><img
+                    <a href="{% url 'socialauth_begin' 'google-oauth2' %}"><img
                             src="{% static 'images/google-login.png' %}"></a>
                 </div>
             </div>
             <div class="row text-center" style="margin-top: 4em">
                 {% csrf_token %}
                 <div class="row">
-                    <p><label style="font-size: 1.5em"><input type="checkbox" id="privacy-check"
-                                                              style="margin-right: 0.5em">I agree to the <a
-                            href="/privacy">Privacy
+                    <p><label style="font-size: 1.2em">By signing up, you agree to our<a
+                            href="/privacy">&nbsp;Privacy
                         Policy</a></label></p>
                 </div>
                 <div>
