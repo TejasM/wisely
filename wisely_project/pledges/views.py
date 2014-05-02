@@ -228,41 +228,75 @@ def already(request, pledge_id):
 def results(request, poll_id):
     return HttpResponse("You're looking at the results of pledge %s." % poll_id)
 
+
 logger = logging.getLogger(__name__)
+
+
+def verify_ipn(data):
+    # prepares provided data set to inform PayPal we wish to validate the response
+    data["cmd"] = "_notify-validate"
+    params = urllib.urlencode(data)
+
+    # sends the data and request to the PayPal Sandbox
+    req = urllib2.Request("""https://www.sandbox.paypal.com/cgi-bin/webscr""", params)
+    req.add_header("Content-type", "application/x-www-form-urlencoded")
+    # reads the response back from PayPal
+    response = urllib2.urlopen(req)
+    status = response.read()
+
+    # If not verified
+    if not status == "VERIFIED":
+        return False
+
+    # if not the correct receiver ID
+    if not data["receiver_id"] == "DDBSOMETHING4KE":
+        return False
+
+    # if not the correct currency
+    if not data["mc_currency"] == "USD":
+        return False
+
+    # otherwise...
+    return True
+
+
+@csrf_exempt
+def get_paypal(request):
+    logger.debug("get request")
+    verify_ipn(request.POST)
+    if request.POST['payment_status'] == 'Completed':
+        logger.debug("is completed")
+        if Pledge.objects.filter(charge=request.POST['txn_id']).count() == 0:
+            if request.POST['money'] == request.POST['mc_gross1']:
+                logger.debug("money equals")
+                money = int(float(request.POST['money'].replace(',', '')))
+                if money < 10:
+                    return HttpResponse(json.dumps({'fail': 1, 'message': "Can't pledge less than $10."}),
+                                        content_type='application/json')
+                course = Course.objects.get(pk=int(request.GET['course']))
+                date = request.POST.get('date', course.end_date)
+                user_profile = UserProfile.objects.get(pk=request.GET['user'])
+                pledge = Pledge.objects.create(user=user_profile, pledge_end_date=date,
+                                               course=course,
+                                               money=money, is_active=True,
+                                               aim=float(request.POST['aim'].replace('%', '')) / 100)
+                action.send(user_profile, verb="pledged for", action_object=pledge, target=course)
+                pledge.charge = request.GET['txn_id']
+                pledge.is_active = True
+                pledge.save()
+                return HttpResponse(json.dumps({'fail': 0, 'id': pledge.id}),
+                                    content_type='application/json')
+            return HttpResponse(json.dumps({'fail': 3}),
+                                content_type='application/json')
+        return HttpResponse(json.dumps({'fail': 3}),
+                            content_type='application/json')
+
 
 @login_required
 @csrf_exempt
 def create_ajax(request):
     if request.method == "POST":
         token = request.POST.get('stripeToken', '')
-        if token == '':
-            logger.debug("get request")
-            if request.POST['payment_status'] == 'Completed':
-                logger.debug("is completed")
-                if Pledge.objects.filter(charge=request.POST['txn_id']).count() == 0:
-                    if request.POST['money'] == request.POST['mc_gross1']:
-                        logger.debug("money equals")
-                        money = int(float(request.POST['money'].replace(',', '')))
-                        if money < 10:
-                            return HttpResponse(json.dumps({'fail': 1, 'message': "Can't pledge less than $10."}),
-                                                content_type='application/json')
-                        course = Course.objects.get(pk=int(request.GET['course']))
-                        date = request.POST.get('date', course.end_date)
-                        user_profile = UserProfile.objects.get(pk=request.GET['user'])
-                        pledge = Pledge.objects.create(user=user_profile, pledge_end_date=date,
-                                                       course=course,
-                                                       money=money, is_active=True,
-                                                       aim=float(request.POST['aim'].replace('%', '')) / 100)
-                        action.send(user_profile, verb="pledged for", action_object=pledge, target=course)
-                        pledge.charge = request.GET['txn_id']
-                        pledge.is_active = True
-                        pledge.save()
-                        return HttpResponse(json.dumps({'fail': 0, 'id': pledge.id}),
-                                            content_type='application/json')
-                    return HttpResponse(json.dumps({'fail': 3}),
-                                        content_type='application/json')
-                return HttpResponse(json.dumps({'fail': 3}),
-                                    content_type='application/json')
         money = int(float(request.POST['money'].replace(',', '')))
         if money < 10:
             return HttpResponse(json.dumps({'fail': 1, 'message': "Can't pledge less than $10."}),

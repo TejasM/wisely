@@ -20,4 +20,5 @@ urlpatterns = patterns('',
                        # /pledges/23/
                        url(r'^(?P<pledge_id>\d+)/results/$', views.results, name='results'),
                        url(r'^create_ajax/$', views.create_ajax, name='create_ajax'),
+                       url(r'^paypal/$', views.get_paypal, name='paypal'),
 )
