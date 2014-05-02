@@ -294,7 +294,7 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
-        'MYAPP': {
+        'pledges': {
             'handlers': ['file'],
             'level': 'DEBUG',
         },
