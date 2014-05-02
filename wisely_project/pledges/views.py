@@ -13,6 +13,7 @@ from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
+import requests
 import stripe
 
 from users.models import Course, UserProfile, EdxProfile, CourseraProfile, UdemyProfile
@@ -234,14 +235,14 @@ logger = logging.getLogger(__name__)
 
 def verify_ipn(data):
     # prepares provided data set to inform PayPal we wish to validate the response
+    copy = data
+    copy['cmd'] = '_notify-validate variable'
     params = urllib.urlencode(data)
-
+    res = requests.post("""https://www.sandbox.paypal.com/cgi-bin/webscr""")
     # sends the data and request to the PayPal Sandbox
-    req = urllib2.Request("""https://www.sandbox.paypal.com/cgi-bin/webscr""", params)
-    req.add_header("Content-type", "application/x-www-form-urlencoded")
+    response = requests.post("""https://www.sandbox.paypal.com/cgi-bin/webscr""", params)
     # reads the response back from PayPal
-    response = urllib2.urlopen(req)
-    status = response.read()
+    status = response.text
 
     # If not verified
     if not status == "VERIFIED":
@@ -289,6 +290,8 @@ def get_paypal(request):
                                     content_type='application/json')
             return HttpResponse(json.dumps({'fail': 3}),
                                 content_type='application/json')
+        return HttpResponse()
+    return HttpResponse()
 
 
 @login_required
