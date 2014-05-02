@@ -263,7 +263,7 @@ def create_ajax(request):
     elif request.method == "GET":
         if request.GET['payment_status'] == 'Completed':
             if Pledge.objects.filter(charge=request.GET['txn_id']).count() == 0:
-                if request.GET['money'] == request.GET['mc_gross']:
+                if request.GET['money'] == request.GET['mc_gross1']:
                     money = int(float(request.POST['money'].replace(',', '')))
                     if money < 10:
                         return HttpResponse(json.dumps({'fail': 1, 'message': "Can't pledge less than $10."}),
