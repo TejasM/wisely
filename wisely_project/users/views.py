@@ -28,7 +28,7 @@ from pledges.models import Pledge, Reward
 from forms import UserProfileForm, UserForm
 from users.models import convert_to_percentage
 from users.utils import send_welcome_email
-from wisely_project.settings import base
+from django.conf import settings
 
 
 def login_user(request):
@@ -178,8 +178,8 @@ def sync_up_user(user, social_users):
 
         elif social_user.provider == 'twitter':
             if inner_profile.last_updated < timezone.now() - timedelta(weeks=2) or inner_profile.never_updated:
-                api = twitter.Api(consumer_key=base.TWITTER_CONSUMER_KEY,
-                                  consumer_secret=base.TWITTER_CONSUMER_SECRET,
+                api = twitter.Api(consumer_key=settings.TWITTER_CONSUMER_KEY,
+                                  consumer_secret=settings.TWITTER_CONSUMER_SECRET,
                                   access_token_key=social_user.tokens['oauth_token'],
                                   access_token_secret=social_user.tokens['oauth_token_secret'])
                 friends = api.GetFollowers()
@@ -242,7 +242,8 @@ def index_alt(request):
 
     if request.method == "POST":
         if request.POST['platform'] == "coursera":
-            already_exist = CourseraProfile.objects.filter(~Q(user=request.user)).filter(username=request.POST['username'].strip()).count() > 0
+            already_exist = CourseraProfile.objects.filter(~Q(user=request.user)).filter(
+                username=request.POST['username'].strip()).count() > 0
             if already_exist:
                 messages.success(request, 'Someone else is already using that Coursera account')
                 return redirect(reverse('users:index_alt'))
@@ -256,7 +257,8 @@ def index_alt(request):
                 messages.success(request, 'Added your Coursera account refresh in a few minutes to see your courses')
             return redirect(reverse('users:index_alt'))
         elif request.POST['platform'] == "edx":
-            already_exist = EdxProfile.objects.filter(~Q(user=request.user)).filter(email=request.POST['username'].strip()).count() > 0
+            already_exist = EdxProfile.objects.filter(~Q(user=request.user)).filter(
+                email=request.POST['username'].strip()).count() > 0
             if already_exist:
                 messages.success(request, 'Someone else is already using that edX account')
                 return redirect(reverse('users:index_alt'))
@@ -271,7 +273,8 @@ def index_alt(request):
                 messages.success(request, 'Added your Edx account refresh in a few minutes to see your courses')
             return redirect(reverse('users:index_alt'))
         elif request.POST['platform'] == "udemy":
-            already_exist = UdemyProfile.objects.filter(~Q(user=request.user)).filter(email=request.POST['username'].strip()).count() > 0
+            already_exist = UdemyProfile.objects.filter(~Q(user=request.user)).filter(
+                email=request.POST['username'].strip()).count() > 0
             if already_exist:
                 messages.success(request, 'Someone else is already using that Udemy account')
                 return redirect(reverse('users:index_alt'))
@@ -289,8 +292,8 @@ def index_alt(request):
             return redirect(reverse('user:index_alt'))
 
     if (coursera_profile.username == "") and (
-                    edx_profile.email == "") and (
-                    udemy_profile.email == ""):
+                edx_profile.email == "") and (
+                udemy_profile.email == ""):
         request.session['onboarding'] = True
         request.session.save()
         return render(request, 'users/onboarding.html')

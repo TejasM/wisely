@@ -41,7 +41,7 @@ urlpatterns = patterns('',
                        url(r'^blog/', include('cms.urls')),
                        url('activity/', include('actstream.urls')),
                        url(r'^sitemap\.xml$', TemplateView.as_view(template_name='sitemap.xml')),
-                       )
+)
 
 if not production.DEBUG:
     urlpatterns += patterns('',

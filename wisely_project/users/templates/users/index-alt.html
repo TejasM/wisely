@@ -14,8 +14,10 @@
     {% include 'nav-bar-alt.html' with courses="True" %}
 {% endblock %}
 {% block content %}
-    <div class="row wide-row" style="border-bottom: solid #D2D4D5 1px; {% if request.is_mobile %}width: 100%{% endif %}">
-        <div class="large-4 small-4 columns" style="border-right: solid #D2D4D5 1px; padding-top: 40px; padding-bottom: 1%;">
+    <div class="row wide-row"
+         style="border-bottom: solid #D2D4D5 1px; {% if request.is_mobile %}width: 100%{% endif %}">
+        <div class="large-4 small-4 columns"
+             style="border-right: solid #D2D4D5 1px; padding-top: 40px; padding-bottom: 1%;">
             <div class="row">
                 <div class="large-3 small-3 columns">
                     <img {% if user.userprofile.picture %}src="/media/{{ user.userprofile.picture }}"
@@ -33,14 +35,16 @@
                 </div>
                 <div class="large-3 small-3 columns">
 
-                    <img src="{% static 'images/settings-icon.png' %}" style="width: 80%; margin-top: 10px; {% if user.courseraprofile.incorrect_login or user.udemyprofile.incorrect_login or user.edxprofile.incorrect_login %}border: solid 2px red; border-radius: 50%{% endif %}"
+                    <img src="{% static 'images/settings-icon.png' %}"
+                         style="width: 80%; margin-top: 10px; {% if user.courseraprofile.incorrect_login or user.udemyprofile.incorrect_login or user.edxprofile.incorrect_login %}border: solid 2px red; border-radius: 50%{% endif %}"
                          id="settings-icon">
                 </div>
             </div>
         </div>
         <div class="large-8 small-8 columns" style="margin-top: 50px; text-align: center">
             <div class="row" id="filters">
-                <div class="large-4 small-4 columns"><a href="#"><p class="selected-news" id="current-filt">Current Courses</p>
+                <div class="large-4 small-4 columns"><a href="#"><p class="selected-news" id="current-filt">Current
+                    Courses</p>
                 </a></div>
                 <div class="large-4 small-4 columns"><a href="#"><p id="past-filt">Past Courses</p></a></div>
                 <div class="large-4 small-4 columns"><a href="#"><p id="all-filt">All Courses</p></a></div>
@@ -88,11 +92,12 @@
     {% for course, grade in coursera_courses %}
         {% for pledge in pledges %}
             {% if pledge.course == course %}
-                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}" data-name="{{ course.title }}" data-end="{{ course.end_date }}"
+                <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
+                    data-name="{{ course.title }}" data-end="{{ course.end_date }}"
                     class="course {% if course.get_amount_progress >= 100 or pledge.is_done %}past{% else %}current{% endif %}">
                     <a href="#panel{{ course.id }}a"
-                            onclick="$('#filters').toggle();"
-                            style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
+                       onclick="$('#filters').toggle();"
+                       style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
                         <br>Pledge Ending: {{ pledge.pledge_end_date }}
                     </a>
 
@@ -517,7 +522,7 @@
         </a>
     </div>
     <div class="light-box" id="pledge-box">
-        <div class="row">
+        <div class="row" id="making-pledge">
             <div id="class-title"></div>
             <input type="hidden" id="class-id">
 
@@ -561,7 +566,25 @@
                     <p style="margin-bottom: 0" id="pledge-value"><sup>$</sup>30</p>
                 </div>
             </div>
-            <button id="make-pledge">Save Goal and Pledge</button>
+            <button id="chose-pledge">Save Goal and Pledge</button>
+        </div>
+        <div class="row" style="display: none" id="chose-option">
+            <script id="paypal-button" src="{% static 'js/paypal-button.js' %}?merchant=927W6GKLCPL5W"
+                    data-button="buynow"
+                    data-name="Pledge"
+                    data-quantity="1"
+                    data-amount="12"
+                    data-currency="USD"
+                    data-shipping="0"
+                    data-tax="0"
+                    data-callback="http://{{ request.get_host }}/pledges/create_ajax"
+                    data-env="sandbox"
+                    ></script>
+            <p style="text-align: center; margin-top: 1.25rem">OR</p>
+
+            <button id="make-pledge" style="margin-top: 0">USING CREDIT CARD</button>
+            <br>
+            <button id="back-to-pledge">EDIT PLEDGE</button>
         </div>
     </div>
     <div id="other-messages" class="light-box">
@@ -576,21 +599,24 @@
         <div class="row" id="platform-options">
             {% if  user.courseraprofile.username == '' or user.courseraprofile.incorrect_login %}
                 <div class="row extra-top-margin text-center">
-                    <button id="add-coursera" style="{% if user.courseraprofile.incorrect_login %}border: solid 1px red{% endif %}">
+                    <button id="add-coursera"
+                            style="{% if user.courseraprofile.incorrect_login %}border: solid 1px red{% endif %}">
                         {% if user.courseraprofile.incorrect_login %}Edit{% else %}Add{% endif %} Coursera Account
                     </button>
                 </div>
             {% endif %}
             {% if  user.edxprofile.email == '' or user.edxprofile.incorrect_login %}
                 <div class="row extra-top-margin text-center">
-                    <button id="add-edx" style="{% if user.edxprofile.incorrect_login %}border: solid 1px red{% endif %}">
+                    <button id="add-edx"
+                            style="{% if user.edxprofile.incorrect_login %}border: solid 1px red{% endif %}">
                         {% if user.edxprofile.incorrect_login %}Edit{% else %}Add{% endif %} edX Account
                     </button>
                 </div>
             {% endif %}
             {% if  user.udemyprofile.email == '' or user.udemyprofile.incorrect_login %}
                 <div class="row extra-top-margin text-center">
-                    <button id="add-udemy" style="{% if user.udemyprofile.incorrect_login %}border: solid 1px red{% endif %}">
+                    <button id="add-udemy"
+                            style="{% if user.udemyprofile.incorrect_login %}border: solid 1px red{% endif %}">
                         {% if user.udemyprofile.incorrect_login %}Edit{% else %}Add{% endif %} Udemy Account
                     </button>
                 </div>
@@ -807,7 +833,23 @@
                 $('#pledge-value').html('<sup>$</sup>' + ui.value.toString());
             }
         });
+        $('#chose-pledge').click(function () {
+            $('#making-pledge').hide();
+            var $paypal = $('.paypal-button');
+            $paypal.find('input[name=item_name]').val('Pledge for ' + current_name);
+            var money = parseInt($('#pledge-value').text().replace('$', ''));
+            $paypal.find('input[name=amount]').val(money);
+            var date = picker.getDate();
+            date = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+            var aim = parseInt($('#goal-value').text().replace('%', ''));
+            $paypal.find('input[name=notify_url]').val('http://{{ request.get_host }}/pledges/create_ajax?course=' + current_id + '&money=' + money + '&aim=' + aim + '&date=' + date);
+            $('#chose-option').show();
+        });
 
+        $('#back-to-pledge').click(function () {
+            $('#making-pledge').show();
+            $('#chose-option').hide();
+        });
         $('#make-pledge').click(function () {
             var token = function (res) {
                 var date = picker.getDate();

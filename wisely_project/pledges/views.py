@@ -260,7 +260,24 @@ def create_ajax(request):
         except stripe.CardError, _:
             return HttpResponse(json.dumps({'fail': 1, 'message': 'Credit Card Error'}),
                                 content_type='application/json')
-
+    elif request.method == "GET":
+        if request.GET['payment_status'] == 'Completed':
+            if Pledge.objects.filter(charge=request.GET['txn_id']).count() == 0:
+                if request.GET['money'] == request.GET['mc_gross']:
+                    money = int(float(request.POST['money'].replace(',', '')))
+                    if money < 10:
+                        return HttpResponse(json.dumps({'fail': 1, 'message': "Can't pledge less than $10."}),
+                                            content_type='application/json')
+                    course = Course.objects.get(pk=int(request.GET['course']))
+                    date = request.POST.get('date', course.end_date)
+                    pledge = Pledge.objects.create(user=request.user.userprofile, pledge_end_date=date,
+                                                   course=course,
+                                                   money=money, is_active=True,
+                                                   aim=float(request.POST['aim'].replace('%', '')) / 100)
+                    action.send(request.user.userprofile, verb="pledged for", action_object=pledge, target=course)
+                    pledge.charge = request.GET['txn_id']
+                    pledge.is_active = True
+                    pledge.save()
     return HttpResponse(json.dumps({'fail': 1}),
                         content_type='application/json')
 
