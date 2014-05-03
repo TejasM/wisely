@@ -235,7 +235,7 @@ logger = logging.getLogger(__name__)
 
 def verify_ipn(data):
     # prepares provided data set to inform PayPal we wish to validate the response
-    copy = data
+    copy = data.copy()
     copy['cmd'] = '_notify-validate variable'
     params = urllib.urlencode(data)
     res = requests.post("""https://www.sandbox.paypal.com/cgi-bin/webscr""")
