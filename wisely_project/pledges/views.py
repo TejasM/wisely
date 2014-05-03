@@ -248,14 +248,6 @@ def verify_ipn(data):
     if not status == "VERIFIED":
         return False
 
-    # if not the correct receiver ID
-    if not data["receiver_id"] == "DDBSOMETHING4KE":
-        return False
-
-    # if not the correct currency
-    if not data["mc_currency"] == "USD":
-        return False
-
     # otherwise...
     return True
 
