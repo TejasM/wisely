@@ -263,10 +263,12 @@ def get_paypal(request):
     user_id = params[4]
     if request.POST['payment_status'] == 'Completed':
         if Pledge.objects.filter(charge=request.POST['txn_id']).count() == 0:
+            course = Course.objects.get(pk=course_id)
             pledge = Pledge.objects.create(user=UserProfile.objects.get(pk=user_id), pledge_end_date=date,
-                                           course=Course.objects.get(pk=course_id),
+                                           course=course,
                                            money=money, is_active=True, charge=request.POST['txn_id'],
                                            aim=int(aim)/100)
+            action.send(request.user.userprofile, verb="pledged for", action_object=pledge, target=course)
             msg = EmailMessage('Paypal', 'created pledge', 'contact@projectwisely.com', ['tejasmehta0@gmail.com'])
             msg.send()
             return HttpResponse(json.dumps({'fail': 0, 'id': pledge.id}),
