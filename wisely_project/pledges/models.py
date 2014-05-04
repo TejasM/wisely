@@ -60,6 +60,9 @@ class Pledge(BaseModel):
                 return True
         return False
 
+    def __unicode__(self):
+        return str(self.aim) + " " + self.course + " " + self.user.user.first_name + " " + self.user.user.last_name
+
 
 admin.site.register(Pledge)
 
