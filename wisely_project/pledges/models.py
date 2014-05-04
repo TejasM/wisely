@@ -1,7 +1,7 @@
 from django.utils import timezone
 from django.db import models
 
-from users.models import Course, BaseModel, UserProfile
+from users.models import Course, BaseModel, UserProfile, Progress, convert_to_percentage
 from datetime import date
 
 
@@ -17,6 +17,18 @@ class Pledge(BaseModel):
     actual_mark = models.FloatField(default=None, null=True, blank=True)
     charge = models.CharField(default="", max_length=1000)
     pledge_end_date = models.DateField(default=timezone.now(), null=True)
+
+    def get_full_stats(self):
+        grades = Progress.objects.filter(quiz__course=self.course, user=self.user).values_list('score', flat=True)
+        if grades:
+            grades = [convert_to_percentage(x) for x in grades]
+            grades = sum(grades)/len(grades)
+        else:
+            grades = 0
+        print "Current Grade:", grades
+        print "Current Aim", self.aim
+        print "End date", self.pledge_end_date
+        return
 
     def get_aim(self):
         return self.aim*100
