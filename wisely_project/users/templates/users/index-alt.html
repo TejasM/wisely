@@ -569,18 +569,18 @@
             <button id="chose-pledge">Save Goal and Pledge</button>
         </div>
         <div class="row" style="display: none" id="chose-option">
-            {#            <script id="paypal-button" src="{% static 'js/paypal-button.js' %}?merchant=927W6GKLCPL5W"#}
-            {#                    data-button="buynow"#}
-            {#                    data-name="Pledge"#}
-            {#                    data-quantity="1"#}
-            {#                    data-amount="12"#}
-            {#                    data-currency="USD"#}
-            {#                    data-shipping="0"#}
-            {#                    data-tax="0"#}
-            {#                    data-callback="http://{{ request.get_host }}/pledges/create_ajax"#}
-            {#                    data-env="sandbox"#}
-            {#                    ></script>#}
-            {#            <p style="text-align: center; margin-top: 1.25rem">OR</p>#}
+            <script id="paypal-button" src="{% static 'js/paypal-button.js' %}?merchant=927W6GKLCPL5W"
+                    data-button="buynow"
+                    data-name="Pledge"
+                    data-quantity="1"
+                    data-amount="12"
+                    data-currency="USD"
+                    data-shipping="0"
+                    data-tax="0"
+                    data-callback="http://{{ request.get_host }}/pledges/create_ajax"
+                    data-env="sandbox"
+                    ></script>
+            <p style="text-align: center; margin-top: 1.25rem">OR</p>
 
             <button id="make-pledge" style="margin-top: 0">USING CREDIT CARD</button>
             <br>
@@ -836,7 +836,7 @@
         //Test Url: http://projectwisely.com/pledges/create_ajax?course=1&money=10&aim=100&date=2014-5-31&user=1
         $('#chose-pledge').click(function () {
             $('#making-pledge').hide();
-            var $paypal = $('.paypal-button');
+            var $paypal = $('#paypal-button');
             $paypal.find('input[name=item_name]').val('Pledge for ' + current_name);
             var money = parseInt($('#pledge-value').text().replace('$', ''));
             $paypal.find('input[name=amount]').val(money);
