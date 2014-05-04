@@ -4,6 +4,7 @@ from django.db import models
 from users.models import Course, BaseModel, UserProfile
 from datetime import date
 
+
 class Pledge(BaseModel):
     user = models.ForeignKey(UserProfile)
     course = models.ForeignKey(Course)

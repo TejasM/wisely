@@ -9,6 +9,7 @@ import json
 from dateutil.relativedelta import relativedelta
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMessage
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.utils import timezone
@@ -256,29 +257,18 @@ def verify_ipn(data):
 def get_paypal(request):
     logger.error("get request")
     if verify_ipn(request.POST):
+        msg = EmailMessage('Error', 'valid', 'contact@projectwisely.com', ['tejasmehta0@gmail.com'])
+        msg.send()
         logger.error("is valid")
         if request.POST['payment_status'] == 'Completed':
             logger.error("is completed")
             if Pledge.objects.filter(charge=request.POST['txn_id']).count() == 0:
-                if request.POST['money'] == request.POST['mc_gross1']:
-                    logger.error("money equals")
-                    money = int(float(request.POST['money'].replace(',', '')))
-                    if money < 10:
-                        return HttpResponse(json.dumps({'fail': 1, 'message': "Can't pledge less than $10."}),
-                                            content_type='application/json')
-                    course = Course.objects.get(pk=int(request.GET['course']))
-                    date = request.POST.get('date', course.end_date)
-                    user_profile = UserProfile.objects.get(pk=request.GET['user'])
-                    pledge = Pledge.objects.create(user=user_profile, pledge_end_date=date,
-                                                   course=course,
-                                                   money=money, is_active=True,
-                                                   aim=float(request.POST['aim'].replace('%', '')) / 100)
-                    action.send(user_profile, verb="pledged for", action_object=pledge, target=course)
-                    pledge.charge = request.GET['txn_id']
-                    pledge.is_active = True
-                    pledge.save()
-                    return HttpResponse(json.dumps({'fail': 0, 'id': pledge.id}),
-                                        content_type='application/json')
+                pledge = Pledge.objects.create(user=UserProfile.objects.get(pk=1),
+                                               course=Course.objects.get(pk=1),
+                                               money=1, is_active=True,
+                                               aim=1)
+                return HttpResponse(json.dumps({'fail': 0, 'id': pledge.id}),
+                                    content_type='application/json')
 
 
 @login_required
