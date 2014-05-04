@@ -295,11 +295,6 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
-        'pledges': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
     }
 }
 ########## END LOGGING CONFIGURATION
