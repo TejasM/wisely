@@ -269,6 +269,10 @@ def get_paypal(request):
                                                aim=1)
                 return HttpResponse(json.dumps({'fail': 0, 'id': pledge.id}),
                                     content_type='application/json')
+    else:
+        msg = EmailMessage('Error', 'invalid', 'contact@projectwisely.com', ['tejasmehta0@gmail.com'])
+        msg.send()
+    return HttpResponse()
 
 
 @login_required
