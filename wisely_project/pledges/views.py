@@ -236,7 +236,7 @@ def results(request, poll_id):
 def verify_ipn(data):
     # prepares provided data set to inform PayPal we wish to validate the response
     copy = data.copy()
-    copy['cmd'] = '_notify-validate variable'
+    copy['cmd'] = '_notify-validate'
     params = urllib.urlencode(data)
     res = requests.post("""https://www.sandbox.paypal.com/cgi-bin/webscr""")
     # sends the data and request to the PayPal Sandbox
@@ -278,12 +278,6 @@ def get_paypal(request):
                     pledge.save()
                     return HttpResponse(json.dumps({'fail': 0, 'id': pledge.id}),
                                         content_type='application/json')
-                return HttpResponse(json.dumps({'fail': 3}),
-                                    content_type='application/json')
-            return HttpResponse(json.dumps({'fail': 3}),
-                                content_type='application/json')
-        return HttpResponse()
-    return HttpResponse()
 
 
 @login_required
