@@ -311,7 +311,7 @@ def index_alt(request):
         udemy_grades = []
 
         for course in coursera_courses:
-            if course.get_amount_progress >= 100:
+            if course.get_amount_progress() >= 100:
                 past_courses += 1
             else:
                 current_courses += 1
@@ -323,7 +323,7 @@ def index_alt(request):
                 coursera_grades.append(0)
 
         for course in edx_courses:
-            if course.get_amount_progress >= 100:
+            if course.get_amount_progress() >= 100:
                 past_courses += 1
             else:
                 current_courses += 1
@@ -335,7 +335,7 @@ def index_alt(request):
                 edx_grades.append(0)
 
         for course in udemy_courses:
-            if course.get_amount_progress >= 100:
+            if course.get_amount_progress() >= 100:
                 past_courses += 1
             else:
                 current_courses += 1
