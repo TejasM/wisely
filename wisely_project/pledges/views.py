@@ -266,7 +266,7 @@ def get_paypal(request):
             pledge = Pledge.objects.create(user=UserProfile.objects.get(pk=user_id), pledge_end_date=date,
                                            course=Course.objects.get(pk=course_id),
                                            money=money, is_active=True, charge=request.POST['txn_id'],
-                                           aim=aim/100)
+                                           aim=int(aim)/100)
             msg = EmailMessage('Paypal', 'created pledge', 'contact@projectwisely.com', ['tejasmehta0@gmail.com'])
             msg.send()
             return HttpResponse(json.dumps({'fail': 0, 'id': pledge.id}),
