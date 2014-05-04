@@ -283,20 +283,22 @@ LOGGING = {
         },
         'file': {
             'level': 'DEBUG',
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': 'mysite.log',
+            'maxBytes': 1024*1024*5,
             'formatter': 'verbose'
         },
     },
     'loggers': {
+        '': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
         'django.request': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,
-        },
-        'pledges': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
         },
     }
 }

@@ -29,6 +29,9 @@ from actstream import action
 from django.conf import settings
 
 
+logger = logging.getLogger(__name__)
+
+
 def mass_pay(email, amt):
     unique_id = str(md5.new(str(datetime.now())).hexdigest())
     params = {
@@ -228,9 +231,6 @@ def already(request, pledge_id):
 @login_required
 def results(request, poll_id):
     return HttpResponse("You're looking at the results of pledge %s." % poll_id)
-
-
-logger = logging.getLogger(__name__)
 
 
 def verify_ipn(data):
