@@ -255,8 +255,6 @@ def verify_ipn(data):
 
 @csrf_exempt
 def get_paypal(request):
-    msg = EmailMessage('Paypal', 'valid', 'contact@projectwisely.com', ['tejasmehta0@gmail.com'])
-    msg.send()
     params = request.POST['custom'].split(',')
     course_id = params[0]
     money = params[1]
@@ -264,12 +262,10 @@ def get_paypal(request):
     date = params[3]
     user_id = params[4]
     if request.POST['payment_status'] == 'Completed':
-        msg = EmailMessage('Paypal', 'is completed', 'contact@projectwisely.com', ['tejasmehta0@gmail.com'])
-        msg.send()
         if Pledge.objects.filter(charge=request.POST['txn_id']).count() == 0:
             pledge = Pledge.objects.create(user=UserProfile.objects.get(pk=user_id), pledge_end_date=date,
                                            course=Course.objects.get(pk=course_id),
-                                           money=money, is_active=True,
+                                           money=money, is_active=True, charge=request.POST['txn_id'],
                                            aim=aim)
             msg = EmailMessage('Paypal', 'created pledge', 'contact@projectwisely.com', ['tejasmehta0@gmail.com'])
             msg.send()
