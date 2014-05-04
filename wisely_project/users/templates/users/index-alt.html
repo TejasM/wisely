@@ -836,14 +836,14 @@
         //Test Url: http://projectwisely.com/pledges/create_ajax?course=1&money=10&aim=100&date=2014-5-31&user=1
         $('#chose-pledge').click(function () {
             $('#making-pledge').hide();
-            var $paypal = $('#paypal-button');
+            var $paypal = $('.paypal-button');
             $paypal.find('input[name=item_name]').val('Pledge for ' + current_name);
             var money = parseInt($('#pledge-value').text().replace('$', ''));
             $paypal.find('input[name=amount]').val(money);
             var date = picker.getDate();
             date = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
             var aim = parseInt($('#goal-value').text().replace('%', ''));
-            $paypal.find('input[name=custom]').val(current_id + ',' + money + ',' + aim + ',' + date + ',' + '{{ request.user.userprofile.id }}');
+            $paypal.append('<input type="hidden" name="custom" value="current_id' + ',' + money + ',' + aim + ',' + date + ',' + '{{ request.user.userprofile.id }}"').val();
             $paypal.find('input[name=notify_url]').val('https://{{ request.get_host }}/pledges/paypal/');
             $('#chose-option').show();
         });
