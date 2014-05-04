@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.utils import timezone
 from django.db import models
 
@@ -58,6 +59,9 @@ class Pledge(BaseModel):
             if date.today() > self.pledge_end_date:
                 return True
         return False
+
+
+admin.site.register(Pledge)
 
 
 class Reward(BaseModel):
