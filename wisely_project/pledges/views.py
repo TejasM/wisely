@@ -254,13 +254,14 @@ def verify_ipn(data):
 
 @csrf_exempt
 def get_paypal(request):
-    logger.debug("get request")
+    logger.error("get request")
     if verify_ipn(request.POST):
+        logger.error("is valid")
         if request.POST['payment_status'] == 'Completed':
-            logger.debug("is completed")
+            logger.error("is completed")
             if Pledge.objects.filter(charge=request.POST['txn_id']).count() == 0:
                 if request.POST['money'] == request.POST['mc_gross1']:
-                    logger.debug("money equals")
+                    logger.error("money equals")
                     money = int(float(request.POST['money'].replace(',', '')))
                     if money < 10:
                         return HttpResponse(json.dumps({'fail': 1, 'message': "Can't pledge less than $10."}),
