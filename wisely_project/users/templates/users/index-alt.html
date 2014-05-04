@@ -577,7 +577,7 @@
                     data-currency="USD"
                     data-shipping="0"
                     data-tax="0"
-                    data-callback="http://{{ request.get_host }}/pledges/create_ajax"
+                    data-callback="https://{{ request.get_host }}/pledges/paypal/"
                     data-env="sandbox"
                     ></script>
             <p style="text-align: center; margin-top: 1.25rem">OR</p>
@@ -844,7 +844,7 @@
             date = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
             var aim = parseInt($('#goal-value').text().replace('%', ''));
             $paypal.find('input[name=custom]').val(current_id + ',' + money + ',' + aim + ',' + date + ',' + '{{ request.user.userprofile.id }}');
-            $paypal.find('input[name=notify_url]').val('http://{{ request.get_host }}/pledges/paypal/');
+            $paypal.find('input[name=notify_url]').val('https://{{ request.get_host }}/pledges/paypal/');
             $('#chose-option').show();
         });
 
