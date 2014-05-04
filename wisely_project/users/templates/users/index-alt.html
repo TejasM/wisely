@@ -843,7 +843,8 @@
             var date = picker.getDate();
             date = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
             var aim = parseInt($('#goal-value').text().replace('%', ''));
-            $paypal.find('input[name=notify_url]').val('http://{{ request.get_host }}/pledges/create_ajax?course=' + current_id + '&money=' + money + '&aim=' + aim + '&date=' + date + '&user={{ request.user.userprofile.id }}');
+            $paypal.find('input[name=custom]').val(current_id + ',' + money + ',' + aim + ',' + date + ',' + '{{ request.user.userprofile.id }}');
+            $paypal.find('input[name=notify_url]').val('http://{{ request.get_host }}/pledges/paypal/');
             $('#chose-option').show();
         });
 

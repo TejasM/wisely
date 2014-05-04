@@ -256,22 +256,22 @@ def verify_ipn(data):
 @csrf_exempt
 def get_paypal(request):
     logger.error("get request")
-    if verify_ipn(request.POST):
-        msg = EmailMessage('Error', 'valid', 'contact@projectwisely.com', ['tejasmehta0@gmail.com'])
-        msg.send()
-        logger.error("is valid")
-        if request.POST['payment_status'] == 'Completed':
-            logger.error("is completed")
-            if Pledge.objects.filter(charge=request.POST['txn_id']).count() == 0:
-                pledge = Pledge.objects.create(user=UserProfile.objects.get(pk=1),
-                                               course=Course.objects.get(pk=1),
-                                               money=1, is_active=True,
-                                               aim=1)
-                return HttpResponse(json.dumps({'fail': 0, 'id': pledge.id}),
-                                    content_type='application/json')
-    else:
-        msg = EmailMessage('Error', 'invalid', 'contact@projectwisely.com', ['tejasmehta0@gmail.com'])
-        msg.send()
+    logger.error("is valid")
+    params = request.POST['custom'].split(',')
+    course_id = params[0]
+    money = params[1]
+    aim = params[2]
+    date = params[3]
+    user_id = params[4]
+    if request.POST['payment_status'] == 'Completed':
+        logger.error("is completed")
+        if Pledge.objects.filter(charge=request.POST['txn_id']).count() == 0:
+            pledge = Pledge.objects.create(user=UserProfile.objects.get(pk=user_id), pledge_end_date=date,
+                                           course=Course.objects.get(pk=course_id),
+                                           money=money, is_active=True,
+                                           aim=aim)
+            return HttpResponse(json.dumps({'fail': 0, 'id': pledge.id}),
+                                content_type='application/json')
     return HttpResponse()
 
 
