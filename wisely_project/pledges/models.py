@@ -25,6 +25,7 @@ class Pledge(BaseModel):
             grades = sum(grades)/len(grades)
         else:
             grades = 0
+        print "Course:", self.course
         print "Current Grade:", grades
         print "Current Aim", self.aim
         print "End date", self.pledge_end_date
