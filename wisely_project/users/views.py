@@ -21,14 +21,15 @@ from requests import request as request2, HTTPError
 from django.template import RequestContext
 from social_auth.db.django_models import UserSocialAuth
 import twitter
+from twitter import TwitterError
 from actstream import action
+from django.conf import settings
 
 from models import CourseraProfile, Progress, UserProfile, EdxProfile, Invitees, UdemyProfile
 from pledges.models import Pledge, Reward
 from forms import UserProfileForm, UserForm
 from users.models import convert_to_percentage
 from users.utils import send_welcome_email
-from django.conf import settings
 
 
 def login_user(request):
@@ -182,7 +183,10 @@ def sync_up_user(user, social_users):
                                   consumer_secret=settings.TWITTER_CONSUMER_SECRET,
                                   access_token_key=social_user.tokens['oauth_token'],
                                   access_token_secret=social_user.tokens['oauth_token_secret'])
-                friends = api.GetFollowers()
+                try:
+                    friends = api.GetFollowers()
+                except TwitterError:
+                    frineds = None
                 inner_profile.num_connections = len(friends)
                 for friend in friends:
                     try:
