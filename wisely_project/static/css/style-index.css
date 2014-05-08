@@ -3,7 +3,7 @@
 }
 
 .tabs dd:hover:not(.active) .meter {
-    border: solid #eeeeee 1px;
+    background: #F0F1F4;
 }
 
 .tabs dd:hover:not(.active) > a {
@@ -15,6 +15,7 @@
     background: #F0F1F4;
     border: none;
     padding: 2rem 2rem 2rem 3rem;
+    margin-top: 1.8rem;
 }
 
 .tabs dd.active > a {
@@ -44,6 +45,11 @@
     display: inline-block;
 }
 
+.meter {
+    top: 3.9em;
+    position: absolute;
+}
+
 .metrics.score {
     background-color: #F15A29;
     top: 0;
@@ -54,7 +60,7 @@
     background-color: #3C3F50;
     top: 0;
     position: absolute;
-    left: 33%;
+    left: 33.3%;
 }
 
 .metrics.goal img {
@@ -62,7 +68,7 @@
 }
 
 .metrics {
-    width: 33%;
+    width: 33.3%;
     padding: 2%;
     text-align: center;
     height: 100%;
@@ -88,7 +94,7 @@
     background-color: #80BC62;
     top: 0;
     position: absolute;
-    left: 66%;
+    left: 66.6%;
 }
 
 .meter > span {
@@ -106,7 +112,12 @@
 
 .overall-mark {
     font-size: 2rem;
-    font-family: "Lovelo", serif;
+    font-family: "Lato", serif;
+    font-weight: 700;
+}
+
+.overall-mark sup {
+    top: 0;
 }
 
 .orange {
@@ -134,8 +145,8 @@
 }
 
 .summary-courses {
-    background-color: #F0F1F4;
-    color: #0E486D;
+    background-color: #CACACA;
+    color: #fff;
     padding: 1%;
     text-align: center;
     padding-bottom: 10px;
@@ -146,8 +157,16 @@
 }
 
 .number-bold {
-    font-family: 'Lovelo', serif;
-    font-size: 1.5rem;
+    font-family: 'Lato', serif;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.number-bold + p {
+    font-family: 'Lato', serif;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-top: -0.2em;
 }
 
 .class-progress strong {

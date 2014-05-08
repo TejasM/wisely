@@ -54,9 +54,8 @@
     <div class="row wide-row" data-equalizer style="{% if request.is_mobile %}width: 100%{% endif %}">
         <div class="large-4 small-4 columns">
             <div class="row">
-                <div style="background: #0F486D; font-size: 1.2em; color: #fff; padding: 5%;" data-equalizer-watch>
-                    <img
-                            src="{% static 'images/book-icon-trans.png' %}" style="margin-right: 10px">My Courses
+                <div style="background: #0F486D; color: #fff; padding: 5%;" data-equalizer-watch>
+                    <p style="font-size: 1.3em; font-weight: 700; float: right">My Courses</p>
                 </div>
             </div>
         </div>
@@ -78,7 +77,7 @@
                     <p>FRIENDS</p>
                 </div>
                 <div class="large-3 small-3 columns">
-                    <p class="number-bold">$ 0</p>
+                    <p class="number-bold"><sup style="top: 0;">$</sup>0</p>
 
                     <p>EARNED</p>
                 </div>
@@ -97,7 +96,7 @@
                     class="course {% if course.get_amount_progress >= 100 or pledge.is_done %}past{% else %}current{% endif %}">
                     <a href="#panel{{ course.id }}a"
                        onclick="$('#filters').toggle();"
-                       style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
+                       style="text-align: right; width: 33.333%; display: inline-block;font-weight: 700">{{ course.title }}
                         <br>Pledge Ending: {{ pledge.pledge_end_date }}
                     </a>
 
@@ -107,7 +106,7 @@
                         </div>
                         <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                             <div class="metrics score">
-                                <p>SCORE<br>
+                                <p style="font-size: 1rem">SCORE<br>
                                     <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
                             </div>
                             <div class="metrics goal">
@@ -129,7 +128,7 @@
                     class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
                     <a href="#panel{{ course.id }}a"
                        onclick="$('#filters').toggle();"
-                       style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
+                       style="text-align: right; width: 33.333%; display: inline-block;font-weight: 700">{{ course.title }}
                     </a>
 
                     <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
@@ -138,7 +137,7 @@
                         </div>
                         <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                             <div class="metrics score">
-                                <p>SCORE<br>
+                                <p style="font-size: 1rem">SCORE<br>
                                     <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
                             </div>
                             {% if course.get_amount_progress <= 50 %}
@@ -146,7 +145,7 @@
                                      data-class="{{ course.title }}" data-end="{{ course.end_date }}"
                                      data-id="{{ course.id }}" data-tooltip
                                      data-options="disable_for_touch:true" title="Make a pledge"><p>
-                                    <img src="{% static 'images/pledge-icon.png' %}"
+                                    <img src="{% static 'images/pledge-icon.png' %}" width="50"
                                          style="display: inline"></p>
                                 </div>
                                 <div class="metrics pledge">
@@ -171,7 +170,7 @@
                 class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
                 <a href="#panel{{ course.id }}a"
                    onclick="$('#filters').toggle();"
-                   style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
+                   style="text-align: right; width: 33.333%; display: inline-block;font-weight: 700">{{ course.title }}
                 </a>
 
                 <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
@@ -180,7 +179,7 @@
                     </div>
                     <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                         <div class="metrics score">
-                            <p>SCORE<br>
+                            <p style="font-size: 1rem">SCORE<br>
                                 <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
                         </div>
                         {% if course.get_amount_progress <= 50 %}
@@ -188,7 +187,7 @@
                                  data-class="{{ course.title }}" data-end="{{ course.end_date }}"
                                  data-id="{{ course.id }}" data-tooltip
                                  data-options="disable_for_touch:true" title="Make a pledge"><p>
-                                <img src="{% static 'images/pledge-icon.png' %}"
+                                <img src="{% static 'images/pledge-icon.png' %}" width="50"
                                      style="display: inline"></p>
                             </div>
                             <div class="metrics pledge">
@@ -216,7 +215,7 @@
                     <a
                             href="#panel{{ course.id }}a"
                             onclick="$('#filters').toggle();"
-                            style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
+                            style="text-align: right; width: 33.333%; display: inline-block;font-weight: 700">{{ course.title }}
                         <br>Pledge Ending: {{ pledge.pledge_end_date }}
                     </a>
 
@@ -226,7 +225,7 @@
                         </div>
                         <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                             <div class="metrics score">
-                                <p>SCORE<br>
+                                <p style="font-size: 1rem">SCORE<br>
                                     <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
                             </div>
                             <div class="metrics goal">
@@ -248,7 +247,7 @@
                     class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
                     <a href="#panel{{ course.id }}a"
                        onclick="$('#filters').toggle();"
-                       style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
+                       style="text-align: right; width: 33.333%; display: inline-block;font-weight: 700">{{ course.title }}
                     </a>
 
                     <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
@@ -257,7 +256,7 @@
                         </div>
                         <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                             <div class="metrics score">
-                                <p>SCORE<br>
+                                <p style="font-size: 1rem">SCORE<br>
                                     <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
                             </div>
                             {% if course.get_amount_progress <= 50 %}
@@ -265,7 +264,7 @@
                                      data-class="{{ course.title }}" data-end="{{ course.end_date }}"
                                      data-id="{{ course.id }}" data-tooltip
                                      data-options="disable_for_touch:true" title="Make a pledge"><p>
-                                    <img src="{% static 'images/pledge-icon.png' %}"
+                                    <img src="{% static 'images/pledge-icon.png' %}" width="50"
                                          style="display: inline"></p>
                                 </div>
                                 <div class="metrics pledge">
@@ -290,7 +289,7 @@
                 class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
                 <a href="#panel{{ course.id }}a"
                    onclick="$('#filters').toggle();"
-                   style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
+                   style="text-align: right; width: 33.333%; display: inline-block; font-weight: 700">{{ course.title }}
                 </a>
 
                 <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
@@ -299,7 +298,7 @@
                     </div>
                     <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                         <div class="metrics score">
-                            <p>SCORE<br>
+                            <p style="font-size: 1rem">SCORE<br>
                                 <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
                         </div>
                         {% if course.get_amount_progress <= 50 %}
@@ -307,7 +306,7 @@
                                  data-class="{{ course.title }}" data-end="{{ course.end_date }}"
                                  data-id="{{ course.id }}" data-tooltip
                                  data-options="disable_for_touch:true" title="Make a pledge"><p>
-                                <img src="{% static 'images/pledge-icon.png' %}"
+                                <img src="{% static 'images/pledge-icon.png' %}" width="50"
                                      style="display: inline"></p>
                             </div>
                             <div class="metrics pledge">
@@ -335,7 +334,7 @@
                     <a
                             href="#panel{{ course.id }}a"
                             onclick="$('#filters').toggle();"
-                            style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
+                            style="text-align: right; width: 33.333%; display: inline-block; font-weight: 700">{{ course.title }}
                         <br>Pledge Ending: {{ pledge.pledge_end_date }}
                     </a>
 
@@ -345,7 +344,7 @@
                         </div>
                         <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                             <div class="metrics score">
-                                <p>SCORE<br>
+                                <p style="font-size: 1rem">SCORE<br>
                                     <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
                             </div>
                             <div class="metrics goal">
@@ -367,7 +366,7 @@
                     class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
                     <a href="#panel{{ course.id }}a"
                        onclick="$('#filters').toggle();"
-                       style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
+                       style="text-align: right; width: 33.333%; display: inline-block; font-weight: 700">{{ course.title }}
                     </a>
 
                     <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
@@ -376,7 +375,7 @@
                         </div>
                         <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                             <div class="metrics score">
-                                <p>SCORE<br>
+                                <p style="font-size: 1rem">SCORE<br>
                                     <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
                             </div>
                             {% if course.get_amount_progress <= 50 and grade < 25 %}
@@ -384,7 +383,7 @@
                                      data-class="{{ course.title }}" data-end="{{ course.end_date }}"
                                      data-id="{{ course.id }}" data-tooltip
                                      data-options="disable_for_touch:true" title="Make a pledge"><p>
-                                    <img src="{% static 'images/pledge-icon.png' %}"
+                                    <img src="{% static 'images/pledge-icon.png' %}" width="50"
                                          style="display: inline"></p>
                                 </div>
                                 <div class="metrics pledge">
@@ -409,7 +408,7 @@
                 class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
                 <a href="#panel{{ course.id }}a"
                    onclick="$('#filters').toggle();"
-                   style="text-align: right; width: 33.333%; display: inline-block">{{ course.title }}
+                   style="text-align: right; width: 33.333%; display: inline-block; font-weight: 700">{{ course.title }}
                 </a>
 
                 <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
@@ -418,7 +417,7 @@
                     </div>
                     <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                         <div class="metrics score">
-                            <p>SCORE<br>
+                            <p style="font-size: 1rem">SCORE<br>
                                 <span class="overall-mark">{{ grade|floatformat }}<sup>%</sup></span></p>
                         </div>
                         {% if course.get_amount_progress <= 50 and grade < 25 %}
@@ -426,7 +425,7 @@
                                  data-class="{{ course.title }}" data-end="{{ course.end_date }}"
                                  data-id="{{ course.id }}" data-tooltip
                                  data-options="disable_for_touch:true" title="Make a pledge"><p>
-                                <img src="{% static 'images/pledge-icon.png' %}"
+                                <img src="{% static 'images/pledge-icon.png' %}" width="50"
                                      style="display: inline"></p>
                             </div>
                             <div class="metrics pledge">

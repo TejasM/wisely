@@ -163,3 +163,7 @@ label {
         display: none;
     }
 }
+
+.tabs dd > a {
+    padding: 1.3rem 1.4rem;
+}

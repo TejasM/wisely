@@ -24,20 +24,21 @@
         <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
         <script src="https://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js"></script>
     {% endblock %}
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style-anim.css' %}" cache="false"/>
 </head>
 <body style="height: 100%">
 {% block content %}
     <!-- Navigation -->
-    <div id="main-nav-wrapper" style="margin-top: -87px; display: block; position: fixed;z-index: 200;top: 0; padding-top: 0.5%;
-         left: 0;right: 0;width: 100%;background: #0F486D;">
+    <div id="main-nav-wrapper" style="margin-top: -87px; display: block; position: fixed;z-index: 200;top: 0;
+         left: 0;right: 0;width: 100%;background: #3C3F50;padding: 0.25% 0">
         {% include 'nav-bar-alt.html' %}
     </div>
     {% if not request.is_mobile %}
         <!-- Header -->
         <section id="background-image">
             <div id="inner wide-row" style="width: 100%">
-                <div style="padding-top: 2%;"
+                <div style="padding-top: 4%;"
                      id="other-menu">
                     {% include 'nav-bar-alt.html' %}
                 </div>
@@ -51,16 +52,19 @@
                                 <div id="goal" class="anim-circle">0<sup>%</sup></div>
                                 <div id="above-slider" style="position: absolute; top: 140px; width: 100%;"><h1
                                         id="inner-above"
-                                        style="font-size: 5em">CROWD-SOURCED MOTIVATION</h1>
+                                        style="font-size: 4.5em">CROWD-SOURCED MOTIVATION</h1>
                                 </div>
                                 <div id="slider"></div>
-                                <div id="below-slider" style="position: absolute; top: 400px; left: 50px; width: 100%">
+                                <div id="below-slider" style="position: absolute; top: 400px; left: 10em; width: 100%;">
                                     <h2
                                             id="below-text"
-                                            style="font-size: 2em; color: #fff; text-align: left; padding: 0 2em">Wisely
+                                            style="font-size: 1.85em; font-family: 'Lato', sans-serif; font-weight: 300; color: #fff; text-align: left; padding: 0 2em">
+                                        Wisely
                                         helps
                                         you meet your
-                                        personal learning goals on Coursera, EdX, and Udemy. <br>
+                                        personal learning goals on <span
+                                            style="font-family: 'Lato', sans-serif; font-weight: 400;">Coursera, EdX, and Udemy.</span>
+                                        <br>
                                         Keep track of your progress and earn rewards for your achievements.</h2>
                                 </div>
                                 <div id="holder" class="anim-circle" style="margin: 0 auto; width: 100%; left: 0"></div>
@@ -73,7 +77,9 @@
                 </div>
                 <div class="row" style="display: block">
                     <a href="#after-scroll" style="color: #fff">
-                        <h3 class="finish-anim" style="text-align: center; color: #fff">Get $20
+                        <h3 class="finish-anim"
+                            style="text-align: center; color: #fff; font-family: 'Lato',sans-serif; font-weight: 400">
+                            Get $20
                             guaranteed rewards for course completion.</h3>
                         <img src="{% static 'images/down-orange.png' %}" class="finish-anim"
                              style="margin: 0 auto; text-align: center; display: none"></a>
@@ -81,13 +87,16 @@
             </div>
         </section>
     {% endif %}
-    <section id="after-scroll" style="display: none;">
+    <section id="after-scroll">
         <div class="one-place" style="position: relative;  padding-left: 10px; padding-right: 10px">
             <div class="row">
                 <div class="large-12 columns">
-                    <h1>ONE PLACE FOR ALL YOUR ONLINE COURSES</h1>
+                    <h1 style="font-family: 'Lato',sans-serif; font-weight: 700; font-size: 2.7em">ONE PLACE FOR
+                        ALL
+                        YOUR ONLINE COURSES</h1>
 
-                    <h2>Wisely is the new centralized social platform for all your online education needs.</h2>
+                    <h2 style="font-family: 'Lato',sans-serif; color: #58595b; font-weight: 300;">Wisely is the new centralized social
+                        platform for all your online education needs.</h2>
                 </div>
             </div>
             <div class="row" style="margin-top: 80px">
