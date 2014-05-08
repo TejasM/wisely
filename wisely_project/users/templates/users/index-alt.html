@@ -96,8 +96,8 @@
                     class="course {% if course.get_amount_progress >= 100 or pledge.is_done %}past{% else %}current{% endif %}">
                     <a href="#panel{{ course.id }}a"
                        onclick="$('#filters').toggle();"
-                       style="text-align: right; width: 33.333%; display: inline-block;font-weight: 700">{{ course.title }}
-                        <br>Pledge Ending: {{ pledge.pledge_end_date }}
+                       style="text-align: right; width: 33.333%; display: inline-block;font-weight: 700"><span>{{ course.title }}
+                        <br>Pledge Ending: {{ pledge.pledge_end_date }}</span>
                     </a>
 
                     <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
