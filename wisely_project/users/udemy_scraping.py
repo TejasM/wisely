@@ -59,7 +59,7 @@ class Session:
         return course_ids
 
     def get_csrf_token(self):
-        response = self.get('http://udemy.com')
+        response = self.get('https://www.udemy.com/join/signup-popup')
         tree = html.fromstring(response.text)
         return tree.xpath('//*[@id="signup-form"]/input[3]')[0].value
 

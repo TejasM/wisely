@@ -484,7 +484,7 @@
             }, 5000, "bounce", function () {
 
             });
-            other_int = setInterval(updateTime, 5000 / 75);
+            other_int = setInterval(updateTime, 10000 / 75);
         }
     {% else %}
         $('#after-scroll').show();
@@ -544,9 +544,9 @@
 
             },
             slide: function (event, ui) {
-                if (ui.val == 500 && moving == false) {
+                if (ui.val == 500 && $('#goal').text() == "75%" && moving == false) {
                     finishanim();
-                    moving == true;
+                    moving = true;
                 }
                 return started == false;
             }
