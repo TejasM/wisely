@@ -80,7 +80,7 @@
                             style="text-align: center; color: #fff; font-family: 'Lato',sans-serif; font-weight: 400">
                             Get $20
                             guaranteed rewards for course completion.</h3>
-                        <img src="{% static 'images/down-orange.png' %}" class="finish-anim"
+                        <img src="{% static 'images/orange.png' %}" class="finish-anim" id="go-down"
                              style="margin: 0 auto; text-align: center; display: none"></a>
                 </div>
             </div>
@@ -454,234 +454,248 @@
         var counter = 0;
         var counter_goal = 0;
         var counter_reward = 0;
-        function updateTime() {
-            counter++;
-            counter_goal = parseInt(counter);
-            if (counter_goal > 75) {
-                counter_goal = 75;
-            }
-            counter_reward = parseInt(counter_goal / 2) - 7;
-            if (counter_reward < 0) {
-                counter_reward = 3;
-            }
-            $('#goal').html(counter_goal.toString() + "<sup>%</sup>");
-            $('#reward').html("<sup>$</sup>" + counter_reward.toString());
-        }
+
         var other_int = null;
 
-        function start_anim() {
-            // Custom Arc Attribute, position x&y, value portion of total, total value, Radius
-
-            goal_arc.animate({
-                arc: [center, center, 37, 100, 200]
-            }, 5000, "bounce", function () {
-
-            });
-
-
-            money_arc.animate({
-                arc2: [center, center, 19, 100, 200]
-            }, 5000, "bounce", function () {
-
-            });
-            other_int = setInterval(updateTime, 10000 / 75);
-        }
     {% else %}
         $('#after-scroll').show();
     {% endif %}
 </script>
 <script>
-    $(function () {
-        function preload(arrayOfImages) {
-            $(arrayOfImages).each(function () {
-                $('<img/>')[0].src = this;
-                // Alternatively you could use:
-                // (new Image()).src = this;
-            });
+$(function () {
+    function preload(arrayOfImages) {
+        $(arrayOfImages).each(function () {
+            $('<img/>')[0].src = this;
+            // Alternatively you could use:
+            // (new Image()).src = this;
+        });
+    }
+
+    function updateTime() {
+        counter++;
+        counter_goal = parseInt(counter);
+        if (counter_goal > 75) {
+            counter_goal = 75;
         }
-
-        $('#contact').click(function () {
-            $('#contact-us').lightbox_me({centered: true});
-        });
-
-        $('#contact-send').click(function () {
-            var myRootRef = new Firebase('https://wisely.firebaseIO.com/');
-
-            if (validateEmail($('#contact-email').val())) {
-                myRootRef.push({name: $('#contact-email').val().split('@')[0], msg: $('#contact-mail').val()});
-                $('#contact-body').text('Thank You! We will keep you updated!');
-                $('#contact-us').trigger('close');
-            } else {
-                $('#validation-contact').text('That doesn\'t look like a valid email address. Please try again.');
-            }
-        });
-        function validateEmail(email) {
-            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(email);
+        counter_reward = parseInt(counter_goal / 2) - 7;
+        if (counter_reward < 0) {
+            counter_reward = 3;
         }
-
-        // Usage:
-
-        preload([
-            '{% static 'images/shutterstock_125165846.jpg' %}',
-            '{% static 'images/shutterstock_153034898.jpg' %}'
-        ]);
-        var int_func = null;
-        var completed = false;
-        var started = false;
-        $("#slider").slider({
-            value: 250,
-            range: "min",
-            min: 1,
-            max: 1000,
-            animate: 2000,
-            create: function (event, ui) {
-                setSliderTicks(event.target);
-                $('.under-slide').css({width: '39px'});
-                var $handle = $('.ui-slider-handle');
-                $handle.append("<img src='{% static 'images/scene2.png' %}' class='under-slide'>");
-                $handle.addClass('cursor');
-
-            },
-            slide: function (event, ui) {
-                if (ui.val == 500 && $('#goal').text() == "75%" && moving == false) {
-                    finishanim();
-                    moving = true;
-                }
-                return started == false;
-            }
-        });
-
-        function startanim() {
-            $('#slider').slider('value', 500);
-            $('#above-slider').fadeOut(300);
-            $('#below-slider').fadeOut(300);
-            var image = $('#background-image');
-            image.css("background", "url('{% static 'images/shutterstock_125165846.jpg' %}') no-repeat center center fixed");
-            image.css("background-size", "cover");
-            $('.anim-circle').css({visibility: 'visible'});
-            $('.anim-circle').fadeIn(1000, function () {
-                start_anim();
-            });
-            $('#slider').find('.ui-slider-range').css({'-moz-box-shadow': '0 0 10px #fff',
-                '-webkit-box-shadow': '0 0 10px #fff', 'box-shadow': '0 0 10px #fff', 'background': '#fff'});
-
-            started = true;
-            $('.under-slide').addClass('white-back');
-            moving = true;
+        $('#goal').html(counter_goal.toString() + "<sup>%</sup>");
+        $('#reward').html("<sup>$</sup>" + counter_reward.toString());
+        if ($('#goal').text() == "75%" && finished == false) {
+            finishanim();
+            finished = true;
         }
-        {% if not request.is_mobile %}
-            $('.ui-slider-handle').mousedown(function () {
-                if (started == true) {
-                    completed = true;
-                    int_func = setInterval(finishanim, 10);
-                    return false;
-                } else {
-                    startanim();
-                    return false;
-                }
-            });
-            var moving = false;
+    }
 
-            function finishanim() {
-                if ($('#goal').text() == "75%") {
+    function start_anim() {
+        // Custom Arc Attribute, position x&y, value portion of total, total value, Radius
 
-                    $('.anim-circle').fadeOut(1000, function () {
-                        $('.anim-circle').css({visibility: 'hidden'});
-                        $('.anim-circle').show();
-                        $('#after-scroll').fadeIn(1000);
-                        $('.finish-anim').fadeIn(1000);
-                    });
-                    clearInterval(int_func);
-                    clearInterval(other_int);
-                    var image = $('#background-image');
-                    image.css("background", "url('{% static 'images/shutterstock_153034898.jpg' %}') no-repeat center center fixed");
-                    image.css("background-size", "cover");
-                    $('#inner-above').text('MOTIVATE YOUR LEARNING');
-                    $('#above-slider').fadeIn(1000);
-                    $('#below-slider').fadeIn(1000);
-                    var $under = $('.under-slide');
-                    setTimeout(function () {
-                        $under.removeClass('white-back');
-                        $under.css({border: 'none'});
-                        $under.attr({src: "{% static 'images/check-mark-green.png' %}"});
-                    }, 2000);
-                    $('#slider').slider('value', 1000);
-                    $('#other-menu').show();
-                    $under.addClass('white-back');
-                    moving = true;
-                }
-            }
+        goal_arc.animate({
+            arc: [center, center, 37, 100, 200]
+        }, 5000, "bounce", function () {
 
-            function setSliderTicks(el) {
-                var $slider = $(el);
-                var max = $slider.slider("option", "max");
-                var min = $slider.slider("option", "min");
-                var spacing = 25;
-
-                $slider.find('.ui-slider-tick-mark').remove();
-                for (var i = 1; i < max - min; i++) {
-                    if (spacing * i < 100) {
-                        $('<span class="ui-slider-tick-mark"></span>').css('left', (spacing * i) + '%').appendTo($slider);
-                    }
-                }
-            }
-        {% endif %}
-        $('#one-pledge').hover(function () {
-            $(this).find('img').attr('src', '{% static 'images/pledge-icon.png' %}');
-        }, function () {
-            $(this).find('img').attr('src', '{% static 'images/pledge-blue.png' %}');
         });
 
-        $('#one-track').hover(function () {
-            $(this).find('img').attr('src', '{% static 'images/track-icon.png' %}');
-        }, function () {
-            $(this).find('img').attr('src', '{% static 'images/track-orange.png' %}');
-        });
 
-        $('#one-connect').hover(function () {
-            $(this).find('img').attr('src', '{% static 'images/connect-icon.png' %}');
-        }, function () {
-            $(this).find('img').attr('src', '{% static 'images/connect-grey.png' %}');
-        });
+        money_arc.animate({
+            arc2: [center, center, 19, 100, 200]
+        }, 5000, "bounce", function () {
 
-        $('#one-achieve').hover(function () {
-            $(this).find('img').attr('src', '{% static 'images/acheive-icon.png' %}');
-        }, function () {
-            $(this).find('img').attr('src', '{% static 'images/achieve-green.png' %}');
         });
-        var mustSlideDown = true;
-        var mustSlideUp = false;
-        $(window).scroll(function () {
+        other_int = setInterval(updateTime, 10000 / 75);
+    }
 
-            var verschil = ($(window).scrollTop() / 5);
-
-            if (verschil > 40 && mustSlideDown) {
-                $('#other-menu').fadeOut(500);
-                $('#main-nav-wrapper').animate({'margin-top': '0px' }, {duration: 500, queue: false});
-                mustSlideDown = false;
-                mustSlideUp = true;
-            }
-            else if (verschil < 40 && mustSlideUp) {
-                $('#other-menu').fadeIn(500);
-                $('#main-nav-wrapper').animate({'margin-top': '-87px' }, {duration: 500, queue: false});
-                mustSlideUp = false;
-                mustSlideDown = true;
-            }
-        });
-        var count = 0;
-        {% if not request.is_mobile %}
-            setInterval(function () {
-                if (completed == false) {
-                    if (moving == false || count >= 2) {
-                        $('.under-slide').toggleClass('white-back');
-                    } else {
-                        count++;
-                    }
-                }
-            }, 1000);
-        {% endif %}
+    $('#contact').click(function () {
+        $('#contact-us').lightbox_me({centered: true});
     });
+
+    $('#contact-send').click(function () {
+        var myRootRef = new Firebase('https://wisely.firebaseIO.com/');
+
+        if (validateEmail($('#contact-email').val())) {
+            myRootRef.push({name: $('#contact-email').val().split('@')[0], msg: $('#contact-mail').val()});
+            $('#contact-body').text('Thank You! We will keep you updated!');
+            $('#contact-us').trigger('close');
+        } else {
+            $('#validation-contact').text('That doesn\'t look like a valid email address. Please try again.');
+        }
+    });
+    function validateEmail(email) {
+        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }
+
+    // Usage:
+
+    preload([
+        '{% static 'images/shutterstock_125165846.jpg' %}',
+        '{% static 'images/shutterstock_153034898.jpg' %}'
+    ]);
+    var int_func = null;
+    var completed = false;
+    var started = false;
+    $("#slider").slider({
+        value: 250,
+        range: "min",
+        min: 1,
+        max: 1000,
+        animate: 2000,
+        create: function (event, ui) {
+            setSliderTicks(event.target);
+            $('.under-slide').css({width: '39px'});
+            var $handle = $('.ui-slider-handle');
+            $handle.append("<img src='{% static 'images/scene2.png' %}' class='under-slide'>");
+            $handle.addClass('cursor');
+        },
+        slide: function (event, ui) {
+            return started == false;
+        }
+    });
+    var finished = false;
+
+    function startanim() {
+        $('#slider').slider('value', 500);
+        $('#above-slider').fadeOut(300);
+        $('#below-slider').fadeOut(300);
+        var image = $('#background-image');
+        image.css("background", "url('{% static 'images/shutterstock_125165846.jpg' %}') no-repeat center center fixed");
+        image.css("background-size", "cover");
+        $('.anim-circle').css({visibility: 'visible'});
+        $('.anim-circle').fadeIn(1000, function () {
+            start_anim();
+        });
+        $('#slider').find('.ui-slider-range').css({'-moz-box-shadow': '0 0 10px #fff',
+            '-webkit-box-shadow': '0 0 10px #fff', 'box-shadow': '0 0 10px #fff', 'background': '#fff'});
+
+        started = true;
+        $('.under-slide').addClass('white-back');
+        moving = true;
+    }
+
+    {% if not request.is_mobile %}
+        $('.ui-slider-handle').mousedown(function () {
+            if (completed == false) {
+                startanim();
+                completed = true;
+                int_func = setInterval(finishanim, 1000);
+                return false;
+            }
+        });
+        var moving = false;
+        var down_state = 0;
+        function finishanim() {
+            if ($('#goal').text() == "75%") {
+
+                $('.anim-circle').fadeOut(1000, function () {
+                    $('.anim-circle').css({visibility: 'hidden'});
+                    $('.anim-circle').show();
+                    $('#after-scroll').fadeIn(1000);
+                    $('.finish-anim').fadeIn(1000);
+                });
+                clearInterval(int_func);
+                clearInterval(other_int);
+                var image = $('#background-image');
+                image.css("background", "url('{% static 'images/shutterstock_153034898.jpg' %}') no-repeat center center fixed");
+                image.css("background-size", "cover");
+                $('#inner-above').text('MOTIVATE YOUR LEARNING');
+                $('#above-slider').fadeIn(1000);
+                $('#below-slider').fadeIn(1000);
+                var $under = $('.under-slide');
+                setInterval(function () {
+                    if (down_state == 0) {
+                        $('#go-down').attr({src: "{% static 'images/orange.png' %}"});
+                    }
+                    else if (down_state == 1) {
+                        $('#go-down').attr({src: "{% static 'images/orange-one.png' %}"});
+                    } else {
+                        $('#go-down').attr({src: "{% static 'images/orange-both.png' %}"});
+                    }
+                    down_state++;
+                    down_state %= 3;
+                }, 1000);
+                setTimeout(function () {
+                    $under.removeClass('white-back');
+                    $under.css({border: 'none'});
+                    $under.attr({src: "{% static 'images/check-mark-green.png' %}"});
+                }, 2000);
+                $('#slider').slider('value', 1000);
+                $('#other-menu').show();
+                $under.addClass('white-back');
+                moving = true;
+            }
+        }
+
+        function setSliderTicks(el) {
+            var $slider = $(el);
+            var max = $slider.slider("option", "max");
+            var min = $slider.slider("option", "min");
+            var spacing = 25;
+
+            $slider.find('.ui-slider-tick-mark').remove();
+            for (var i = 1; i < max - min; i++) {
+                if (spacing * i < 100) {
+                    $('<span class="ui-slider-tick-mark"></span>').css('left', (spacing * i) + '%').appendTo($slider);
+                }
+            }
+        }
+    {% endif %}
+    $('#one-pledge').hover(function () {
+        $(this).find('img').attr('src', '{% static 'images/pledge-icon.png' %}');
+    }, function () {
+        $(this).find('img').attr('src', '{% static 'images/pledge-blue.png' %}');
+    });
+
+    $('#one-track').hover(function () {
+        $(this).find('img').attr('src', '{% static 'images/track-icon.png' %}');
+    }, function () {
+        $(this).find('img').attr('src', '{% static 'images/track-orange.png' %}');
+    });
+
+    $('#one-connect').hover(function () {
+        $(this).find('img').attr('src', '{% static 'images/connect-icon.png' %}');
+    }, function () {
+        $(this).find('img').attr('src', '{% static 'images/connect-grey.png' %}');
+    });
+
+    $('#one-achieve').hover(function () {
+        $(this).find('img').attr('src', '{% static 'images/acheive-icon.png' %}');
+    }, function () {
+        $(this).find('img').attr('src', '{% static 'images/achieve-green.png' %}');
+    });
+    var mustSlideDown = true;
+    var mustSlideUp = false;
+    $(window).scroll(function () {
+
+        var verschil = ($(window).scrollTop() / 5);
+
+        if (verschil > 40 && mustSlideDown) {
+            $('#other-menu').fadeOut(500);
+            $('#main-nav-wrapper').animate({'margin-top': '0px' }, {duration: 500, queue: false});
+            mustSlideDown = false;
+            mustSlideUp = true;
+        }
+        else if (verschil < 40 && mustSlideUp) {
+            $('#other-menu').fadeIn(500);
+            $('#main-nav-wrapper').animate({'margin-top': '-87px' }, {duration: 500, queue: false});
+            mustSlideUp = false;
+            mustSlideDown = true;
+        }
+    });
+    var count = 0;
+    {% if not request.is_mobile %}
+        setInterval(function () {
+            if (completed == false) {
+                if (moving == false || count >= 2) {
+                    $('.under-slide').toggleClass('white-back');
+                } else {
+                    count++;
+                }
+            }
+        }, 1000);
+    {% endif %}
+});
 </script>
 <script>
     (function (i, s, o, g, r, a, m) {
