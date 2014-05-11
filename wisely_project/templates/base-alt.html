@@ -94,7 +94,8 @@
                         ALL
                         YOUR ONLINE COURSES</h1>
 
-                    <h2 style="font-family: 'Lato',sans-serif; color: #58595b; font-weight: 300;">Wisely is the new centralized social
+                    <h2 style="font-family: 'Lato',sans-serif; color: #58595b; font-weight: 300;">Wisely is the new
+                        centralized social
                         platform for all your online education needs.</h2>
                 </div>
             </div>
@@ -202,18 +203,19 @@
         <div class="people-sec alt-back" style="margin-top: 2em;  padding-left: 10px; padding-right: 10px">
             <div class="row">
 
-                <h1 style="margin-bottom: 0">WHAT PEOPLE SAY ABOUT US</h1>
+                <h1 style="margin-bottom: 0; font-family: 'Lato',sans-serif; font-weight: 700; font-size: 2.7em">WHAT
+                    PEOPLE SAY ABOUT US</h1>
 
                 <h2>Wisely is the new centralized social platform for all your online education needs.</h2>
             </div>
             <div class="wide-row" style="margin-top: 20px">
-                <img src="{% static 'images/people-image.png' %}" width="1200">
+                <img src="{% static 'images/people-image.png' %}" width="1428">
             </div>
-        </div>
-        <div class="last-sec blue-back">
             {% if not user.is_authenticated %}
                 <button id="sign">GET STARTED</button>
             {% endif %}
+        </div>
+        <div class="last-sec blue-back">
             <div class="row">
                 <div class="large-12 centered">
                     <div class="row" style="margin-top: 2em; font-size: 1.3em">
@@ -482,7 +484,7 @@
             }, 5000, "bounce", function () {
 
             });
-            other_int = setInterval(updateTime, 10000 / 75);
+            other_int = setInterval(updateTime, 5000 / 75);
         }
     {% else %}
         $('#after-scroll').show();
@@ -542,6 +544,10 @@
 
             },
             slide: function (event, ui) {
+                if (ui.val == 500 && moving == false) {
+                    finishanim();
+                    moving == true;
+                }
                 return started == false;
             }
         });
@@ -594,13 +600,15 @@
                     $('#inner-above').text('MOTIVATE YOUR LEARNING');
                     $('#above-slider').fadeIn(1000);
                     $('#below-slider').fadeIn(1000);
+                    var $under = $('.under-slide');
                     setTimeout(function () {
-                        $('.under-slide').removeClass('white-back');
-                        $('.under-slide').attr({src: "{% static 'images/check-mark-green.png' %}"});
+                        $under.removeClass('white-back');
+                        $under.css({border: 'none'});
+                        $under.attr({src: "{% static 'images/check-mark-green.png' %}"});
                     }, 2000);
                     $('#slider').slider('value', 1000);
                     $('#other-menu').show();
-                    $('.under-slide').addClass('white-back');
+                    $under.addClass('white-back');
                     moving = true;
                 }
             }
