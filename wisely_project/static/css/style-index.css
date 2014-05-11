@@ -55,6 +55,10 @@
     position: absolute;
 }
 
+.metrics p {
+    font-size: 0.9rem
+}
+
 .metrics.goal {
     background-color: #3C3F50;
     top: 0;
