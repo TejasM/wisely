@@ -26,12 +26,14 @@ while True:
             print "Start coursera"
             get_coursera_courses(user)
             user.last_updated = timezone.now()
+            print "Done Coursera"
             user.save()
         for user in EdxProfile.objects.filter(last_updated__lt=F('user__last_login')).filter(~Q(email='')).filter(
                 incorrect_login=False):
             print user.email
             print "Start edx"
             get_edx_courses(user)
+            print "Done EDx"
             user.last_updated = timezone.now()
             user.save()
         for user in UdemyProfile.objects.filter(last_updated__lt=F('user__last_login')).filter(~Q(email='')).filter(
