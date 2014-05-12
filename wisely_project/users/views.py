@@ -157,7 +157,10 @@ def sync_up_user(user, social_users):
                 try:
                     friends = graph.get_connections("me", "friends")
                 except GraphAPIError:
-                    friends = None
+                    inner_profile.last_updated = timezone.now()
+                    inner_profile.never_updated = False
+                    inner_profile.save()
+                    return
                 inner_profile.num_connections = len(friends['data'])
                 for friend in friends['data']:
                     try:
