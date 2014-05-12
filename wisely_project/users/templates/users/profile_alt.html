@@ -6,6 +6,9 @@
 {% endblock %}
 {% load humanize %}
 {% load inbox %}
+{% block nav-bar %}
+    {% include 'nav-bar-alt.html' with activites="True" %}
+{% endblock %}
 {% block content %}
     <div class="row wide-row" style="{% if request.is_mobile %}width: 100%{% endif %}">
     {% if viewed_user == request.user %}
@@ -42,7 +45,7 @@
                             <div class="row" style="margin: 3% 5%;">
                                 <div class="large-3 columns" style="padding: 0 4%;">
                                     <img {% if follow.picture %}src="/media/{{ follow.picture }}"
-                                         {% else %}src="https://www.gravatar.com/avatar/00000000000000000000000000000000"{% endif %}
+                                         {% else %}src="{% static 'images/default-profile-img.png' %}"{% endif %}
                                          class="pull-left img-circle">
                                 </div>
                                 <div class="large-6 columns">
@@ -70,19 +73,18 @@
         <div class="large-12 columns" style="padding-top: 80px">
     {% endif %}
     <div class="row profile-area"
-         style="position:relative;
-                 height: 28em; background: url('{% static 'images/shutterstock_153034898.jpg' %}') no-repeat center center; background-size: cover">
+         style="height: 28em; background: #bcbcbc;">
         <div class="large-3 columns">
         </div>
-        <div class="large-6 push-3 columns" style="text-align: center;">
-            <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
-                 {% else %}src="https://www.gravatar.com/avatar/00000000000000000000000000000000"{% endif %}
-                 class="img-circle" style="display: block; margin: 20px auto; height:175px; width: 175px">
+        <div class="large-6 push-3 columns" style="text-align: center; position: relative; top: 10%; transform: translateY(-50%);">
+            <div style="height:125px; width: 125px; margin: 1em auto 0; border: solid #fff 3px; border-radius: 50%; background: url({% if user_profile.picture %}'{% static 'images/default-profile-img.png' %}'
+            {% else %}'{% static 'images/default-profile-img.png' %}'{% endif %}); background-size: cover"></div>
 
             <div>
-                <h3 style="font-weight: 400;">{{ viewed_user.first_name }} {{ viewed_user.last_name }}</h3>
+                <h3 style="font-weight: 400; font-size: 1.6em; margin-bottom: 0">{{ viewed_user.first_name }} {{ viewed_user.last_name }}</h3>
 
-                <p>{% if user_profile.headline %}{{ user_profile.headline }}{% endif %}</p>
+                <p style="margin-top: -5px">asdasd{% if user_profile.headline %}
+                    {{ user_profile.headline }}{% endif %}</p>
                 <hr>
                 <div class="info">
                     <img src="{% static 'images/map-icon.png' %}">
@@ -360,7 +362,7 @@
                             <div class="row" style="margin: 3% 5%;">
                                 <div class="large-3 columns" style="padding: 0 4%;">
                                     <img {% if follower.picture %}src="/media/{{ follower.picture }}"
-                                         {% else %}src="https://www.gravatar.com/avatar/00000000000000000000000000000000"{% endif %}
+                                         {% else %}src="{% static 'images/default-profile-img.png' %}"{% endif %}
                                          class="pull-left img-circle small">
                                 </div>
                                 <div class="large-9 columns">
@@ -388,7 +390,7 @@
                             <div class="row" style="margin: 3% 5%;">
                                 <div class="large-3 columns" style="padding: 0 4%;">
                                     <img {% if following.picture %}src="/media/{{ following.picture }}"
-                                         {% else %}src="https://www.gravatar.com/avatar/00000000000000000000000000000000"{% endif %}
+                                         {% else %}src="{% static 'images/default-profile-img.png' %}"{% endif %}
                                          class="pull-left img-circle small">
                                 </div>
                                 <div class="large-9 columns">

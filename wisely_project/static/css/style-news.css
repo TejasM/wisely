@@ -87,7 +87,7 @@ label {
 }
 
 .radio:checked + .relative .circle {
-    border: solid #000;
+    border: solid #fff;
 }
 
 .radio:checked ~ .content-news {
@@ -100,7 +100,7 @@ label {
 
 .radio:checked ~ .content-news p {
     max-height: 200px;
-    color: #000;
+    color: #fff;
     transition: color 0.3s linear 0.3s;
 }
 

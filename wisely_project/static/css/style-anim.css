@@ -896,7 +896,9 @@ img.finish-anim {
 
 .img-circle {
     border-radius: 50%;
-    border: solid #fff 2px;
+    border: solid #fff 3px;
+    background-size: cover;
+    overflow:hidden;
 }
 
 .track-color {

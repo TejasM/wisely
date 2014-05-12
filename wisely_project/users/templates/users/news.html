@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="large-3 small-3 columns">
                     <img {% if user_profile.picture %}src="/media/{{ user_profile.picture }}"
-                         {% else %}src="https://www.gravatar.com/avatar/00000000000000000000000000000000"{% endif %}
+                         {% else %}src="{% static 'images/default-profile-img.png' %}"{% endif %}
                          class="pull-left img-circle">
                 </div>
                 <div class="large-6 small-6 columns">
@@ -73,7 +73,7 @@
                                 <div class="row" style="margin: 3% 5%;">
                                     <div class="large-3 columns" style="padding: 0 4%;margin-left: -10px;">
                                         <img {% if follow.picture %}src="/media/{{ follow.picture }}"
-                                             {% else %}src="https://www.gravatar.com/avatar/00000000000000000000000000000000"{% endif %}
+                                             {% else %}src="{% static 'images/default-profile-img.png' %}"{% endif %}
                                              class="pull-left img-circle">
                                     </div>
                                     <div class="large-6 columns">
@@ -112,9 +112,9 @@
                                                 <div class="relative">
                                         <span class='circle img-circle'><img
                                                 src="{% if feed.actor.picture %}/media/{{ feed.actor.picture }}
-                                                     {% else %}https://www.gravatar.com/avatar/00000000000000000000000000000000{% endif %}"
+                                                     {% else %}{% static 'images/default-profile-img.png' %}{% endif %}"
                                                 width="40"
-                                                style="margin-left: 2px"></span>
+                                                style="width: 100%; height: 100%"></span>
                                                 </div>
                                                 <div class='content-news'>
                                                     <p>
@@ -154,9 +154,9 @@
                                                 <div class="relative">
                                         <span class='circle img-circle'><img
                                                 src="{% if notification.actor.user_profile.picture %}/media/{{ notification.actor.user_profile.picture }}
-                                                     {% else %}https://www.gravatar.com/avatar/00000000000000000000000000000000{% endif %}"
+                                                     {% else %}{% static 'images/default-profile-img.png' %}{% endif %}"
                                                 width="40"
-                                                style="margin-left: 2px"></span>
+                                                style="width: 100%; height: 100%"></span>
                                                 </div>
                                                 <div class='content-news'>
                                                     <p>
@@ -197,7 +197,7 @@
                                             <div class="row" style="margin: 3% 5%;">
                                                 <div class="large-3 columns" style="padding: 0 4%;">
                                                     <img {% if following.picture %}src="/media/{{ following.picture }}"
-                                                         {% else %}src="https://www.gravatar.com/avatar/00000000000000000000000000000000"{% endif %}
+                                                         {% else %}src="{% static 'images/default-profile-img.png' %}"{% endif %}
                                                          class="pull-left img-circle small">
                                                 </div>
                                                 <div class="large-9 columns">
