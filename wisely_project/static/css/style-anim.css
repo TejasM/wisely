@@ -1033,6 +1033,10 @@ button:hover, .button:hover, button:active, .button:active {
     margin: 0 auto;
 }
 
+#filters.course-filts p:not(.selected-news) {
+    color: #fff;
+}
+
 .cursor {
     cursor: pointer !important;
 }
