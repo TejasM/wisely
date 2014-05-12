@@ -16,6 +16,7 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django_messages.models import Message
 import facebook
+from facebook import GraphAPIError
 from notifications import notify
 from requests import request as request2, HTTPError
 from django.template import RequestContext
@@ -153,7 +154,10 @@ def sync_up_user(user, social_users):
         if social_user.provider == 'facebook':
             if inner_profile.last_updated < timezone.now() - timedelta(weeks=2) or inner_profile.never_updated:
                 graph = facebook.GraphAPI(social_user.extra_data["access_token"])
-                friends = graph.get_connections("me", "friends")
+                try:
+                    friends = graph.get_connections("me", "friends")
+                except GraphAPIError:
+                    friends = None
                 inner_profile.num_connections = len(friends['data'])
                 for friend in friends['data']:
                     try:
