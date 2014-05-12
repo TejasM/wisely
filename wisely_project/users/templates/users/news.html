@@ -41,7 +41,7 @@
         </div>
     </div>
     <div class="row wide-row">
-        <div class="large4 small-4 columns">
+        <div class="large4 small-4 columns" style="border-right: solid #D2D4D5 1px;">
             <div class="row">
                 <dl class="tabs vertical" style="width: 100%" data-tab>
                     <dd class="active"><a href="#panel1a" onclick="$('#filters').show();"><i class="fa fa-desktop"
@@ -55,17 +55,17 @@
                             class="right">{% inbox_count %}</span></a></dd>
                 </dl>
             </div>
-            <div class="row" style="margin-top: 30px;">
+            <div class="row" style="margin-top: 60px;">
                 <div class="large-3 small-3 columns">
-                    <img src="{% static 'images/plus.png' %}" style="width: 100%; margin-top: 14px">
+                    <img src="{% static 'images/plus.png' %}"  style="width: 75%; margin-top: 14px">
                 </div>
                 <div class="large-9 small-9 columns">
-                    <div style="margin-top: 15px; margin-left: -10px">
-                        <p style="color: #1E5376; font-size: 1.5em; font-weight: 400">Who To Follow</p>
+                    <div style="margin-top: 20px; margin-left: -10px">
+                        <p style="color: #1E5376; font-size: 1.5em; font-weight: 300">Who To Follow</p>
                     </div>
                 </div>
             </div>
-            <div class="row" style="margin-top: 30px;">
+            <div class="row">
                 <ul class="follow-list">
                     {% for follow in who_to_follow %}
                         <li id="follow_{{ follow.id }}">
@@ -78,7 +78,7 @@
                                     </div>
                                     <div class="large-6 columns">
                                         <div>
-                                            <h3 style="font-weight: 400; font-size: 0.9em">{{ follow.user.first_name }} {{ follow.user.last_name }}</h3>
+                                            <h3 style="font-weight: 400; font-size: 0.9em;margin-left: -10px;">{{ follow.user.first_name }} {{ follow.user.last_name }}</h3>
                                             {% if follow.headline %}
                                                 <p>{{ follow.headline }}</p>
                                             {% endif %}
