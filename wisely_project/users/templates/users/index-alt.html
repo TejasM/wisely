@@ -17,7 +17,7 @@
     <div class="row wide-row"
          style="border-bottom: solid #D2D4D5 1px; {% if request.is_mobile %}width: 100%{% endif %}">
         <div class="large-4 small-4 columns"
-             style="border-right: solid #D2D4D5 1px; padding-top: 40px; padding-bottom: 1%;">
+             style="border-right: solid #D2D4D5 1px; padding-top: 5%; padding-bottom: 1%;">
             <div class="row">
                 <div class="large-3 small-3 columns">
                     <img {% if user.userprofile.picture %}src="/media/{{ user.userprofile.picture }}"
@@ -25,7 +25,7 @@
                          class="pull-left img-circle">
                 </div>
                 <div class="large-6 small-6 columns">
-                    <div style="margin-top: 10px">
+                    <div style="">
                         <h3 style="font-weight: 400; font-size: 1.4em">{{ user.first_name }} {{ user.last_name }}</h3>
 
                         {% if user.userprofile.headline %}
@@ -75,7 +75,7 @@
             </div>
         </div>
         <div class="large-8 small-8 columns">
-            <div class="row" id="filters" data-equalizer-watch style="text-align: center; padding-top: 25px">
+            <div class="row" id="filters" data-equalizer-watch style="text-align: center; padding-top: 25px; background: #CACACA">
                 <div class="large-4 small-4 columns"><a href="#"><p class="selected-news" id="current-filt">Current
                     Courses</p>
                 </a></div>

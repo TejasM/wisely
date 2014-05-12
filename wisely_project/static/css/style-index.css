@@ -148,7 +148,6 @@
 }
 
 .summary-courses {
-    background-color: #CACACA;
     color: #fff;
     padding: 1%;
     text-align: center;
@@ -163,6 +162,7 @@
     font-family: 'Lato', serif;
     font-size: 2rem;
     font-weight: 700;
+    color: #718295;
 }
 
 .number-bold + p {
@@ -170,6 +170,7 @@
     font-size: 1rem;
     font-weight: 400;
     margin-top: -0.2em;
+    color: #718295;
 }
 
 .class-progress strong {

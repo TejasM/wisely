@@ -78,7 +78,7 @@
                                     </div>
                                     <div class="large-6 columns">
                                         <div>
-                                            <h3 style="font-weight: 400; font-size: 1.4em">{{ follow.user.first_name }} {{ follow.user.last_name }}</h3>
+                                            <h3 style="font-weight: 400; font-size: 0.9em">{{ follow.user.first_name }} {{ follow.user.last_name }}</h3>
                                             {% if follow.headline %}
                                                 <p>{{ follow.headline }}</p>
                                             {% endif %}
@@ -118,7 +118,7 @@
                                                 </div>
                                                 <div class='content-news'>
                                                     <p>
-                                                        <a href="/users/profile/{{ feed.actor.user.id }}">
+                                                        <a href="/users/profile/{{ feed.actor.user.id }}" style="font-weight: 400; font-family: 'Lato',sans-serif">
                                                             {{ feed.actor.user.first_name }} {{ feed.actor.user.last_name }}
                                                         </a>
                                                         {% if feed.actions_with_pledges_pledge_as_action_object == True %}

@@ -51,7 +51,7 @@
                                 <div class="large-6 columns">
                                     <div>
                                         <a href="{% url 'users:public_profile' follow.user.id %}"><h3
-                                                style="font-size: 16px">{{ follow.user.first_name }} {{ follow.user.last_name }}</h3>
+                                                style="font-size: 0.9em">{{ follow.user.first_name }} {{ follow.user.last_name }}</h3>
                                         </a>
                                         {% if follow.headline %}
                                             <p>{{ follow.headline }}</p>
@@ -83,7 +83,7 @@
             <div>
                 <h3 style="font-weight: 400; font-size: 1.6em; margin-bottom: 0">{{ viewed_user.first_name }} {{ viewed_user.last_name }}</h3>
 
-                <p style="margin-top: -5px">asdasd{% if user_profile.headline %}
+                <p style="margin-top: -5px">{% if user_profile.headline %}
                     {{ user_profile.headline }}{% endif %}</p>
                 <hr>
                 <div class="info">
