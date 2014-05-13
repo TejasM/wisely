@@ -83,7 +83,7 @@
                         <a href="/users/profile">
                             {% if user.userprofile.picture %}
                                 <img src="/media/{{ user.userprofile.picture }}" class="img-circle" width="40"
-                                     height="40">
+                                     height="40" style="max-width: 40px; max-height: 40px">
                             {% else %}
                                 <img src="{% static 'images/default-profile-img.png' %}"
                                      class="img-circle" width="40" height="40">
