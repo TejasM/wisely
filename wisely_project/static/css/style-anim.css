@@ -5,7 +5,7 @@ html {
 }
 
 #background-image {
-    background: url('../images/shutterstock_133805588.jpg') no-repeat center center fixed;
+    background: url('../images/crowd-bg.png') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -1031,6 +1031,10 @@ button:hover, .button:hover, button:active, .button:active {
     width: 85%;
     text-align: center;
     margin: 0 auto;
+}
+
+#filters.course-filts p:not(.selected-news) {
+    color: #fff;
 }
 
 .cursor {

@@ -34,10 +34,9 @@
                     </div>
                 </div>
                 <div class="large-3 small-3 columns">
-
-                    <img src="{% static 'images/settings-icon.png' %}"
-                         style="width: 80%; margin-top: 10px; {% if user.courseraprofile.incorrect_login or user.udemyprofile.incorrect_login or user.edxprofile.incorrect_login %}border: solid 2px red; border-radius: 50%{% endif %}"
-                         id="settings-icon">
+                    <p style="font-size: 2em; border-radius: 50%; width: 45px; height: 45px; margin-top: 15px; margin-bottom: 0px; text-align: center; border: solid 1px #718295;"
+                       id="settings-icon"><span
+                            style="width: 100%; color: #718295;" class="fa fa-link"></span></p>
                 </div>
             </div>
         </div>
@@ -70,12 +69,13 @@
         <div class="large-4 small-4 columns">
             <div class="row">
                 <div style="background: #0F486D; color: #fff; padding: 5%; min-height: 74px" data-equalizer-watch>
-                    <p style="font-size: 1.3em; font-weight: 700; float: right">My Courses</p>
+                    <p style="font-size: 1.3em; font-weight: 700; float: right; padding-top: 8px;">My Courses</p>
                 </div>
             </div>
         </div>
         <div class="large-8 small-8 columns">
-            <div class="row" id="filters" data-equalizer-watch style="text-align: center; padding-top: 25px; background: #CACACA">
+            <div class="row course-filts" id="filters" data-equalizer-watch
+                 style="text-align: center; padding-top: 25px; background: #CACACA">
                 <div class="large-4 small-4 columns"><a href="#"><p class="selected-news" id="current-filt">Current
                     Courses</p>
                 </a></div>
