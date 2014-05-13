@@ -88,8 +88,7 @@
                 <hr>
                 <div class="info">
                     <img src="{% static 'images/map-icon.png' %}">
-                    {% if user_profile.current_city %}{{ user_profile.current_city }}{% else %}
-                        Toronto{% endif %}
+                    {% if user_profile.current_city %}{{ user_profile.current_city }}{% endif %}
                     <br>
                     {% if viewed_user == request.user %}
                         <img src="{% static 'images/envelope-icon.png' %}"> {% if viewed_user.email %}
