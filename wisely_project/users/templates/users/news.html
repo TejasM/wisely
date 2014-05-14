@@ -32,77 +32,56 @@
                 </div>
             </div>
         </div>
-        <div class="large-8 small-8 columns" style="text-align: center; padding-top: 5%">
-            <div class="row" id="filters">
-                <div class="large-4 small-4 columns"><p class="selected-news" id="everyone-filt">Everyone</p></div>
-                <div class="large-4 small-4 columns"><p id="following-filt">Following</p></div>
-                <div class="large-4 small-4 columns"><p id="followers-filt">Followers</p></div>
+        <div class="large-8 small-8 columns" id="write-new"
+             style="text-align: center; background:#CACACA;display: none; padding: 0.5em 0; margin-top: 5%;">
+            <div class="large-1 columns">
+                <i style="color: #fff; margin-top: 0.2em" class="fa fa-comment fa-2x"></i>
             </div>
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="type" value="new">
+                <input type="hidden" name="course-id" id="course-id" value="-1">
+
+                <div class="large-8 columns">
+                    <input style="border-radius: 0.3em; width: 100%; padding: 0.5rem 1.2rem 0.5rem; margin-top: 0.2em"
+                           name="message"
+                           placeholder="Write Something...">
+                </div>
+                <div class="large-3 columns">
+                    <button type="submit"><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;Write</button>
+                </div>
+            </form>
         </div>
     </div>
     <div class="row wide-row">
-        <div class="large4 small-4 columns" style="border-right: solid #D2D4D5 1px;">
+        <div class="large-4 small-4 columns" style="border-right: solid #D2D4D5 1px;">
             <div class="row">
                 <dl class="tabs vertical" style="width: 100%" data-tab>
-                    <dd class="active"><a href="#panel1a" onclick="$('#filters').show();"><i class="fa fa-list-ul"
-                                                                                             style="font-size: 1.3em"></i>Newsfeed</a>
+                    <dd class="active" style="overflow: hidden; position: relative">
+                        <a href="#panel0a"
+                           onclick="$('#course-id').val('-1');$('#write-new').hide();"
+                           style="text-align: right; width: 100%; display: inline-block;font-weight: 700"><span>GENERAL NEWS</span>
+                        </a>
                     </dd>
-                    <dd><a href="#panel2a" onclick="$('#filters').hide();"><i class="fa fa-bell"
-                                                                              style="font-size: 1.3em"></i>Notifications</a>
-                    </dd>
-                    <dd><a href="#panel4a" onclick="$('#filters').hide();"><i class="fa fa-envelope"
-                                                                              style="font-size: 1.3em"></i>Inbox <span
-                            class="right">{% inbox_count %}</span></a></dd>
+                    {% for course in all_courses %}
+                        <dd style="overflow: hidden; position: relative">
+                            <a href="#panel{{ course.id }}a"
+                               onclick="$('#course-id').val('{{ course.id }}');$('#write-new').show();"
+                               style="text-align: right; width: 100%; display: inline-block;font-weight: 700"><span>{{ course.title|upper }}</span>
+                            </a>
+                        </dd>
+                    {% endfor %}
                 </dl>
             </div>
-            <div class="row" style="margin-top: 60px;">
-                <div class="large-3 small-3 columns">
-                    <img src="{% static 'images/plus.png' %}" style="width: 75%; margin-top: 14px">
-                </div>
-                <div class="large-9 small-9 columns">
-                    <div style="margin-top: 20px; margin-left: -10px">
-                        <p style="color: #1E5376; font-size: 1.5em; font-weight: 300">Who To Follow</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <ul class="follow-list">
-                    {% for follow in who_to_follow %}
-                        <li id="follow_{{ follow.id }}">
-                            <a href="{% url 'users:public_profile' follow.user.id %}">
-                                <div class="row" style="margin: 3% 3%;">
-                                    <div class="large-3 columns" style="padding: 0 4%;margin-left: -10px;">
-                                        <img {% if follow.picture %}src="/media/{{ follow.picture }}"
-                                             {% else %}src="{% static 'images/default-profile-img.png' %}"{% endif %}
-                                             class="pull-left img-circle">
-                                    </div>
-                                    <div class="large-6 columns">
-                                        <div>
-                                            <h3 style="font-weight: 400; font-size: 0.9em;margin-left: -10px;">{{ follow.user.first_name }} {{ follow.user.last_name }}</h3>
-                                            {% if follow.headline %}
-                                                <p style="font-weight: 400; font-size: 0.9em;margin-left: -10px;">{{ follow.headline }}</p>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                    <div class="large-3 columns plus-i"
-                                         style="text-align: center; color: #58595b; font-size: 1.5em"
-                                         onclick="follow_add({{ follow.id }}, '{{ follow.user.first_name }} {{ follow.user.last_name }}');">
-                                        +
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
+
         </div>
 
         <div class="large-8 small-8 columns" style="padding-top: 1%;">
             <div class="row">
                 <div class="large-12 small-12 columns">
                     <div class="tabs-content vertical" style="width: 100%">
-                        <div class="content active" id="panel1a">
-                            {% if feeds %}
+                        {% if feeds %}
+                            <div class="content active" id="panel0a">
                                 <ul class='timeline feed'>
                                     {% for feed in feeds %}
                                         {% if feed.actor_content_type.name == "user profile" %}
@@ -142,85 +121,56 @@
                                         {% endif %}
                                     {% endfor %}
                                 </ul>
-                            {% endif %}
-                        </div>
-                        <div class="content" id="panel2a">
-                            {% if notification_list %}
-                                <ul class='timeline'>
-                                    {% for notification in notification_list %}
-                                        {% if notification.actor_content_type.name == "user" and notification.actor.first_name %}
-                                            <li class='work'>
+                            </div>
+                        {% endif %}
+
+                        {% for inner_feeds, id in course_feeds %}
+                            <div class="content" id="panel{{ id }}a">
+                                <ul class='timeline feed'>
+                                    {% for feed in inner_feeds %}
+                                        {% if feed.actor_content_type.name == "user profile" %}
+                                            <li class='work {% if feed.actor.userprofile in followers %}followers{% endif %} {% if feed.actor.userprofile in user_profile.follows %}following{% endif %}'>
                                                 <input class='radio' type='radio' checked>
 
                                                 <div class="relative">
                                         <span class='circle img-circle'><img
-                                                src="{% if notification.actor.user_profile.picture %}/media/{{ notification.actor.user_profile.picture }}
+                                                src="{% if feed.actor.picture %}/media/{{ feed.actor.picture }}
                                                      {% else %}{% static 'images/default-profile-img.png' %}{% endif %}"
                                                 width="40"
                                                 style="width: 100%; height: 100%"></span>
                                                 </div>
                                                 <div class='content-news'>
-                                                    <p>
-                                                        <a href="/users/profile/{{ notification.actor_object_id }}">
-                                                            {{ notification.actor.first_name }} {{ notification.actor.last_name }}
+                                                    <p style="color: #000">
+                                                        <a href="/users/profile/{{ feed.actor.user.id }}"
+                                                           style="font-weight: 400; font-family: 'Lato',sans-serif">
+                                                            {{ feed.actor.user.first_name }} {{ feed.actor.user.last_name }}
                                                         </a>
-                                                        {% if notification.actions_with_pledges_pledge_as_action_object == None %}
-                                                            <a href="/pledges/share/{{ notification.action_object_object_id }}">
-                                                        {% endif %}
-                                                        {{ notification.verb }}
-                                                        {% if notification.actions_with_pledges_pledge_as_action_object == None %}
-                                                            </a>
-                                                        {% endif %}
-                                                        {% if notification.target %}
-                                                            {% if notification.actions_with_users_course_as_target == None %}
-                                                                <a href="{{ notification.target.course_link }}">{{ notification.target }}</a>
-                                                            {% else %}
-                                                                {{ notification.target }}
-                                                            {% endif %}
-                                                        {% endif %}
+                                                        {{ feed.action_object.question }}
                                                     </p>
 
-                                                    <p>{{ notification.timestamp|naturaltime }}</p>
+                                                    <p style="font-size: 1em; color: #333">{{ feed.timestamp|naturaltime }}</p>
+                                                    <hr style="margin-left: -20px; width: 109%">
+                                                    {% for comment in feed.action_object.comments_set.all %}
+                                                        <p><a href="/users/profile/{{ comment.user.user.id }}"
+                                                              style="font-weight: 400; font-family: 'Lato',sans-serif">
+                                                            {{ comment.user.user.first_name }} {{ comment.user.user.last_name }}
+                                                        </a> {{ comment.comment }} </p>
+                                                    {% endfor %}
+                                                    <form action="" method="post">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="type" value="comment">
+                                                        <input type="hidden" name="post-id" value="{{ feed.action_object.id }}">
+                                                        <input
+                                                            style="border-radius: 0.3em; width: 100%; padding: 0.5rem 1.2rem 0.5rem; margin-top: 0.2em"
+                                                            name="message"
+                                                            placeholder="Write Something..."></form>
                                                 </div>
                                             </li>
                                         {% endif %}
                                     {% endfor %}
                                 </ul>
-                            {% else %}
-                                You have no notifications.
-                            {% endif %}
-                        </div>
-                        <div class="content" id="panel3a">
-                            {% if user_profile.follows %}
-                                <ul class="follower-list">
-                                    {% for following in user_profile.follows.all %}
-                                        <li><a href="{% url 'users:public_profile' following.user.id %}">
-                                            <div class="row" style="margin: 3% 5%;">
-                                                <div class="large-3 columns" style="padding: 0 4%;">
-                                                    <img {% if following.picture %}src="/media/{{ following.picture }}"
-                                                         {% else %}src="{% static 'images/default-profile-img.png' %}"{% endif %}
-                                                         class="pull-left img-circle small">
-                                                </div>
-                                                <div class="large-9 columns">
-                                                    <div>
-                                                        <h3 style="font-size: 16px">{{ following.user.first_name }} {{ following.user.last_name }}</h3>
-                                                        {% if following.headline %}
-                                                            <p>{{ following.headline }}</p>
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% else %}
-                                You are not following anyone yet!
-                            {% endif %}
-                        </div>
-                        <div class="content" id="panel4a" style="width: 100%">
-                            {% include 'django_messages/inbox.html' %}
-                        </div>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

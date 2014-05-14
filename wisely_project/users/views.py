@@ -26,7 +26,7 @@ from twitter import TwitterError
 from actstream import action
 from django.conf import settings
 
-from models import CourseraProfile, Progress, UserProfile, EdxProfile, Invitees, UdemyProfile
+from models import CourseraProfile, Progress, UserProfile, EdxProfile, Invitees, UdemyProfile, Post, Course, Comments
 from pledges.models import Pledge, Reward
 from forms import UserProfileForm, UserForm
 from users.models import convert_to_percentage
@@ -61,15 +61,53 @@ def get_suggested_followers(user):
 
 @login_required
 def news(request):
-    feed_list = Action.objects.order_by('-timestamp')[:20]
-    message_list = Message.objects.inbox_for(request.user)
-    notification_list = request.user.notifications.all()
-    user_profile = UserProfile.objects.get(user=request.user)
-    followers = UserProfile.objects.filter(follows__in=[request.user.userprofile.id])
-    who_to_follow = get_suggested_followers(user_profile)
-    return render(request, 'users/news.html',
-                  {'feeds': feed_list, 'message_list': message_list, 'notification_list': notification_list,
-                   'followers': followers, 'user_profile': user_profile, 'who_to_follow': who_to_follow})
+    if request.method == "POST":
+        user_profile = UserProfile.objects.get(user=request.user)
+        if request.POST['type'] == 'new':
+            question = request.POST['message']
+            try:
+                course = Course.objects.get(pk=request.POST['course-id'])
+            except Course.DoesNotExist:
+                course = None
+            post = Post.objects.create(question=question, user=user_profile, course=course)
+            action.send(user_profile, verb='posted on', action_object=post, target=course)
+        if request.POST['type'] == 'comment':
+            text = request.POST['message']
+            try:
+                post = Post.objects.get(pk=request.POST['post-id'])
+            except Course.DoesNotExist:
+                messages.error(request, "Sorry something went wrong")
+                return redirect(reverse('users:news'))
+            Comments.objects.create(comment=text, user=user_profile, post=post)
+        return redirect(reverse('users:news'))
+    else:
+        feed_list = Action.objects.order_by('-timestamp')[:20]
+        message_list = Message.objects.inbox_for(request.user)
+        user_profile = UserProfile.objects.get(user=request.user)
+        try:
+            coursera_profile = CourseraProfile.objects.get(user=request.user)
+        except CourseraProfile.DoesNotExist:
+            coursera_profile = CourseraProfile.objects.create(user=request.user)
+        try:
+            edx_profile = EdxProfile.objects.get(user=request.user)
+        except EdxProfile.DoesNotExist:
+            edx_profile = EdxProfile.objects.create(user=request.user)
+        try:
+            udemy_profile = UdemyProfile.objects.get(user=request.user)
+        except UdemyProfile.DoesNotExist:
+            udemy_profile = UdemyProfile.objects.create(user=request.user)
+
+        coursera_courses = list(coursera_profile.courses.all())
+        edx_courses = list(edx_profile.courses.all())
+        udemy_courses = list(udemy_profile.courses.all())
+        courses = coursera_courses + edx_courses + udemy_courses
+        course_feeds = []
+        for course in courses:
+            actions = Action.objects.filter(target_object_id=course.id).order_by('-timestamp')
+            course_feeds.append((list(actions), course.id))
+        return render(request, 'users/news.html',
+                      {'feeds': feed_list, 'message_list': message_list, 'user_profile': user_profile,
+                       'all_courses': courses, 'course_feeds': course_feeds})
 
 
 @login_required
@@ -193,7 +231,7 @@ def sync_up_user(user, social_users):
                 try:
                     friends = api.GetFollowers()
                 except TwitterError:
-                    frineds = None
+                    friends = None
                 inner_profile.num_connections = len(friends)
                 for friend in friends:
                     try:

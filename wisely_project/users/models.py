@@ -153,7 +153,7 @@ class EdxInline(admin.TabularInline):
 
 
 class UserCourses(admin.ModelAdmin):
-    fields = ['email',]
+    fields = ['email', ]
     list_display = ('email', 'get_courses')
     inlines = [CourseraInline, EdxInline, UdemyInline]
 
@@ -214,3 +214,15 @@ class Progress(BaseModel):
 
 
 admin.site.register(Course)
+
+
+class Post(BaseModel):
+    question = models.CharField(max_length=100000)
+    user = models.ForeignKey(UserProfile)
+    course = models.ForeignKey(Course, null=True)
+
+
+class Comments(BaseModel):
+    user = models.ForeignKey(UserProfile)
+    comment = models.CharField(max_length=100000)
+    post = models.ForeignKey(Post)

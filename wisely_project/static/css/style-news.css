@@ -1,3 +1,31 @@
+.tabs dd:hover {
+    background: #fff;
+}
+
+.tabs dd:hover:not(.active) .meter {
+    background: #F0F1F4;
+}
+
+.tabs dd:hover > a, .tabs dd.active > a {
+    background: #fff;
+    border-left: solid #80BC62 1rem;
+}
+
+.tabs dd > a {
+    background: #F0F1F4;
+    border: none;
+    padding: 2rem 2rem 2rem 3rem;
+}
+
+.tabs dd.active > a {
+    background: #fff;
+    color: #565557;
+}
+
+.tabs dd {
+    background: #F0F1F4;
+}
+
 .timeline {
     list-style: none;
     margin: 50px 0 30px 50px;
@@ -90,6 +118,7 @@ label {
 
 .radio:checked ~ .content-news {
     max-height: 180px;
+    overflow-y: auto;
     border-color: #D2D4D5;
     margin-right: 20px;
     transform: translateX(20px);
@@ -100,6 +129,15 @@ label {
     max-height: 200px;
     color: #fff;
     transition: color 0.3s linear 0.3s;
+}
+
+.radio:checked ~ .content-news {
+}
+
+.radio:checked ~ .content-news p {
+    font-weight: 400;
+    font-family: 'Lato', sans-serif;
+    color: #333;
 }
 
 /* -------------------------------------
