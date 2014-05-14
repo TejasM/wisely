@@ -85,7 +85,8 @@ def news(request):
                                     content_type='application/json')
             Comments.objects.create(comment=text, user=user_profile, post=post)
             return HttpResponse(json.dumps(
-                {'fail': 0, 'comment': text, 'user': request.user.first_name + ' ' + request.user.last_name}),
+                {'fail': 0, 'comment': text, 'user': request.user.first_name + ' ' + request.user.last_name,
+                 'id': request.user.id}),
                                 content_type='application/json')
         return HttpResponse(json.dumps({'fail': 1}),
                             content_type='application/json')

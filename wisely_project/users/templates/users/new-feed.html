@@ -4,11 +4,11 @@
     <input class='radio' type='radio' checked>
 
     <div class="relative">
-                                        <span class='circle img-circle'><img
-                                                src="{% if request.user.user_profile.picture %}/media/{{ request.user.user_profile.picture }}
-                                                     {% else %}{% static 'images/default-profile-img.png' %}{% endif %}"
-                                                width="40"
-                                                style="width: 100%; height: 100%"></span>
+        <span class='circle img-circle'><img
+                src="{% if request.user.user_profile.picture %}/media/{{ request.user.user_profile.picture }}
+                     {% else %}{% static 'images/default-profile-img.png' %}{% endif %}"
+                width="40"
+                style="width: 100%; height: 100%"></span>
     </div>
     <div class='content-news'>
         <p style="color: #000">

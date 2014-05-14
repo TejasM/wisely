@@ -90,10 +90,10 @@
 
                                                 <div class="relative">
                                         <span class='circle img-circle'><img
-                                                src="{% if feed.actor.picture %}/media/{{ feed.actor.picture }}
+                                            src="{% if feed.actor.picture %}/media/{{ feed.actor.picture }}
                                                      {% else %}{% static 'images/default-profile-img.png' %}{% endif %}"
-                                                width="40"
-                                                style="width: 100%; height: 100%"></span>
+                                            width="40"
+                                            style="width: 100%; height: 100%"></span>
                                                 </div>
                                                 <div class='content-news'>
                                                     <p style="color: #000">
@@ -134,10 +134,10 @@
 
                                                 <div class="relative">
                                         <span class='circle img-circle'><img
-                                                src="{% if feed.actor.picture %}/media/{{ feed.actor.picture }}
+                                            src="{% if feed.actor.picture %}/media/{{ feed.actor.picture }}
                                                      {% else %}{% static 'images/default-profile-img.png' %}{% endif %}"
-                                                width="40"
-                                                style="width: 100%; height: 100%"></span>
+                                            width="40"
+                                            style="width: 100%; height: 100%"></span>
                                                 </div>
                                                 <div class='content-news'>
                                                     <p style="color: #000">
@@ -156,15 +156,15 @@
                                                             {{ comment.user.user.first_name }} {{ comment.user.user.last_name }}
                                                         </a> {{ comment.comment }} </p>
                                                     {% endfor %}
-                                                    <form action="" method="post">
+                                                    <form action="" method="post" class="comment">
                                                         {% csrf_token %}
                                                         <input type="hidden" name="type" value="comment">
                                                         <input type="hidden" name="post-id"
                                                                value="{{ feed.action_object.id }}">
                                                         <input
-                                                                style="border-radius: 0.3em; width: 100%; padding: 0.5rem 1.2rem 0.5rem; margin-top: 0.2em"
-                                                                name="message"
-                                                                placeholder="Write Something..."></form>
+                                                            style="border-radius: 0.3em; width: 100%; padding: 0.5rem 1.2rem 0.5rem; margin-top: 0.2em"
+                                                            name="message"
+                                                            placeholder="Write Something..."></form>
                                                 </div>
                                             </li>
                                         {% endif %}
@@ -216,6 +216,21 @@
                         if (parseInt(data['fail']) == 0) {
                             $('div.content.active .timeline').prepend(data['content']);
                             $('#write-form').find('input[name="message"]').val('');
+                        }
+                    });
+                }
+            });
+            var current = null;
+            $(".comment").on("submit", function (event) {
+                event.preventDefault();
+                current = $(this);
+                if ($(this).find('input[name="message"]').val().trim() != '') {
+                    $.post('{% url 'users:news' %}', $(this).serialize(), function (data) {
+                        if (parseInt(data['fail']) == 0) {
+                            $(current).before('<p><a href="/users/profile/' + data['id'].toString() +
+                                '" style="font-weight: 400; font-family: Lato,sans-serif">' +
+                                data['user'] + '</a>' + data['comment'] + '</p>');
+                            $(current).find('input[name="message"]').val('');
                         }
                     });
                 }
