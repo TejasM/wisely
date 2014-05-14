@@ -37,7 +37,7 @@
             <div class="large-1 columns">
                 <i style="color: #fff; margin-top: 0.2em" class="fa fa-comment fa-2x"></i>
             </div>
-            <form action="" method="post">
+            <form action="" method="post" onsubmit="return false;" id="write-form">
                 {% csrf_token %}
                 <input type="hidden" name="type" value="new">
                 <input type="hidden" name="course-id" id="course-id" value="-1">
@@ -48,7 +48,7 @@
                            placeholder="Write Something...">
                 </div>
                 <div class="large-3 columns">
-                    <button type="submit"><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;Write</button>
+                    <button type="submit" id="write"><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;Write</button>
                 </div>
             </form>
         </div>
@@ -159,11 +159,12 @@
                                                     <form action="" method="post">
                                                         {% csrf_token %}
                                                         <input type="hidden" name="type" value="comment">
-                                                        <input type="hidden" name="post-id" value="{{ feed.action_object.id }}">
+                                                        <input type="hidden" name="post-id"
+                                                               value="{{ feed.action_object.id }}">
                                                         <input
-                                                            style="border-radius: 0.3em; width: 100%; padding: 0.5rem 1.2rem 0.5rem; margin-top: 0.2em"
-                                                            name="message"
-                                                            placeholder="Write Something..."></form>
+                                                                style="border-radius: 0.3em; width: 100%; padding: 0.5rem 1.2rem 0.5rem; margin-top: 0.2em"
+                                                                name="message"
+                                                                placeholder="Write Something..."></form>
                                                 </div>
                                             </li>
                                         {% endif %}
@@ -207,6 +208,17 @@
                 $feed.find('li:not(.following)').hide();
                 $('#filters').find('p').removeClass('selected-news');
                 $(this).addClass('selected-news');
+            });
+            $("#write-form").on("submit", function (event) {
+                event.preventDefault();
+                if ($('#write-form').find('input[name="message"]').val().trim() != '') {
+                    $.post('{% url 'users:news' %}', $(this).serialize(), function (data) {
+                        if (parseInt(data['fail']) == 0) {
+                            $('div.content.active .timeline').prepend(data['content']);
+                            $('#write-form').find('input[name="message"]').val('');
+                        }
+                    });
+                }
             });
         });
         function follow_add(id, name) {

@@ -1,0 +1,40 @@
+{% load staticfiles %}
+{% load humanize %}
+<li class='work'>
+    <input class='radio' type='radio' checked>
+
+    <div class="relative">
+                                        <span class='circle img-circle'><img
+                                                src="{% if request.user.user_profile.picture %}/media/{{ request.user.user_profile.picture }}
+                                                     {% else %}{% static 'images/default-profile-img.png' %}{% endif %}"
+                                                width="40"
+                                                style="width: 100%; height: 100%"></span>
+    </div>
+    <div class='content-news'>
+        <p style="color: #000">
+            <a href="/users/profile/{{ request.user.id }}"
+               style="font-weight: 400; font-family: 'Lato',sans-serif">
+                {{ request.user.first_name }} {{ request.user.last_name }}
+            </a>
+            {{ post.question }}
+        </p>
+
+        <p style="font-size: 1em; color: #333">{{ post.created|naturaltime }}</p>
+        <hr style="margin-left: -20px; width: 109%">
+        {% for comment in post.comments_set.all %}
+            <p><a href="/users/profile/{{ comment.user.user.id }}"
+                  style="font-weight: 400; font-family: 'Lato',sans-serif">
+                {{ comment.user.user.first_name }} {{ comment.user.user.last_name }}
+            </a> {{ comment.comment }} </p>
+        {% endfor %}
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="type" value="comment">
+            <input type="hidden" name="post-id"
+                   value="{{ post.id }}">
+            <input
+                    style="border-radius: 0.3em; width: 100%; padding: 0.5rem 1.2rem 0.5rem; margin-top: 0.2em"
+                    name="message"
+                    placeholder="Write Something..."></form>
+    </div>
+</li>

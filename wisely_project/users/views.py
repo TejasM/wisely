@@ -11,8 +11,9 @@ from django.core.urlresolvers import reverse
 from django.db.models import Q, Avg, Sum
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-from django.template.loader import render_to_string
+from django.template.loader import render_to_string, get_template
 from django.utils import timezone
+from django.utils.safestring import mark_safe
 from django.views.decorators.csrf import csrf_exempt
 from django_messages.models import Message
 import facebook
@@ -71,15 +72,23 @@ def news(request):
                 course = None
             post = Post.objects.create(question=question, user=user_profile, course=course)
             action.send(user_profile, verb='posted on', action_object=post, target=course)
+            t = get_template('users/new-feed.html')
+            content = t.render(RequestContext(request, {'post': post}))
+            return HttpResponse(json.dumps({'fail': 0, 'content': mark_safe(content)}),
+                                content_type='application/json')
         if request.POST['type'] == 'comment':
             text = request.POST['message']
             try:
                 post = Post.objects.get(pk=request.POST['post-id'])
             except Course.DoesNotExist:
-                messages.error(request, "Sorry something went wrong")
-                return redirect(reverse('users:news'))
+                return HttpResponse(json.dumps({'fail': 1}),
+                                    content_type='application/json')
             Comments.objects.create(comment=text, user=user_profile, post=post)
-        return redirect(reverse('users:news'))
+            return HttpResponse(json.dumps(
+                {'fail': 0, 'comment': text, 'user': request.user.first_name + ' ' + request.user.last_name}),
+                                content_type='application/json')
+        return HttpResponse(json.dumps({'fail': 1}),
+                            content_type='application/json')
     else:
         feed_list = Action.objects.order_by('-timestamp')[:20]
         message_list = Message.objects.inbox_for(request.user)
