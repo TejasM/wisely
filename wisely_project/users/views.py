@@ -11,8 +11,9 @@ from django.core.urlresolvers import reverse
 from django.db.models import Q, Avg, Sum
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-from django.template.loader import render_to_string
+from django.template.loader import render_to_string, get_template
 from django.utils import timezone
+from django.utils.safestring import mark_safe
 from django.views.decorators.csrf import csrf_exempt
 from django_messages.models import Message
 import facebook
@@ -26,7 +27,7 @@ from twitter import TwitterError
 from actstream import action
 from django.conf import settings
 
-from models import CourseraProfile, Progress, UserProfile, EdxProfile, Invitees, UdemyProfile
+from models import CourseraProfile, Progress, UserProfile, EdxProfile, Invitees, UdemyProfile, Post, Course, Comments
 from pledges.models import Pledge, Reward
 from forms import UserProfileForm, UserForm
 from users.models import convert_to_percentage
@@ -61,15 +62,62 @@ def get_suggested_followers(user):
 
 @login_required
 def news(request):
-    feed_list = Action.objects.order_by('-timestamp')[:20]
-    message_list = Message.objects.inbox_for(request.user)
-    notification_list = request.user.notifications.all()
-    user_profile = UserProfile.objects.get(user=request.user)
-    followers = UserProfile.objects.filter(follows__in=[request.user.userprofile.id])
-    who_to_follow = get_suggested_followers(user_profile)
-    return render(request, 'users/news.html',
-                  {'feeds': feed_list, 'message_list': message_list, 'notification_list': notification_list,
-                   'followers': followers, 'user_profile': user_profile, 'who_to_follow': who_to_follow})
+    if request.method == "POST":
+        user_profile = UserProfile.objects.get(user=request.user)
+        if request.POST['type'] == 'new':
+            question = request.POST['message']
+            try:
+                course = Course.objects.get(pk=request.POST['course-id'])
+            except Course.DoesNotExist:
+                course = None
+            post = Post.objects.create(question=question, user=user_profile, course=course)
+            action.send(user_profile, verb='posted on', action_object=post, target=course)
+            t = get_template('users/new-feed.html')
+            content = t.render(RequestContext(request, {'post': post}))
+            return HttpResponse(json.dumps({'fail': 0, 'content': mark_safe(content)}),
+                                content_type='application/json')
+        if request.POST['type'] == 'comment':
+            text = request.POST['message']
+            try:
+                post = Post.objects.get(pk=request.POST['post-id'])
+            except Course.DoesNotExist:
+                return HttpResponse(json.dumps({'fail': 1}),
+                                    content_type='application/json')
+            Comments.objects.create(comment=text, user=user_profile, post=post)
+            return HttpResponse(json.dumps(
+                {'fail': 0, 'comment': text, 'user': request.user.first_name + ' ' + request.user.last_name,
+                 'id': request.user.id}),
+                                content_type='application/json')
+        return HttpResponse(json.dumps({'fail': 1}),
+                            content_type='application/json')
+    else:
+        feed_list = Action.objects.order_by('-timestamp')[:20]
+        message_list = Message.objects.inbox_for(request.user)
+        user_profile = UserProfile.objects.get(user=request.user)
+        try:
+            coursera_profile = CourseraProfile.objects.get(user=request.user)
+        except CourseraProfile.DoesNotExist:
+            coursera_profile = CourseraProfile.objects.create(user=request.user)
+        try:
+            edx_profile = EdxProfile.objects.get(user=request.user)
+        except EdxProfile.DoesNotExist:
+            edx_profile = EdxProfile.objects.create(user=request.user)
+        try:
+            udemy_profile = UdemyProfile.objects.get(user=request.user)
+        except UdemyProfile.DoesNotExist:
+            udemy_profile = UdemyProfile.objects.create(user=request.user)
+
+        coursera_courses = list(coursera_profile.courses.all())
+        edx_courses = list(edx_profile.courses.all())
+        udemy_courses = list(udemy_profile.courses.all())
+        courses = coursera_courses + edx_courses + udemy_courses
+        course_feeds = []
+        for course in courses:
+            actions = Action.objects.filter(target_object_id=course.id).order_by('-timestamp')
+            course_feeds.append((list(actions), course.id))
+        return render(request, 'users/news.html',
+                      {'feeds': feed_list, 'message_list': message_list, 'user_profile': user_profile,
+                       'all_courses': courses, 'course_feeds': course_feeds})
 
 
 @login_required
@@ -193,7 +241,7 @@ def sync_up_user(user, social_users):
                 try:
                     friends = api.GetFollowers()
                 except TwitterError:
-                    frineds = None
+                    friends = None
                 inner_profile.num_connections = len(friends)
                 for friend in friends:
                     try:
