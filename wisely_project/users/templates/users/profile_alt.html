@@ -73,50 +73,17 @@
     {% else %}
         <div class="large-12 columns" style="padding-top: 80px">
     {% endif %}
-    <div class="row profile-area"
-         style="height: 28em; background: #bcbcbc;">
-        <div class="large-3 columns">
-        </div>
-        <div class="large-6 push-3 columns"
-             style="text-align: center; position: relative; top: 10%; transform: translateY(-50%);">
-            <div style="height:125px; width: 125px; margin: 1em auto 0; border: solid #fff 3px; border-radius: 50%; background: url({% if user_profile.picture %}'{% static 'images/default-profile-img.png' %}'
-            {% else %}'{% static 'images/default-profile-img.png' %}'{% endif %}); background-size: cover"></div>
 
-            <div>
-                <h3 style="font-weight: 400; font-size: 1.6em; margin-bottom: 0">{{ viewed_user.first_name }} {{ viewed_user.last_name }}</h3>
-
-                <p style="margin-top: -5px">{% if user_profile.headline %}
-                    {{ user_profile.headline }}{% endif %}</p>
-                <hr>
-                <div class="info">
-                    <img src="{% static 'images/map-icon.png' %}">
-                    {% if user_profile.current_city %}{{ user_profile.current_city }}{% endif %}
-                    <br>
-                    {% if viewed_user == request.user %}
-                        <img src="{% static 'images/envelope-icon.png' %}"> {% if viewed_user.email %}
-                        {{ viewed_user.email }}{% else %}email@email.com{% endif %}
-                    {% endif %}
-                </div>
-            </div>
+    {% if public == False %}
+        <div id="partial-profile">
+            {% include 'users/_profile-alt.html' %}
         </div>
-        {% if viewed_user == request.user %}
-            <div class="large-3 {% if public and viewed_user != user %}push-3{% endif %} columns">
-                <div style="text-align: right; float: right">
-                    <i class="fa fa-gear icon-remove-sign"></i>
-                </div>
-            </div>
-        {% endif %}
-        {% if public and viewed_user != user %}
-            <div style="position: absolute; bottom: 10px; right: 10px; z-index: 199">
-                <img src="{% static 'images/message-icon.png' %}"
-                     onclick="$('#compose-message').lightbox_me({centered: true});">
-                <br>
-                {% if viewed_user.userprofile not in user.userprofile.follows.all %}
-                    <img src="{% static 'images/follow-button.png' %}" style="margin-top: 10px" id='follow-button'>
-                {% endif %}
-            </div>
-        {% endif %}
-    </div>
+    {% else %}
+        <span id="partial-profile">
+            {% include 'users/_public-profile-alt.html' %}
+        </span>
+    {% endif %}
+
     <div class="row">
     <div class="large-12 columns">
     <div class="tabs-content vertical" style="width: 100%; margin-top: 2em">
@@ -465,7 +432,63 @@
                 }, 10);
 
             });
+        });
 
+        function hideAllEdit() {
+            $('#edit-headline').hide();
+            $('#edit-email').hide();
+            $('#edit-current_city').hide();
+            $('#cancel-edit-profile').hide();
+            $('#save-edit-profile').hide();
+        }
+
+        function showAllEdit() {
+            $('#edit-headline').show();
+            $('#edit-email').show();
+            $('#edit-current_city').show();
+            $('#cancel-edit-profile').show();
+            $('#save-edit-profile').show();
+            $('#edit-profile').hide();
+        }
+
+        function showAllField() {
+            $('#headline').show();
+            $('#email').show();
+            $('#current_city').show();
+            $('#edit-profile').show();
+        }
+
+        function hideAllField() {
+            $('#headline').hide();
+            $('#email').hide();
+            $('#current_city').hide();
+        }
+
+        $(document).ready(function () {
+            hideAllEdit();
+            $('#edit-profile').live('click', function () {
+                hideAllField();
+                showAllEdit();
+            });
+            $('#save-edit-profile').live('click', function () {
+
+                $.post('{% url 'users:edit_profile' %}', $('#user_profile_form').serialize(), function (data) {
+                    var partial_render = data['parsed_html'];
+                    console.log("partial-profile start rendering");
+                    $('#partial-profile').html(partial_render);
+
+                    if (!data['has_error']) {
+                        hideAllEdit();
+                        showAllField();
+                    }
+                    console.log("partial-profile rendered");
+                });
+                event.preventDefault();
+            });
+            $('#cancel-edit-profile').live('click', function () {
+                hideAllEdit();
+                showAllField();
+            });
         });
     </script>
 {% endblock %}

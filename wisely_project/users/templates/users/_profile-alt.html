@@ -1,0 +1,107 @@
+{% load staticfiles %}
+<form id="user_profile_form" method="post" action="{% url 'users:edit_profile' %}"
+      enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="row profile-area"
+         style="height: 28em; background: #bcbcbc;">
+        <div class="large-6 push-3 columns"
+             style="text-align: center; position: relative; top: 10%; transform: translateY(-50%);">
+            <div style="height:125px; width: 125px; margin: 1em auto 0; border: solid #fff 3px; border-radius: 50%;
+                    background: url({% if user_profile.picture %}'{% static 'images/default-profile-img.png' %}'
+            {% else %}'{% static 'images/default-profile-img.png' %}'{% endif %}); background-size: cover"></div>
+
+            <div>
+                <h3 style="font-weight: 400; font-size: 1.6em; margin-bottom: 0">{{ viewed_user.first_name }} {{ viewed_user.last_name }}</h3>
+
+                <p style="margin-top: -5px">
+                <span id="headline">
+                    {% if user_profile.headline %}
+                        {{ user_profile.headline }}
+                    {% elif public == False %}
+                        Add a headline
+                    {% endif %}
+                </span>
+                <span id="edit-headline">
+                    {{ user_profile_form.headline.errors }}
+                            <input name="headline" type="text" class="form-control"
+                                   value="{{ user_profile_form.headline.value|default_if_none:"" }}"
+                                   placeholder="{{ "Add a headline" }}">
+                </span>
+                </p>
+                <hr>
+                <div class="info">
+                    <img src="{% static 'images/map-icon.png' %}">
+
+                    <span id="current_city">
+                        {% if user_profile.current_city %}
+                            {{ user_profile.current_city }}
+                        {% elif public == False %}
+                            Add your current city
+                        {% endif %}
+                    </span>
+
+                        <span id="edit-current_city">
+                            {{ user_profile_form.current_city.errors }}
+                        <input id="id_website" name="current_city" type="text" class="form-control"
+                               style="width: 80%; display: inline"
+                               value="{{ user_profile_form.current_city.value|default_if_none:"" }}"
+                               placeholder="Add your current city">
+                        </span>
+
+                    <br>
+                    {% if public == False %}
+                        <img src="{% static 'images/envelope-icon.png' %}">
+                        <span id="email">
+                            {% if viewed_user.email %}
+                                {{ viewed_user.email }}
+                            {% else %}
+                                Add your email
+                            {% endif %}
+                            </span>
+                        <span id="edit-email">
+                                {{ user_form.email.errors }}
+                        <input id="id_email" name="email" type="text" class="form-control"
+                               style="width: 80%; display: inline"
+                               value="{{ user_form.email.value|default_if_none:"" }}"
+                               placeholder="Add your email">
+                            </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% if viewed_user == request.user %}
+            <div class="large-3 {% if public and viewed_user != user %}push-3{% endif %} columns">
+                <div style="text-align: right; float: right">
+                        <span id="edit-profile-icon">
+                        <a href="javascript:void(0)" id="edit-profile">
+                            <i class="fa fa-gear icon-remove-sign"></i>
+                        </a>
+                        </span>
+                        <span id="save-edit-profile-icon">
+                        <a href="javascript:void(0)" id="save-edit-profile">
+                            <i class="fa fa-save icon-remove-sign"></i>
+                        </a>
+                        </span>
+                        <span id="cancel-edit-profile-icon">
+                        <a href="javascript:void(0)" id="cancel-edit-profile">
+                            <i class="fa fa-undo icon-remove-sign"></i>
+                        </a>
+                        </span>
+
+                </div>
+            </div>
+        {% endif %}
+        {% if public and viewed_user != user %}
+            <div style="position: absolute; bottom: 10px; right: 10px; z-index: 199">
+                <img src="{% static 'images/message-icon.png' %}"
+                     onclick="$('#compose-message').lightbox_me({centered: true});">
+                <br>
+                {% if viewed_user.userprofile not in user.userprofile.follows.all %}
+                    <img src="{% static 'images/follow-button.png' %}" style="margin-top: 10px" id='follow-button'>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+</form>

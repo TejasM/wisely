@@ -1,0 +1,45 @@
+{% load staticfiles %}
+
+<div class="row profile-area"
+     style="height: 28em; background: #bcbcbc;">
+    <div class="large-6 push-3 columns"
+         style="text-align: center; position: relative; top: 10%; transform: translateY(-50%);">
+        <div style="height:125px; width: 125px; margin: 1em auto 0; border: solid #fff 3px; border-radius: 50%;
+                background: url({% if user_profile.picture %}'{% static 'images/default-profile-img.png' %}'
+        {% else %}'{% static 'images/default-profile-img.png' %}'{% endif %}); background-size: cover"></div>
+
+        <div>
+            <h3 style="font-weight: 400; font-size: 1.6em; margin-bottom: 0">{{ viewed_user.first_name }} {{ viewed_user.last_name }}</h3>
+
+            <p style="margin-top: -5px">
+                <span id="headline">
+                    {% if user_profile.headline %}
+                        {{ user_profile.headline }}
+                    {% endif %}
+                </span>
+            </p>
+            <hr>
+            <div class="info">
+                <img src="{% static 'images/map-icon.png' %}">
+
+                    <span id="current_city">
+                        {% if user_profile.current_city %}
+                            {{ user_profile.current_city }}
+                        {% endif %}
+                    </span>
+                <br>
+            </div>
+        </div>
+    </div>
+    {% if public and viewed_user != user %}
+        <div style="position: absolute; bottom: 10px; right: 10px; z-index: 199">
+            <img src="{% static 'images/message-icon.png' %}"
+                 onclick="$('#compose-message').lightbox_me({centered: true});">
+            <br>
+            {% if viewed_user.userprofile not in user.userprofile.follows.all %}
+                <img src="{% static 'images/follow-button.png' %}" style="margin-top: 10px" id='follow-button'>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+

@@ -90,7 +90,7 @@ def profile(request):
     user_profile = UserProfile.objects.get(user=request.user)
     rewards = Reward.objects.filter(user=user_profile)
     context_dict = {'viewed_user': request.user, 'user_profile': user_profile, 'user_profile_form': user_profile_form,
-                    'user_form': user_form, 'completed_pledges': pledges,
+                    'user_form': user_form, 'completed_pledges': pledges, 'public': False,
                     'message_list': message_list, 'followers': followers, 'who_to_follow': who_to_follow,
                     'feeds': feed_list, 'rewards': rewards}
     return render(request, 'users/profile_alt.html', context_dict)
@@ -439,15 +439,13 @@ def edit_profile(request):
             has_error = True
             print user_profile_form.errors, user_form.errors
 
-        completed_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=True)
-        current_pledges = Pledge.objects.filter(user=request.user.userprofile, is_complete=False)
-
-        context_dict = {'user': user, 'user_profile': user_profile,
+        context_dict = {'viewed_user': user, 'user_profile': user_profile,
                         'user_profile_form': user_profile_form,
-                        'user_form': user_form, 'completed_pledges': completed_pledges,
-                        'current_pledges': current_pledges}
+                        'user_form': user_form,
+                        'public': False,
+        }
 
-        parsed_html = render_to_string('users/_profile.html',
+        parsed_html = render_to_string('users/_profile-alt.html',
                                        context_dict, context)
 
         return HttpResponse(json.dumps({'parsed_html': parsed_html, 'has_error': has_error}),
