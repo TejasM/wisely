@@ -36,7 +36,7 @@
                 <div class="large-3 small-3 columns">
                     <p style="cursor: pointer; font-size: 2em; border-radius: 50%; width: 45px; height: 45px; margin-top: 15px; margin-bottom: 0px; text-align: center; border: solid 1px #718295;"
                        id="settings-icon"><span
-                            style="width: 100%; color: #718295;" class="fa fa-link"></span></p>
+                        style="width: 100%; color: #718295;" class="fa fa-link"></span></p>
                 </div>
             </div>
         </div>
@@ -104,7 +104,8 @@
                         <div class="meter">
                             <span style="width: {{ pledge.get_amount_progress }}%"></span>
                         </div>
-                        <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
+                        <div
+                            style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                             <div class="metrics score">
                                 <p>SCORE<br>
                                     <span class="overall-mark">{{ grade|floatformat:"0" }}<sup>%</sup></span></p>
@@ -135,7 +136,8 @@
                         <div class="meter">
                             <span style="width: {{ course.get_amount_progress }}%"></span>
                         </div>
-                        <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
+                        <div
+                            style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                             <div class="metrics score">
                                 <p style="font-size: 1rem">SCORE<br>
                                     <span class="overall-mark">{{ grade|floatformat:"0" }}<sup>%</sup></span></p>
@@ -177,7 +179,8 @@
                     <div class="meter">
                         <span style="width: {{ course.get_amount_progress }}%"></span>
                     </div>
-                    <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
+                    <div
+                        style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                         <div class="metrics score">
                             <p style="font-size: 1rem">SCORE<br>
                                 <span class="overall-mark">{{ grade|floatformat:"0" }}<sup>%</sup></span></p>
@@ -213,9 +216,9 @@
                 <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
                     class="course {% if course.get_amount_progress >= 100 or pledge.is_done %}past{% else %}current{% endif %}">
                     <a
-                            href="#panel{{ course.id }}a"
-                            onclick="$('#filters').toggle();"
-                            style="text-align: right; width: 33.333%; display: inline-block;font-weight: 700">{{ course.title|upper }}
+                        href="#panel{{ course.id }}a"
+                        onclick="$('#filters').toggle();"
+                        style="text-align: right; width: 33.333%; display: inline-block;font-weight: 700">{{ course.title|upper }}
                         <br>Pledge Ending: {{ pledge.pledge_end_date }}
                     </a>
 
@@ -223,7 +226,8 @@
                         <div class="meter">
                             <span style="width: {{ pledge.get_amount_progress }}%"></span>
                         </div>
-                        <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
+                        <div
+                            style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                             <div class="metrics score">
                                 <p style="font-size: 1rem">SCORE<br>
                                     <span class="overall-mark">{{ grade|floatformat:"0" }}<sup>%</sup></span></p>
@@ -254,7 +258,8 @@
                         <div class="meter">
                             <span style="width: {{ course.get_amount_progress }}%"></span>
                         </div>
-                        <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
+                        <div
+                            style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                             <div class="metrics score">
                                 <p style="font-size: 1rem">SCORE<br>
                                     <span class="overall-mark">{{ grade|floatformat:"0" }}<sup>%</sup></span></p>
@@ -296,7 +301,8 @@
                     <div class="meter">
                         <span style="width: {{ course.get_amount_progress }}%"></span>
                     </div>
-                    <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
+                    <div
+                        style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                         <div class="metrics score">
                             <p style="font-size: 1rem">SCORE<br>
                                 <span class="overall-mark">{{ grade|floatformat:"0" }}<sup>%</sup></span></p>
@@ -332,9 +338,9 @@
                 <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
                     class="course {% if course.get_amount_progress >= 100 or pledge.is_done %}past{% else %}current{% endif %}">
                     <a
-                            href="#panel{{ course.id }}a"
-                            onclick="$('#filters').toggle();"
-                            style="text-align: right; width: 33.333%; display: inline-block; font-weight: 700">{{ course.title|upper }}
+                        href="#panel{{ course.id }}a"
+                        onclick="$('#filters').toggle();"
+                        style="text-align: right; width: 33.333%; display: inline-block; font-weight: 700">{{ course.title|upper }}
                         <br>Pledge Ending: {{ pledge.pledge_end_date }}
                     </a>
 
@@ -342,7 +348,8 @@
                         <div class="meter">
                             <span style="width: {{ pledge.get_amount_progress }}%"></span>
                         </div>
-                        <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
+                        <div
+                            style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                             <div class="metrics score">
                                 <p style="font-size: 1rem">SCORE<br>
                                     <span class="overall-mark">{{ grade|floatformat:"0" }}<sup>%</sup></span></p>
@@ -373,13 +380,14 @@
                         <div class="meter">
                             <span style="width: {{ course.get_amount_progress }}%"></span>
                         </div>
-                        <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
+                        <div
+                            style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                             <div class="metrics score">
                                 <p style="font-size: 1rem">SCORE<br>
                                     <span class="overall-mark">{{ grade|floatformat:"0" }}<sup>%</sup></span></p>
                             </div>
                             {% if course.get_amount_progress <= 50 and grade < 25 %}
-                                <div class="metrics goal pledge-start has-tip tip-bottom"
+                                <div class="metrics goal pledge-start has-tip tip-bottom udemy"
                                      data-class="{{ course.title|upper }}" data-end="{{ course.end_date }}"
                                      data-id="{{ course.id }}" data-tooltip
                                      data-options="disable_for_touch:true" title="Make a pledge"><p>
@@ -415,13 +423,14 @@
                     <div class="meter">
                         <span style="width: {{ course.get_amount_progress }}%"></span>
                     </div>
-                    <div style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
+                    <div
+                        style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                         <div class="metrics score">
                             <p style="font-size: 1rem">SCORE<br>
                                 <span class="overall-mark">{{ grade|floatformat:"0" }}<sup>%</sup></span></p>
                         </div>
                         {% if course.get_amount_progress <= 50 and grade < 25 %}
-                            <div class="metrics goal pledge-start has-tip tip-bottom"
+                            <div class="metrics goal pledge-start has-tip tip-bottom udemy"
                                  data-class="{{ course.title|upper }}" data-end="{{ course.end_date }}"
                                  data-id="{{ course.id }}" data-tooltip
                                  data-options="disable_for_touch:true" title="Make a pledge"><p>
@@ -577,7 +586,7 @@
                     data-shipping="0"
                     data-tax="0"
                     data-callback="https://{{ request.get_host }}/pledges/paypal/"
-                    ></script>
+                ></script>
             <p style="text-align: center; margin-top: 1.25rem">OR</p>
 
             <button id="make-pledge" style="margin-top: 0">USING CREDIT CARD</button>
@@ -758,14 +767,20 @@
         var current_id;
         var current_date;
         var picker;
+        var udemy = false;
         $('.pledge-start').click(function () {
             var $clicked = $(this);
             current_id = $clicked.data('id');
             current_name = $clicked.data('class');
             current_date = $clicked.data('end');
-
+            udemy = $clicked.hasClass('udemy');
+            $("#goal-slider").slider('value', 75);
+            $("#pledge-slider").slider('value', 30);
             $('#class-title').html('<p>' + current_name + '</p>');
             $('#class-id').val(current_id);
+            $('#number_pledges').text(0);
+            $('#avg_aim').html('N/A');
+            $('#probable_reward').html('N/A');
             $.get('{% url 'users:get_course_stats' %}', {'id': current_id}, function (data) {
                 if (parseInt(data['fail']) == 0) {
                     if (parseInt(data['count']) != 0) {
@@ -774,7 +789,9 @@
                         average_aim = parseInt(data['avg_aim']);
                         projected_amount = parseInt(data['probable_reward']);
                     }
-                    $('#probable_reward').html('<sup>$</sup>' + data['probable_reward']);
+                    if (!udemy) {
+                        $('#probable_reward').html('<sup>$</sup>' + data['probable_reward']);
+                    }
                     var now = new Date();
                     if (!picker) {
                         picker = new Pikaday({ field: document.getElementById('datepicker'),
@@ -809,8 +826,8 @@
                 }
                 $('#goal-value').html(ui.value.toString() + '<sup>%</sup>');
                 var value =
-                        projected_amount *
-                                (1 + (ui.value / 100 - average_aim / 100) / (average_aim / 100));
+                    projected_amount *
+                        (1 + (ui.value / 100 - average_aim / 100) / (average_aim / 100));
                 if (isNaN(value)) {
                     value = 10;
                 }
@@ -945,21 +962,21 @@
 
         $('#share-facebook').click(function () {
             FB.ui(
-                    {
-                        method: 'feed',
-                        name: 'Pledge for ' + share_name,
-                        description: (
-                                'I' + ' have just made a' +
-                                        ' pledge for ' + share_name + ', help me stay motivated by following the pledge.'
-                                ),
-                        link: 'http://www.projectwisely.com/follow/' + share_id.toString(),
-                        picture: 'http://www.fbrell.com/public/f8.jpg'
-                    },
-                    function (response) {
-                        if (response && response.post_id) {
-                        } else {
-                        }
+                {
+                    method: 'feed',
+                    name: 'Pledge for ' + share_name,
+                    description: (
+                        'I' + ' have just made a' +
+                            ' pledge for ' + share_name + ', help me stay motivated by following the pledge.'
+                        ),
+                    link: 'http://www.projectwisely.com/follow/' + share_id.toString(),
+                    picture: 'http://www.fbrell.com/public/f8.jpg'
+                },
+                function (response) {
+                    if (response && response.post_id) {
+                    } else {
                     }
+                }
             );
         });
 
@@ -1071,15 +1088,15 @@
 
         $('.popup').click(function (event) {
             var width = 575,
-                    height = 400,
-                    left = ($(window).width() - width) / 2,
-                    top = ($(window).height() - height) / 2,
-                    url = this.href,
-                    opts = 'status=1' +
-                            ',width=' + width +
-                            ',height=' + height +
-                            ',top=' + top +
-                            ',left=' + left;
+                height = 400,
+                left = ($(window).width() - width) / 2,
+                top = ($(window).height() - height) / 2,
+                url = this.href,
+                opts = 'status=1' +
+                    ',width=' + width +
+                    ',height=' + height +
+                    ',top=' + top +
+                    ',left=' + left;
 
             window.open(url, 'twitter', opts);
 
