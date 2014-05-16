@@ -4,17 +4,17 @@
     {% csrf_token %}
 
     <div class="row profile-area"
-         style="height: 28em; background: #bcbcbc;">
+         style="height: 28em; background: #0F486D;">
         <div class="large-6 push-3 columns"
              style="text-align: center; position: relative; top: 10%; transform: translateY(-50%);">
             <div style="height:125px; width: 125px; margin: 1em auto 0; border: solid #fff 3px; border-radius: 50%;
-                    background: url({% if user_profile.picture %}'{% static 'images/default-profile-img.png' %}'
+                background: url({% if user_profile.picture %}'{% static 'images/default-profile-img.png' %}'
             {% else %}'{% static 'images/default-profile-img.png' %}'{% endif %}); background-size: cover"></div>
 
             <div>
                 <h3 style="font-weight: 400; font-size: 1.6em; margin-bottom: 0">{{ viewed_user.first_name }} {{ viewed_user.last_name }}</h3>
 
-                <p style="margin-top: -5px">
+                <p style="margin-top: 15px">
                 <span id="headline">
                     {% if user_profile.headline %}
                         {{ user_profile.headline }}
@@ -26,10 +26,16 @@
                     {{ user_profile_form.headline.errors }}
                             <input name="headline" type="text" class="form-control"
                                    value="{{ user_profile_form.headline.value|default_if_none:"" }}"
-                                   placeholder="{{ "Add a headline" }}">
+                                   placeholder="{{ "Add a headline" }}" style="background: transparent;
+border: none;
+box-shadow: none;
+border-bottom: solid 2px #C1C1C1;
+text-align: center;
+margin-top: 10px;
+color: #fff;
+font-size: 1em;">
                 </span>
                 </p>
-                <hr>
                 <div class="info">
                     <img src="{% static 'images/map-icon.png' %}">
 
@@ -44,7 +50,14 @@
                         <span id="edit-current_city">
                             {{ user_profile_form.current_city.errors }}
                         <input id="id_website" name="current_city" type="text" class="form-control"
-                               style="width: 80%; display: inline"
+                               style="width: 80%; display: inline;background: transparent;
+border: none;
+box-shadow: none;
+border-bottom: solid 2px #C1C1C1;
+text-align: center;
+margin-top: 10px;
+color: #fff;
+font-size: 1em;"
                                value="{{ user_profile_form.current_city.value|default_if_none:"" }}"
                                placeholder="Add your current city">
                         </span>
@@ -62,7 +75,14 @@
                         <span id="edit-email">
                                 {{ user_form.email.errors }}
                         <input id="id_email" name="email" type="text" class="form-control"
-                               style="width: 80%; display: inline"
+                               style="width: 80%; display: inline;background: transparent;
+border: none;
+box-shadow: none;
+border-bottom: solid 2px #C1C1C1;
+text-align: center;
+margin-top: 10px;
+color: #fff;
+font-size: 1em;"
                                value="{{ user_form.email.value|default_if_none:"" }}"
                                placeholder="Add your email">
                             </span>

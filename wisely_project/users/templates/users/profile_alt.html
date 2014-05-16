@@ -17,9 +17,6 @@
             <div class="row">
                 <dl class="tabs vertical" style="width: 100%; height: 28em" data-tab>
                     <dd class="active"><a href="#panel1a"><i class="fa fa-bolt"></i>Recent Activities</a></dd>
-                    <dd><a href="#panel2a"><i class="fa fa-envelope"></i>Inbox<span
-                            class="right">{% inbox_count %}</span></a></dd>
-
                     <dd><a href="#panel3a"><i class="fa fa-list"></i>Achievements</a>
                     </dd>
                     <dd><a href="#panel4a" id="acheivements-panel"><i class="fa fa-certificate"></i>Rewards</a>
@@ -171,9 +168,6 @@
         {% endif %}
     </div>
     {% if viewed_user == request.user %}
-        <div class="content" id="panel2a" style="width: 100%">
-            {% include 'django_messages/inbox.html' %}
-        </div>
         <div class="content" id="panel3a">
             <div class="row">
                 <h3>Completed Courses</h3>

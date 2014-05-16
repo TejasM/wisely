@@ -1,7 +1,7 @@
 {% load staticfiles %}
 
 <div class="row profile-area"
-     style="height: 28em; background: #bcbcbc;">
+     style="height: 28em; background: #0F486D;">
     <div class="large-6 push-3 columns"
          style="text-align: center; position: relative; top: 10%; transform: translateY(-50%);">
         <div style="height:125px; width: 125px; margin: 1em auto 0; border: solid #fff 3px; border-radius: 50%;
@@ -11,14 +11,13 @@
         <div>
             <h3 style="font-weight: 400; font-size: 1.6em; margin-bottom: 0">{{ viewed_user.first_name }} {{ viewed_user.last_name }}</h3>
 
-            <p style="margin-top: -5px">
+            <p style="margin-top: 15px">
                 <span id="headline">
                     {% if user_profile.headline %}
                         {{ user_profile.headline }}
                     {% endif %}
                 </span>
             </p>
-            <hr>
             <div class="info">
                 <img src="{% static 'images/map-icon.png' %}">
 

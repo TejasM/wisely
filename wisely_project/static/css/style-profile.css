@@ -34,7 +34,6 @@
     margin-right: 10px;
 }
 
-
 #timeline-profile {
     list-style: none;
     margin: 5px 0 30px 120px;
@@ -67,9 +66,9 @@
     width: 10px;
     height: 10px;
     background: #48b379;
-    background-size: 7px 7px ;
+    background-size: 7px 7px;
     padding: 10px;
-    border: solid  #BDCDD7 1px;
+    border: solid #BDCDD7 1px;
     border-spacing: 1px;
     box-shadow: 0 0 4px #BDCDD7;
     border-radius: 50%;
@@ -161,14 +160,14 @@
     border-radius: 50%;
     color: white;
     margin-top: 10px;
-    padding: 4px 0 0;
+    padding: 8px 0 0;
     background-color: transparent;
     border: solid white 2px;
-    font-size:40px;
-    display:block;
-    height:50px;
-    width:50px;
-    text-align:center;
+    font-size: 30px;
+    display: block;
+    height: 50px;
+    width: 50px;
+    text-align: center;
 }
 
 /* -------------------------------------
