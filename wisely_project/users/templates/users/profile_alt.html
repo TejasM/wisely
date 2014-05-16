@@ -474,6 +474,9 @@
                     if (!data['has_error']) {
                         hideAllEdit();
                         showAllField();
+                    } else {
+                        hideAllField();
+                        showAllEdit();
                     }
                     console.log("partial-profile rendered");
                 });
