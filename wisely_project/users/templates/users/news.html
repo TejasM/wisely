@@ -32,6 +32,16 @@
                 </div>
             </div>
         </div>
+        <div class="large-8 small-8 columns" id="filts">
+            <div class="row course-filts" id="filters" data-equalizer-watch
+                 style="text-align: center; padding-top: 25px; background: #CACACA;margin-top: 8.5%">
+                <div class="large-4 small-4 columns"><a href="#"><p class="selected-news" id="current-filt">Current
+                    Courses</p>
+                </a></div>
+                <div class="large-4 small-4 columns"><a href="#"><p id="past-filt">Past Courses</p></a></div>
+                <div class="large-4 small-4 columns"><a href="#"><p id="all-filt">All Courses</p></a></div>
+            </div>
+        </div>
         <div class="large-8 small-8 columns" id="write-new"
              style="text-align: center; background:#CACACA;display: none; padding: 0.5em 0; margin-top: 5%;">
             <div class="large-1 columns">
@@ -57,16 +67,17 @@
         <div class="large-4 small-4 columns" style="border-right: solid #D2D4D5 1px;">
             <div class="row">
                 <dl class="tabs vertical" style="width: 100%" data-tab>
-                    <dd class="active" style="overflow: hidden; position: relative">
+                    <dd class="active"
+                        style="overflow: hidden; position: relative">
                         <a href="#panel0a"
-                           onclick="$('#course-id').val('-1');$('#write-new').hide();"
+                           onclick="$('#course-id').val('-1');$('#write-new').hide();$('#filts').show();"
                            style="text-align: right; width: 100%; display: inline-block;font-weight: 700"><span>GENERAL NEWS</span>
                         </a>
                     </dd>
                     {% for course in all_courses %}
-                        <dd style="overflow: hidden; position: relative">
+                        <dd style="overflow: hidden; position: relative" class="{% if course.get_amount_progress >= 100 or pledge.is_done %}past{% else %}current{% endif %}">
                             <a href="#panel{{ course.id }}a"
-                               onclick="$('#course-id').val('{{ course.id }}');$('#write-new').show();"
+                               onclick="$('#course-id').val('{{ course.id }}');$('#filts').hide();$('#write-new').show();"
                                style="text-align: right; width: 100%; display: inline-block;font-weight: 700"><span>{{ course.title|upper }}</span>
                             </a>
                         </dd>
@@ -190,22 +201,23 @@
     <script src="{% static 'js/foundation/foundation.accordion.js' %}"></script>
     <script>
         $(function () {
-            $('#everyone-filt').click(function () {
-                $('.feed').find('li').show();
+            $('.past').hide();
+            $('.current').show();
+            $('#past-filt').click(function () {
+                $('.past').show();
+                $('.current').hide();
                 $('#filters').find('p').removeClass('selected-news');
                 $(this).addClass('selected-news');
             });
-            $('#followers-filt').click(function () {
-                var $feed = $('.feed');
-                $feed.find('li.followers').show();
-                $feed.find('li:not(.followers)').hide();
+            $('#current-filt').click(function () {
+                $('.past').hide();
+                $('.current').show();
                 $('#filters').find('p').removeClass('selected-news');
                 $(this).addClass('selected-news');
             });
-            $('#following-filt').click(function () {
-                var $feed = $('.feed');
-                $feed.find('li.following').show();
-                $feed.find('li:not(.following)').hide();
+            $('#all-filt').click(function () {
+                $('.past').show();
+                $('.current').show();
                 $('#filters').find('p').removeClass('selected-news');
                 $(this).addClass('selected-news');
             });
