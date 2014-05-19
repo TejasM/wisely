@@ -341,7 +341,7 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 PREPEND_WWW = False
 
 ACTSTREAM_SETTINGS = {
-    'MODELS': ('auth.user', 'pledges.pledge', 'users.userprofile', 'users.course', 'users.post'),
+    'MODELS': ('auth.user', 'pledges.pledge', 'users.userprofile', 'users.course', 'users.post', 'pledges.pledgequiz'),
     'MANAGER': 'actstream.managers.ActionManager',
     'FETCH_RELATIONS': True,
     'USE_PREFETCH': True,

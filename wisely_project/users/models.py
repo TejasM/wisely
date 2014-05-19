@@ -209,6 +209,7 @@ class Progress(BaseModel):
     def get_date(self):
         return json.dumps({'date': self.quiz.deadline.date(), 'title': self.quiz.heading})
 
+    @property
     def parse_to_percentage(self):
         return convert_to_percentage(self.score)
 

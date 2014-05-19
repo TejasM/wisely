@@ -20,4 +20,5 @@ urlpatterns = patterns('',
                        url(r'^reply/$', views.reply, name='reply'),
                        url(r'^follow/$', views.follow, name='follow'),
                        url(r'^get_course_stats/$', views.get_course_stats, name='get_course_stats'),
+                       url(r'^contact_us/$', views.contact_us, name='contact_us'),
 )

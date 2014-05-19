@@ -17,7 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 import requests
 import stripe
 
-from users.models import Course, UserProfile, EdxProfile, CourseraProfile, UdemyProfile
+from users.models import Course, UserProfile, EdxProfile, CourseraProfile, UdemyProfile, Quiz, Progress
 from users.utils import divide_timedelta
 
 
@@ -25,7 +25,7 @@ __author__ = 'Cheng'
 
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from models import Pledge, Follower, Reward
+from models import Pledge, Follower, Reward, PledgeQuiz
 from actstream import action
 from django.conf import settings
 
@@ -261,19 +261,37 @@ def get_paypal(request):
     aim = params[2]
     date = params[3]
     user_id = params[4]
+    quiz = None
+    if len(params) == 6:
+        quiz = params[5]
     if request.POST['payment_status'] == 'Completed':
-        if Pledge.objects.filter(charge=request.POST['txn_id']).count() == 0:
-            course = Course.objects.get(pk=course_id)
-            profile = UserProfile.objects.get(pk=user_id)
-            pledge = Pledge.objects.create(user=profile, pledge_end_date=date,
-                                           course=course,
-                                           money=money, is_active=True, charge=request.POST['txn_id'],
-                                           aim=int(aim)/100)
-            action.send(profile, verb="pledged for", action_object=pledge, target=course)
-            msg = EmailMessage('Paypal', 'created pledge', 'contact@projectwisely.com', ['tejasmehta0@gmail.com'])
-            msg.send()
-            return HttpResponse(json.dumps({'fail': 0, 'id': pledge.id}),
-                                content_type='application/json')
+        if quiz:
+            if PledgeQuiz.objects.filter(charge=request.POST['txn_id']).count() == 0:
+                course = Course.objects.get(pk=course_id)
+                profile = UserProfile.objects.get(pk=user_id)
+                progress = Progress.objects.get(pk=int(quiz))
+                pledge = PledgeQuiz.objects.create(user=profile, pledge_end_date=date,
+                                                   progress=progress,
+                                                   money=money, is_active=True,
+                                                   aim=float(request.POST['aim'].replace('%', '')) / 100)
+                action.send(profile, verb="pledged for", action_object=pledge, target=course)
+                msg = EmailMessage('Paypal', 'created pledge', 'contact@projectwisely.com', ['tejasmehta0@gmail.com'])
+                msg.send()
+                return HttpResponse(json.dumps({'fail': 0, 'id': pledge.id}),
+                                    content_type='application/json')
+        else:
+            if Pledge.objects.filter(charge=request.POST['txn_id']).count() == 0:
+                course = Course.objects.get(pk=course_id)
+                profile = UserProfile.objects.get(pk=user_id)
+                pledge = Pledge.objects.create(user=profile, pledge_end_date=date,
+                                               course=course,
+                                               money=money, is_active=True, charge=request.POST['txn_id'],
+                                               aim=int(aim) / 100)
+                action.send(profile, verb="pledged for", action_object=pledge, target=course)
+                msg = EmailMessage('Paypal', 'created pledge', 'contact@projectwisely.com', ['tejasmehta0@gmail.com'])
+                msg.send()
+                return HttpResponse(json.dumps({'fail': 0, 'id': pledge.id}),
+                                    content_type='application/json')
     return HttpResponse()
 
 
@@ -296,16 +314,29 @@ def create_ajax(request):
             )
             course = Course.objects.get(pk=int(request.POST['course']))
             date = request.POST.get('date', course.end_date)
-            pledge = Pledge.objects.create(user=request.user.userprofile, pledge_end_date=date,
-                                           course=course,
-                                           money=money, is_active=True,
-                                           aim=float(request.POST['aim'].replace('%', '')) / 100)
-            action.send(request.user.userprofile, verb="pledged for", action_object=pledge, target=course)
-            pledge.charge = charge.id
-            pledge.is_active = True
-            pledge.save()
-            return HttpResponse(json.dumps({'fail': 0, 'id': pledge.id}),
-                                content_type='application/json')
+            if 'quiz' in request.POST:
+                progress = Progress.objects.get(pk=int(request.POST['quiz']))
+                pledge = PledgeQuiz.objects.create(user=request.user.userprofile, pledge_end_date=date,
+                                                   progress=progress,
+                                                   money=money, is_active=True,
+                                                   aim=float(request.POST['aim'].replace('%', '')) / 100)
+                action.send(request.user.userprofile, verb="pledged for", action_object=pledge, target=course)
+                pledge.charge = charge.id
+                pledge.is_active = True
+                pledge.save()
+                return HttpResponse(json.dumps({'fail': 0, 'id': progress.id, 'quiz': 1}),
+                                    content_type='application/json')
+            else:
+                pledge = Pledge.objects.create(user=request.user.userprofile, pledge_end_date=date,
+                                               course=course,
+                                               money=money, is_active=True,
+                                               aim=float(request.POST['aim'].replace('%', '')) / 100)
+                action.send(request.user.userprofile, verb="pledged for", action_object=pledge, target=course)
+                pledge.charge = charge.id
+                pledge.is_active = True
+                pledge.save()
+                return HttpResponse(json.dumps({'fail': 0, 'id': pledge.id, 'quiz': 0}),
+                                    content_type='application/json')
         except stripe.CardError, _:
             return HttpResponse(json.dumps({'fail': 1, 'message': 'Credit Card Error'}),
                                 content_type='application/json')

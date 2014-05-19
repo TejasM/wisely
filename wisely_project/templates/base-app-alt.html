@@ -41,11 +41,11 @@
                 <div class="row" style="margin-top: 2em; font-size: 1.3em">
                     <a id="contact" style="margin-right: 2em; color: #fff">Contact Us</a>
                     <a href="https://www.facebook.com/projectwisely" style="margin-right: 2em"><img
-                            src="{% static 'images/facebook-login.png' %}"></a>
+                        src="{% static 'images/facebook-login.png' %}"></a>
                     <a href="https://twitter.com/learnwithwisely" style="margin-right: 2em"><img
-                            src="{% static 'images/twitter-login.png' %}"></a>
+                        src="{% static 'images/twitter-login.png' %}"></a>
                     <a href="https://plus.google.com/+Projectwisely/posts" style="margin-right: 2em"><img
-                            src="{% static 'images/google-login.png' %}"></a>
+                        src="{% static 'images/google-login.png' %}"></a>
                     <a href="/privacy" style="color: #fff">Privacy Policy</a>
                 </div>
             </div>
@@ -92,7 +92,7 @@
             (i[r].q = i[r].q || []).push(arguments)
         }, i[r].l = 1 * new Date();
         a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0];
+            m = s.getElementsByTagName(o)[0];
         a.async = 1;
         a.src = g;
         m.parentNode.insertBefore(a, m)
@@ -118,6 +118,7 @@
             var myRootRef = new Firebase('https://wisely.firebaseIO.com/');
 
             if (validateEmail($('#contact-email').val())) {
+                $.post('{% url 'users:contact_us' %}', {name: $('#contact-email').val().split('@')[0], message: $('#contact-mail').val()});
                 myRootRef.push({name: $('#contact-email').val().split('@')[0], msg: $('#contact-mail').val()});
                 $('#contact-body').text('Thank You! We will keep you updated!');
                 $('#contact-us').trigger('close');

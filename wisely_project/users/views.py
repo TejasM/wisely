@@ -7,6 +7,7 @@ from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
+from django.core.mail import EmailMessage
 from django.core.urlresolvers import reverse
 from django.db.models import Q, Avg, Sum
 from django.http.response import HttpResponse, HttpResponseRedirect
@@ -27,8 +28,9 @@ from twitter import TwitterError
 from actstream import action
 from django.conf import settings
 
-from models import CourseraProfile, Progress, UserProfile, EdxProfile, Invitees, UdemyProfile, Post, Course, Comments
-from pledges.models import Pledge, Reward
+from models import CourseraProfile, Progress, UserProfile, EdxProfile, Invitees, UdemyProfile, Post, Course, Comments, \
+    Quiz
+from pledges.models import Pledge, Reward, PledgeQuiz
 from forms import UserProfileForm, UserForm
 from users.models import convert_to_percentage
 from users.utils import send_welcome_email
@@ -433,8 +435,19 @@ def get_course_stats(request):
             probable_pool = 0.2 * float(total_pool)
             probable_num_rewarded = count * 0.8
             probable_reward = probable_pool / probable_num_rewarded
+        not_quizzes = PledgeQuiz.objects.filter(progress__quiz__course__id=course_id,
+                                                user=request.user.userprofile).values_list(
+            'progress__quiz__heading', 'progress__id', 'progress__quiz__hard_deadline', 'progress__quiz__deadline')
+        today = timezone.now().date()
+        quizzes = Progress.objects.filter(quiz__course__id=course_id, user=request.user.userprofile).filter(
+            (Q(quiz__hard_deadline__gt=today) | Q(quiz__hard_deadline=None)) & (
+                Q(quiz__deadline__gt=today) | Q(quiz__deadline=None))).values_list(
+            'quiz__heading', 'id', 'score', 'quiz__hard_deadline', 'quiz__deadline')
+        quizzes = [(q[0], q[1], q[3], q[4]) for q in quizzes if convert_to_percentage(q[2]) == 0]
+        quizzes = [q for q in quizzes if q not in not_quizzes]
         return HttpResponse(
-            json.dumps({'fail': 0, 'avg_aim': avg_pledges, 'count': count, 'probable_reward': probable_reward}),
+            json.dumps({'fail': 0, 'avg_aim': avg_pledges, 'count': count, 'probable_reward': probable_reward,
+                        'quizzes': quizzes}),
             content_type='application/json')
     return HttpResponse(json.dumps({'fail': 1}),
                         content_type='application/json')
@@ -554,3 +567,9 @@ def follow(request):
     else:
         json_data = json.dumps({"HTTPRESPONSE": -1})
     return HttpResponse(json_data, mimetype="application/json")
+
+
+def contact_us(request):
+    if request.method == "POST":
+        msg = EmailMessage(request.POST['name'], request.POST['message'], 'contact@projectwisely.com', ['tejasmehta0@gmail.com'])
+        msg.send()
