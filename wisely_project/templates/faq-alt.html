@@ -37,7 +37,8 @@
                     <li>How important is the course material to me?</li>
                 </ul>
                 Push yourself! Remember, the higher your goal, the more you’ll be rewarded when
-                you reach your goal.</p>
+                you reach your goal.
+                </p>
             </div>
 
             <div class="panel">
@@ -125,10 +126,11 @@
                 <strong style="font-weight: 400;" id="sign-up-heading">SIGN IN</strong>
             </div>
             <div class="large-6 columns" style="text-align: right">
-                <a href="{% url 'socialauth_begin' 'facebook' %}"><img
+                <a href="{% url 'social:begin' 'facebook' %}"><img
                         src="{% static 'images/facebook-login.png' %}"></a>
-                <a href="{% url 'socialauth_begin' 'twitter' %}"><img src="{% static 'images/twitter-login.png' %}"></a>
-                <a href="{% url 'socialauth_begin' 'google-oauth2' %}"><img
+                <a href="{% url 'social:begin' 'twitter' %}"><img
+                        src="{% static 'images/twitter-login.png' %}"></a>
+                <a href="{% url 'social:begin' "google-oauth2" %}"><img
                         src="{% static 'images/google-login.png' %}"></a>
             </div>
         </div>

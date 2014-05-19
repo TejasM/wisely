@@ -17,7 +17,8 @@
                 <li><strong>&#8226; &nbsp; &nbsp;&nbsp; &nbsp; $5 reward for a pledge with a goal of 60-79%</strong>
                 </li>
             </ul>
-            <h3 style="color: #fff; line-height: 1.3em; font-size: 1.3em">This only applies to Coursera and edX courses.</h3>
+            <h3 style="color: #fff; line-height: 1.3em; font-size: 1.3em">This only applies to Coursera and edX
+                courses.</h3>
             {% if not user.is_authenticated %}
                 <div style="text-align: center">
                     <button id="sign2" style="margin: 1em auto 2em">GET STARTED</button>
@@ -43,7 +44,7 @@
                         <h5 class="strong">Connect.</h5>
 
                         <p>Sign In with your <a href="https://www.coursera.org/">Coursera</a>, <a
-                            href="https://www.edx.org/">edX</a>, and <a href="https://www.udemy.com/">Udemy</a>
+                                href="https://www.edx.org/">edX</a>, and <a href="https://www.udemy.com/">Udemy</a>
                             accounts - we will connect
                             all of your active courses for you.</p>
                     </div>
@@ -121,11 +122,12 @@
                 <strong style="font-weight: 400;" id="sign-up-heading">SIGN IN</strong>
             </div>
             <div class="large-6 columns" style="text-align: right">
-                <a href="{% url 'socialauth_begin' 'facebook' %}"><img
-                    src="{% static 'images/facebook-login.png' %}"></a>
-                <a href="{% url 'socialauth_begin' 'twitter' %}"><img src="{% static 'images/twitter-login.png' %}"></a>
-                <a href="{% url 'socialauth_begin' 'google-oauth2' %}"><img
-                    src="{% static 'images/google-login.png' %}"></a>
+                <a href="{% url 'social:begin' 'facebook' %}"><img
+                        src="{% static 'images/facebook-login.png' %}"></a>
+                <a href="{% url 'social:begin' 'twitter' %}"><img
+                        src="{% static 'images/twitter-login.png' %}"></a>
+                <a href="{% url 'social:begin' "google-oauth2" %}"><img
+                        src="{% static 'images/google-login.png' %}"></a>
             </div>
         </div>
         <div class="row text-center" style="margin-top: 4em">

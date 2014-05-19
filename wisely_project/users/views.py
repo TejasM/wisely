@@ -23,7 +23,6 @@ from requests import request as request2, HTTPError
 from django.template import RequestContext
 from social_auth.db.django_models import UserSocialAuth
 import twitter
-from twitter import TwitterError
 from actstream import action
 from django.conf import settings
 
@@ -231,16 +230,23 @@ def sync_up_user(user, social_users):
                 inner_profile.last_updated = timezone.now()
                 inner_profile.never_updated = False
                 inner_profile.save()
+        # elif social_user.provider == 'linkedin':
+        #     if inner_profile.last_updated < timezone.now() - timedelta(weeks=2) or inner_profile.never_updated:
+        #         try:
+        #             api = linkedin.Api(consumer_key=settings.SOCIAL_AUTH_TWITTER_KEY,
+        #                           consumer_secret=settings.SOCIAL_AUTH_TWITTER_SECRET,
+        #                           access_token_key=social_user.extra_data['access_token']['oauth_token'],
+        #                           access_token_secret=social_user.extra_data['access_token']['oauth_token_secret'])
 
         elif social_user.provider == 'twitter':
             if inner_profile.last_updated < timezone.now() - timedelta(weeks=2) or inner_profile.never_updated:
-                api = twitter.Api(consumer_key=settings.TWITTER_CONSUMER_KEY,
-                                  consumer_secret=settings.TWITTER_CONSUMER_SECRET,
-                                  access_token_key=social_user.tokens['oauth_token'],
-                                  access_token_secret=social_user.tokens['oauth_token_secret'])
                 try:
+                    api = twitter.Api(consumer_key=settings.SOCIAL_AUTH_TWITTER_KEY,
+                                      consumer_secret=settings.SOCIAL_AUTH_TWITTER_SECRET,
+                                      access_token_key=social_user.extra_data['access_token']['oauth_token'],
+                                      access_token_secret=social_user.extra_data['access_token']['oauth_token_secret'])
                     friends = api.GetFollowers()
-                except TwitterError:
+                except:
                     friends = None
                 inner_profile.num_connections = len(friends)
                 for friend in friends:

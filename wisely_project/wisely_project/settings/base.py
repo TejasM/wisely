@@ -147,6 +147,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'wisely_project.context_processor.async_url',
     'cms.context_processors.cms_settings',
     'sekizai.context_processors.sekizai',
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
@@ -177,7 +179,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'social_auth.middleware.SocialAuthExceptionMiddleware',
+    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
     'mobiledetection.MobileDetectionMiddleware',
     'cms.middleware.page.CurrentPageMiddleware',
     'cms.middleware.user.CurrentUserMiddleware',
@@ -210,7 +212,7 @@ DJANGO_APPS = (
     # Admin panel and documentation:
     'django.contrib.admin',
     # 'django.contrib.admindocs',
-    'social_auth',
+    'social.apps.django_app.default',
     'cms',  #django CMS itself
     'mptt',  #utilities for implementing a modified pre-order traversal tree
     'menus',  #helper for model independent hierarchical website navigation
@@ -294,32 +296,47 @@ LOGGING = {
 
 
 ########## SOCIAL AUTH CONFIGURATION
-FACEBOOK_APP_ID = '405339162934237'
-FACEBOOK_API_SECRET = '34f4d0473f43f1be09ff1833f63187bc'
+SOCIAL_AUTH_FACEBOOK_KEY = '405339162934237'
+SOCIAL_AUTH_FACEBOOK_SECRET = '34f4d0473f43f1be09ff1833f63187bc'
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
-TWITTER_CONSUMER_KEY = 'Ujjstl4sd1lRurWgbpWxg'
-TWITTER_CONSUMER_SECRET = 'WxQmKgthTMZLcVI57dcfMkdM8lhtBMZ6akYvvR3UYQ'
+SOCIAL_AUTH_TWITTER_KEY = 'Ujjstl4sd1lRurWgbpWxg'
+SOCIAL_AUTH_TWITTER_SECRET = 'WxQmKgthTMZLcVI57dcfMkdM8lhtBMZ6akYvvR3UYQ'
+SOCIAL_AUTH_TWITTER_EXTRA_DATA = [('oauth_token', 'oauth_token'), ('oauth_token_secret', 'oauth_token_secret')]
 
-GOOGLE_OAUTH2_CLIENT_ID = '903133689077-e1qpbdlth8uq1tcm383vv2poo31h9dpi.apps.googleusercontent.com'
-GOOGLE_OAUTH2_CLIENT_SECRET = '2aWiA-1eEdxYIv8UXRXHclaD'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '903133689077-e1qpbdlth8uq1tcm383vv2poo31h9dpi.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '2aWiA-1eEdxYIv8UXRXHclaD'
 
-FACEBOOK_EXTENDED_PERMISSIONS = ['email']
+SOCIAL_AUTH_LINKEDIN_KEY = '77axzd8exmnf6o'
+SOCIAL_AUTH_LINKEDIN_SECRET = 'rYniGjNqW3c6kA7q'
+#OAuth User Token:ace47fdb-add8-4150-8a2c-045273d89d2e
+#OAuth User Secret:8f8fd128-6390-4d0a-859a-1f20d35d3632
+SOCIAL_AUTH_LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress']
+SOCIAL_AUTH_LINKEDIN_FIELD_SELECTORS = ['email-address', 'headline', 'industry']
 
-GITHUB_APP_ID = '06f5134f1cc26effbef9'
-GITHUB_API_SECRET = '281c5607b51d8ccd574fac2f5cb9692766ca6dd3'
+SOCIAL_AUTH_GITHUB_APP_ID = '06f5134f1cc26effbef9'
+SOCIAL_AUTH_GITHUB_API_SECRET = '281c5607b51d8ccd574fac2f5cb9692766ca6dd3'
+
+SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
+SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
 
 AUTHENTICATION_BACKENDS = (
+    'social.backends.open_id.OpenIdAuth',
+    'social.backends.google.GoogleOpenId',
+    'social.backends.google.GoogleOAuth2',
+    'social.backends.google.GoogleOAuth',
+    'social.backends.twitter.TwitterOAuth',
+    'social.backends.facebook.FacebookOAuth2',
+    'social.backends.linkedin.BaseLinkedinAuth',
+    'social.backends.linkedin.LinkedinOAuth',
     'django.contrib.auth.backends.ModelBackend',
-    'social_auth.backends.facebook.FacebookBackend',
-    'social_auth.backends.twitter.TwitterBackend',
-    'social_auth.backends.google.GoogleOAuth2Backend'
 )
 
 PAYMENTS_PLANS = {}
 
-LOGIN_URL = '/'
-LOGIN_REDIRECT_URL = '/users/index/alt'
-LOGIN_ERROR_URL = '/'
+SOCIAL_AUTH_LOGIN_URL = '/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/users/index/alt'
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/'
 
 ########## WSGI CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
@@ -327,13 +344,17 @@ WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 ########## END WSGI CONFIGURATION
 
 SOCIAL_AUTH_PIPELINE = (
-    'social_auth.backends.pipeline.social.social_auth_user',
-    #'social_auth.backends.pipeline.associate.associate_by_email',
-    'social_auth.backends.pipeline.user.get_username',
-    'social_auth.backends.pipeline.user.create_user',
-    'social_auth.backends.pipeline.social.associate_user',
-    'social_auth.backends.pipeline.social.load_extra_data',
-    'social_auth.backends.pipeline.user.update_user_details',
+    #'social.pipeline.associate.associate_by_email',
+    #'social.pipeline.user.update_user_details',
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+    'social.pipeline.user.create_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details',
     'users.utils.welcome_new_user'
 )
 

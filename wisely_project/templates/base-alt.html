@@ -3,7 +3,7 @@
 <html style="height: 100%">
 <head>
     <meta name="description"
-          content="Wisely connects you with a knowledgeable community of tutors and peers online to motivate each other and learn together. Get motivated by pledging and colloberative learning. For coursera,  edx, and udemy."/>
+          content="Wisely is an online social platform connecting massive online open course students with each other to motivate and learn together. Get motivated through pledging, collaborative learning, and social networking. For coursera, edx, and udemy."/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Wisely</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/foundation.min.css' %}"/>
@@ -161,7 +161,7 @@
                     completing assignments and reaching your goals, paid for by members who don't.</h2>
 
                 <h3 style="text-align: left; font-size: 1.5em">Your first successful pledge is guaranteed a $20 award,
-                    <a href="/learn-more/alt">Learn more.</a></h3>
+                    <a href="/learn-more">Learn more.</a></h3>
                 <img src="{% static 'images/pledge-image.png' %}">
             </div>
             <div style="position: absolute; bottom: -33px; width: 64px; left: 50%; margin-left: -32px; margin-top: 33px; z-index: 100">
@@ -236,6 +236,9 @@
                                 src="{% static 'images/twitter-login.png' %}"></a>
                         <a href="https://plus.google.com/+Projectwisely/posts" style="margin-right: 2em"><img
                                 src="{% static 'images/google-login.png' %}"></a>
+                        <a href="https://www.linkedin.com/company/5079802?trk=tyah&trkInfo=tarId%3A1400458241641%2Ctas%3Awisely%2Cidx%3A2-2-7"
+                           style="margin-right: 2em"><img
+                                src="{% static 'images/linkedin-logo.gif' %}"></a>
                         <a href="/privacy" style="color: #fff">Privacy Policy</a>
                     </div>
                 </div>
@@ -270,13 +273,15 @@
                 <div class="large-6 columns" style="margin-top: 10px">
                     <strong style="font-weight: 400;" id="sign-up-heading">SIGN IN</strong>
                 </div>
-                <div class="large-6 columns" style="text-align: right">
-                    <a href="{% url 'socialauth_begin' 'facebook' %}"><img
+                <div class="large-7 columns" style="text-align: right">
+                    <a href="{% url 'social:begin' 'facebook' %}"><img
                             src="{% static 'images/facebook-login.png' %}"></a>
-                    <a href="{% url 'socialauth_begin' 'twitter' %}"><img
+                    <a href="{% url 'social:begin' 'twitter' %}"><img
                             src="{% static 'images/twitter-login.png' %}"></a>
-                    <a href="{% url 'socialauth_begin' 'google-oauth2' %}"><img
+                    <a href="{% url 'social:begin' "google-oauth2" %}"><img
                             src="{% static 'images/google-login.png' %}"></a>
+                    {#                    <a href="{% url 'social:begin' "linkedin" %}"><img#}
+                    {#                            src="{% static 'images/Linkedin-logo.gif' %}"></a>#}
                 </div>
             </div>
             <div class="row text-center" style="margin-top: 4em">
@@ -305,11 +310,11 @@
                     <strong style="font-weight: 400;" id="sign-up-heading">SIGN IN</strong>
                 </div>
                 <div class="large-6 columns" style="text-align: right">
-                    <a href="{% url 'socialauth_begin' 'facebook' %}"><img
+                    <a href="{% url 'social:begin' 'facebook' %}"><img
                             src="{% static 'images/facebook-login.png' %}"></a>
-                    <a href="{% url 'socialauth_begin' 'twitter' %}"><img
+                    <a href="{% url 'social:begin' 'twitter' %}"><img
                             src="{% static 'images/twitter-login.png' %}"></a>
-                    <a href="{% url 'socialauth_begin' 'google-oauth2' %}"><img
+                    <a href="{% url 'social:begin' 'google-oauth2' %}"><img
                             src="{% static 'images/google-login.png' %}"></a>
                 </div>
             </div>
