@@ -419,6 +419,12 @@ def index_alt(request):
                        'past_courses': past_courses, 'onboarding': onboarding})
 
 
+def to_date(date):
+    if date:
+        return str(date.date())
+    return date
+
+
 @csrf_exempt
 @login_required
 def get_course_stats(request):
@@ -443,7 +449,7 @@ def get_course_stats(request):
             (Q(quiz__hard_deadline__gt=today) | Q(quiz__hard_deadline=None)) & (
                 Q(quiz__deadline__gt=today) | Q(quiz__deadline=None))).values_list(
             'quiz__heading', 'id', 'score', 'quiz__hard_deadline', 'quiz__deadline')
-        quizzes = [(q[0], q[1], q[3], q[4]) for q in quizzes if convert_to_percentage(q[2]) == 0]
+        quizzes = [(q[0], q[1], to_date(q[3]), to_date(q[4])) for q in quizzes if convert_to_percentage(q[2]) == 0]
         quizzes = [q for q in quizzes if q not in not_quizzes]
         return HttpResponse(
             json.dumps({'fail': 0, 'avg_aim': avg_pledges, 'count': count, 'probable_reward': probable_reward,
