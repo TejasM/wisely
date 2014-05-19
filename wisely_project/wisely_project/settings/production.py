@@ -85,8 +85,8 @@ PRODCUTION_APPS = (
     'sslify',
 )
 
-STRIPE_PUBLIC_KEY = "pk_live_0RNa74C7R8WWln4sSxUhJPYT"
-STRIPE_SECRET_KEY = "sk_live_pNRMbo0ViQKfqkqqKZN41mz5"
+STRIPE_PUBLIC_KEY = "pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb"
+STRIPE_SECRET_KEY = "sk_test_auCbY9IpyQ0hMHMcfvgjumxU"
 
 MIDDLEWARE_CLASSES = (
     # Default Django middleware.
