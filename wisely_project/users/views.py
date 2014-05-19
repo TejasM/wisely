@@ -446,8 +446,8 @@ def get_course_stats(request):
             'progress__quiz__heading', 'progress__id', 'progress__quiz__hard_deadline', 'progress__quiz__deadline')
         today = timezone.now().date()
         quizzes = Progress.objects.filter(quiz__course__id=course_id, user=request.user.userprofile).filter(
-            (Q(quiz__hard_deadline__gt=today) | Q(quiz__hard_deadline=None)) & (
-                Q(quiz__deadline__gt=today) | Q(quiz__deadline=None))).values_list(
+            (Q(quiz__hard_deadline__gte=today) | Q(quiz__hard_deadline=None)) & (
+                Q(quiz__deadline__gte=today) | Q(quiz__deadline=None))).values_list(
             'quiz__heading', 'id', 'score', 'quiz__hard_deadline', 'quiz__deadline')
         quizzes = [(q[0], q[1], to_date(q[3]), to_date(q[4])) for q in quizzes if convert_to_percentage(q[2]) == 0]
         quizzes = [q for q in quizzes if q not in not_quizzes]
