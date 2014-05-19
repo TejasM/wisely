@@ -813,6 +813,7 @@
             $('#avg_aim').html('N/A');
             $('#probable_reward').html('N/A');
             $('#chose-option').hide();
+            $('#quizzes').empty();
             $('#datepicker').css('border', '1px solid #ccc;');
             $.get('{% url 'users:get_course_stats' %}', {'id': current_id}, function (data) {
                 if (parseInt(data['fail']) == 0) {
