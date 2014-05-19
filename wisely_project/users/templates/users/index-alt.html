@@ -882,6 +882,7 @@
                 picker.setDate($quiz.find(":selected").data('date'));
                 $('#datepicker').val(picker.getDate());
             }
+            $('#datepicker').prop('disabled', false);
             $('#probable_reward').text('N/A');
             $('#making-pledge').show();
         });
@@ -995,7 +996,7 @@
             var aim = parseInt($('#goal-value').text().replace('%', ''));
             if (!isNaN(money)) {
                 StripeCheckout.open({
-                    key: 'pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb',
+                    key: 'pk_live_0RNa74C7R8WWln4sSxUhJPYT',
                     address: false,
                     amount: money * 100,
                     currency: 'cad',
