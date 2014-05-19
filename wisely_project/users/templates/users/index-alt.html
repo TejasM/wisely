@@ -97,7 +97,7 @@
                     <a href="#panel{{ course.id }}a"
                        onclick="$('#filters').toggle();"
                        style="text-align: right; width: 33.333%; display: inline-block;font-weight: 700"><span>{{ course.title|upper }}
-                        <br>Pledge Ending: {{ pledge.pledge_end_date }}</span>
+                        <br/>Pledge Ending: {{ pledge.pledge_end_date }}</span>
                     </a>
 
                     <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
@@ -107,17 +107,17 @@
                         <div
                             style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                             <div class="metrics score">
-                                <p>SCORE<br>
+                                <p>SCORE<br/>
                                     <span class="overall-mark">{{ grade|floatformat:"0" }}<sup>%</sup></span></p>
                             </div>
                             <div class="metrics goal">
-                                <p>GOAL<br>
+                                <p>GOAL<br/>
                                     <span class="overall-mark">{{ pledge.get_aim|floatformat:"0" }}<sup>%</sup></span>
                                 </p>
                             </div>
                             <div class="metrics pledge share-it" data-share="{{ course.title|upper }}"
                                  data-shareid="{{ course.id }}">
-                                <p>PLEDGE<br>
+                                <p>PLEDGE<br/>
                                     <span class="overall-mark">${{ pledge.money }}</span></p>
                             </div>
                         </div>
@@ -139,7 +139,7 @@
                         <div
                             style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                             <div class="metrics score">
-                                <p style="font-size: 1rem">SCORE<br>
+                                <p style="font-size: 1rem">SCORE<br/>
                                     <span class="overall-mark">{{ grade|floatformat:"0" }}<sup>%</sup></span></p>
                             </div>
                             {% if course.get_amount_progress <= 50 %}
@@ -182,7 +182,7 @@
                     <div
                         style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                         <div class="metrics score">
-                            <p style="font-size: 1rem">SCORE<br>
+                            <p style="font-size: 1rem">SCORE<br/>
                                 <span class="overall-mark">{{ grade|floatformat:"0" }}<sup>%</sup></span></p>
                         </div>
                         {% if course.get_amount_progress <= 50 %}
@@ -219,7 +219,7 @@
                         href="#panel{{ course.id }}a"
                         onclick="$('#filters').toggle();"
                         style="text-align: right; width: 33.333%; display: inline-block;font-weight: 700">{{ course.title|upper }}
-                        <br>Pledge Ending: {{ pledge.pledge_end_date }}
+                        <br/>Pledge Ending: {{ pledge.pledge_end_date }}
                     </a>
 
                     <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
@@ -229,17 +229,17 @@
                         <div
                             style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                             <div class="metrics score">
-                                <p style="font-size: 1rem">SCORE<br>
+                                <p style="font-size: 1rem">SCORE<br/>
                                     <span class="overall-mark">{{ grade|floatformat:"0" }}<sup>%</sup></span></p>
                             </div>
                             <div class="metrics goal">
-                                <p>GOAL<br>
+                                <p>GOAL<br/>
                                     <span class="overall-mark">{{ pledge.get_aim|floatformat:"0" }}<sup>%</sup></span>
                                 </p>
                             </div>
                             <div class="metrics pledge share-it" data-share="{{ course.title|upper }}"
                                  data-shareid="{{ course.id }}">
-                                <p>PLEDGE<br>
+                                <p>PLEDGE<br/>
                                     <span class="overall-mark">${{ pledge.money }}</span></p>
                             </div>
                         </div>
@@ -261,7 +261,7 @@
                         <div
                             style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                             <div class="metrics score">
-                                <p style="font-size: 1rem">SCORE<br>
+                                <p style="font-size: 1rem">SCORE<br/>
                                     <span class="overall-mark">{{ grade|floatformat:"0" }}<sup>%</sup></span></p>
                             </div>
                             {% if course.get_amount_progress <= 50 %}
@@ -304,7 +304,7 @@
                     <div
                         style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                         <div class="metrics score">
-                            <p style="font-size: 1rem">SCORE<br>
+                            <p style="font-size: 1rem">SCORE<br/>
                                 <span class="overall-mark">{{ grade|floatformat:"0" }}<sup>%</sup></span></p>
                         </div>
                         {% if course.get_amount_progress <= 50 %}
@@ -341,7 +341,7 @@
                         href="#panel{{ course.id }}a"
                         onclick="$('#filters').toggle();"
                         style="text-align: right; width: 33.333%; display: inline-block; font-weight: 700">{{ course.title|upper }}
-                        <br>Pledge Ending: {{ pledge.pledge_end_date }}
+                        <br/>Pledge Ending: {{ pledge.pledge_end_date }}
                     </a>
 
                     <div style="margin: 0 0 0 2em; display: inline !important; height: 100%">
@@ -351,17 +351,17 @@
                         <div
                             style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                             <div class="metrics score">
-                                <p style="font-size: 1rem">SCORE<br>
+                                <p style="font-size: 1rem">SCORE<br/>
                                     <span class="overall-mark">{{ grade|floatformat:"0" }}<sup>%</sup></span></p>
                             </div>
                             <div class="metrics goal">
-                                <p>GOAL<br>
+                                <p>GOAL<br/>
                                     <span class="overall-mark">{{ pledge.get_aim|floatformat:"0" }}<sup>%</sup></span>
                                 </p>
                             </div>
                             <div class="metrics pledge share-it" data-share="{{ course.title|upper }}"
                                  data-shareid="{{ course.id }}">
-                                <p>PLEDGE<br>
+                                <p>PLEDGE<br/>
                                     <span class="overall-mark">${{ pledge.money }}</span></p>
                             </div>
                         </div>
@@ -370,7 +370,7 @@
                 {{ forloop|break }}
             {% elif forloop.counter == pledges.count %}
                 <dd style="overflow: hidden; position: relative"
-                    class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
+                    class="course {% if course.get_amount_progress >= 100 or grade >= 100 %}past{% else %}current{% endif %}">
                     <a href="#panel{{ course.id }}a"
                        onclick="$('#filters').toggle();"
                        style="text-align: right; width: 33.333%; display: inline-block; font-weight: 700">{{ course.title|upper }}
@@ -383,7 +383,7 @@
                         <div
                             style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                             <div class="metrics score">
-                                <p style="font-size: 1rem">SCORE<br>
+                                <p style="font-size: 1rem">SCORE<br/>
                                     <span class="overall-mark">{{ grade|floatformat:"0" }}<sup>%</sup></span></p>
                             </div>
                             {% if course.get_amount_progress <= 50 and grade < 25 %}
@@ -413,7 +413,7 @@
         {% endfor %}
         {% if not pledges %}
             <dd style="overflow: hidden; position: relative" data-id="{{ course.id }}"
-                class="course {% if course.get_amount_progress >= 100 %}past{% else %}current{% endif %}">
+                class="course {% if course.get_amount_progress >= 100 or grade >= 100 %}past{% else %}current{% endif %}">
                 <a href="#panel{{ course.id }}a"
                    onclick="$('#filters').toggle();"
                    style="text-align: right; width: 33.333%; display: inline-block; font-weight: 700">{{ course.title|upper }}
@@ -426,7 +426,7 @@
                     <div
                         style="font-size: 0;display: inline-block; width: 30%; height: 100%; position: absolute; right: 0">
                         <div class="metrics score">
-                            <p style="font-size: 1rem">SCORE<br>
+                            <p style="font-size: 1rem">SCORE<br/>
                                 <span class="overall-mark">{{ grade|floatformat:"0" }}<sup>%</sup></span></p>
                         </div>
                         {% if course.get_amount_progress <= 50 and grade < 25 %}
@@ -466,7 +466,12 @@
                     <dl class="tabs vertical" style="width: 100%" data-tab>
                         {% for progress in progresses %}
                             {% if progress.quiz.course == course %}
-                                <dd><a href="#"><p style="font-size: 1rem">{{ progress|safe }}</p></a></dd>
+                                <dd><a href="#"><p style="font-size: 1rem"
+                                                   id="quiz-{{ progress.id }}">{{ progress|safe }}<br/>
+                                    {% if progress.pledgequiz %}
+                                        PLEDGE: ${{ progress.pledgequiz.money }} to get {{ progress.pledgequiz.aim }}.
+                                        Due: {{ progress.pledgequiz.pledge_end_date }}
+                                    {% endif %}</p></a></dd>
                             {% endif %}
                         {% endfor %}
                     </dl>
@@ -485,7 +490,13 @@
                     <dl class="tabs vertical" style="width: 100%" data-tab>
                         {% for progress in progresses %}
                             {% if progress.quiz.course == course %}
-                                <dd><a href="#"><p style="font-size: 1rem">{{ progress|safe }}</p></a></dd>
+                                <dd><a href="#"><p style="font-size: 1rem"
+                                                   id="quiz-{{ progress.id }}">{{ progress|safe }}<br/>
+                                    {% if progress.pledgequiz %}
+                                        PLEDGE: ${{ progress.pledgequiz.money }} to get
+                                        {{ progress.pledgequiz.get_aim|floatformat:"0" }}%.
+                                        Due: {{ progress.pledgequiz.pledge_end_date }}
+                                    {% endif %}</p></a></dd>
                             {% endif %}
                         {% endfor %}
                     </dl>
@@ -504,7 +515,9 @@
                     <dl class="tabs vertical" style="width: 100%" data-tab>
                         {% for progress in progresses %}
                             {% if progress.quiz.course == course %}
-                                <dd><a href="#"><p style="font-size: 1rem">{{ progress|safe }}</p></a></dd>
+                                <dd><a href="#"><p style="font-size: 1rem"
+                                                   id="quiz-{{ progress.id }}">{{ progress|safe }}
+                                </p></a></dd>
                             {% endif %}
                         {% endfor %}
                     </dl>
@@ -532,6 +545,14 @@
     <div class="light-box" id="pledge-box">
         <i class="fa fa-times-circle-o close" style="margin-top: -25px; margin-right: -30px; float: right"></i>
 
+        <div class="row" id="select-type">
+            <button id="for-course" style="margin-top: 0">FOR ENITRE COURSE</button>
+
+            <p style="text-align: center; margin-top: 1.25rem">OR</p>
+
+            <button id="for-assignment" style="margin-top: 0">FOR INDIVIDUAL ASSIGNMENT</button>
+        </div>
+
         <div class="row" id="making-pledge">
             <div id="class-title"></div>
             <input type="hidden" id="class-id">
@@ -552,6 +573,11 @@
 
                     <p id="probable_reward"><sup>$</sup>0</p>
                 </div>
+            </div>
+            <div class="row">
+                <select id="quizzes" style="margin-top: 10px">
+
+                </select>
             </div>
             <div style="position: relative; overflow: hidden; min-height: 7em">
                 <label for="datepicker">Pledge Completion Date:
@@ -592,7 +618,7 @@
             <p style="text-align: center; margin-top: 1.25rem">OR</p>
 
             <button id="make-pledge" style="margin-top: 0">USING CREDIT CARD</button>
-            <br>
+            <br/>
             <button id="back-to-pledge">EDIT PLEDGE</button>
         </div>
     </div>
@@ -772,6 +798,8 @@
         var picker;
         var udemy = false;
         $('.pledge-start').click(function () {
+            $('#select-type').show();
+            $('#making-pledge').hide();
             var $clicked = $(this);
             current_id = $clicked.data('id');
             current_name = $clicked.data('class');
@@ -784,6 +812,9 @@
             $('#number_pledges').text(0);
             $('#avg_aim').html('N/A');
             $('#probable_reward').html('N/A');
+            $('#chose-option').hide();
+            $('#quizzes').empty();
+            $('#datepicker').css('border', '1px solid #ccc;');
             $.get('{% url 'users:get_course_stats' %}', {'id': current_id}, function (data) {
                 if (parseInt(data['fail']) == 0) {
                     if (parseInt(data['count']) != 0) {
@@ -813,10 +844,56 @@
                         $('#datepicker').val(picker.toString('YYYY-MM-DD'));
                         $('#datepicker').prop('disabled', false);
                     }
+                    if (data['quizzes'].length == 0 || udemy) {
+                        $('#select-type').hide();
+                        $('#quizzes').hide();
+                        for_quiz = false;
+                        $('#making-pledge').show();
+                    } else {
+                        var $quiz = $('#quizzes');
+                        for (var i = 0; i < data['quizzes'].length; i++) {
+                            if (data['quizzes'][i][2] != "None") {
+                                $quiz.append('<option value="' + data['quizzes'][i][1] + '" data-date="' + data['quizzes'][i][2] + '">' + data['quizzes'][i][0] + '</option>');
+                            } else if (data['quizzes'][i][3] != "None") {
+                                $quiz.append('<option value="' + data['quizzes'][i][1] + '" data-date="' + data['quizzes'][i][3] + '">' + data['quizzes'][i][0] + '</option>');
+                            } else {
+                                $quiz.append('<option value="' + data['quizzes'][i][1] + '" data-date="None">' + data['quizzes'][i][0] + '</option>');
+                            }
+                        }
+                    }
                 }
                 $('#pledge-box').lightbox_me({centered: true});
             });
         });
+        var for_quiz = false;
+        $('#for-course').click(function () {
+            for_quiz = false;
+            $('#select-type').hide();
+            $('#quizzes').hide();
+            $('#making-pledge').show();
+        });
+
+        $('#for-assignment').click(function () {
+            for_quiz = true;
+            $('#select-type').hide();
+            var $quiz = $('#quizzes');
+            $quiz.show();
+            if ($quiz.find(":selected").data('date') != "None") {
+                picker.setDate($quiz.find(":selected").data('date'));
+                $('#datepicker').val(picker.getDate());
+            }
+            $('#datepicker').prop('disabled', false);
+            $('#probable_reward').text('N/A');
+            $('#making-pledge').show();
+        });
+
+        $('#quizzes').change(function () {
+            if ($(this).find(":selected").data('date') != "None") {
+                picker.setDate($(this).find(":selected").data('date'));
+                $('#datepicker').val(picker.getDate());
+            }
+        });
+
         $("#goal-slider").slider({
             value: 75,
             range: "min",
@@ -827,15 +904,17 @@
                 if (ui.value <= 45) {
                     return false;
                 }
-                $('#goal-value').html(ui.value.toString() + '<sup>%</sup>');
-                var value =
-                    projected_amount *
-                        (1 + (ui.value / 100 - average_aim / 100) / (average_aim / 100));
-                if (isNaN(value)) {
-                    value = 10;
+                if (!for_quiz) {
+                    $('#goal-value').html(ui.value.toString() + '<sup>%</sup>');
+                    var value =
+                        projected_amount *
+                            (1 + (ui.value / 100 - average_aim / 100) / (average_aim / 100));
+                    if (isNaN(value)) {
+                        value = 10;
+                    }
+                    value = Math.round(value * 100) / 100;
+                    $('#probable_reward').html('<sup>$</sup>' + value.toString());
                 }
-                value = Math.round(value * 100) / 100;
-                $('#probable_reward').html('<sup>$</sup>' + value.toString());
             }
         });
         $("#pledge-slider").slider({
@@ -845,7 +924,7 @@
             step: 5,
             max: 100,
             slide: function (event, ui) {
-                if (ui.value <= 5) {
+                if (ui.value < 5) {
                     return false;
                 }
                 $('#pledge-value').html('<sup>$</sup>' + ui.value.toString());
@@ -853,16 +932,27 @@
         });
         //Test Url: http://projectwisely.com/pledges/create_ajax?course=1&money=10&aim=100&date=2014-5-31&user=1
         $('#chose-pledge').click(function () {
-            $('#making-pledge').hide();
             var $paypal = $('.paypal-button');
             $paypal.find('input[name=item_name]').val('Pledge for ' + current_name);
             var money = parseInt($('#pledge-value').text().replace('$', ''));
             $paypal.find('input[name=amount]').val(money);
             var date = picker.getDate();
+            if (!date || date == null) {
+                $('#datepicker').css('border', 'solid red 1px');
+                return;
+            } else {
+                $('#datepicker').css('border', '1px solid #ccc;');
+            }
             date = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
             var aim = parseInt($('#goal-value').text().replace('%', ''));
-            $paypal.append('<input type="hidden" name="custom" value="' + current_id + ',' + money + ',' + aim + ',' + date + ',' + '{{ request.user.userprofile.id }}"/>').val();
             $paypal.find('input[name=notify_url]').val('https://{{ request.get_host }}/pledges/paypal/');
+            var $quiz = $('#quizzes');
+            if ($quiz.is(":visible") == true) {
+                $paypal.append('<input type="hidden" name="custom" value="' + current_id + ',' + money + ',' + aim + ',' + date + ',' + '{{ request.user.userprofile.id }},' + $quiz.val() + '"/>').val();
+            } else {
+                $paypal.append('<input type="hidden" name="custom" value="' + current_id + ',' + money + ',' + aim + ',' + date + ',' + '{{ request.user.userprofile.id }}"/>').val();
+            }
+            $('#making-pledge').hide();
             $('#chose-option').show();
         });
 
@@ -874,21 +964,30 @@
             var token = function (res) {
                 var date = picker.getDate();
                 date = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-                $.post('{% url 'pledges:create_ajax' %}', {'stripeToken': res.id, 'course': current_id, 'money': money,
+                var post_data = {'stripeToken': res.id, 'course': current_id, 'money': money,
                     'aim': aim, 'date': date
-                }, function (data) {
+                };
+                var $quiz = $('#quizzes');
+                if (for_quiz) {
+                    post_data['quiz'] = $quiz.val();
+                }
+                $.post('{% url 'pledges:create_ajax' %}', post_data, function (data) {
                     if (parseInt(data['fail']) == 0) {
-                        //TODO: update div
-                        $('div[data-id="' + current_id.toString() + '"]').html('<p>GOAL<br><span class="overall-mark">' + aim.toString() + '<sup>%</sup></span></p>');
-                        var $new_share = $('div[data-id="' + current_id.toString() + '"] + div');
-                        $new_share.html('<p>PLEDGE<br><span class="overall-mark">$' + money.toString() + '</span></p>');
-                        $new_share.data('share', current_name);
-                        $new_share.data('shareid', data['id']);
-                        $new_share.addClass('share-it');
-                        temp_div[$new_share] = $new_share.html();
+                        if (parseInt(data['quiz']) == 0) {
+                            $('div[data-id="' + current_id.toString() + '"]').html('<p>GOAL<br/><span class="overall-mark">' + aim.toString() + '<sup>%</sup></span></p>');
+                            var $new_share = $('div[data-id="' + current_id.toString() + '"] + div');
+                            $new_share.html('<p>PLEDGE<br/><span class="overall-mark">$' + money.toString() + '</span></p>');
+                            $new_share.data('share', current_name);
+                            $new_share.data('shareid', data['id']);
+                            $new_share.addClass('share-it');
+                            temp_div[$new_share] = $new_share.html();
+                        } else {
+                            $('#quiz-' + data['id']).append('<p>PLEDGE: $' + money.toString() + ' to get ' + aim.toString() + ' Due: ' + date + '</p>')
+                        }
                         $('#make-pledge').trigger('close');
                     } else {
                         $('#other-message').text(data['message']);
+                        $('#make-pledge').trigger('close');
                         $('#other-messages').lightbox_me({centered: true});
                     }
                 });

@@ -216,7 +216,7 @@ class CourseraDownloader(object):
                                 except IndexError:
                                     pass
                                 if hard_deadline is None:
-                                    hard_deadline = timezone.now()
+                                    hard_deadline = None
 
                                 if deadline is None:
                                     deadline = hard_deadline
