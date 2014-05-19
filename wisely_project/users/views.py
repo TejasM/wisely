@@ -572,5 +572,7 @@ def follow(request):
 @csrf_exempt
 def contact_us(request):
     if request.method == "POST":
-        msg = EmailMessage(request.POST['name'], request.POST['message'], 'contact@projectwisely.com', ['tejasmehta0@gmail.com'])
+        msg = EmailMessage(request.POST['name'], request.POST['message'], 'contact@projectwisely.com',
+                           ['tejasmehta0@gmail.com'])
         msg.send()
+    return HttpResponse({}, mimetype="application/json")
