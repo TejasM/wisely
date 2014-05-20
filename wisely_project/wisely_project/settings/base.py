@@ -304,8 +304,8 @@ SOCIAL_AUTH_TWITTER_KEY = 'Ujjstl4sd1lRurWgbpWxg'
 SOCIAL_AUTH_TWITTER_SECRET = 'WxQmKgthTMZLcVI57dcfMkdM8lhtBMZ6akYvvR3UYQ'
 SOCIAL_AUTH_TWITTER_EXTRA_DATA = [('oauth_token', 'oauth_token'), ('oauth_token_secret', 'oauth_token_secret')]
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '903133689077-e1qpbdlth8uq1tcm383vv2poo31h9dpi.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '2aWiA-1eEdxYIv8UXRXHclaD'
+SOCIAL_AUTH_GOOGLE_PLUS_KEY = '903133689077-e1qpbdlth8uq1tcm383vv2poo31h9dpi.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_PLUS_SECRET = '2aWiA-1eEdxYIv8UXRXHclaD'
 
 SOCIAL_AUTH_LINKEDIN_KEY = '77axzd8exmnf6o'
 SOCIAL_AUTH_LINKEDIN_SECRET = 'rYniGjNqW3c6kA7q'
@@ -325,10 +325,10 @@ AUTHENTICATION_BACKENDS = (
     'social.backends.google.GoogleOpenId',
     'social.backends.google.GoogleOAuth2',
     'social.backends.google.GoogleOAuth',
+    'social.backends.google.GooglePlusAuth',
     'social.backends.twitter.TwitterOAuth',
     'social.backends.facebook.FacebookOAuth2',
-    'social.backends.linkedin.BaseLinkedinAuth',
-    'social.backends.linkedin.LinkedinOAuth',
+    #'social.backends.linkedin.LinkedinOAuth',
     'django.contrib.auth.backends.ModelBackend',
 )
 

@@ -27,8 +27,7 @@ import twitter
 from actstream import action
 from django.conf import settings
 
-from models import CourseraProfile, Progress, UserProfile, EdxProfile, Invitees, UdemyProfile, Post, Course, Comments, \
-    Quiz
+from models import CourseraProfile, Progress, UserProfile, EdxProfile, Invitees, UdemyProfile, Post, Course, Comments
 from pledges.models import Pledge, Reward, PledgeQuiz
 from forms import UserProfileForm, UserForm
 from users.models import convert_to_percentage
@@ -232,14 +231,6 @@ def sync_up_user(user, social_users):
                 inner_profile.last_updated = timezone.now()
                 inner_profile.never_updated = False
                 inner_profile.save()
-        # elif social_user.provider == 'linkedin':
-        #     if inner_profile.last_updated < timezone.now() - timedelta(weeks=2) or inner_profile.never_updated:
-        #         try:
-        #             api = linkedin.Api(consumer_key=settings.SOCIAL_AUTH_TWITTER_KEY,
-        #                           consumer_secret=settings.SOCIAL_AUTH_TWITTER_SECRET,
-        #                           access_token_key=social_user.extra_data['access_token']['oauth_token'],
-        #                           access_token_secret=social_user.extra_data['access_token']['oauth_token_secret'])
-
         elif social_user.provider == 'twitter':
             if inner_profile.last_updated < timezone.now() - timedelta(weeks=2) or inner_profile.never_updated:
                 try:

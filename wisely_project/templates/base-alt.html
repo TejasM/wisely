@@ -278,8 +278,8 @@
                             src="{% static 'images/facebook-login.png' %}"></a>
                     <a href="{% url 'social:begin' 'twitter' %}"><img
                             src="{% static 'images/twitter-login.png' %}"></a>
-                    <a href="{% url 'social:begin' "google-oauth2" %}"><img
-                            src="{% static 'images/google-login.png' %}"></a>
+                    {#                    <a href="{% url 'social:begin' "google-oauth2" %}"><img#}
+                    {#                            src="{% static 'images/google-login.png' %}"></a>#}
                     {#                    <a href="{% url 'social:begin' "linkedin" %}"><img#}
                     {#                            src="{% static 'images/Linkedin-logo.gif' %}"></a>#}
                 </div>
@@ -314,8 +314,8 @@
                             src="{% static 'images/facebook-login.png' %}"></a>
                     <a href="{% url 'social:begin' 'twitter' %}"><img
                             src="{% static 'images/twitter-login.png' %}"></a>
-                    <a href="{% url 'social:begin' 'google-oauth2' %}"><img
-                            src="{% static 'images/google-login.png' %}"></a>
+                    {% comment %}                    <a href="{% url 'social:begin' 'google-oauth2' %}"><img
+                            src="{% static 'images/google-login.png' %}"></a>{% endcomment %}
                 </div>
             </div>
             <div class="row text-center" style="margin-top: 4em">
