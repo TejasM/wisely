@@ -1069,7 +1069,7 @@ img.small {
     background: #fff;
 }
 
-.login:hover {
+img.login:hover {
     background: #80bc62;
     border-radius: 6px;
 }
