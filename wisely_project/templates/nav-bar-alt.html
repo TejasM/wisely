@@ -1,10 +1,12 @@
 {% load staticfiles %}
 <div class="row wide-row" style="width: 100%; padding-bottom: 2px">
     <div class="top-bar-inner">
-        <div class="large-4 {% if user.is_authenticated and request.is_mobile %}small-12{% else %}small-4{% endif %} columns">
+        <div
+            class="large-4 {% if user.is_authenticated and request.is_mobile %}small-12{% else %}small-4{% endif %} columns">
             <div class="left-nav">
                 <div class="row" style="text-align: center; margin-top: 0.8em">
                     <div class="large-4 small-4 columns">
+<<<<<<< HEAD
                         <a href="/users/news"
                            style="width: 100%; height: 100%; margin-top: -0.1em; display: inline-block;">
                         {% if news %}
@@ -30,16 +32,83 @@
                                 <img src="{% static 'images/book-icon-trans.png' %}" height="30px"
                                      width="35px" style="width: 33px; height: 29px">
                             {% endif %}
-
-                            <div class="row" style="margin-top: 5px; font-size: 0.7em; font-weight: 400">
-                                COURSES
-                            </div>
-                            {% if courses %}
-                                <hr style="border: solid #fff 0.3em; margin: 0; position: absolute; bottom: -0.7em; width: 80%">
-                            {% endif %}
-                        </a>
+=======
+                        {% if user.is_authenticated %}
+                            <a href="/users/news"
+                               style="width: 100%; height: 100%; margin-top: -0.1em; display: inline-block;">
+                                {% if news %}
+                                    <img src="{% static 'images/news-white.png' %}" width="28px">
+                                {% else %}
+                                    <img src="{% static 'images/activities-icon-trans.png' %}" width="28px">
+                                {% endif %}
+                                <div class="row" style="margin-top: 5px; font-size: 0.7em; font-weight: 400">
+                                    NEWS
+                                </div>
+                                {% if news %}
+                                    <hr style="border: solid #fff 0.3em; margin: 0; position: absolute; bottom: -0.7em; width: 80%">
+                                {% endif %}
+                            </a>
+                        {% else %}
+                            <a href="javascript:void(0);"
+                               style="width: 100%; height: 100%; margin-top: -0.1em; display: inline-block;"
+                               class="login">
+                                {% if news %}
+                                    <img src="{% static 'images/news-white.png' %}" width="28px">
+                                {% else %}
+                                    <img src="{% static 'images/activities-icon-trans.png' %}" width="28px">
+                                {% endif %}
+                                <div class="row" style="margin-top: 5px; font-size: 0.7em; font-weight: 400">
+                                    NEWS
+                                </div>
+                                {% if news %}
+                                    <hr style="border: solid #fff 0.3em; margin: 0; position: absolute; bottom: -0.7em; width: 80%">
+                                {% endif %}
+                            </a>
+                        {% endif %}
                     </div>
                     <div class="large-4 small-4 columns">
+                        {% if user.is_authenticated %}
+                            <a href="/users/index/alt"
+                               style="width: 100%; height: 100%;margin-top: -0.3em; display: inline-block;">
+                                {% if courses %}
+                                    <img src="{% static 'images/book-white.png' %}" height="30px"
+                                         width="35px" style="width: 33px; height: 29px">
+                                {% else %}
+                                    <img src="{% static 'images/book-icon-trans.png' %}" height="30px"
+                                         width="35px" style="width: 33px; height: 29px">
+                                {% endif %}
+>>>>>>> Attempt to fix login
+
+                                <div class="row" style="margin-top: 5px; font-size: 0.7em; font-weight: 400">
+                                    COURSES
+                                </div>
+                                {% if courses %}
+                                    <hr style="border: solid #fff 0.3em; margin: 0; position: absolute; bottom: -0.7em; width: 80%">
+                                {% endif %}
+                            </a>
+                        {% else %}
+                            <a href="javascript:void(0);"
+                               style="width: 100%; height: 100%;margin-top: -0.3em; display: inline-block;"
+                               class="login">
+                                {% if courses %}
+                                    <img src="{% static 'images/book-white.png' %}" height="30px"
+                                         width="35px" style="width: 33px; height: 29px">
+                                {% else %}
+                                    <img src="{% static 'images/book-icon-trans.png' %}" height="30px"
+                                         width="35px" style="width: 33px; height: 29px">
+                                {% endif %}
+
+                                <div class="row" style="margin-top: 5px; font-size: 0.7em; font-weight: 400">
+                                    COURSES
+                                </div>
+                                {% if courses %}
+                                    <hr style="border: solid #fff 0.3em; margin: 0; position: absolute; bottom: -0.7em; width: 80%">
+                                {% endif %}
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="large-4 small-4 columns">
+<<<<<<< HEAD
                         <a href="/users/profile"
                            style="width: 100%; height: 100%; margin-top: -0.1em; display: inline-block;">
                         {% if activities %}
@@ -47,15 +116,44 @@
                             {% else %}
                                 <img src="{% static 'images/me-icon-trans.png' %}" height="25px" width="25px">
                             {% endif %}
+=======
+                        {% if user.is_authenticated %}
+                            <a href="/users/profile"
+                               style="width: 100%; height: 100%; margin-top: -0.1em; display: inline-block;">
+                                {% if activities %}
+                                    <img src="{% static 'images/me-icon.png' %}" height="25px" width="25px">
+                                {% else %}
+                                    <img src="{% static 'images/me-icon-trans.png' %}" height="25px" width="25px">
+                                {% endif %}
+>>>>>>> Attempt to fix login
 
-                            <div class="row" style="margin-top: 5px; font-size: 0.7em; font-weight: 400">
-                                ME
-                            </div>
+                                <div class="row" style="margin-top: 5px; font-size: 0.7em; font-weight: 400">
+                                    ME
+                                </div>
 
-                            {% if activites %}
-                                <hr style="border: solid #fff 0.3em; margin: 0; position: absolute;bottom: -0.7em; width: 80%">
-                            {% endif %}
-                        </a>
+                                {% if activites %}
+                                    <hr style="border: solid #fff 0.3em; margin: 0; position: absolute;bottom: -0.7em; width: 80%">
+                                {% endif %}
+                            </a>
+                        {% else %}
+                            <a href="javascript:void(0);"
+                               style="width: 100%; height: 100%; margin-top: -0.1em; display: inline-block;"
+                               class="login">
+                                {% if activities %}
+                                    <img src="{% static 'images/me-icon.png' %}" height="25px" width="25px">
+                                {% else %}
+                                    <img src="{% static 'images/me-icon-trans.png' %}" height="25px" width="25px">
+                                {% endif %}
+
+                                <div class="row" style="margin-top: 5px; font-size: 0.7em; font-weight: 400">
+                                    ME
+                                </div>
+
+                                {% if activites %}
+                                    <hr style="border: solid #fff 0.3em; margin: 0; position: absolute;bottom: -0.7em; width: 80%">
+                                {% endif %}
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -63,7 +161,7 @@
 
         <div class="large-4 small-4 columns"
              style="text-align: center;
-                     {% if user.is_authenticated and request.is_mobile %}display: none{% endif %}">
+                 {% if user.is_authenticated and request.is_mobile %}display: none{% endif %}">
             <a href="/" class="title-area">
                 <img alt="Wisely" src="{% static 'images/logo-to-fit.png' %}" height="46" width="46"
                      style="image-rendering: -moz-crisp-edges; margin-top: 0.4em"/>

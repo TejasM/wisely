@@ -43,11 +43,12 @@ def login_user(request):
                 request.user.last_login = timezone.now()
                 request.user.save()
             else:
-                return redirect(reverse('users:index'))
+                messages.error(request, "Sorry your  is not active")
+                return HttpResponseRedirect('/')
         else:
-            return redirect(reverse('users:index'))
-        return redirect(reverse('users:index'))
-    return redirect(reverse('users:index'))
+            messages.error(request, "Incorrect username/password")
+            return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/')
 
 
 def logout_user(request):
