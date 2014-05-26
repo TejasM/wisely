@@ -150,8 +150,7 @@ def scrape_for_user(edxprofile):
                     try:
                         if marks:
                             mark = sum(
-                                map(lambda x: Fraction(
-                                    sum(Fraction(s) if not s.endswith('/0') else 0 for s in x.split())),
+                                map(lambda x: Fraction(x) if not x.endswith('/0') else Fraction(0),
                                     marks))
                             mark = str(mark.numerator) + "/" + str(mark.denominator)
                         else:
