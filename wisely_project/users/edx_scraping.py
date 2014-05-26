@@ -125,7 +125,6 @@ def scrape_for_user(edxprofile):
                     for pledge in pledges:
                         pledge.actual_mark = final_marks
                         pledge.save()
-        print current_courses
         for i, link in enumerate(progress_links):
             r = client.get(link)
             page = html.fromstring(r.text)
@@ -147,12 +146,13 @@ def scrape_for_user(edxprofile):
                 mark = None
                 for section in sections:
                     marks = [e.text.replace('\n', '').strip() for e in scores_selector(section)]
-                    print marks
                     try:
                         if marks:
                             mark = sum(
                                 map(lambda x: Fraction(x) if not x.endswith('/0') else Fraction(0),
                                     marks))
+                            if mark != Fraction(0):
+                                print mark
                             mark = str(mark.numerator) + "/" + str(mark.denominator)
                         else:
                             mark = "0/0"
