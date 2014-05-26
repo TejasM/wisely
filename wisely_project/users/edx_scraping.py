@@ -148,9 +148,9 @@ def scrape_for_user(edxprofile):
                     marks = [e.text.replace('\n', '').strip() for e in scores_selector(section)]
                     try:
                         if marks:
-                            mark = reduce(lambda x, y: x + y,
-                                          map(lambda x: Fraction(x) if not x.endswith('/0') else Fraction(0),
-                                              marks))
+                            marks = map(lambda x: Fraction(x) if not x.endswith('/0') else Fraction(0),
+                                        marks)
+                            mark = reduce(lambda x, y: x + y, marks)
                             if mark != Fraction(0):
                                 print marks
                                 print str(mark.numerator) + "/" + str(mark.denominator)
