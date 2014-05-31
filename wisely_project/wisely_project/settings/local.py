@@ -44,3 +44,6 @@ CACHES = {
 
 STRIPE_PUBLIC_KEY = "pk_test_GUMeKfQZ4BkZzS5GyaZzG7Qb"
 STRIPE_SECRET_KEY = "sk_test_auCbY9IpyQ0hMHMcfvgjumxU"
+
+
+ENCRYPTED_FIELDS_KEYDIR = '/home/tmehta/Documents/N36/fieldkeys'
