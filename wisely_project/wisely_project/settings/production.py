@@ -133,3 +133,5 @@ MEDIA_ROOT = os.path.join(SITE_ROOT, 'media')
 SECRET_KEY = '#*_8js#osn#k*5s+&(ebb3vs)@!7&yjcs0h&r71s8^f1*)5s=d'
 ########## END SECRET CONFIGURATION
 PREPEND_WWW = True
+
+ENCRYPTED_FIELDS_KEYDIR = '/root/fieldkeys'
