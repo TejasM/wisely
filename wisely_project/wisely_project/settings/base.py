@@ -306,12 +306,15 @@ SOCIAL_AUTH_TWITTER_EXTRA_DATA = [('oauth_token', 'oauth_token'), ('oauth_token_
 
 SOCIAL_AUTH_GOOGLE_PLUS_KEY = '903133689077-e1qpbdlth8uq1tcm383vv2poo31h9dpi.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_PLUS_SECRET = '2aWiA-1eEdxYIv8UXRXHclaD'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/plus.login'
+]
 
 SOCIAL_AUTH_LINKEDIN_KEY = '77axzd8exmnf6o'
 SOCIAL_AUTH_LINKEDIN_SECRET = 'rYniGjNqW3c6kA7q'
-#OAuth User Token:ace47fdb-add8-4150-8a2c-045273d89d2e
-#OAuth User Secret:8f8fd128-6390-4d0a-859a-1f20d35d3632
-SOCIAL_AUTH_LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress']
+LINKEDIN_OAUTH_USER_TOKEN = 'ace47fdb-add8-4150-8a2c-045273d89d2e'
+LINKEDIN_OAUTH_USER_SECRET = '8f8fd128-6390-4d0a-859a-1f20d35d3632'
+SOCIAL_AUTH_LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress', 'r_network']
 SOCIAL_AUTH_LINKEDIN_FIELD_SELECTORS = ['email-address', 'headline', 'industry']
 
 SOCIAL_AUTH_GITHUB_APP_ID = '06f5134f1cc26effbef9'
@@ -319,6 +322,8 @@ SOCIAL_AUTH_GITHUB_API_SECRET = '281c5607b51d8ccd574fac2f5cb9692766ca6dd3'
 
 SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
 SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
+
+RETURN_URL = '/'
 
 AUTHENTICATION_BACKENDS = (
     'social.backends.open_id.OpenIdAuth',
@@ -328,7 +333,7 @@ AUTHENTICATION_BACKENDS = (
     'social.backends.google.GooglePlusAuth',
     'social.backends.twitter.TwitterOAuth',
     'social.backends.facebook.FacebookOAuth2',
-    #'social.backends.linkedin.LinkedinOAuth',
+    'social.backends.linkedin.LinkedinOAuth',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -357,6 +362,14 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.user.user_details',
     'users.utils.welcome_new_user'
 )
+
+SOCIAL_AUTH_DISCONNECT_PIPELINE = (
+    'social.pipeline.disconnect.allowed_to_disconnect',
+    'social.pipeline.disconnect.get_entries',
+    'social.pipeline.disconnect.revoke_tokens',
+    'social.pipeline.disconnect.disconnect'
+)
+
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 PREPEND_WWW = False

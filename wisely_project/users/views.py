@@ -26,12 +26,16 @@ from social_auth.db.django_models import UserSocialAuth
 import twitter
 from actstream import action
 from django.conf import settings
+from linkedin import linkedin
 
 from models import CourseraProfile, Progress, UserProfile, EdxProfile, Invitees, UdemyProfile, Post, Course, Comments
 from pledges.models import Pledge, Reward, PledgeQuiz
 from forms import UserProfileForm, UserForm
 from users.models import convert_to_percentage
 from users.utils import send_welcome_email
+from wisely_project.settings.base import SOCIAL_AUTH_LINKEDIN_KEY, SOCIAL_AUTH_LINKEDIN_SECRET, \
+    RETURN_URL
+import requests
 
 
 def login_user(request):
@@ -241,7 +245,10 @@ def sync_up_user(user, social_users):
                                       access_token_secret=social_user.extra_data['access_token']['oauth_token_secret'])
                     friends = api.GetFollowers()
                 except:
-                    friends = None
+                    inner_profile.last_updated = timezone.now()
+                    inner_profile.never_updated = False
+                    inner_profile.save()
+                    return
                 inner_profile.num_connections = len(friends)
                 for friend in friends:
                     try:
@@ -265,6 +272,54 @@ def sync_up_user(user, social_users):
                 inner_profile.last_updated = timezone.now()
                 inner_profile.never_updated = False
                 inner_profile.save()
+                # elif social_user.provider == 'google-plus':
+                # if inner_profile.last_updated < timezone.now() - timedelta(weeks=2) or inner_profile.never_updated:
+                #         response = requests.get(
+                #             'https://www.googleapis.com/plus/v1/people/me/people/visible',
+                #             params={'access_token': social_user.extra_data['access_token']}
+                #         )
+                #         friends = response.json()['items']
+                # elif social_user.provider == 'linkedin':
+                # if inner_profile.last_updated < timezone.now() - timedelta(weeks=2) or inner_profile.never_updated:
+                #         try:
+                #             authentication = linkedin.LinkedInDeveloperAuthentication(
+                #                 SOCIAL_AUTH_LINKEDIN_KEY,
+                #                 SOCIAL_AUTH_LINKEDIN_SECRET,
+                #                 social_user.extra_data['access_token']['oauth_token'],
+                #                 social_user.extra_data['access_token']['oauth_token_secret'],
+                #                 RETURN_URL,
+                #                 linkedin.PERMISSIONS.enums.values())
+                #             application = linkedin.LinkedInApplication(authentication)
+                #         except:
+                #             inner_profile.last_updated = timezone.now()
+                #             inner_profile.never_updated = False
+                #             inner_profile.save()
+                #             return
+                #         #application.get_connections(selectors=['headline', 'first-name', 'last-name'], params={'start':10, 'count':5})
+                #         friends = application.get_connections(selectors=['id', 'first-name', 'last-name'])
+                #         #inner_profile.num_connections = friends.values.json()
+                #         for friend in friends.values.json():
+                #             try:
+                #                 connect = UserSocialAuth.objects.get(uid=friend.id)
+                #                 if connect.user not in inner_profile.connections.all():
+                #                     inner_profile.connections.add(connect.user)
+                #                     notify.send(sender=inner_profile, recipient=connect.user, verb='has joined Wisely',
+                #                                 target=connect.user)
+                #                 try:
+                #                     connect = UserProfile.objects.get(user=connect.user)
+                #                 except UserProfile.DoesNotExist as _:
+                #                     connect = UserProfile.objects.create(user=connect.user)
+                #                 connect.connections.add(user)
+                #                 connect.save()
+                #             except UserSocialAuth.DoesNotExist as _:
+                #                 try:
+                #                     Invitees.objects.get(uid=friend.id, user_from=inner_profile)
+                #                 except Invitees.DoesNotExist as _:
+                #                     Invitees.objects.create(uid=friend.id, user_from=inner_profile,
+                #                                             name=friend.name, social_media='linkedin')
+                #         inner_profile.last_updated = timezone.now()
+                #         inner_profile.never_updated = False
+                #         inner_profile.save()
 
 
 @login_required
