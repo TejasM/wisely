@@ -879,8 +879,6 @@ img.finish-anim {
 }
 
 .right-nav a, .right-nav a:hover {
-    margin: 0 3%;
-    display: inline;
     color: #fff;
 }
 
@@ -898,7 +896,7 @@ img.finish-anim {
     border-radius: 50%;
     border: solid #fff 3px;
     background-size: cover;
-    overflow:hidden;
+    overflow: hidden;
 }
 
 .track-color {
@@ -1113,3 +1111,6 @@ img.login:hover {
 
 }
 
+.f-dropdown.open {
+    margin-left: -2.5em
+}
