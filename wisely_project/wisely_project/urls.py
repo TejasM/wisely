@@ -22,6 +22,7 @@ urlpatterns = patterns('',
                        url(r'^learn-more/alt$', TemplateView.as_view(template_name='learn-more-alt.html')),
                        url(r'^faq$', TemplateView.as_view(template_name='faq-alt.html')),
                        url(r'^faq/alt$', TemplateView.as_view(template_name='faq-alt.html')),
+                       url(r'^about$', TemplateView.as_view(template_name='about-us.html')),
                        url(r'^privacy/$', TemplateView.as_view(template_name='privacy.html')),
                        # Examples:
                        # url(r'^$', 'wisely_project.views.home', name='home'),

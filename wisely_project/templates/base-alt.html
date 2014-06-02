@@ -31,7 +31,7 @@
     <!-- Navigation -->
     <div id="main-nav-wrapper" style="margin-top: -87px; display: block; position: fixed;z-index: 200;top: 0;
          left: 0;right: 0;width: 100%;background: #3C3F50;padding: 0.25% 0">
-        {% include 'nav-bar-alt.html' %}
+        {% include 'nav-bar-alt.html' with below="True" %}
     </div>
     {% if not request.is_mobile %}
         <!-- Header -->
@@ -393,6 +393,7 @@
 {% endblock %}
 </body>
 <script src="{% static 'js/foundation.min.js' %}"></script>
+<script src="{% static 'js/foundation/foundation.dropdown.js' %}"></script>
 <script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
 <script type='text/javascript' src='https://cdn.firebase.com/v0/firebase.js'></script>
 <script src="{% static 'js/raph.js' %}"></script>
@@ -810,6 +811,7 @@ $(function () {
                 switch_form_login();
                 $('#sign-in').lightbox_me({centered: true});
             });
+            $(document).foundation();
         });
     </script>
     {#    <script type="text/javascript">#}

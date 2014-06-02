@@ -125,19 +125,32 @@
                      {% if user.is_authenticated and request.is_mobile %}display: none{% endif %}">
         <a href="/" class="title-area">
                 <img alt="Wisely" src="{% static 'images/logo-to-fit.png' %}" height="46" width="46"
-                     style="image-rendering: -moz-crisp-edges; margin-top: 0.4em"/>
+                     style="margin-top: 0.4em"/>
             </a>
         </div>
         <div class="large-4 {% if request.is_mobile %}small-8{% else %}small-4{% endif %} columns"
              style="display: visible" id="finish-anim">
             <div class="right-nav" style="margin-top: 0.5em">
                 <div class="row" style="text-align: right;">
-                    <a href="/faq">
+                    {% if below %}
+                        <a href="#" data-dropdown="drop1" style="font-size: 1.2em; margin-right: 3em">About</a>
+                        <ul id="drop1" class="small f-dropdown" data-dropdown-content>
+                    {% else %}
+                        <a href="#" data-dropdown="drop2" style="font-size: 1.2em; margin-right: 3em">About</a>
+                        <ul id="drop2" class="small f-dropdown" data-dropdown-content>
+                    {% endif %}
+                    <li><a href="/faq">
                         FAQ
-                    </a>
-                    <a href="/learn-more">
+                    </a></li>
+                    <li><a href="/learn-more">
                         FEATURES
-                    </a>
+                    </a></li>
+                    <li><a href="/about">
+                        ABOUT US
+                    </a></li>
+                    </ul>
+
+
                     {% if user.is_authenticated %}
                         <a id="logout-button" href="/users/logout">
                         LOGOUT
