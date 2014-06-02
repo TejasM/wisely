@@ -91,6 +91,22 @@
 <script src="{% static 'js/foundation/foundation.dropdown.js' %}"></script>
 <script src="{% static 'js/jquery.lightbox_me.js' %}"></script>
 <script type='text/javascript' src='https://cdn.firebase.com/v0/firebase.js'></script>
+<script type="text/javascript">
+    $(function () {
+        var po = document.createElement('script');
+        po.type = 'text/javascript';
+        po.async = true;
+        po.src = 'https://plus.google.com/js/client:plusone.js?onload=start';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(po, s);
+    })();
+    $(function () {
+        $('#logout-button').click(function () {
+            //event.preventDefault();
+            gapi.auth.signOut();
+        });
+    });
+</script>
 <script>
     (function (i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r;
