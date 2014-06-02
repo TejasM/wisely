@@ -5,7 +5,7 @@ from sys import path
 
 ASYNC_BACKEND_URL = 'http://projectwisely.com:5000'
 
-########## PATH CONFIGURATION
+# ######### PATH CONFIGURATION
 # Absolute filesystem path to the Django project directory:
 DJANGO_ROOT = dirname(dirname(abspath(__file__)))
 
@@ -306,9 +306,6 @@ SOCIAL_AUTH_TWITTER_EXTRA_DATA = [('oauth_token', 'oauth_token'), ('oauth_token_
 
 SOCIAL_AUTH_GOOGLE_PLUS_KEY = '903133689077-e1qpbdlth8uq1tcm383vv2poo31h9dpi.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_PLUS_SECRET = '2aWiA-1eEdxYIv8UXRXHclaD'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
-    'https://www.googleapis.com/auth/plus.login'
-]
 
 SOCIAL_AUTH_LINKEDIN_KEY = '77axzd8exmnf6o'
 SOCIAL_AUTH_LINKEDIN_SECRET = 'rYniGjNqW3c6kA7q'
@@ -369,7 +366,6 @@ SOCIAL_AUTH_DISCONNECT_PIPELINE = (
     'social.pipeline.disconnect.revoke_tokens',
     'social.pipeline.disconnect.disconnect'
 )
-
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 PREPEND_WWW = False
