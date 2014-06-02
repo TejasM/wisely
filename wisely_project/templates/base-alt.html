@@ -149,7 +149,7 @@
             </div>
             <div
                     style="position: absolute; bottom: -33px; width: 64px; left: 50%; margin-left: -32px; margin-top: 33px; z-index: 100">
-            <img src="{% static 'images/pledge-icon.png' %}" id="pledge-ic">
+                <img src="{% static 'images/pledge-icon.png' %}" id="pledge-ic">
             </div>
         </div>
         <div class="pledge-sec alt-back" id="pledge-sec"
@@ -167,7 +167,7 @@
             </div>
             <div
                     style="position: absolute; bottom: -33px; width: 64px; left: 50%; margin-left: -32px; margin-top: 33px; z-index: 100">
-            <img src="{% static 'images/track-icon.png' %}" id="track-ic">
+                <img src="{% static 'images/track-icon.png' %}" id="track-ic">
             </div>
         </div>
         <div class="track-sec" id="track-sec" style="position: relative;  padding-left: 10px; padding-right: 10px">
@@ -182,7 +182,7 @@
             </div>
             <div
                     style="position: absolute; bottom: -33px; width: 64px; left: 50%; margin-left: -32px; margin-top: 33px; z-index: 100">
-            <img src="{% static 'images/connect-icon.png' %}" id="share-ic">
+                <img src="{% static 'images/connect-icon.png' %}" id="share-ic">
             </div>
         </div>
         <div class="share-sec alt-back" id="share-sec"
@@ -197,7 +197,7 @@
             </div>
             <div
                     style="position: absolute; bottom: -33px; width: 64px; left: 50%; margin-left: -32px; margin-top: 33px; z-index: 100">
-            <img src="{% static 'images/acheive-icon.png' %}" id="achieve-ic">
+                <img src="{% static 'images/acheive-icon.png' %}" id="achieve-ic">
             </div>
         </div>
         <div class="achieve-sec" id="achieve-sec" style="position: relative;  padding-left: 10px; padding-right: 10px">
@@ -211,7 +211,7 @@
             </div>
             <div
                     style="position: absolute; width: 64px; left: 50%; margin-left: -32px; margin-top: 33px; z-index: 100; bottom: -4em;">
-            <img src="{% static 'images/logo-blue.png' %}">
+                <img src="{% static 'images/logo-blue.png' %}">
             </div>
         </div>
 
@@ -283,15 +283,16 @@
                             src="{% static 'images/facebook-login.png' %}"></a>
                     <a href="{% url 'social:begin' 'twitter' %}"><img
                             src="{% static 'images/twitter-login.png' %}"></a>
-                    {#                    <div id="signinButton">#}
-                    {#    <span class="g-signin" data-scope="{{ plus_scope }}"#}
-                    {#          data-clientid="{{ plus_id }}"#}
-                    {#          data-redirecturi="postmessage"#}
-                    {#          data-accesstype="offline"#}
-                    {#          data-cookiepolicy="single_host_origin"#}
-                    {#          data-callback="signInCallback">#}
-                    {#    </span>#}
-                    {#                    </div>#}
+
+                    <div id="signinButton">
+                        <span class="g-signin" data-scope="{{ plus_scope }}"
+                              data-clientid="{{ plus_id }}"
+                              data-redirecturi="postmessage"
+                              data-accesstype="offline"
+                              data-cookiepolicy="single_host_origin"
+                              data-callback="signInCallback">
+                        </span>
+                    </div>
                     {#                    <a href="{% url 'social:begin' "google-plus" %}"><img#}
                     {#                            src="{% static 'images/google-login.png' %}"></a>#}
                     <a href="{% url 'social:begin' "linkedin" %}"><img
@@ -328,18 +329,18 @@
                             src="{% static 'images/facebook-login.png' %}"></a>
                     <a href="{% url 'social:begin' 'twitter' %}"><img
                             src="{% static 'images/twitter-login.png' %}"></a>
-                    {#                    <div id="signinButton">#}
-                    {#    <span class="g-signin" data-scope="{{ plus_scope }}"#}
-                    {#          data-clientid="{{ plus_id }}"#}
-                    {#          data-redirecturi="postmessage"#}
-                    {#          data-accesstype="offline"#}
-                    {#          data-cookiepolicy="single_host_origin"#}
-                    {#          data-callback="signInCallback">#}
-                    {#    </span>#}
-                    {#                    </div>#}
-                    {#                    <a href="{% url 'social:begin' 'google-oauth2' %}"><img#}
-                    {#                            src="{% static 'images/google-login.png' %}"></a>#}
 
+                    <div id="signinButton">
+                        <span class="g-signin" data-scope="{{ plus_scope }}"
+                              data-clientid="{{ plus_id }}"
+                              data-redirecturi="postmessage"
+                              data-accesstype="offline"
+                              data-cookiepolicy="single_host_origin"
+                              data-callback="signInCallback">
+                        </span>
+                    </div>
+                    <a href="{% url 'social:begin' 'google-oauth2' %}"><img
+                            src="{% static 'images/google-login.png' %}"></a>
                     <a href="{% url 'social:begin' "linkedin" %}"><img
                             src="{% static 'images/linkedin-login.jpg' %}"></a>
                 </div>
@@ -812,32 +813,32 @@ $(function () {
             });
         });
     </script>
-    {#    <script type="text/javascript">#}
-    {#        $(function () {#}
-    {#            var po = document.createElement('script');#}
-    {#            po.type = 'text/javascript';#}
-    {#            po.async = true;#}
-    {#            po.src = 'https://plus.google.com/js/client:plusone.js?onload=start';#}
-    {#            var s = document.getElementsByTagName('script')[0];#}
-    {#            s.parentNode.insertBefore(po, s);#}
-    {#        })();#}
-    {#    </script>#}
-    {#    <script type="text/javascript">#}
-    {#        var signInCallback = function (result) {#}
-    {#            if (result['error']) {#}
-    {#                alert('An error happened:', result['error']);#}
-    {#            } else {#}
-    {#                $('#code').attr('value', result['code']);#}
-    {#                $('#at').attr('value', result['access_token']);#}
-    {#                $('#google-plus').submit();#}
-    {#            }#}
-    {#        };#}
-    {#    </script>#}
-    {#    <script type="text/javascript">#}
-    {#        $('a#logout-button').click(function () {#}
-    {#            gapi.auth.signOut();#}
-    {#        });#}
-    {#    </script>#}
+    <script type="text/javascript">
+        $(function () {
+            var po = document.createElement('script');
+            po.type = 'text/javascript';
+            po.async = true;
+            po.src = 'https://plus.google.com/js/client:plusone.js?onload=start';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(po, s);
+        })();
+    </script>
+    <script type="text/javascript">
+        var signInCallback = function (result) {
+            if (result['error']) {
+                alert('An error happened:', result['error']);
+            } else {
+                $('#code').attr('value', result['code']);
+                $('#at').attr('value', result['access_token']);
+                $('#google-plus').submit();
+            }
+        };
+    </script>
+    <script type="text/javascript">
+        $('a#logout-button').click(function () {
+            gapi.auth.signOut();
+        });
+    </script>
 
 {% endblock %}
 </html>
