@@ -87,42 +87,36 @@
     <div class="content active" id="panel1a">
         {% if viewed_user != request.user %}
             <div class="row">
-            <div class="large-6 columns"><h3>Completed Courses</h3>
+            <div class="large-6 columns"><h3>Courses</h3>
                 {% for course in viewed_user.courseraprofile.courses.all %}
-                    {% if course.get_amount_progress >= 100 %}
-                        <div class="large-6 columns">
-                            <div class="course-panel">
-                                <a href="{{ course.course_link }}"><strong>{{ course.title }}</strong></a>
+                    <div class="large-6 columns">
+                        <div class="course-panel">
+                            <a href="{{ course.course_link }}"><strong>{{ course.title }}</strong></a>
 
-                                <p>Coursera</p>
-                            </div>
+                            <p>Coursera</p>
                         </div>
-                    {% endif %}
+                    </div>
                 {% endfor %}
                 {% for course in viewed_user.edxprofile.courses.all %}
-                    {% if course.get_amount_progress >= 100 %}
-                        <div class="large-6 columns">
-                            <div class="course-panel">
-                                <a href="{{ course.course_link }}"><strong>{{ course.title }}</strong></a>
+                    <div class="large-6 columns">
+                        <div class="course-panel">
+                            <a href="{{ course.course_link }}"><strong>{{ course.title }}</strong></a>
 
-                                <p>edX</p>
-                            </div>
+                            <p>edX</p>
                         </div>
-                    {% endif %}
+                    </div>
                 {% endfor %}
                 {% for course in viewed_user.udemyprofile.courses.all %}
-                    {% if course.get_amount_progress >= 100 %}
-                        <div class="large-6 columns">
-                            <div class="course-panel">
-                                <a href="{{ course.course_link }}"><strong>{{ course.title }}</strong></a>
+                    <div class="large-6 columns">
+                        <div class="course-panel">
+                            <a href="{{ course.course_link }}"><strong>{{ course.title }}</strong></a>
 
-                                <p>Udemy</p>
-                            </div>
+                            <p>Udemy</p>
                         </div>
-                    {% endif %}
+                    </div>
                 {% endfor %}</div>
             <div class="large-6 columns">{% endif %}
-        <h3>Activites</h3>
+        <h3>Activities</h3>
         {% if feeds %}
             <div style="margin-top: 50px; margin-left: 90px;">
                 <span class="today-button">Today</span>
@@ -189,7 +183,8 @@
                                                 <span class="overall-mark">{{ pledge.get_aim }}<sup>%</sup></span></div>
                                             <div class="large-4 small-4 columns"><p>REWARD<br>
                                                 {% if pledge.reward_set.0 %}
-                                                    <span class="overall-mark"><sup>$</sup>{{ pledge.reward_set.0.money }}</span>
+                                                    <span
+                                                        class="overall-mark"><sup>$</sup>{{ pledge.reward_set.0.money }}</span>
                                                 {% else %}
                                                     <span class="overall-mark"><sup>$</sup>0</span>
                                                 {% endif %}
@@ -218,7 +213,8 @@
                                             <div class="large-4 small-4 columns"><p>GOAL<br>
                                                 <span class="overall-mark">{{ pledge.get_aim }}<sup>%</sup></span></div>
                                             <div class="large-4 small-4 columns"><p>REWARD<br>
-                                                <span class="overall-mark"><sup>$</sup>{{ pledge.reward_set.0.money }}</span>
+                                                <span
+                                                    class="overall-mark"><sup>$</sup>{{ pledge.reward_set.0.money }}</span>
                                             </div>
                                         </div>
                                     {% endif %}
@@ -244,7 +240,8 @@
                                             <div class="large-4 small-4 columns"><p>GOAL<br>
                                                 <span class="overall-mark">{{ pledge.get_aim }}<sup>%</sup></span></div>
                                             <div class="large-4 small-4 columns"><p>REWARD<br>
-                                                <span class="overall-mark"><sup>$</sup>{{ pledge.reward_set.0.money }}</span>
+                                                <span
+                                                    class="overall-mark"><sup>$</sup>{{ pledge.reward_set.0.money }}</span>
                                             </div>
                                         </div>
                                     {% endif %}
@@ -263,8 +260,8 @@
                             {% if reward.pledge %}
                                 <h4 class="media-heading innerT"><a href=""
                                                                     class="text-inverse">{{ reward.pledge.course }}</a> <span
-                                        class="text-small"><i
-                                        class="fa fa-fw fa-clock-o"></i>&nbsp; {{ reward.pledge.created }}</span>
+                                    class="text-small"><i
+                                    class="fa fa-fw fa-clock-o"></i>&nbsp; {{ reward.pledge.created }}</span>
                                 </h4>
                             {% endif %}
                             <p>Your reward &nbsp;</p>
@@ -287,7 +284,7 @@
                                 {% else %}
                                     <div class="widget-head"><h4 class="heading">Collect Your
                                         Rewards</h4><span
-                                            class="collapse-toggle"></span></div>
+                                        class="collapse-toggle"></span></div>
                                     <div class="row centered">
                                         <div class="large-12 columns">
                                             <form action="{% url 'pledges:collect_reward' %}" method="post">
