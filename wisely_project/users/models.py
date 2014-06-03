@@ -63,6 +63,8 @@ class Course(BaseModel):
     start_date = models.DateField(default=None, null=True, blank=True)
     end_date = models.DateField(default=None, null=True, blank=True)
     image_link = models.CharField(default="", max_length=10000)
+    skills_offered = models.ManyToManyField('Skill')
+    skill_points = models.CommaSeparatedIntegerField(max_length=500, default="")
 
     def __unicode__(self):
         return self.title
@@ -228,3 +230,7 @@ class Comments(BaseModel):
     user = models.ForeignKey(UserProfile)
     comment = models.CharField(max_length=100000)
     post = models.ForeignKey(Post)
+
+
+class Skill(BaseModel):
+    skill_name = models.CharField(max_length=1000, default="")
