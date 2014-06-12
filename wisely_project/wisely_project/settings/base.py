@@ -3,7 +3,7 @@
 from os.path import abspath, basename, dirname, join, normpath
 from sys import path
 
-ASYNC_BACKEND_URL = 'http://projectwisely.com:5000'
+ASYNC_BACKEND_URL = 'http://104.130.3.224:5000'
 
 # ######### PATH CONFIGURATION
 # Absolute filesystem path to the Django project directory:

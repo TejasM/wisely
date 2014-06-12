@@ -3,6 +3,9 @@ from datetime import date
 from fractions import Fraction
 import json
 import locale
+import urllib
+import urllib2
+from django.conf import settings
 from django.contrib import admin
 
 from django.contrib.auth.models import User
@@ -11,6 +14,14 @@ from django.utils import timezone
 from encrypted_fields import EncryptedCharField
 
 from polls.models import Question
+
+
+def send_event(event_type, event_data):
+    to_send = {
+        'event': event_type,
+        'data': event_data
+    }
+    urllib2.urlopen(settings.ASYNC_BACKEND_URL, urllib.urlencode(to_send))
 
 
 def convertDatetimeToString(o):
@@ -174,7 +185,7 @@ class UserCourses(admin.ModelAdmin):
         return courses
 
 
-#admin.site.register(User, UserCourses)
+# admin.site.register(User, UserCourses)
 
 
 class Quiz(BaseModel):

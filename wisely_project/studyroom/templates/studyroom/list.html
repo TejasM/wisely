@@ -1,0 +1,100 @@
+{% extends 'base-app-alt.html' %}
+{% load breaktag %}
+{% load staticfiles %}
+{% block additionalHeaders %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style-app.css' %}"/>
+    <script src="{{ async_url }}/socket.io/socket.io.js"></script>
+{% endblock %}
+{% block nav-bar %}
+    <li class="active"><a href="{% url 'users:index' %}"><i class="fa fa-book"></i><span>Dashboard</span></a>
+    </li>
+    <li class=""><a href="{% url 'pledges:index' %}"><i
+            class="fa fa-book"></i><span>Pledges</span></a>
+    </li>
+    <li class=""><a href="{% url 'pledges:list_rewards' %}"><i
+            class="fa fa-money"></i><span>Rewards</span></a>
+    </li>
+    <li class=""><a href="/more"><i
+            class="fa fa-book"></i><span>More Coming Soon!</span></a>
+    </li>
+{% endblock %}
+{% block content %}
+    <!-- col -->
+    <div class="jumbotron margin-none center bg-white">
+        <h1 class="separator bottom">Create A New Study Session</h1>
+
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="row extra-top-small-margin">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <input type="text" name="name" class="form-control"
+                                       placeholder="Session Name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row extra-top-small-margin">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <input type="password" name="password" class="form-control"
+                                       placeholder="Session Password (Optional)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row extra-top-small-margin">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-primary {% if form.public.value == True or not form.public.value %}active{% endif %}">
+                                <input type="radio" name="public" value="True"
+                                       {% if form.public.value == True or not form.public.value %}checked{% endif %}>Public
+                            </label>
+                            <label class="btn btn-primary {% if form.public.value == False %}active{% endif %}">
+                                <input type="radio" name="public" value="False"
+                                       {% if form.public.value == False %}checked{% endif %}>Private
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row extra-top-small-margin">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-primary {% if form.audio.value == False or not form.audio.value and form.video.value == False or not form.video %}active{% endif %}">
+                                <input type="radio" name="audio" value="False"
+                                       {% if form.audio.value == False or not form.audio.value and form.video.value == False or not form.video.value %}checked{% endif %}>None
+                            </label>
+                            <label class="btn btn-primary {% if form.audio.value == True %}active{% endif %}">
+                                <input type="radio" name="audio" value="True"
+                                       {% if form.audio.value == True %}checked{% endif %}>Audio
+                            </label>
+
+                            <label class="btn btn-primary {% if form.video.value == True %}active{% endif %}">
+                                <input type="radio" name="video" value="True"
+                                       {% if form.audio.value == True %}checked{% endif %}>Video
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row extra-top-small-margin">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-primary {% if not form.code or form.code.value == False %}active{% endif %}">
+                                <input type="radio" name="code" value="False"
+                                       {% if not form.code or form.code.value == False %}checked{% endif %}>No Coding
+                                Window
+                            </label>
+                            <label class="btn btn-primary {% if form.code.value == True %}active{% endif %}">
+                                <input type="radio" name="code" value="True"
+                                       {% if form.code.value == True %}checked{% endif %}>Coding Window
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row extra-top-small-margin">
+                        <input class="btn btn-primary btn-lg" type="submit" value="Create"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block additionalScripts %}
+    <script>
+        var socket = io.connect('{{async_url}}');
+    </script>
+{% endblock %}

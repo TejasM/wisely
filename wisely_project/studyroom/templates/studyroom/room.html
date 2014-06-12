@@ -3,7 +3,14 @@
     <div id="open-new-session"></div>
 {% endblock %}
 {% block additionalScripts %}
+    <script src="{{ async_url }}/socket.io/socket.io.js"></script>
     <script src="http://www.rtcmulticonnection.org/latest.js"></script>
+    <script>
+        var socket = io.connect('{{ async_url }}');
+        socket.on("joined-{{ session }}", function (data) {
+            //TODO: joined session
+        });
+    </script>
     <script>
         // www.RTCMultiConnection.org/latest.js
 
