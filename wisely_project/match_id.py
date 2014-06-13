@@ -6,7 +6,7 @@ import numpy as np
 f = read_csv('CourseSkills-edXCourses.csv')
 
 courses = f['Course Name']
-f['Course Id'] = Series(np.random.randn(f.shape[0]), index=f.index)
+f['Course Id'] = Series(np.zeros(f.shape[0]), index=f.index)
 
 for i, c in enumerate(courses):
     if isinstance(c, str):
