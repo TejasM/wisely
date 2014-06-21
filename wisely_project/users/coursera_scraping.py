@@ -130,7 +130,7 @@ class CourseraDownloader(object):
                             try:
                                 course = Course.objects.get(course_id=enrollment['course__topic_id'])
                             except Course.MultipleObjectsReturned:
-                                course = Course.objects.get(course_id=enrollment['course__topic_id'])[0]
+                                course = Course.objects.filter(course_id=enrollment['course__topic_id'])[0]
                             course_id = enrollment['course_id']
                             for coursera_course in courses:
                                 if coursera_course['id'] == course_id:
